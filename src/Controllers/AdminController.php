@@ -22,6 +22,6 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->guard = config('admin.guard');
+        $this->guard = config('admin.guard', 'web');
     }
 }

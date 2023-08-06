@@ -5,7 +5,7 @@
 	@php
 		$current_route = request()->path() ?? null;
 
-		$guard = config('admin.guard');
+		$guard = config('admin.guard', 'web');
 
 		$navigations = S4mpp\AdminPanel\Navigation\Menu::getNavigations();
 	@endphp
