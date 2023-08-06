@@ -1,16 +1,23 @@
 {
     "name": "s4mpp/admin-panel",
-    "description": "Admin panel for Laravel apps",
+    "description": "Admin Panel for Laravel apps",
     "authors": [
         {
             "name": "Samuel Pacheco",
             "email": "S4mpp.dev@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "S4mpp\\AdminPanel\\": "src/"
+        }
+    },
     "require": {
         "php": "^8.1",
         "laravel/framework": "^10.10",
-        "s4mpp/laraguard": "^1.0"
+        "s4mpp/laraguard": "^1.0",
+        "s4mpp/input": "^1.0",
+        "s4mpp/element": "^1.0"
     },
     "extra": {
         "laravel": {
