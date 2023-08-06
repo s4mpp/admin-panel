@@ -19,6 +19,11 @@
         "s4mpp/input": "^1.0",
         "s4mpp/element": "^1.0"
     },
+    "scripts": {
+        "post-update-cmd": [
+            "php artisan vendor:publish --tag=admin-assets"
+        ]
+    },
     "extra": {
         "laravel": {
             "providers": [
@@ -27,3 +32,5 @@
         }
     }
 }
+
+

@@ -6,6 +6,7 @@ namespace S4mpp\AdminPanel\Commands;
 use Exception;
 use App\Models\User;
 use Illuminate\Support\Str;
+use S4mpp\Laraguard\Routes;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
@@ -47,7 +48,7 @@ class CreateAdmin extends Command
         $this->info('Nome: '.$this->name_user);
         $this->info('E-mail: '.$this->email_user);
         $this->info('Senha: '.$this->password);
-        $this->info('URL: '.route('login_web'));
+        $this->info('URL: '.route(Routes::login()));
 
         return 0;
     }

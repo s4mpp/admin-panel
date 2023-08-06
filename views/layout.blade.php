@@ -75,8 +75,8 @@
 					<ul class="dropdown-menu dropdown-menu-end p-0 dropdown-user">
 						<li class="bg-light rounded-top">
 							<div class="p-3 text-dark">
-								<p class="mb-0 text-nowrap">{{ auth()->user()->name }}</p>
-								<p class="mb-0 text-nowrap"><strong>{{ auth()->user()->email }}</strong></p>
+								<p class="mb-0 text-nowrap">{{ auth()->guard(config('admin.guard'))->user()->name }}</p>
+								<p class="mb-0 text-nowrap"><strong>{{ auth()->guard(config('admin.guard'))->user()->email }}</strong></p>
 							</div>
 						</li>
 						{{-- <li><a class="dropdown-item pt-2 pb-2" href="{{ route('change_password_admin') }}"> Alterar senha <i class="la text-muted float-end mt-1 la-lock"></i></a></li> --}}
@@ -84,7 +84,7 @@
 							<hr class="p-0 m-0 dropdown-divider">
 						</li>
 						<li>
-							<a class="dropdown-item rounded-bottom pt-2 pb-2 text-danger" href="{{ route('logout_'.$guard) }}">
+							<a class="dropdown-item rounded-bottom pt-2 pb-2 text-danger" href="{{ route(S4mpp\Laraguard\Routes::logout()) }}">
 								<span class="float-start"><strong>Sair</strong></span>
 								<span class="float-end"><i class="la la-sign-out"></i></span><div class="clearfix"></div>	
 							</a>
