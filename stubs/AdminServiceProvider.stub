@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use S4mpp\AdminPanel\Navigation\Menu;
+use S4mpp\AdminPanel\Navigation\MenuItem;
+use S4mpp\AdminPanel\Navigation\MenuSection;
+
+class AdminServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        Menu::sidebar([
+            Menu::add(new MenuSection(null,
+            [
+                Menu::add(new MenuItem('Dashboard', 'dashboard_admin'))->uri('dashboard')->icon('home'),
+                
+                Menu::add(new MenuItem('Usuários', 'users_index_admin'))->uri('usuarios')->icon('user'),
+            ])),
+        ]);
+    }
+}
