@@ -21,7 +21,7 @@ class ResetPasswordAdmin extends Command
      *
      * @var string
      */
-    protected $description = 'Reset senha administrador';
+    protected $description = 'Reset password admin';
 
     /**
      * Execute the console command.
@@ -34,7 +34,7 @@ class ResetPasswordAdmin extends Command
 
         if(!$user)
         {
-            return $this->error('Usuário não encontrado!');
+            return $this->error('User not found!');
         }
 
         $password = app()->environment('local') ? '12345678' : Str::password();
@@ -43,8 +43,8 @@ class ResetPasswordAdmin extends Command
         
         $user->save();
 
-        $this->info('Senha alterada com sucesso:');
+        $this->info('Password changed successfully:');
         $this->info('E-mail: '.$email);
-        $this->info('Nova senha: '.$password);
+        $this->info('New password: '.$password);
     }
 }

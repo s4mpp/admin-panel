@@ -24,31 +24,39 @@ class CreateAdmin extends Command
      *
      * @var string
      */
-    protected $description = 'Cria um usuário para o Painel Administrativo.';
+    protected $description = 'Create a new admin';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->name_user = ($name = $this->option('name')) ? $name : $this->_askName();
-        
-        $this->email_user = ($email = $this->option('email')) ? $email : $this->_askEmail();
+        try
+        {
+            $this->name = $this->option('name');
+            $this->email = $this->option('email');
 
-        $this->password = $this->_getPassword();
-
-        $user = new User();
-        $user->name = $this->name_user;
-        $user->email = $this->email_user;
-        $user->password = Hash::make($this->password);
-        
-        $user->save();
-
-        $this->info('Usuário criado com sucesso:');
-        $this->info('Nome: '.$this->name_user);
-        $this->info('E-mail: '.$this->email_user);
-        $this->info('Senha: '.$this->password);
-        $this->info('URL: '.route(Routes::login()));
+            $this->email_user = $this->_getEmail();
+            $this->name_user = $this->_getName();
+            $this->password = $this->_getPassword();
+    
+            $user = new User();
+            $user->email = $this->email_user;
+            $user->name = $this->name_user;
+            $user->password = Hash::make($this->password);
+            
+            $user->save();
+    
+            $this->info('Admin created successfully:');
+            $this->info('E-mail: '.$this->email_user);
+            $this->info('Name: '.$this->name_user);
+            $this->info('Password: '.$this->password);
+            $this->info('URL: '.route(Routes::login()));
+        }
+        catch(\Exception $e)
+        {
+            $this->error($e->getMessage());
+        }
 
         return 0;
     }
@@ -63,72 +71,81 @@ class CreateAdmin extends Command
         return Str::password();
     }
 
-    private function _askName()
+    private function _getName()
     {
-        $name = $this->ask('Informe o nome do usuário', 'Webmaster');
+        $name = ($name = $this->name) ? $name : $this->_generateName();
 
-        try
+        if(!$name)
         {
-            if(!$name)
-            {
-                throw new Exception('O nome é obrigatório');
-            }
-
-            if(strlen($name) < 3)
-            {
-                throw new Exception('O nome deve ter pelo menos 3 caracteres');
-            }
-
-            return $name;
+            throw new Exception('The name is required');
         }
-        catch(Exception $e)
+
+        if(strlen($name) <= 3)
         {
-            $this->error($e->getMessage());
-
-            return $this->_askName();
+            throw new Exception('The name must have at least 3 characters');
         }
+
+        return $name;
+        
     }
 
-    private function _askEmail()
+    private function _getEmail()
+    {        
+        $email = ($email = $this->email) ? $email : $this->_getSuggestedEmail();
+
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+        if(!$email)
+        {
+            throw new Exception('The e-mail is required');
+        }
+
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+        {
+            throw new Exception('E-mail '.$email.' invalid');
+        }
+        
+        if(User::where('email', $email)->first())
+        {
+            throw new Exception('E-mail '.$email.' already exists');
+        }
+
+        return $email;
+        
+    }
+
+    private function _getSuggestedEmail()
     {
-        if(!app()->environment('local'))
+        $suggested_email = $this->name ?? 'Webmaster';
+
+        $attempts = 1;
+
+        $email_test = $suggested_email;
+        
+        do
         {
-            $email_default = 'webmaster@mail.com';
-        }
-        else
-        {
-            $email_default = Str::snake(Str::lower($this->name_user)).'@mail.com';
-        }
+            $email_existing = User::where('email', $email_test.'@mail.com')->first();
 
-
-        $email = $this->ask('Informe o e-mail do usuário '.$this->name_user, $email_default);
-
-        try
-        {
-            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-
-            if(!$email)
+            if($email_existing)
             {
-                throw new Exception('O e-mail é obrigatório');
-            }
+                $email_test = $suggested_email.$attempts;
+                
+                $attempts++;
 
-            if(!filter_var($email, FILTER_VALIDATE_EMAIL))
-            {
-                throw new Exception('E-mail '.$email.' inválido');
+                continue;
             }
             
-            if(User::where('email', $email)->first())
-            {
-                throw new Exception('E-mail '.$email.' já existe');
-            }
-
-            return $email;
+            $suggested_email = $email_test;
         }
-        catch(Exception $e)
-        {
-            $this->error($e->getMessage());
+        while($email_existing);
+        
+        return $suggested_email.'@mail.com';
+    }
 
-            return $this->_askEmail();
-        }
+    private function _generateName()
+    {
+        $email = explode('@', $this->email_user);
+
+        return Str::title(Str::replace('-', ' ', Str::slug($email[0]))) ?? 'Webmaster';
     }
 }
