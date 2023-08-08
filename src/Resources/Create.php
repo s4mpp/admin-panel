@@ -3,10 +3,11 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Http\Request;
+use S4mpp\AdminPanel\Resources\HasValidation;
 
 abstract class Create
 {
-	use HasForm;
+	use HasForm, HasValidation;
 
 	public static function get($resource)
 	{
@@ -26,14 +27,7 @@ abstract class Create
 		{
 			$form = self::_getForm($resource);
 
-			$validation_rules = [];
-
-			foreach($form->fields as $field)
-			{
-				$validation_rules[$field->name] = $field->rules;
-			}
-
-			$request->validate($validation_rules);
+			self::_validate($resource, $request, $form->fields);
 
 			$new_resource = new $resource->model;
 

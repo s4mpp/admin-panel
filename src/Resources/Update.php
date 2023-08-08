@@ -3,10 +3,11 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Http\Request;
+use S4mpp\AdminPanel\Resources\HasValidation;
 
 abstract class Update
 {
-	use HasForm;
+	use HasForm, HasValidation;
 
 	public static function get($resource)
 	{
@@ -25,6 +26,8 @@ abstract class Update
 		return function(int $id, Request $request) use($resource)
 		{
 			$form = self::_getForm($resource, $id);
+
+			self::_validate($resource, $request, $form->fields, $id);
 
 			$item = $form->resource;
 

@@ -3,7 +3,7 @@
 		<div class="row">
 			@foreach($form->fields ?? [] as $field)
 				<div class="col-12">
-					<x-input type="{{ $field->type }}" title="{{ $field->title }}" name="{{ $field->name }}"></x-input>
+					<x-input type="{{ $field->type }}" title="{{ $field->title }}" name="{{ $field->name }}">{{ $form->resource->{$field->name} ?? null }}</x-input>
 				</div>
 			@endforeach
 		</div>

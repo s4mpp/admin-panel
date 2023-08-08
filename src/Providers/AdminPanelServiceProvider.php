@@ -57,7 +57,14 @@ class AdminPanelServiceProvider extends ServiceProvider
 
 	private function _loadResources()
 	{
-		$resources = new \FileSystemIterator(app_path('AdminPanel'));
+		$path = app_path('AdminPanel');
+
+		if(!file_exists($path))
+		{
+			return;
+		}
+
+		$resources = new \FileSystemIterator($path);
 
 		foreach($resources as $resource)
 		{
