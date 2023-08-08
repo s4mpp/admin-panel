@@ -1,13 +1,10 @@
-
 @extends('admin::html')
 
 @section('main-content')
 	@php
-		$current_route = request()->path() ?? null;
-
 		$guard = config('admin.guard', 'web');
 
-		$navigations = S4mpp\AdminPanel\Navigation\Menu::getNavigations();
+		$navigations = S4mpp\AdminPanel\AdminPanel::getNavigation();
 	@endphp
 
 	<div class="main bg-light">
@@ -25,11 +22,11 @@
 			</div>			
 				
 			<div class="menu-sidebar mt-3">
-				@foreach ($navigations['sidebar'] ?? [] as $navigation)
+				@foreach ($navigations ?? [] as $navigation)
 					
  					<p class="text-secondary mt-4 mb-1 px-4"><span class="px-2"><strong>{{ $navigation->title }}</strong></span></p>
 					
-					@foreach ($navigation->items as $menu)
+					@foreach ($navigation->items as $item)
 						<div class="px-3 w-100 clearfix">
 							<a 
 							@class([
@@ -41,10 +38,10 @@
 								'px-2',
 								'd-flex',
 								'align-content-center',
-								'active' => ($menu->uri && (strpos($current_route, $menu->uri) !== false))
+								'active' => $item->isActive()
 							])
-							href="{{ $menu->action ? route($menu->action) : '#' }}">
-								<span class="px-2 py-2 w-100 d-flex align-items-center"> <i class="la {{ $menu->icon }}"></i> {{ $menu->title }}</span>
+							href="{{ $item->route ?? '#' }}">
+								<span class="px-2 py-2 w-100 d-flex align-items-center"> <i class="la la-{{ $item->icon }}"></i> {{ $item->title }}</span>
 							</a>
 						</div>
 					@endforeach

@@ -131,6 +131,11 @@
 	width: 300px
 }
 
+.text-strong
+{
+	font-weight: bold !important;
+}
+
 @media(min-width: 768px)
 {
 	.table-responsive

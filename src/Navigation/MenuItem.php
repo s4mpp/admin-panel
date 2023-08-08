@@ -2,39 +2,23 @@
 
 namespace S4mpp\AdminPanel\Navigation;
 
-
 class MenuItem
-{
-	public ?string $icon = null;
-
-	public string $title;
-	
-	public ?string $action;
-
+{	
 	public string $uri = '';
+
+	public bool $active = false;
 	
-	public function __construct(string $title, string $route = null)
+	public function __construct(public string $title, public string $route, public string $icon = 'angle-right')
 	{
-		$this->type = 'item';
-
 		$this->title = $title;
-		
-		$this->action = $route;
-
+	
 		return $this;
 	}
 
-	public function icon(string $icon)
+	public function isActive(): bool
 	{
-		$this->icon = 'la la-'.$icon;
+		$current_route = request()->path() ?? null;
 
-		return $this;
-	}
-
-	public function uri(string $uri)
-	{
-		$this->uri = $uri;
-
-		return $this;
+		return $this->route && (strpos($this->route, $current_route) !== false);
 	}
 }

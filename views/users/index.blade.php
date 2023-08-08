@@ -16,7 +16,7 @@
 					<th></th>
 					<th field="name">Nome</th>
                     <th field="email">Email</th>
-					<th>Ativo</th>
+					<th class="text-center">Ativo</th>
 					<th field="created_at">Adicionado em</th>
 				</tr>
 			</thead>
@@ -24,14 +24,18 @@
 				@forelse($users as $user)
 					<tr class="text-muted">
 						<td class="td-btn">
-							<a role="button" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="Editar"
-								href="{{ route('users_edit_admin', ['id' => $user->id]) }}"><i class="la la-pencil"></i> 
+							<a class="text-primary" data-bs-toggle="tooltip" title="Editar"
+								href="{{ route('users_edit_admin', ['id' => $user->id]) }}"><i class="la la-pencil"></i>  Editar
 							</a>							
 						</td>
 						<td class="text-dark strong">{{ $user->name }}</td>
 						<td>{{ $user->email }}</td>
-						<td class="text-nowrap">
-							{{ $user->is_active ? 'Sim' : 'Não' }}
+						<td class="text-nowrap text-center">
+							@if($user->is_active)
+								<i class="la la-check-circle text-success"></i>
+							@else
+								<i class="la la-times-circle text-danger"></i>
+							@endif
 						</td>
 						<td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
 					</tr>

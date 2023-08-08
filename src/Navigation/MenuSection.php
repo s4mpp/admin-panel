@@ -8,14 +8,15 @@ class MenuSection
 		
 	public $items = [];
 
-	public function __construct(string $title = null, array $items = [])
+	public function __construct(string $title = null)
 	{
-		$this->type = 'section';
-
 		$this->title = $title;
-		
-		$this->items = $items;
 
 		return $this;
+	}
+
+	public function add(MenuItem $item)
+	{
+		$this->items[] = $item;
 	}
 }

@@ -1,0 +1,40 @@
+<?php
+
+namespace App\AdminPanel;
+
+use S4mpp\AdminPanel\Form\Field;
+use S4mpp\AdminPanel\Table\Column;
+use S4mpp\AdminPanel\Resources\Resource;
+
+class UserResource extends Resource
+{
+    public $title = 'Usuários';
+
+    public $actions = ['create', 'update'];
+
+    public function getIndex()
+    {
+        return $this->table()->columns([
+            
+            Column::create('Nome', 'name')->strong(),
+
+            Column::create('E-mail', 'email'),
+
+            Column::create('Ativo', 'is_active')->boolean()->align('center'),
+
+            Column::create('Criado em', 'created_at')->datetime('d/m/Y H:i'),
+        ]);
+    }
+
+    public function getForm(int $id = null)
+    {
+        return $this->form($id)->fields([
+            
+            Field::create('Nome', 'name'),
+            
+            Field::create('E-mail', 'email')->email(),
+            
+            Field::create('Ativo', 'is_active')
+        ]);
+    }
+}

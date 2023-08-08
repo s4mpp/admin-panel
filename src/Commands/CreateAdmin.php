@@ -116,11 +116,9 @@ class CreateAdmin extends Command
 
     private function _getSuggestedEmail()
     {
-        $suggested_email = $this->name ?? 'Webmaster';
+        $email_test = $suggested_email = $this->name ?? 'webmaster';
 
         $attempts = 1;
-
-        $email_test = $suggested_email;
         
         do
         {
