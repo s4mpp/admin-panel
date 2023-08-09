@@ -32,7 +32,7 @@ class Table
 				$data->original_data =  $row->{$column->field};
 				$data->data = is_callable($column->callback) ? call_user_func($column->callback, $data->original_data) : $data->original_data;
 
-				$data_row[$column->field] = $data;
+				$data_row[] = $data;
 			}
 
 			$this->data[$row->id] = $data_row;

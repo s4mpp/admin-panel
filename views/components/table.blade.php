@@ -35,13 +35,20 @@
 						
 						@forelse ($row as $field)
 							<td @class(array_merge($field->style_class, ['text-nowrap']))>
+								@php
+									$data = $field->data;
+								@endphp
 								@switch($field->type)
 									@case('boolean')
-										@if($field->data)
+										@if($data)
 											<i class="la la-check-circle text-success"></i>
 										@else
 											<i class="la la-times-circle text-danger"></i>
 										@endif
+										@break
+									
+									@case('enum')
+										<x-badge :provider=$data></x-badge>
 										@break
 
 									@default
@@ -63,3 +70,5 @@
 </div>
 
 {{ $provider->links() }}
+
+{{-- @dump($data_table[12]) --}}

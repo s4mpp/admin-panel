@@ -21,7 +21,7 @@
 				</div>
 			</div>			
 				
-			<div class="menu-sidebar mt-3">
+			<div class="menu-sidebar  mt-3">
 				@foreach ($navigations ?? [] as $navigation)
 					
  					<p class="text-secondary mt-4 mb-1 px-4"><span class="px-2"><strong>{{ $navigation->title }}</strong></span></p>
@@ -48,7 +48,7 @@
 				@endforeach
 			</div>
 		</div>
-		<header class="bg-white position-fixed pt-2 pb-2 px-2 px-md-3 d-flex justify-content-between">
+		<header class="bg-white position-fixed pt-2 pb-2 px-2 px-md-3 d-flex justify-content-between shadow-sm">
 			
 			<a href="#" class="text-decoration-none align-middle sidebar-toggler d-flex justify-content-center">
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">

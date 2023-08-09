@@ -25,6 +25,23 @@ class Column
 		return $this;
 	}
 
+	public function enum()
+	{
+		$this->type = 'enum';
+		
+		return $this;
+	}
+
+	public function relation(string $fk_field)
+	{
+		$this->callback(function($item) use ($fk_field)
+		{
+			return $item->{$fk_field};
+		});
+
+		return $this;
+	}
+
 	public function datetime(string $format)
 	{
 		$this->callback(function($item) use ($format)

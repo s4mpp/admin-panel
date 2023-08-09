@@ -25,7 +25,7 @@ abstract class Resource
 
 		$this->name = Str::plural(strtolower($resource_name));
 		
-		$this->title = $this->title ?? Str::plural($resource_name);
+		$this->title = !empty($this->title) ? $this->title : Str::plural($resource_name);
 
 		$this->table = $this->model->getTable();
 	}

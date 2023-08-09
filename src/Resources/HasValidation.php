@@ -30,6 +30,7 @@ trait HasValidation
 			$validation_rules[$field->name] = $rules;
 		}
 
+
 		$request->validate($validation_rules);
 	}
 }
