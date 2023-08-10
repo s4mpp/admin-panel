@@ -1,12 +1,21 @@
+@php
+	$rowspan_empty = count($columns) ?? 1;
+
+	if($actions)
+	{
+		$rowspan_empty++;
+	}
+@endphp
+
 <div class="table-responsive">
 	<table class="table bg-white table-sm">
 		<thead>
 			<tr>
-				@if ($actions)
+				@if($actions)
 					<th></th>
 				@endif
 				
-				@forelse ($columns as $field)
+				@forelse($columns as $field)
 					<th @class(array_merge($field->style_class, ['text-nowrap']))>{{ $field->title }}</th>
 				@empty
 					<th>&nbsp;</th>
@@ -62,7 +71,7 @@
 				@endforeach
 			@else
 				<tr>
-					<td colspan="5" class="text-center pt-4 pb-4">Nenhum registro</td>
+					<td colspan="{{ $rowspan_empty }}" class="text-center pt-4 pb-4">Nenhum registro</td>
 				</tr>
 			@endif
 		</tbody>
@@ -70,5 +79,3 @@
 </div>
 
 {{ $provider->links() }}
-
-{{-- @dump($data_table[12]) --}}

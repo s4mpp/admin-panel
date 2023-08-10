@@ -34,7 +34,7 @@ class UserResource extends Resource
             
             Field::create('E-mail', 'email')->email(),
             
-            Field::create('Ativo', 'is_active')
+            Field::create('Ativo', 'is_active')->boolean()
         ]);
     }
 }

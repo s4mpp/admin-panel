@@ -3,8 +3,9 @@
 namespace S4mpp\AdminPanel\Form;
 
 use Illuminate\Database\Eloquent\Collection;
+use S4mpp\AdminPanel\Form\FormElementInteface;
 
-class Field
+class Field implements FormElementInteface
 {
 	public string $type = 'text';
 	
@@ -14,8 +15,10 @@ class Field
 	
 	public array $attributes = [];
 
-	public float $min = 0;
+	public ?int $rows = null;
 	
+	public float $min = 0;
+		
 	public ?float $max = null;
 	
 	public ?float $step = null;
@@ -26,6 +29,11 @@ class Field
 	public static function create(string $title, string $name)
 	{
 		return new Field($title, $name);
+	}
+
+	public function render()
+	{
+		return view('admin::form.field', ['field' => $this]);
 	}
 
 	public function email()
@@ -40,6 +48,20 @@ class Field
 	public function date()
 	{
 		$this->type = 'date';
+
+		return $this;
+	}
+
+	public function textarea()
+	{
+		$this->type = 'textarea';
+
+		return $this;
+	}
+
+	public function rows(int $rows)
+	{
+		$this->rows = $rows;
 
 		return $this;
 	}

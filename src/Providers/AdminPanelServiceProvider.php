@@ -74,7 +74,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 			$class_path = '\App\AdminPanel\\'.$resource_class_name;
 
 			$instance = new $class_path($resource_name);
-
+	
 			Resource::loadResource($instance);
 		}
 	}
