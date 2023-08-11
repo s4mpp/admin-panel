@@ -1,9 +1,3 @@
-@foreach($form ?? [] as $row)
-	<div class="row">
-		@foreach($row ?? [] as $field)
-			<div class="col-12">
-				{{ $field->render() }}
-			</div>
-		@endforeach
-	</div>
+@foreach($form->elements ?? [] as $element)
+	{{ $element->render($form->resource) }}
 @endforeach

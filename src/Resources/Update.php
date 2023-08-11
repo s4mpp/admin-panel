@@ -27,11 +27,13 @@ abstract class Update
 		{
 			$form = self::_getForm($resource, $id);
 
-			self::_validate($resource, $request, $form->fields, $id);
+			$fields = $form->getFields();
+
+			self::_validate($resource, $request, $fields, $id);
 
 			$item = $form->resource;
 
-			foreach($form->fields as $field)
+			foreach($fields as $field)
 			{
 				$item->{$field->name} = $request->{$field->name};
 			}

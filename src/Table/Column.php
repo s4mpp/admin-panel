@@ -42,7 +42,7 @@ class Column
 		return $this;
 	}
 
-	public function datetime(string $format)
+	public function datetime(string $format = 'Y-m-d H:i')
 	{
 		$this->callback(function($item) use ($format)
 		{

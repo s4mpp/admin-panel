@@ -28,7 +28,7 @@ class UserResource extends Resource
 
     public function getForm(int $id = null)
     {
-        return $this->form($id)->fields([
+        return $this->form($id)->elements([
             
             Field::create('Nome', 'name'),
             

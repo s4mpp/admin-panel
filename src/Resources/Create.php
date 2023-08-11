@@ -14,6 +14,8 @@ abstract class Create
 		return function() use ($resource)
 		{
 			$form = self::_getForm($resource);
+
+			// dump($form);
 			
 			return $resource->getView('create', [
 				'form' => $form,
@@ -27,11 +29,13 @@ abstract class Create
 		{
 			$form = self::_getForm($resource);
 
-			self::_validate($resource, $request, $form->fields);
+			$fields = $form->getFields();
+
+			self::_validate($resource, $request, $fields);
 
 			$new_resource = new $resource->model;
 
-			foreach($form->fields as $field)
+			foreach($fields as $field)
 			{
 				$new_resource->{$field->name} = $request->{$field->name};
 			}

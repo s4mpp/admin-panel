@@ -14,8 +14,8 @@ class Card implements FormElementInteface
 		return new Card($title, $elements);
 	}
 
-	public function render()
+	public function render($resource)
 	{
-		return view('admin::form.card', ['card' => $this]);
+		return view('admin::form.card', ['card' => $this, 'resource' => $resource]);
 	}
 }

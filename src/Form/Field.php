@@ -7,6 +7,8 @@ use S4mpp\AdminPanel\Form\FormElementInteface;
 
 class Field implements FormElementInteface
 {
+	public array $class = [];
+
 	public string $type = 'text';
 	
 	public array $rules = ['required', 'string'];
@@ -31,9 +33,16 @@ class Field implements FormElementInteface
 		return new Field($title, $name);
 	}
 
-	public function render()
+	public function render($resource = null)
 	{
-		return view('admin::form.field', ['field' => $this]);
+		return view('admin::form.field', ['field' => $this, 'resource' => $resource]);
+	}
+
+	public function col(string $size, int $column_size)
+	{
+		$this->class[] = 'col-'.$size.'-'.$column_size;
+
+		return $this;
 	}
 
 	public function email()
@@ -97,7 +106,6 @@ class Field implements FormElementInteface
 		return $this;
 	}
 
-
 	public function max(float $max)
 	{
 		$this->max = $max;
@@ -128,7 +136,7 @@ class Field implements FormElementInteface
 		{
 			$options[] = [
 				'id' => $case->value,
-				'label' => $case->name,
+				'label' => (method_exists($case, 'label')) ? $case->label() : $case->name,
 			];
 		}
 		

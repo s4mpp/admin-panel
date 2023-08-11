@@ -14,8 +14,8 @@ class Row implements FormElementInteface
 		return new Row($elements);
 	}
 
-	public function render()
+	public function render($resource)
 	{
-		return view('admin::form.row', ['row' => $this]);
+		return view('admin::form.row', ['row' => $this, 'resource' => $resource]);
 	}
 }
