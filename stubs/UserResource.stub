@@ -14,7 +14,7 @@ class UserResource extends Resource
 {
     public $title = 'Usuários';
 
-    public $actions = ['create', 'update', 'read', 'delete'];
+    public $actions = ['create', 'update', 'read'];
 
     public $section = 'config';
 

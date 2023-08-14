@@ -46,7 +46,7 @@ class Column
 	{
 		$this->callback(function($item) use ($format)
 		{
-			return $item->format($format);
+			return $item ? $item->format($format) : null;
 		});
 
 		return $this;
