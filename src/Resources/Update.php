@@ -30,18 +30,18 @@ abstract class Update
 		{
 			$form = self::_getForm($resource, $id);
 
-			$fields = $form->getFields();
+			$fields = self::_getFields($form);
 
 			self::_validate($resource, $request, $fields, $id);
 
-			$item = $form->resource;
+			$register = $resource->model->findOrFail($id);
 
 			foreach($fields as $field)
 			{
-				$item->{$field->name} = $request->{$field->name};
+				$register->{$field->name} = $request->{$field->name};
 			}
 
-			$item->save();
+			$register->save();
 
 			$request->session()->flash('message', 'Alteração realizada com sucesso!');
 

@@ -15,16 +15,16 @@
 					<th></th>
 				@endif
 				
-				@forelse($columns as $field)
-					<th @class(array_merge($field->style_class, ['text-nowrap']))>{{ $field->title }}</th>
+				@forelse($columns as $column)
+					<th @class(array_merge($column->style_class, ['text-nowrap']))>{{ $column->title }}</th>
 				@empty
 					<th>&nbsp;</th>
 				@endforelse
 			</tr>
 		</thead>
 		<tbody>
-			@if($data_table)
-				@foreach($data_table as $id => $row)
+			@if($registers)
+				@foreach($registers as $id => $row)
 					<tr class="text-muted">
 
 						@if($actions)
@@ -57,7 +57,7 @@
 							</td>
 						@empty
 							<td>&nbsp;</td>
-						@endforelse
+						@endforelse 
 					</tr>
 				@endforeach
 			@else
@@ -69,4 +69,4 @@
 	</table>
 </div>
 
-{{ $provider->links() }}
+{{ $collection->links() }}

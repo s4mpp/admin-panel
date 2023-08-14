@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Table;
+namespace S4mpp\AdminPanel\Elements;
 
 class Column
 {

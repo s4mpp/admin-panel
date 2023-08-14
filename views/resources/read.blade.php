@@ -14,7 +14,7 @@
 			
 			<x-item-view title="Alterado em">{{ $register->updated_at->format('d/m/Y H:i') }} ({{ $register->updated_at->diffForHumans() }})</x-item-view>
 			
-			<x-item-view title="Cadastrado em">{{ $register->created_at->format('d/m/Y H:i') }} ({{ $register->updated_at->diffForHumans() }})</x-item-view>
+			<x-item-view title="Cadastrado em">{{ $register->created_at->format('d/m/Y H:i') }} ({{ $register->created_at->diffForHumans() }})</x-item-view>
 		</div>
 	</div>
 </x-card>

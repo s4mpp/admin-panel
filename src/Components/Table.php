@@ -4,31 +4,36 @@ namespace S4mpp\AdminPanel\Components;
 
 use Closure;
 use Illuminate\View\Component;
-use S4mpp\AdminPanel\Table\Table as TableBuilder;
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Table extends Component
 {
-    public $provider;
-
-    public $columns;
-
-    public $actions;
-    
-    public $data_table;
+    public $registers = [];
 
     /**
      * Create a new component instance.
      */
-    public function __construct(TableBuilder $provider, public $actionRoutes = [1])
+    public function __construct(public Collection | LengthAwarePaginator $collection, public array $columns, public array $actionRoutes, public array $actions = [])
     {
-        $this->provider = $provider->original_collection;
 
-        $this->columns = $provider->columns;
+        foreach($collection as $row)
+		{
+			$data_row = [];
+			
+			foreach($columns as $column)
+			{
+				$data = clone $column;
 
-        $this->data_table = $provider->data;
-        
-        $this->actions = $provider->actions;
+				$data->original_data =  $row->{$column->field};
+				$data->data = is_callable($column->callback) ? call_user_func($column->callback, $data->original_data) : $data->original_data;
+
+				$data_row[] = $data;
+			}
+
+			$this->registers[$row->id] = $data_row;
+		}
     }
     
 

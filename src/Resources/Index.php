@@ -8,14 +8,18 @@ abstract class Index
 	{
 		return function() use ($resource)
 		{
-			if(method_exists($resource, 'getIndex'))
+			$data = [];
+
+			if(method_exists($resource, 'getTable'))
 			{
-				$data = [
-					'list'=> $resource->getIndex(),
-				];
+				$data['table'] = $resource->getTable();
+				
+				$data['data_table'] = $resource->model::paginate();
+
+				$data['resource_actions'] = $resource->getActions();
 			}
 			
-			return $resource->getView('index', $data ?? []);
+			return $resource->getView('index', $data);
 		};
 	}
 }

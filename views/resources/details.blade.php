@@ -1,3 +1,3 @@
-@foreach($read->elements ?? [] as $element)
+@foreach($read ?? [] as $element)
 	{{ $element->render($register ?? null) }}
 @endforeach

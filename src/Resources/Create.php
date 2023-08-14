@@ -29,7 +29,7 @@ abstract class Create
 		{
 			$form = self::_getForm($resource);
 
-			$fields = $form->getFields();
+			$fields = self::_getFields($form);
 
 			self::_validate($resource, $request, $fields);
 

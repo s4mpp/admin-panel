@@ -3,9 +3,9 @@
 namespace App\AdminPanel;
 
 use S4mpp\AdminPanel\Elements\Row;
-use S4mpp\AdminPanel\Table\Column;
 use S4mpp\AdminPanel\Action\Action;
 use S4mpp\AdminPanel\Elements\Field;
+use S4mpp\AdminPanel\Elements\Column;
 use S4mpp\AdminPanel\Elements\ItemView;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Controllers\AdminController;
@@ -14,7 +14,7 @@ class UserResource extends Resource
 {
     public $title = 'Usuários';
 
-    public $actions = ['create', 'update', 'read'];
+    public $actions = ['create', 'update', 'read', 'delete'];
 
     public $section = 'config';
 
@@ -28,10 +28,9 @@ class UserResource extends Resource
         ];
     }
 
-    public function getIndex()
+    public function getTable()
     {
-        return $this->table()->columns([
-            
+        return [
             Column::create('Nome', 'name')->strong(),
 
             Column::create('E-mail', 'email'),
@@ -39,13 +38,12 @@ class UserResource extends Resource
             Column::create('Ativo', 'is_active')->boolean()->align('center'),
 
             Column::create('Criado em', 'created_at')->datetime('d/m/Y H:i'),
-        ]);
+        ];
     }
 
     public function getForm()
     {
-        return $this->view()->elements([
-
+        return [
             Row::create([
                 Field::create('Nome', 'name')->col('sm', 4),
                 
@@ -53,13 +51,12 @@ class UserResource extends Resource
                 
                 Field::create('Ativo', 'is_active')->boolean()->col('sm', 4),
             ])
-        ]);
+        ];
     }
 
     public function getRead()
     {
-        return $this->view()->elements([
-            
+        return [            
             Row::create([
                 ItemView::create('Nome', 'name')->col('sm', 4),
                 
@@ -67,6 +64,6 @@ class UserResource extends Resource
                 
                 ItemView::create('Ativo', 'is_active')->boolean()->col('sm', 3),
             ])
-        ]);
+        ];
     }
 }

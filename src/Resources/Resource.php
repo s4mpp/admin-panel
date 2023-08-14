@@ -3,9 +3,7 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Support\Str;
-use S4mpp\AdminPanel\Table\Table;
 use S4mpp\AdminPanel\Action\Action;
-use S4mpp\AdminPanel\Elements\View;
 
 abstract class Resource
 {
@@ -26,8 +24,6 @@ abstract class Resource
 		$this->name = Str::plural(strtolower($resource_name));
 		
 		$this->title = !empty($this->title) ? $this->title : Str::plural($resource_name);
-
-		$this->table = $this->model->getTable();
 	}
 
 	public function getCustomActions()
@@ -48,20 +44,6 @@ abstract class Resource
 	public static function getResources(): array
 	{
 		return self::$resources;
-	}
-
-	public function table()
-	{
-		$table = new Table($this->model::paginate());
-
-		$table->actions($this->getActions());
-
-		return $table;
-	}
-
-	public function view()
-	{
-		return new View();
 	}
 
 	public function getRouteName(string $action): string

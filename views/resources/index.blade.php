@@ -12,8 +12,11 @@
 
 @section('content')
 
-	@isset($list)
-		<x-admin-table :actionRoutes=$action_routes :provider=$list />
+@section('content')
+
+	@isset($table)
+		<x-admin-table :collection=$data_table :columns=$table :actions=$resource_actions :actionRoutes=$action_routes />
 	@endisset
+
 
 @endsection
