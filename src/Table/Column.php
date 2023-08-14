@@ -36,7 +36,7 @@ class Column
 	{
 		$this->callback(function($item) use ($fk_field)
 		{
-			return $item->{$fk_field};
+			return $item->{$fk_field} ?? null;
 		});
 
 		return $this;

@@ -9,8 +9,17 @@ abstract class Read
 		return function($id) use ($resource)
 		{
 			return $resource->getView('read', [
-				'resource'=> $resource->model::findOrFail($id)
+				'register'=> $resource->model::findOrFail($id),
+				'read' => self::_getRead($resource, $id),
+				'resource_actions' => $resource->getActions()
 			]);
 		};
+	}
+
+	private static function _getRead($resource, int $id)
+	{
+		throw_if(!method_exists($resource, 'getRead'), 'Método getRead não existe.');
+						
+		return $resource->getRead();
 	}
 }

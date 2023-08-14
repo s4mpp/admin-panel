@@ -10,17 +10,33 @@ class AdminPanel
 {
 	public static function getNavigation()
 	{
-		$navigation = [
-			'main' => new MenuSection()
-		];
+		$route_prefix = explode('/', request()->route()->action['prefix'])[1];
 
-		$navigation['main']->add(new MenuItem('Dashboard', route('dashboard_admin')));
+		MenuSection::create('MAIN', 'main', 0);
+
+		$sections = MenuSection::getSections();
+
+		$dashboard = new MenuItem('Dashboard', route('dashboard_admin'), 'dashboard', 'home');
+		$dashboard->setActiveOrNot($route_prefix);
+
+		$sections['main']->add($dashboard);
 
 		foreach(Resource::getResources() as $resource)
-		{			
-			$navigation['main']->add(new MenuItem($resource->title, route($resource->getRouteName('index'))));
+		{
+			$resource_menu_section = $resource->section ?? 'main';
+
+			if(!array_key_exists($resource_menu_section, $sections))
+			{
+				$resource_menu_section = 'main';
+			}
+			
+			$menu_item = new MenuItem($resource->title, route($resource->getRouteName('index')), $resource->name);
+			$menu_item->setActiveOrNot($route_prefix);
+			
+			$sections[$resource_menu_section]->add($menu_item);
 		}
 
-		return $navigation;
+
+		return $sections;
 	}
 }

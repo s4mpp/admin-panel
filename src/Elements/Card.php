@@ -1,10 +1,10 @@
 <?php
 
-namespace S4mpp\AdminPanel\Form;
+namespace S4mpp\AdminPanel\Elements;
 
-use S4mpp\AdminPanel\Form\FormElementInteface;
+use S4mpp\AdminPanel\Elements\ElementInteface;
 
-class Card implements FormElementInteface
+class Card implements ElementInteface
 {
 	function __construct(public $title, public array $elements)
 	{}

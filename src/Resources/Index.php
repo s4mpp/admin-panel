@@ -11,7 +11,7 @@ abstract class Index
 			if(method_exists($resource, 'getIndex'))
 			{
 				$data = [
-					'list'=> $resource->getIndex()
+					'list'=> $resource->getIndex(),
 				];
 			}
 			

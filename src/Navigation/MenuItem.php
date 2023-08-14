@@ -8,17 +8,15 @@ class MenuItem
 
 	public bool $active = false;
 	
-	public function __construct(public string $title, public string $route, public string $icon = 'angle-right')
+	public function __construct(public string $title, public string $route, public string $route_prefix, public string $icon = 'angle-right')
 	{
 		$this->title = $title;
 	
 		return $this;
 	}
 
-	public function isActive(): bool
+	public function setActiveOrNot(string $current_route_prefix): void
 	{
-		$current_route = request()->path() ?? null;
-
-		return $this->route && (strpos($this->route, $current_route) !== false);
+		$this->active = ($this->route_prefix == $current_route_prefix);
 	}
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace S4mpp\AdminPanel\Form;
+namespace S4mpp\AdminPanel\Elements;
 
 use Illuminate\Database\Eloquent\Collection;
-use S4mpp\AdminPanel\Form\FormElementInteface;
+use S4mpp\AdminPanel\Elements\ElementInteface;
 
-class Field implements FormElementInteface
+class Field implements ElementInteface
 {
 	public array $class = [];
 
@@ -35,7 +35,7 @@ class Field implements FormElementInteface
 
 	public function render($resource = null)
 	{
-		return view('admin::form.field', ['field' => $this, 'resource' => $resource]);
+		return view('admin::elements.field', ['field' => $this, 'resource' => $resource]);
 	}
 
 	public function col(string $size, int $column_size)
@@ -49,7 +49,14 @@ class Field implements FormElementInteface
 	{
 		$this->type = 'email';
 
-		$this->rules = array_merge($this->rules, ['email', 'unique']);
+		$this->rules[] = 'email';
+		
+		return $this;
+	}
+
+	public function unique()
+	{
+		$this->rules[] = 'unique';
 		
 		return $this;
 	}
@@ -81,7 +88,7 @@ class Field implements FormElementInteface
 
 		$this->step = 0.01;
 
-		$this->rules[] = ['decimal'];
+		$this->rules[] = 'decimal:2';
 
 		return $this;
 	}

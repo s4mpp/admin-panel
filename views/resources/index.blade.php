@@ -10,7 +10,7 @@
 
 @endsection
 
-@section('content')	 
+@section('content')
 
 	@isset($list)
 		<x-admin-table :actionRoutes=$action_routes :provider=$list />

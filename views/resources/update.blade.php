@@ -4,7 +4,7 @@
 
 @section('content-resource')
 
-	<form method="POST" class="mb-0" action={{ route($action_routes['save'], ['id' => $form->resource->id]) }}>
+	<form method="POST" class="mb-0" action={{ route($action_routes['save'], ['id' => $register->id]) }}>
 		@csrf
 		@method('PUT')
 

@@ -26,19 +26,10 @@
 			@if($data_table)
 				@foreach($data_table as $id => $row)
 					<tr class="text-muted">
+
 						@if($actions)
-							<td class=" d-flex justify-content-start gap-3">
-								@foreach($actions as $action)
-									@if($action->has_confirmation)
-										<form  class="float-none d-inline" method="POST" onsubmit="return window.confirm('Tem certeza?')" action="{{ route($actionRoutes['delete'], ['id' => $id]) }}">
-											@method('DELETE')
-											@csrf
-											<button type="submit" class="btn text-{{ $action->context }} p-0"><i class="la la-{{ $action->icon }}"></i> {{ $action->label }}</a></button>
-										</form>
-									@else
-										<a class="text-{{ $action->context }}" href="{{ route($actionRoutes[$action->route], ['id' => $id]) }}"><i class="la la-{{ $action->icon }}"></i> {{ $action->label }}</a>
-									@endif
-								@endforeach
+							<td class="d-flex justify-content-start gap-3">
+								<x-admin-actions local="table" class="p-0" :actions=$actions :actionRoutes=$actionRoutes :id=$id />
 							</td>
 						@endif
 						

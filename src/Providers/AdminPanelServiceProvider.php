@@ -10,6 +10,7 @@ use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
+use S4mpp\AdminPanel\Components\Actions;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -28,6 +29,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
 		Blade::component('table', Table::class, 'admin');
+		Blade::component('actions', Actions::class, 'admin');
 
 		if($this->app->runningInConsole())
 		{

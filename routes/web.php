@@ -11,6 +11,8 @@ use S4mpp\AdminPanel\Resources\Update;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Controllers\AdminController;
 
+use function PHPUnit\Framework\throwException;
+
 Route::prefix('painel')->middleware('web')->group(function()
 {
 	Route::controller(AdminController::class)->group(function()
@@ -24,7 +26,10 @@ Route::prefix('painel')->middleware('web')->group(function()
 
 	Route::middleware('auth:'.$guard)->group(function()
 	{
-		Route::view('/dashboard', 'admin::dashboard')->name('dashboard_admin');
+		Route::prefix('dashboard')->group(function()
+		{
+			Route::view('/', 'admin::dashboard')->name('dashboard_admin');
+		});
 		
 		$resources = Resource::getResources();
 
@@ -56,6 +61,18 @@ Route::prefix('painel')->middleware('web')->group(function()
 				if(in_array('delete', $resource->actions))
 				{
 					Route::delete('/excluir/{id}', Delete::delete($resource))->name($resource->getRouteName('delete'));
+				}
+
+				$custom_actions = $resource->getCustomActions() ?? [];
+
+				foreach($custom_actions as $action)
+				{
+					if(!isset($action->target))
+					{
+						throw new \Exception('Target of Custom Route "'.$action->slug.' "not defined');
+					}
+
+					Route::{$action->method}('/'.$action->slug.'/{id}', $action->target ?? '')->name($resource->getRouteName($action->route));
 				}
 			});
 		}

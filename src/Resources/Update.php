@@ -13,9 +13,12 @@ abstract class Update
 	{
 		return function(int $id) use ($resource)
 		{
-			$form = self::_getForm($resource, $id);
+			$register = $resource->model->findOrFail($id);
+
+			$form = self::_getForm($resource);
 			
 			return $resource->getView('update', [
+				'register' => $register,
 				'form' => $form,
 			]);
 		};

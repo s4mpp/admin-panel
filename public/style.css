@@ -131,9 +131,17 @@
 	width: 300px
 }
 
-.text-strong
+.admin-card-login
 {
-	font-weight: bold !important;
+	width: 350px !important;
+}
+.admin-login
+{
+	min-height: 100vh;
+}
+.admin-img-logo 
+{
+	width: 190px
 }
 
 @media(min-width: 768px)

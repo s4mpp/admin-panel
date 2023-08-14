@@ -1,11 +1,12 @@
 @extends('admin::html')
 
 @section('main-content')
-	<div class="px-3 d-flex flex-column justify-content-center laraguard-login">
+
+	<div class="px-3 d-flex flex-column justify-content-center admin-login">
 		<a href="{{ url('/') }}" class="mb-3 d-block mx-auto mt-5">
-			<img class="laraguard-img-logo-admin img-fluid px-3 mx-auto" src="{{asset('images/logo.png')}}" alt="{{env('APP_NAME')}}">
+			<img class="admin-img-logo img-fluid px-3 mx-auto" src="{{asset('images/logo.png')}}" alt="{{env('APP_NAME')}}">
 		</a>
-		<div class="card card-login-admin bg-white mx-auto border-0 mb-4">
+		<div class="card admin-card-login-admin bg-white mx-auto border-0 mb-4">
 			<div class="card-body ">
 				<x-alert/>
 

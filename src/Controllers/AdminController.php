@@ -24,4 +24,9 @@ class AdminController extends Controller
     {
         $this->guard = config('admin.guard', 'web');
     }
+
+    public function generatePassword()
+    {
+        return redirect()->back()->with('message', 'Senha gerada com sucesso');
+    }
 }

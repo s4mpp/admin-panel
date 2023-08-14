@@ -3,15 +3,17 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Support\Str;
-use S4mpp\AdminPanel\Form\Form;
 use S4mpp\AdminPanel\Table\Table;
-use S4mpp\AdminPanel\Table\Action;
+use S4mpp\AdminPanel\Action\Action;
+use S4mpp\AdminPanel\Elements\View;
 
 abstract class Resource
 {
 	public static $resources = array();
 
 	public $model;
+	
+	public $controller;
 
 	public $name;
 	
@@ -19,15 +21,23 @@ abstract class Resource
 	
 	public function __construct(public string $resource_name)
 	{
-		$model = '\App\Models\\'.$resource_name;
-
-		$this->model = app($model);
-
+		$this->model = app('\App\Models\\'.$resource_name);
+		
 		$this->name = Str::plural(strtolower($resource_name));
 		
 		$this->title = !empty($this->title) ? $this->title : Str::plural($resource_name);
 
 		$this->table = $this->model->getTable();
+	}
+
+	public function getCustomActions()
+	{
+		return [];
+	}
+
+	public function getController()
+	{
+		return '\App\Http\Controllers\\'.$this->resource_name.'Controller';
 	}
 
 	public static function loadResource(Resource $resource)
@@ -44,38 +54,14 @@ abstract class Resource
 	{
 		$table = new Table($this->model::paginate());
 
-		foreach($this->actions as $action)
-		{
-			switch($action)
-			{
-				case 'update':
-					$actions_table[] = Action::update();
-					break;
-
-				case 'read':
-					$actions_table[] = Action::read();
-					break;
-
-				case 'delete':
-					$actions_table[] = Action::delete();
-					break;
-			}
-
-		}
-
-		if(isset($actions_table))
-		{
-			$table->actions($actions_table);
-		}
+		$table->actions($this->getActions());
 
 		return $table;
 	}
 
-	public function form(int $id = null)
+	public function view()
 	{
-		$form = new Form(($id) ? $this->model::find($id) : null);
-
-		return $form;
+		return new View();
 	}
 
 	public function getRouteName(string $action): string
@@ -104,6 +90,13 @@ abstract class Resource
 			$routes['store'] = $this->getRouteName('store');
 		}
 
+		$custom_actions = $this->getCustomActions();
+
+		foreach($custom_actions as $action)
+		{
+			$routes[$action->slug] = $this->getRouteName($action->slug);
+		}
+
 		return $routes;
 	}
 
@@ -114,5 +107,32 @@ abstract class Resource
 			'actions' => $this->actions,
 			'action_routes' => $this->getRoutes(),
 		]));
+	}
+
+	public function getActions()
+	{
+		$actions = [];
+
+		foreach($this->actions as $action)
+		{
+			switch($action)
+			{
+				case 'update':
+					$actions[] = Action::create('Editar', 'update')->icon('pencil');
+					break;
+
+				case 'read':
+					$actions[] = Action::create('Visualizar', 'read')->icon('eye');
+					break;
+
+				case 'delete':
+					$actions[] = Action::create('Excluir', 'delete')->icon('trash')->context('danger')->method('delete')->question('Tem certeza?');
+					break;
+			}
+		}
+
+		$actions = array_merge($actions, $this->getCustomActions());
+
+		return $actions;
 	}
 }

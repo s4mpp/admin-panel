@@ -38,7 +38,7 @@
 								'px-2',
 								'd-flex',
 								'align-content-center',
-								'active' => $item->isActive()
+								'active' => $item->active
 							])
 							href="{{ $item->route ?? '#' }}">
 								<span class="px-2 py-2 w-100 d-flex align-items-center"> <i class="la la-{{ $item->icon }}"></i> {{ $item->title }}</span>
@@ -95,7 +95,6 @@
 			<div class="content mb-3">
 
                 <div class="admin-actions px-md-0 d-flex justify-content-start mb-3 flex-fill">
-
                     @yield('title-page')
                 </div>
 

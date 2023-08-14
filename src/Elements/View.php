@@ -1,16 +1,10 @@
 <?php
 
-namespace S4mpp\AdminPanel\Form;
+namespace S4mpp\AdminPanel\Elements;
 
-use S4mpp\AdminPanel\Form\Row;
-use Illuminate\Database\Eloquent\Model;
-
-class Form
+class View
 {
 	public array $elements;
-
-	function __construct(public ?Model $resource = null)
-	{}
 
 	public function elements(array $elements)
 	{
