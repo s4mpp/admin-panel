@@ -16,6 +16,6 @@ class Card implements ElementInteface
 
 	public function render($resource)
 	{
-		return view('admin::form.card', ['card' => $this, 'resource' => $resource]);
+		return view('admin::elements.card', ['card' => $this, 'resource' => $resource]);
 	}
 }
