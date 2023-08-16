@@ -8,7 +8,7 @@
 	@break;
 	
 	@case('boolean')
-		<x-input type="checkbox" title="Title" name="{{ $field->name }}" selected="{{ $resource->{$field->name} ?? null }}">
+		<x-input type="checkbox" title="" name="{{ $field->name }}" selected="{{ $resource->{$field->name} ?? null }}">
 			<x-check value="1">{{ $field->title }}</x-check>
  		</x-input>
 	@break;

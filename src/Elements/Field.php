@@ -88,7 +88,7 @@ class Field implements ElementInteface
 
 		$this->step = 0.01;
 
-		$this->rules[] = 'decimal:2';
+		$this->rules[] = 'numeric';
 
 		return $this;
 	}
