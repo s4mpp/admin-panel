@@ -50,9 +50,13 @@
 									@case('enum')
 										<x-badge :provider=$data></x-badge>
 										@break
+									
+									@case('dump')
+										@dump($data)
+										@break
 
 									@default
-										{{ $field->data }}
+										{{ $data }}
 								@endswitch
 							</td>
 						@empty

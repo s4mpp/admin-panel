@@ -21,10 +21,14 @@
 				</div>
 			</div>			
 				
-			<div class="menu-sidebar  mt-3">
+			<div class="menu-sidebar mt-3">
 				@foreach ($navigations ?? [] as $navigation)
+
+					@continue(!$navigation->items)
 					
- 					<p class="text-secondary mt-4 mb-1 px-4"><span class="px-2"><strong>{{ $navigation->title }}</strong></span></p>
+					@if($navigation->title)
+ 						<p class="text-secondary mt-4 mb-1 px-4"><span class="px-2"><strong>{{ $navigation->title }}</strong></span></p>
+					@endif
 					
 					@foreach ($navigation->items as $item)
 						<div class="px-3 w-100 clearfix">

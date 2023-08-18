@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel;
 
+use Illuminate\Support\Facades\Auth;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Navigation\MenuItem;
 use S4mpp\AdminPanel\Navigation\MenuSection;
@@ -12,7 +13,7 @@ class AdminPanel
 	{
 		$route_prefix = explode('/', request()->route()->action['prefix'])[1];
 
-		MenuSection::create('MAIN', 'main', 0);
+		MenuSection::create('', 'main', 0);
 
 		$sections = MenuSection::getSections();
 
@@ -23,6 +24,11 @@ class AdminPanel
 
 		foreach(Resource::getResources() as $resource)
 		{
+			if(isset($resource->roles) && (!Auth::guard(config('admin.guard'))->user()->hasAnyRole($resource->roles)))
+			{
+				continue;
+			}
+
 			$resource_menu_section = $resource->section ?? 'main';
 
 			if(!array_key_exists($resource_menu_section, $sections))

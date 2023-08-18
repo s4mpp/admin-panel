@@ -16,7 +16,9 @@ abstract class Resource
 	public $name;
 	
 	public $title;
-	
+
+	public $ordenation = ['id', 'DESC'];
+		
 	public function __construct(public string $resource_name)
 	{
 		$this->model = app('\App\Models\\'.$resource_name);

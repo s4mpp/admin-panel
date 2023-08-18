@@ -32,6 +32,13 @@ class Column
 		return $this;
 	}
 
+	public function dump()
+	{
+		$this->type = 'dump';
+
+		return $this;
+	}
+
 	public function relation(string $fk_field)
 	{
 		$this->callback(function($item) use ($fk_field)

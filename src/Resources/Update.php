@@ -3,6 +3,7 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Http\Request;
+use S4mpp\AdminPanel\Hooks\UpdateHook;
 use S4mpp\AdminPanel\Resources\HasValidation;
 
 abstract class Update
@@ -40,8 +41,12 @@ abstract class Update
 			{
 				$register->{$field->name} = $request->{$field->name};
 			}
-
+			
+			UpdateHook::before($resource, $register);
+			
 			$register->save();
+			
+			UpdateHook::after($resource, $register);
 
 			$request->session()->flash('message', 'Alteração realizada com sucesso!');
 

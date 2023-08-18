@@ -35,7 +35,14 @@ Route::prefix('painel')->middleware('web')->group(function()
 
 		foreach($resources as $resource)
 		{
-			Route::prefix($resource->name)->group(function() use ($resource)
+			$routes_resource = Route::prefix($resource->name);
+			
+			if(isset($resource->roles))
+			{
+				$routes_resource->middleware('role:'.join('|', ($resource->roles ?? [])));
+			}
+			
+			$routes_resource->group(function() use ($resource)
 			{
 				Route::get('/', Index::get($resource))->name($resource->getRouteName('index'));
 		

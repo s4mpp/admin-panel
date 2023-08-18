@@ -3,6 +3,7 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Http\Request;
+use S4mpp\AdminPanel\Hooks\CreateHook;
 use S4mpp\AdminPanel\Resources\HasValidation;
 
 abstract class Create
@@ -14,8 +15,6 @@ abstract class Create
 		return function() use ($resource)
 		{
 			$form = self::_getForm($resource);
-
-			// dump($form);
 			
 			return $resource->getView('create', [
 				'form' => $form,
@@ -33,14 +32,18 @@ abstract class Create
 
 			self::_validate($resource, $request, $fields);
 
-			$new_resource = new $resource->model;
+			$new_register = new $resource->model;
 
 			foreach($fields as $field)
 			{
-				$new_resource->{$field->name} = $request->{$field->name};
+				$new_register->{$field->name} = $request->{$field->name};
 			}
 
-			$new_resource->save();
+			CreateHook::before($resource, $new_register);
+
+			$new_register->save();
+
+			CreateHook::after($resource, $new_register);
 
 			$request->session()->flash('message', 'Cadastro realizado com sucesso!');
 

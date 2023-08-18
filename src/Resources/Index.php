@@ -12,11 +12,15 @@ abstract class Index
 
 			if(method_exists($resource, 'getTable'))
 			{
-				$data['table'] = $resource->getTable();
+				$table = $resource->getTable();
 				
-				$data['data_table'] = $resource->model::paginate();
+				$data = $resource->model::orderBy($resource->ordenation[0] ?? 'id', $resource->ordenation[1] ?? 'DESC')->paginate();
 
-				$data['resource_actions'] = $resource->getActions();
+				$data = [
+					'table' => $table,
+					'data_table' => $data,
+					'resource_actions' => $resource->getActions()
+				];
 			}
 			
 			return $resource->getView('index', $data);
