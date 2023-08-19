@@ -28,7 +28,7 @@ trait HasForm
 			}
 			else
 			{
-				return self::_findFields($element->elements ?? [], $fields_found);
+				$fields_found = self::_findFields($element->elements ?? [], $fields_found);
 			}
 		}
 

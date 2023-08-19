@@ -21,7 +21,7 @@
 				</div>
 			</div>			
 				
-			<div class="menu-sidebar mt-3">
+			<div class="menu-sidebar my-3">
 				@foreach ($navigations ?? [] as $navigation)
 
 					@continue(!$navigation->items)

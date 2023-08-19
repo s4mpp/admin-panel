@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use S4mpp\Laraguard\Routes;
 use Illuminate\Console\Command;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class CreateAdmin extends Command
@@ -17,7 +18,7 @@ class CreateAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:create {--name= : Name User} {--email= : E-mail user}';
+    protected $signature = 'admin:create {--name= : Name User} {--email= : E-mail user} {--role= : Assign Role}';
 
     /**
      * The console command description.
@@ -35,22 +36,36 @@ class CreateAdmin extends Command
         {
             $this->name = $this->option('name');
             $this->email = $this->option('email');
+            $this->role = $this->option('role');
 
             $this->email_user = $this->_getEmail();
             $this->name_user = $this->_getName();
+            $this->role_user = $this->_getRole();
+            
             $this->password = $this->_getPassword();
     
             $user = new User();
             $user->email = $this->email_user;
             $user->name = $this->name_user;
             $user->password = Hash::make($this->password);
-            
+
             $user->save();
-    
+            
+            if($this->role_user)
+            {
+                $user->assignRole($this->role_user);
+            }
+            
             $this->info('Admin created successfully:');
             $this->info('E-mail: '.$this->email_user);
             $this->info('Name: '.$this->name_user);
             $this->info('Password: '.$this->password);
+
+            if($this->role_user)
+            {
+                $this->info('Role: '.$this->role_user);
+            }
+
             $this->info('URL: '.route(Routes::login()));
         }
         catch(\Exception $e)
@@ -70,6 +85,19 @@ class CreateAdmin extends Command
         
         return Str::password();
     }
+
+    private function _getRole()
+    {
+        $role = Role::where('name', $this->role)->first();
+
+        if(!$role)
+        {
+            throw new Exception('Role does not exist');
+        }
+
+        return $role;
+    }
+
 
     private function _getName()
     {
