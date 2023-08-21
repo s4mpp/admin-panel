@@ -59,6 +59,26 @@ class Column
 		return $this;
 	}
 
+	public function currency(bool $convert_cents = true, string $prefix = 'R$')
+	{
+		$this->callback(function($value) use ($prefix, $convert_cents)
+		{
+			if(!is_numeric($value))
+			{
+				return null;
+			}
+
+			if($convert_cents)
+			{
+				$value /= 100;
+			}
+
+			return $prefix.' '.number_format($value, 2, ',', '.');
+		});
+
+		return $this;
+	}
+
 	public function callback(callable $callback)
 	{
 		$this->callback = $callback;

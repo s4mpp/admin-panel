@@ -63,7 +63,7 @@ class CreateAdmin extends Command
 
             if($this->role_user)
             {
-                $this->info('Role: '.$this->role_user);
+                $this->info('Role: '.$this->role_user->name);
             }
 
             $this->info('URL: '.route(Routes::login()));
@@ -88,6 +88,11 @@ class CreateAdmin extends Command
 
     private function _getRole()
     {
+        if(!$this->role)
+        {
+            return null;
+        }
+
         $role = Role::where('name', $this->role)->first();
 
         if(!$role)

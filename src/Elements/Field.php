@@ -98,7 +98,7 @@ class Field implements ElementInteface
 		$this->type = 'number';
 
 		$this->step = 1;
-
+		
 		$this->rules[] = 'integer';
 
 		return $this;
@@ -152,6 +152,29 @@ class Field implements ElementInteface
 		return $this;
 	}
 
+	public function permissions(array $permissions)
+	{
+		$this->type = 'permissions';
+
+		$options = [];
+
+		foreach($permissions as $permission => $label)
+		{
+			$options[] = [
+				'id' => $permission,
+				'label' => $label,
+			];
+		}
+		
+		$this->additional_data['permissions'] = $options;
+
+		$this->_removeRule('string');
+
+		$this->rules[] = 'array';
+
+		return $this;
+	}
+
 	public function relation(Collection $model_options, string $fk_relation)
 	{
 		$this->type = 'select';
@@ -173,15 +196,21 @@ class Field implements ElementInteface
 
 	public function notRequired()
 	{
-		$key = array_search('required', $this->rules);
+		$this->_removeRule('required');
+		
+		$this->rules[] = 'nullable';
+
+		return $this;
+	}
+
+	private function _removeRule(string $rule)
+	{
+		$key = array_search($rule, $this->rules);
 		
 		if($key !== false)
 		{
 			unset($this->rules[$key]);
-
-			$this->rules[] = 'nullable';
 		}
-
-		return $this;
 	}
+
 }

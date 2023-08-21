@@ -39,11 +39,11 @@ abstract class Create
 				$new_register->{$field->name} = $request->{$field->name};
 			}
 
-			CreateHook::before($resource, $new_register);
+			CreateHook::before($resource, $new_register, $request);
 
 			$new_register->save();
 
-			CreateHook::after($resource, $new_register);
+			CreateHook::after($resource, $new_register, $request);
 
 			$request->session()->flash('message', 'Cadastro realizado com sucesso!');
 

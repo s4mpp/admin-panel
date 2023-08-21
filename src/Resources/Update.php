@@ -41,13 +41,13 @@ abstract class Update
 			{
 				$register->{$field->name} = $request->{$field->name};
 			}
-			
-			UpdateHook::before($resource, $register);
+		
+			UpdateHook::before($resource, $register, $request);
 			
 			$register->save();
 			
-			UpdateHook::after($resource, $register);
-
+			UpdateHook::after($resource, $register, $request);
+						
 			$request->session()->flash('message', 'Alteração realizada com sucesso!');
 
 			return redirect()->route($resource->getRouteName('index'));

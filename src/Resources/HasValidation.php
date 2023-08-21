@@ -2,14 +2,15 @@
 
 namespace S4mpp\AdminPanel\Resources;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 trait HasValidation
 {
 	private static function _validate($resource, Request $request, array $fields, int $id = null)
 	{
-		$validation_rules = [];
+		$validation_rules = $attributes = [];
 
 		foreach($fields as $field)
 		{
@@ -28,9 +29,12 @@ trait HasValidation
 			}
 
 			$validation_rules[$field->name] = $rules;
+
+			$attributes[$field->name] = $field->title;
 		}
 
+		$validator = Validator::make($request->input(), $validation_rules, [], $attributes);
 
-		$request->validate($validation_rules);
+		$validator->validate();
 	}
 }
