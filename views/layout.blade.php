@@ -1,111 +1,321 @@
-@extends('admin::html')
+@extends('admin::html', ['color' => 'bg-slate-50'])
+
+@php
+	$guard = config('admin.guard', 'web');
+
+	$navigations = S4mpp\AdminPanel\AdminPanel::getNavigation();
+@endphp
 
 @section('main-content')
-	@php
-		$guard = config('admin.guard', 'web');
 
-		$navigations = S4mpp\AdminPanel\AdminPanel::getNavigation();
-	@endphp
+<div x-data="{ menuOfCanvasMobile: false }" @keydown.window.escape="menuOfCanvasMobile = false">
+	<div x-show="menuOfCanvasMobile" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+	  <div 
+	  	x-show="menuOfCanvasMobile"
+		x-transition:enter="transition-opacity ease-linear duration-300" 
+		x-transition:enter-start="opacity-0" 
+		x-transition:enter-end="opacity-100" 
+		x-transition:leave="transition-opacity ease-linear duration-300" 
+		x-transition:leave-start="opacity-1000"
+		x-transition:leave-end="opacity-0" 
+	  class="fixed inset-0 bg-slate-900/80" ></div>
+  
+	  <div class="fixed inset-0 flex">
+		
+		<div x-show="menuOfCanvasMobile"
+			x-transition:enter="transition ease-in-out duration-300 transform" 
+			x-transition:enter-start="-translate-x-full" 
+			x-transition:enter-end="translate-x-0" 
+			x-transition:leave="transition ease-in-out duration-300 transform" 
+			x-transition:leave-start="translate-x-00"
+			x-transition:leave-end="-translate-x-full" 
+			@click.away="menuOfCanvasMobile = false"
+		 class="relative mr-16 flex w-full max-w-xs flex-1">
+		  <div 
+			x-show="menuOfCanvasMobile" 
+			x-transition:enter="ease-in-out duration-300" 
+			x-transition:enter-start="opacity-0" 
+			x-transition:enter-end="opacity-100" 
+			x-transition:leave="ease-in-out duration-300" 
+			x-transition:leave-start="opacity-1000"
+			x-transition:leave-end="opacity-0" 
+			x-on:click="menuOfCanvasMobile = !menuOfCanvasMobile"
+		  class="absolute left-full top-0 flex w-16 justify-center pt-5">
+			<button type="button" class="-m-2.5 p-2.5">
+			  <span class="sr-only">Close sidebar</span>
+			  <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+			  </svg>
+			</button>
+		  </div>
+  
+		  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
+			<div class="flex h-16 shrink-0 items-center">
+			  <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white" alt="Your Company">
+			</div>
+			<nav class="flex flex-1 flex-col">
+			  <ul role="list" class="flex flex-1 flex-col gap-y-7">
 
-	<div class="main bg-light">
-		<div class="sidebar bg-primary">
-			<div class="p-4">
-				<div class="mx-auto w-75 px-3 mb-0">
-					<a href="{{ route('dashboard_admin') }}" class="">
-						@if(File::exists('images/logo.png'))
-							<img  class="img-fluid p-2 " src="{{ asset('images/logo.png') }}" alt="{{ env('APP_NAME') }}">
-						@else
-							<p class="text-white text-center"><strong>{{  env('APP_NAME')  }}</strong></p>
-						@endif
-					</a>
-				</div>
-			</div>			
-				
-			<div class="menu-sidebar my-3">
 				@foreach ($navigations ?? [] as $navigation)
-
 					@continue(!$navigation->items)
 					
+					<li>
+						@if($navigation->title)
+							<div class="text-xs font-semibold leading-6 text-indigo-200">{{ $navigation->title }}</div>
+						@endif
+
+						<ul role="list" class="-mx-2 mt-2 space-y-1">
+							@foreach ($navigation->items as $item)
+							<li>
+								<a 
+								@class([
+									'text-indigo-200  group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+									'hover:text-white hover:bg-indigo-700' => !$item->active,
+									'bg-indigo-700 text-white' => $item->active,
+								])
+								href="{{ $item->route ?? '#' }}">
+						
+									<svg class="h-6 w-6 shrink-0 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+									</svg>
+									
+									<span class="truncate">{{ $item->title }}</span>
+								</a>
+								</li>
+							@endforeach
+						</ul>
+					</li>
+				@endforeach
+
+
+
+
+
+
+				{{-- <li class="mt-auto">
+				  <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
+					<svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+					  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+					</svg>
+					Settings
+				  </a>
+				</li> --}}
+			  </ul>
+			</nav>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  
+	<!-- Static sidebar for desktop -->
+	<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+	  <!-- Sidebar component, swap this element with another sidebar if you like -->
+	  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6">
+		
+		<div class="flex h-16 shrink-0 items-center">
+		  <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white" alt="Your Company">
+		</div>
+		
+		<nav class="flex flex-1 flex-col">
+		  <ul role="list" class="flex flex-1 flex-col gap-y-7">
+			@foreach ($navigations ?? [] as $navigation)
+				@continue(!$navigation->items)
+				
+				<li>
 					@if($navigation->title)
- 						<p class="text-secondary mt-4 mb-1 px-4"><span class="px-2"><strong>{{ $navigation->title }}</strong></span></p>
+						<div class="text-xs font-semibold leading-6 text-indigo-200">{{ $navigation->title }}</div>
 					@endif
-					
-					@foreach ($navigation->items as $item)
-						<div class="px-3 w-100 clearfix">
+
+					<ul role="list" class="-mx-2 mt-2 space-y-1">
+						@foreach ($navigation->items as $item)
+						<li>
 							<a 
 							@class([
-								'w-100',
-								'float-start',
-								'mb-1',
-								'rounded',
-								'text-decoration-none',
-								'px-2',
-								'd-flex',
-								'align-content-center',
-								'active' => $item->active
+								'text-indigo-200  group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+								'hover:text-white hover:bg-indigo-700' => !$item->active,
+								'bg-indigo-700 text-white' => $item->active,
 							])
 							href="{{ $item->route ?? '#' }}">
-								<span class="px-2 py-2 w-100 d-flex align-items-center"> <i class="la la-{{ $item->icon }}"></i> {{ $item->title }}</span>
+								<svg class="h-6 w-6 shrink-0 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+							  	</svg>
+							  
+								<span class="truncate">{{ $item->title }}</span>
 							</a>
-						</div>
-					@endforeach
-				@endforeach
-			</div>
+							</li>
+						@endforeach
+					</ul>
+				</li>
+			@endforeach
+
+			<li class="-mx-6 mt-auto">
+				<div class="inline-flex w-full justify-between items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white">
+				<div class="inline-flex gap-2 ">
+					<span class="inline-block h-6 w-6 overflow-hidden rounded-full bg-slate-100">
+					<svg class="h-full w-full text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+						<path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+					</svg>
+					</span>
+				  <span aria-hidden="true">{{ Str::words(auth()->guard(config('admin.guard'))->user()->name, 1, '') }}</span>
+				</div>
+
+				  <a href="{{ route(S4mpp\Laraguard\Routes::logout()) }}" class="rounded-full bg-red-100 p-2 text-red-500 hover:bg-red-200 ">
+ 					
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+					</svg>
+				</a>
+				</div>
+			</li>
+
+
+
+
+
+			{{-- <li class="mt-auto">
+			  <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white">
+				<svg class="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+				  <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+				  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+				</svg>
+				Settings
+			  </a>
+			</li> --}}
+		  </ul>
+		</nav>
+	  </div>
+	</div>
+  
+	<div class="lg:pl-72">
+
+		<div class="sticky top-0 z-40 flex items-center gap-x-6 bg-indigo-600 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+			<button x-on:click="menuOfCanvasMobile = !menuOfCanvasMobile"  type="button" class="-m-2.5 p-2.5 text-slate-400 lg:hidden">
+			  <span class="sr-only">Open sidebar</span>
+			  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+			  </svg>
+			</button>
+ 				<div class="flex-1 text-sm font-semibold leading-6 text-white">@yield('title')</div>
+ 			
+			<!-- Profile dropdown -->
+			<div class="relative" x-data="{ dropdownUserMenu: false }">
+				<button x-on:blur="dropdownUserMenu = false;" x-on:click="dropdownUserMenu = !dropdownUserMenu" type="button" class="-m-1.5 flex items-center p-1.5" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+				  <span class="sr-only">Open user menu</span>
+				  
+				  <span class="inline-block h-6 w-6 overflow-hidden rounded-full bg-slate-100">
+					  <svg class="h-full w-full text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+						<path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+					  </svg>
+					</span>
+				  
+					<span class="hidden lg:flex lg:items-center">
+					<span class="ml-4 text-sm font-semibold leading-6 text-slate-900" aria-hidden="true">{{ Str::words(auth()->guard(config('admin.guard'))->user()->name, 1, '') }}</span>
+					<svg class="ml-2 h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+					  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+					</svg>
+				  </span>
+				</button>
+	
+				<div 
+					x-show="dropdownUserMenu"
+				  x-transition:enter="transition ease-out duration-100"
+				  x-transition:enter-start="transform opacity-0 scale-95"
+				  x-transition:enter-end="transform opacity-100 scale-100"
+				  x-transition:leave="transition ease-in duration-75"
+				  x-transition:leave-start="transform opacity-100 scale-100"
+				  x-transition:leave-end="transform opacity-0 scale-95"
+				
+				class="absolute divide-y divide-slate-100 right-0 z-10 mt-2.5   origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-slate-900/5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+			  
+				<div class="px-4 py-3" role="none">
+				  <p class="text-sm" role="none">{{ auth()->guard(config('admin.guard'))->user()->name }}</p>
+				  <p class="truncate text-sm font-medium text-slate-900" role="none">{{ auth()->guard(config('admin.guard'))->user()->email }}</p>
+				</div>
+				<div class="py-1" role="none">
+					<a href="{{ route(S4mpp\Laraguard\Routes::logout()) }}" class="text-red-700 flex justify-between items-center  font-semibold transition-colors block px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+					  Sair
+					  
+					  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+						  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+					  </svg>
+				  </a>
+				</div>
+				</div>
+			  </div>
+		  
 		</div>
-		<header class="bg-white position-fixed pt-2 pb-2 px-2 px-md-3 d-flex justify-content-between shadow-sm">
-			
-			<a href="#" class="text-decoration-none align-middle sidebar-toggler d-flex justify-content-center">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-				  </svg>
-			</a>
 
-			<h3 class="mb-0 ms-1 pb-0 flex-fill align-self-center text-muted text-center text-md-start"><strong>@yield('title')</strong></h3>
-				
-			<div class="menu-header mt-1 d-flex justify-content-end align-self-center ">
-				
-				<div class="dropdown ">
-					<a class="text-decoration-none dropdown-toggle pe-2" href="#" role="button"
-						data-bs-toggle="dropdown">
-						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-							<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-						  </svg>
+  
+	  <main class="pb-10 pt-6">
+		
+		<div class="px-0 sm:px-6 lg:px-8">
+
+			<div class="mb-5 px-4 sm:px-0 ">
+				<div>
+				  {{-- <nav class="sm:hidden" aria-label="Back">
+					<a href="#" class="flex items-center text-sm font-medium text-slate-500 hover:text-slate-700">
+					  <svg class="-ml-1 mr-1 h-5 w-5 flex-shrink-0 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+						<path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+					  </svg>
+					  Voltar
 					</a>
+				  </nav> --}}
 
-					<ul class="dropdown-menu dropdown-menu-end p-0 dropdown-user">
-						<li class="bg-light rounded-top">
-							<div class="p-3 text-dark">
-								<p class="mb-0 text-nowrap">{{ auth()->guard(config('admin.guard'))->user()->name }}</p>
-								<p class="mb-0 text-nowrap"><strong>{{ auth()->guard(config('admin.guard'))->user()->email }}</strong></p>
+				  @isset($breadcrumbs)
+
+					<nav class="flex" aria-label="Breadcrumb">
+						<ol role="list" class="flex items-center space-x-4">
+						<li>
+							<div>
+							<a href="{{ route('dashboard_admin') }}" class="text-slate-400 hover:text-slate-500">
+								<svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+								<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
+								</svg>
+								<span class="sr-only">Home</span>
+							</a>
 							</div>
 						</li>
-						{{-- <li><a class="dropdown-item pt-2 pb-2" href="{{ route('change_password_admin') }}"> Alterar senha <i class="la text-muted float-end mt-1 la-lock"></i></a></li> --}}
-						<li>
-							<hr class="p-0 m-0 dropdown-divider">
-						</li>
-						<li>
-							<a class="dropdown-item rounded-bottom pt-2 pb-2 text-danger" href="{{ route(S4mpp\Laraguard\Routes::logout()) }}">
-								<span class="float-start"><strong>Sair</strong></span>
-								<span class="float-end"><i class="la la-sign-out"></i></span><div class="clearfix"></div>	
-							</a>
-						</li>
-					</ul>
+
+						@foreach($breadcrumbs as $breadcrumb)
+							<li>
+								<div class="flex items-center">
+								<svg class="h-5 w-5 flex-shrink-0 text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+									<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+								</svg>
+								@if(isset($breadcrumb[1]) && !empty($breadcrumb[1]))
+									<a href="{{ $breadcrumb[1] }}" class="ml-4 text-sm font-medium text-slate-500 hover:text-slate-700">{{ $breadcrumb[0] }}</a>
+								@else
+									<span class="ml-4 text-sm font-medium text-slate-500">{{ $breadcrumb[0] }}</span>
+								@endif
+								</div>
+							</li>
+						@endforeach
+						</ol>
+					</nav>
+				@endisset
+				  
+				  
 				</div>
-			</div>
-		</header>
-
-		<div class="content-admin px-3 px-md-4 ">
-			<div class="content mb-3">
-
-                <div class="admin-actions px-md-0 d-flex justify-content-start mb-3 flex-fill">
-                    @yield('title-page')
-                </div>
-
-				<x-alert/>
 				
-				@yield('content')
-			</div>
+				<div class="mt-2 md:flex md:items-center md:justify-between">
+				  <div class="min-w-0 flex-1">
+					<h2 class="text-2xl font-bold leading-7 text-slate-900 sm:truncate sm:text-3xl sm:tracking-tight">@yield('title')</h2>
+				  </div>
+				  <div class="mt-4 flex flex-shrink-0 md:ml-4 md:mt-0">
+					@yield('title-page')
+				  </div>
+				</div>
+			  </div>
+			  
+			  <x-alert />
+
+
+			@yield('content')
 		</div>
+	  </main>
 	</div>
+</div>
+  
+	
 @endsection

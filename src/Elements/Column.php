@@ -93,7 +93,7 @@ class Column
 
 	public function strong()
 	{
-		$this->style_class[] = 'text-strong';
+		$this->style_class[] = 'font-semibold text-gray-900';
 		
 		return $this;
 	}

@@ -3,14 +3,15 @@
 namespace S4mpp\AdminPanel\Providers;
 
 use Illuminate\Support\Str;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use S4mpp\AdminPanel\Components\Table;
 use Illuminate\Support\ServiceProvider;
+use S4mpp\AdminPanel\Components\Actions;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
-use S4mpp\AdminPanel\Components\Actions;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -30,6 +31,8 @@ class AdminPanelServiceProvider extends ServiceProvider
 
 		Blade::component('table', Table::class, 'admin');
 		Blade::component('actions', Actions::class, 'admin');
+
+		Paginator::defaultView('admin::pagination');
 
 		if($this->app->runningInConsole())
 		{

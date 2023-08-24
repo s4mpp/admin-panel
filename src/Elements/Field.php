@@ -40,7 +40,7 @@ class Field implements ElementInteface
 
 	public function col(string $size, int $column_size)
 	{
-		$this->class[] = 'col-'.$size.'-'.$column_size;
+		$this->class[] = $size.':w-'.$column_size.'/12';	
 
 		return $this;
 	}

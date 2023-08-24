@@ -10,7 +10,7 @@ class Action
 
 	public ?string $icon = null;
 	
-	public string $context = 'primary';
+	public string $color = 'indigo';
 	
 	public string $method = 'GET';
 
@@ -59,9 +59,9 @@ class Action
 		return $this;
 	}
 
-	public function context(string $context)
+	public function color(string $color)
 	{
-		$this->context = $context;
+		$this->color = $color;
 
 		return $this;
 	}
