@@ -24,6 +24,12 @@
  		</x-input>
 	@break;
 
+	@case('date')
+		<x-input :required=$required  type="date" title="{{ $field->title }}" name="{{ $field->name }}">
+			{{ $resource->{$field->name} ? $resource->{$field->name}->format('Y-m-d') : null }}
+		</x-input>
+	@break;
+
 	@default
 		<x-input :required=$required rows="{{ $field->rows }}" max="{{ $field->max }}" min="{{ $field->min }}" step="{{ $field->step }}"  type="{{ $field->type }}" title="{{ $field->title }}" name="{{ $field->name }}">
 			{{ $resource->{$field->name} ?? null }}

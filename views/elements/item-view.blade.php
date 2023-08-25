@@ -4,7 +4,7 @@
 	@break;
 	
 	@case('enum')
-		<x-item-view title="{{ $item->title }}">{{ $resource->{$item->value}->label() }}</x-item-view>
+	<x-item-view title="{{ $item->title }}">{{ ($resource->{$item->value}) ? $resource->{$item->value}->label() : null }}</x-item-view>
 	@break;
 
 	@default
