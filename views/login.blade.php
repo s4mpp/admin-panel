@@ -15,7 +15,7 @@
 
 		<x-input type="password" :required=true name="password" title="Senha"></x-input>
 
-		<x-button type="submit">Entrar</x-button>
+		<x-button full type="submit">Entrar</x-button>
   		
 	</form>
 

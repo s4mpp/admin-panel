@@ -2,19 +2,18 @@
 
 namespace App\AdminPanel;
 
-use S4mpp\AdminPanel\Elements\Row;
 use S4mpp\AdminPanel\Action\Action;
+use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Elements\Field;
 use S4mpp\AdminPanel\Elements\Column;
 use S4mpp\AdminPanel\Elements\ItemView;
 use S4mpp\AdminPanel\Resources\Resource;
-use S4mpp\AdminPanel\Controllers\AdminController;
 
 class UserResource extends Resource
 {
     public $title = 'Usuários';
 
-    public $actions = ['create', 'update', 'read'];
+    public $actions = ['create', 'update', 'read', 'delete'];
 
     public $section = 'config';
 
@@ -23,7 +22,7 @@ class UserResource extends Resource
         return [
             Action::create('Gerar senha')
                 ->showIn(['read'])
-                ->target([AdminController::class, 'generatePassword'])->icon('lock')->method('put')
+                ->target([AdminController::class, 'generatePassword'])->method('put')
                 ->question('Tem certeza que deseja gerar uma senha nova para este usuário?')
         ];
     }
@@ -44,26 +43,29 @@ class UserResource extends Resource
     public function getForm()
     {
         return [
-            Row::create([
-                Field::create('Nome', 'name')->col('sm', 4),
+            Card::create('Informações básicas', [
+                Field::create('Nome', 'name'),
                 
-                Field::create('E-mail', 'email')->email()->col('sm', 4),
+                Field::create('E-mail', 'email')->email()
                 
-                Field::create('Ativo', 'is_active')->boolean()->col('sm', 4),
-            ])
+                Field::create('Ativo', 'is_active')->boolean(),
+            ]),
         ];
     }
 
     public function getRead()
     {
         return [            
-            Row::create([
-                ItemView::create('Nome', 'name')->col('sm', 4),
-                
-                ItemView::create('E-mail', 'email')->col('sm', 5),
-                
-                ItemView::create('Ativo', 'is_active')->boolean()->col('sm', 3),
-            ])
+            ItemView::create('Nome', 'name'),
+            
+            ItemView::create('E-mail', 'email'),
+            
+            ItemView::create('Ativo', 'is_active')->boolean(),
         ];
+    }
+
+    public function beforeCreate(User $user)
+    {
+        $user->password = rand();
     }
 }

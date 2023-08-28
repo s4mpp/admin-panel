@@ -9,17 +9,17 @@
 
 <x-card>
 	<div class="overflow-x-auto ">
-		<div class="min-w-full px-3 p-5">
+		{{-- <div class="min-w-full px-3 p-5">
 			
-		</div>
+		</div> --}}
 
-	<table class="min-w-full divide-y divide-slate-300">
-		<thead class="bg-slate-50">
+	<table class="min-w-full divide-y divide-slate-200">
+		<thead class="bg-slate-100">
 		  <tr>
 			  @forelse($columns as $column)
-				  <th scope="col" @class(array_merge($column->style_class, ['px-5 py-3.5 text-left text-sm font-semibold text-slate-900  whitespace-nowrap']))>{{ $column->title }}</th>
+				  <th scope="col" @class(array_merge($column->style_class, ['px-5 py-3.5 text-left text-sm font-semibold text-slate-600  whitespace-nowrap']))>{{ $column->title }}</th>
 			  @empty
-				  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900">&nbsp;</th>
+				  <th scope="col" class="px-3 py-3.5">&nbsp;</th>
 			  @endforelse
 
 			  @if($actions)
@@ -75,7 +75,9 @@
 			@endforeach
 		@else
 			<tr>
-				<td colspan="{{ $rowspan_empty }}" class="text-center pt-4 pb-4">Nenhum registro</td>
+				<td colspan="{{ $rowspan_empty }}" class="text-center bg-white pt-12 pb-4 text-gray-500 text-sm">
+					<span  class=" ">Nenhum registro</span>
+				</td>
 			</tr>
 		@endif
 	  </table>

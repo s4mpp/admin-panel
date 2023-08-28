@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-
+{{-- 
 <div  x-data="{open_modal: false}">
 	<button class="bg-red-300" x-on:click="open_modal = !open_modal">Abrir</button>
 
@@ -71,6 +71,6 @@
 	</div>
 	
 
-	</div>
+	</div> --}}
 
   @endsection

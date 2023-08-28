@@ -18,7 +18,7 @@
 
 		<x-input type="password" :required=true name="password_confirmation" title="Digite a nova senha"></x-input>
 
-		<x-button type="submit">Alterar senha</x-button>
+		<x-button full type="submit">Alterar senha</x-button>
 	</form>
 
 	<p class="mt-10 text-center text-sm text-gray-500">

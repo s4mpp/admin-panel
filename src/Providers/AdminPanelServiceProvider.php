@@ -50,11 +50,6 @@ class AdminPanelServiceProvider extends ServiceProvider
 			], 'admin-provider');
 
 			$this->publishes([
-				__DIR__.'/../../public/style.css' => resource_path('css/admin.css'), 
-				__DIR__.'/../../public/script.ts' => resource_path('js/admin.ts'), 
-			], 'admin-assets');
-
-			$this->publishes([
 				__DIR__.'/../../stubs/UserResource.stub' => app_path('AdminPanel/UserResource.php'), 
 			], 'admin-user-resource');
 		}
