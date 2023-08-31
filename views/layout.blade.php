@@ -1,4 +1,4 @@
-@extends('admin::html', ['color' => 'bg-slate-50'])
+@extends('admin::html', ['color' => 'bg-gray-50'])
 
 @php
 	$guard = config('admin.guard', 'web');
@@ -51,7 +51,11 @@
   
 		  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
 			<div class="flex h-16 shrink-0 items-center">
-			  <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white" alt="Your Company">
+				@if(file_exists('images/logo.png'))
+					<img class="h-8 w-auto" src="{{ asset('images/logo.png') }}" alt="{{ env('APP_NAME') }}">
+				@else
+					<h1 class="font-bold text-lg text-center text-white">{{ env('APP_NAME')  }}</h1>
+				@endif
 			</div>
 			<nav class="flex flex-1 flex-col">
 			  <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -114,7 +118,11 @@
 	  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6">
 		
 		<div class="flex h-16 shrink-0 items-center">
-			<img class="h-8 w-auto" src="{{ asset('images/logo.png') }}" alt="{{ env('APP_NAME') }}">
+			@if(file_exists('images/logo.png'))
+				<img class="h-8 w-auto" src="{{ asset('images/logo.png') }}" alt="{{ env('APP_NAME') }}">
+			@else
+				<h1 class="font-bold text-lg text-center text-white">{{ env('APP_NAME')  }}</h1>
+			@endif
 		</div>
 		
 		<nav class="flex flex-1 flex-col">
@@ -132,7 +140,7 @@
 						<li>
 							<a 
 							@class([
-								'text-indigo-200  group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+								'text-indigo-200  group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors',
 								'hover:text-white hover:bg-indigo-700' => !$item->active,
 								'bg-indigo-700 text-white' => $item->active,
 							])
@@ -232,8 +240,8 @@
 				  <p class="text-sm" role="none">{{ auth()->guard(config('admin.guard'))->user()->name }}</p>
 				  <p class="truncate text-sm font-medium text-slate-900" role="none">{{ auth()->guard(config('admin.guard'))->user()->email }}</p>
 				</div>
-				<div class="py-1" role="none">
-					<a href="{{ route(S4mpp\Laraguard\Routes::logout()) }}" class="text-red-700 justify-between items-center  font-semibold transition-colors block px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+				<div class="py-1 " role="none">
+					<a href="{{ route(S4mpp\Laraguard\Routes::logout()) }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 					  Sair
 					  
 					  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

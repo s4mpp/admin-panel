@@ -18,11 +18,11 @@
 				@endphp
 
 				@if($is_table)
-					<a href="{{ $link }}" class="text-{{ $action->color }}-600 hover:text-{{ $action->color }}-900 inline-flex gap-1">
+					<a href="{{ $link }}" class="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : 'text-indigo-500 hover:text-indigo-600' }} inline-flex gap-1">
 						<span>{{ $action->title }}</span>
 					</a>
 				@else
-					<x-link href="{{ $link }}">
+					<x-link href="{{ $link }}" className="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : '' }}">
 				 
 					@switch($action->route)
 						@case('update')
@@ -51,9 +51,9 @@
 					@method(strtoupper($action->method))
 					@csrf
 					@if($is_table)
-						<button class="text-{{ $action->color }}-600 hover:text-{{ $action->color }}-900 inline-flex gap-1" type="submit">{{ $action->title }}</button>
+						<button class="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : null }} inline-flex gap-1" type="submit">{{ $action->title }}</button>
 					@else
-						<x-button color="{{ $action->color }}" type="submit">
+						<x-button className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600' : '' }}" type="submit">
 							@switch($action->route)
 								@case('delete')
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">

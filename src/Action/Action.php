@@ -16,6 +16,10 @@ class Action
 
 	public array $show_in = ['table', 'read'];
 
+	public bool $is_danger = false;
+
+	public ?string $question = null;
+
 	function __construct(public string $title, public ?string $route = null)
 	{
 		$this->slug = Str::slug($title);
@@ -34,6 +38,18 @@ class Action
 	public function target(string | array $target)
 	{
 		$this->target = $target;
+
+		return $this;
+	}
+
+	public function danger()
+	{
+		$this->is_danger = true;
+
+		if(!$this->question)
+		{
+			$this->question('Tem certeza?');
+		}
 
 		return $this;
 	}

@@ -2,6 +2,7 @@
 
 namespace App\AdminPanel;
 
+use App\Models\User;
 use S4mpp\AdminPanel\Action\Action;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Elements\Field;
@@ -13,7 +14,7 @@ class UserResource extends Resource
 {
     public $title = 'Usuários';
 
-    public $actions = ['create', 'update', 'read', 'delete'];
+    public $actions = ['create', 'update', 'read'];
 
     public $section = 'config';
 
@@ -46,7 +47,7 @@ class UserResource extends Resource
             Card::create('Informações básicas', [
                 Field::create('Nome', 'name'),
                 
-                Field::create('E-mail', 'email')->email()
+                Field::create('E-mail', 'email')->email(),
                 
                 Field::create('Ativo', 'is_active')->boolean(),
             ]),

@@ -110,7 +110,7 @@ abstract class Resource
 					break;
 
 				case 'delete':
-					$actions[] = Action::create('Excluir', 'delete')->icon('trash')->color('red')->method('delete')->question('Tem certeza?');
+					$actions[] = Action::create('Excluir', 'delete')->icon('trash')->danger()->method('delete')->question('Tem certeza que deseja excluir este registro?');
 					break;
 			}
 		}

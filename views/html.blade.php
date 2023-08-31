@@ -14,7 +14,7 @@
 
 	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
-	@vite(['resources/scss/app.scss'])
+	@vite(['resources/css/app.css'])
 </head>
 <body class="h-full">
 	@yield('main-content')
