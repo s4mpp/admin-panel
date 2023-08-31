@@ -43,4 +43,11 @@ class ItemView implements ElementInteface
 
 		return $this;
 	}
+
+	public function markDown()
+	{
+		$this->type = 'markdown';
+
+		return $this;
+	}
 }

@@ -2,6 +2,8 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
+use Illuminate\Support\Str;
+
 class Column
 {
 	public string $type = 'text';
@@ -36,6 +38,16 @@ class Column
 	{
 		$this->type = 'dump';
 
+		return $this;
+	}
+
+	public function limit(int $size = 100, $end = '...')
+	{
+		$this->callback(function($item) use ($size, $end)
+		{
+			return $item ? Str::limit($item, $size, $end) : null;
+		});
+		
 		return $this;
 	}
 

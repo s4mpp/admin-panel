@@ -1,31 +1,23 @@
-{{-- @switch($item->type)
-	@case('boolean')
-		<x-item-view title="{{ $item->title }}">{{ $resource->{$item->value} ? 'Sim' : 'Não' }}</x-item-view>
-	@break;
-	
-	@case('enum')
-		<x-item-view title="{{ $item->title }}">{{ $resource->{$item->value}->label() }}</x-item-view>
-	@break;
-
-	@default
-		<x-item-view title="{{ $item->title }}">{{ $resource->{$item->value} }}</x-item-view>
-@endswitch --}}
-
-
-<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-	<dt class="text-sm font-medium text-slate-900">{{ $item->title }}</dt>
-	<dd class="mt-1 text-sm leading-6 text-slate-700 sm:col-span-2 sm:mt-0">
+<div class="p-4 sm:gap-4 sm:p-3 xl:p-6 xl:grid xl:grid-cols-12">
+	<div class="text-sm font-medium text-slate-900 mb-3 xl:col-span-2">{{ $item->title }}</div>
+	<div class="text-sm font-normal text-slate-700 xl:col-span-10">
 		@switch($item->type)
 			@case('boolean')
 				{{ $resource->{$item->value} ? 'Sim' : 'Não' }}
 			@break;
 			
 			@case('enum')
-				{{ $resource->{$item->value}->label() }}
+				<x-badge :provider="$resource->{$item->value}"></x-badge>
+			@break;
+
+			@case('markdown')
+				<div class="prose max-w-none text-base">	
+					{!! Str::of($resource->{$item->value})->markdown() !!}
+				</div>
 			@break;
 
 			@default
 				{{ $resource->{$item->value} }}
 		@endswitch 
-	</dd>
+	</div>
 </div>
