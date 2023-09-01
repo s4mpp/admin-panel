@@ -16,7 +16,7 @@ class UserResource extends Resource
 
     public $actions = ['create', 'update', 'read'];
 
-    public $section = 'config';
+    public $ordenation = ['name', 'asc'];
 
     public function getCustomActions()
     {

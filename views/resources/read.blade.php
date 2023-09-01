@@ -1,5 +1,5 @@
 @extends('admin::resources.resource', ['breadcrumbs' => [
-	[$title, route($action_routes['index'])],
+	[$title, route($routes['index'])],
 	['Visualizar', ''],
 ]])
 

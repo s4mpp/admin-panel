@@ -2,16 +2,14 @@
 
 namespace S4mpp\AdminPanel\Providers;
 
-use Illuminate\Support\Str;
+use Livewire\Livewire;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Blade;
-use S4mpp\AdminPanel\Components\Table;
 use Illuminate\Support\ServiceProvider;
-use S4mpp\AdminPanel\Components\Actions;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
+use S4mpp\AdminPanel\Livewire\Table as LivewireTable;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -29,8 +27,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 
 		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
-		Blade::component('table', Table::class, 'admin');
-		Blade::component('actions', Actions::class, 'admin');
+		Livewire::component('table', LivewireTable::class);
 
 		Paginator::defaultView('admin::pagination');
 

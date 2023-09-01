@@ -33,19 +33,24 @@ abstract class Resource
 		return [];
 	}
 
-	public function getController()
-	{
-		return '\App\Http\Controllers\\'.$this->resource_name.'Controller';
-	}
+	// public function getController()
+	// {
+	// 	return '\App\Http\Controllers\\'.$this->resource_name.'Controller';
+	// }
 
 	public static function loadResource(Resource $resource)
 	{
-		self::$resources[] = $resource;
+		self::$resources[$resource->name] = $resource;
 	}
 
 	public static function getResources(): array
 	{
 		return self::$resources;
+	}
+
+	public static function getResource(string $resource_name): Resource
+	{
+		return self::$resources[$resource_name];
 	}
 
 	public function getRouteName(string $action): string
@@ -88,8 +93,8 @@ abstract class Resource
 	{
 		return view('admin::resources.'.$view, array_merge($data, [
 			'title' => $this->title,
-			'actions' => $this->actions,
-			'action_routes' => $this->getRoutes(),
+			'actions' => $this->getActions(),
+			'routes' => $this->getRoutes(),
 		]));
 	}
 
@@ -97,25 +102,37 @@ abstract class Resource
 	{
 		$actions = [];
 
+		// $routes = $this->getRoutes();
+
 		foreach($this->actions as $action)
 		{
 			switch($action)
 			{
 				case 'update':
-					$actions[] = Action::create('Editar', 'update')->icon('pencil');
+					$actions['update'] = Action::create('Editar', 'update')->icon('pencil');
 					break;
 
 				case 'read':
-					$actions[] = Action::create('Visualizar', 'read')->icon('eye');
+					$actions['read'] = Action::create('Visualizar', 'read')->icon('eye');
 					break;
 
 				case 'delete':
-					$actions[] = Action::create('Excluir', 'delete')->icon('trash')->danger()->method('delete')->question('Tem certeza que deseja excluir este registro?');
+					$actions['delete'] = Action::create('Excluir', 'delete')->icon('trash')->danger()->method('delete')->question('Tem certeza que deseja excluir este registro?');
 					break;
 			}
 		}
 
-		$actions = array_merge($actions, $this->getCustomActions());
+		foreach($this->getCustomActions() as $customer_action)
+		{
+			$actions[$customer_action->slug] = $customer_action;
+		}
+
+		// $actions = array_merge($actions, $this->getCustomActions()); dd($actions);
+
+		// foreach($actions as $action)
+		// {
+		// 	// $action->url = route($actionRoutes[$action->route], ['id' => $id]);
+		// }
 
 		return $actions;
 	}

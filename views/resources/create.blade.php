@@ -1,12 +1,12 @@
 @extends('admin::resources.resource', ['breadcrumbs' => [
-	[$title, route($action_routes['index'])],
+	[$title, route($routes['index'])],
 	['Cadastrar', ''],
 ]])
 
 @section('title', 'Cadastrar')
 
 @section('content-resource')
-	<form method="POST" class="mb-0" action={{ route($action_routes['store']) }}>
+	<form method="POST" class="mb-0" action={{ route($routes['store']) }}>
 		@csrf
 			
 		@include('admin::resources.form')

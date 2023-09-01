@@ -15,10 +15,14 @@
 	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
 	@vite(['resources/css/app.css'])
+
+	@livewireStyles
 </head>
 <body class="h-full">
 	@yield('main-content')
 
 	@vite(['resources/js/app.js'])
+
+	@livewireScripts
 </body>
 </html>

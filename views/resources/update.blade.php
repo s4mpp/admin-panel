@@ -1,5 +1,5 @@
 @extends('admin::resources.resource', ['breadcrumbs' => [
-	[$title, route($action_routes['index'])],
+	[$title, route($routes['index'])],
 	['Editar', ''],
 ]])
 
@@ -7,7 +7,7 @@
 
 @section('content-resource')
 
-	<form method="POST" class="mb-0" action={{ route($action_routes['save'], ['id' => $register->id]) }}>
+	<form method="POST" class="mb-0" action={{ route($routes['save'], ['id' => $register->id]) }}>
 		@csrf
 		@method('PUT')
 
