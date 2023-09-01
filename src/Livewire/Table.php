@@ -24,25 +24,27 @@ class Table extends Component
         $this->resource_name = $resource_name;
     }
 
-    public function boot()
-    {
-        $this->resource = Resource::getResource('users');
-    }
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function delete(int $id)
-    {
-
-    }
-
     public function render()
     {
+        $this->resource = Resource::getResource($this->resource_name);
+
         $collection = $this->resource->model::orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC')
-        ->where('name', 'like', '%'.$this->search.'%')
+        ->where(function($builder)
+        {
+            if($this->search)
+            {
+                foreach($this->resource->search as $field)
+                {
+                    $builder->orWhere($field, 'like', '%'.$this->search.'%');
+                }
+            };
+        })
         ->paginate();
         
         return view('admin::livewire.table', [

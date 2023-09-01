@@ -18,6 +18,8 @@ class UserResource extends Resource
 
     public $ordenation = ['name', 'asc'];
 
+    public $search = ['name', 'email'];
+
     public function getCustomActions()
     {
         return [

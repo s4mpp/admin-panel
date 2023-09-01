@@ -18,7 +18,7 @@
         "s4mpp/laraguard": "^1.0",
         "s4mpp/input": "^1.0",
         "s4mpp/element": "^1.0",
-        "livewire/livewire": "^3.0"
+        "livewire/livewire": "^2.0"
     },
     "extra": {
         "laravel": {
