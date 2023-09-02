@@ -11,7 +11,7 @@ abstract class Read
 			return $resource->getView('read', [
 				'register'=> $resource->model::findOrFail($id),
 				'read' => self::_getRead($resource, $id),
-				// 'resource_actions' => $resource->getActions()
+				'current_action' => 'read'
 			]);
 		};
 	}

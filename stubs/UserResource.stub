@@ -49,7 +49,7 @@ class UserResource extends Resource
             Card::create('Informações básicas', [
                 Field::create('Nome', 'name'),
                 
-                Field::create('E-mail', 'email')->email(),
+                Field::create('E-mail', 'email')->email()->unique(),
                 
                 Field::create('Ativo', 'is_active')->boolean(),
             ]),

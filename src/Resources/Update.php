@@ -21,6 +21,7 @@ abstract class Update
 			return $resource->getView('update', [
 				'register' => $register,
 				'form' => $form,
+				'current_action' => 'update'
 			]);
 		};
 	}
@@ -29,7 +30,7 @@ abstract class Update
 	{
 		return function(int $id, Request $request) use($resource)
 		{
-			$form = self::_getForm($resource, $id);
+ 			$form = self::_getForm($resource, $id);
 
 			$fields = self::_getFields($form);
 

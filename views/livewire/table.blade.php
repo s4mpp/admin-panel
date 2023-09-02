@@ -9,10 +9,12 @@
         }
     @endphp
 	<div class="overflow-x-auto ">
-		<div class="min-w-full px-3 p-5 grid grid-cols-12">
-			<div class="col-span-3">
-				<x-input wire:model="search" placeholder="Pesquisar..." type="search" name="search"></x-input>
-			</div>
+		<div class="min-w-full px-5 py-2 flex justify-end">
+			@if($has_search)
+				<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12">
+					<x-input wire:model="search" placeholder="Pesquisar..." type="search" name="search"></x-input>
+				</div>
+			@endif
 		</div>
 
 		<table class="min-w-full divide-y border-t divide-gray-200">
@@ -109,7 +111,7 @@
 							<path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
 						</svg>
 						
-						<span  class="text-sm mt-3 ">Nenhum registro</span>
+						<span  class="text-sm mt-3 ">{{ $this->search ? 'Nada encontrado' : 'Nenhum registro' }}</span>
 					</td>
 				</tr>
 			@endif

@@ -9,8 +9,9 @@
 @section('main-content')
 
 <div x-data="{ menuOfCanvasMobile: false }" @keydown.window.escape="menuOfCanvasMobile = false">
-	<div x-show="menuOfCanvasMobile" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+	<div x-cloak x-show="menuOfCanvasMobile" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
 	  <div 
+	  	x-cloak
 	  	x-show="menuOfCanvasMobile"
 		x-transition:enter="transition-opacity ease-linear duration-300" 
 		x-transition:enter-start="opacity-0" 
@@ -22,7 +23,7 @@
   
 	  <div class="fixed inset-0 flex">
 		
-		<div x-show="menuOfCanvasMobile"
+		<div x-show="menuOfCanvasMobile" x-cloak
 			x-transition:enter="transition ease-in-out duration-300 transform" 
 			x-transition:enter-start="-translate-x-full" 
 			x-transition:enter-end="translate-x-0" 
@@ -32,7 +33,7 @@
 			@click.away="menuOfCanvasMobile = false"
 		 class="relative mr-16 flex w-full max-w-xs flex-1">
 		  <div 
-			x-show="menuOfCanvasMobile" 
+			x-show="menuOfCanvasMobile"  x-cloak
 			x-transition:enter="ease-in-out duration-300" 
 			x-transition:enter-start="opacity-0" 
 			x-transition:enter-end="opacity-100" 
@@ -226,7 +227,7 @@
 				</button>
 	
 				<div 
-					x-show="dropdownUserMenu"
+					x-show="dropdownUserMenu" x-cloak
 				  x-transition:enter="transition ease-out duration-100"
 				  x-transition:enter-start="transform opacity-0 scale-95"
 				  x-transition:enter-end="transform opacity-100 scale-100"

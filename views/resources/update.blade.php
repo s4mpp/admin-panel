@@ -7,7 +7,7 @@
 
 @section('content-resource')
 
-	<form method="POST" class="mb-0" action={{ route($routes['save'], ['id' => $register->id]) }}>
+	<form method="POST" class="mb-0" action={{ route($routes['save'], ['id' => $register->id]) }} x-data="{loading: false}" x-on:submit="loading = true">
 		@csrf
 		@method('PUT')
 

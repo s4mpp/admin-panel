@@ -6,7 +6,7 @@
 @section('title', 'Cadastrar')
 
 @section('content-resource')
-	<form method="POST" class="mb-0" action={{ route($routes['store']) }}>
+	<form method="POST" class="mb-0" action={{ route($routes['store']) }} x-data="{loading: false}" x-on:submit="loading = true">
 		@csrf
 			
 		@include('admin::resources.form')

@@ -24,7 +24,6 @@ class Table extends Component
         $this->resource_name = $resource_name;
     }
 
-
     public function updatingSearch()
     {
         $this->resetPage();
@@ -37,7 +36,7 @@ class Table extends Component
         $collection = $this->resource->model::orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC')
         ->where(function($builder)
         {
-            if($this->search)
+            if($this->search && is_array($this->resource->search))
             {
                 foreach($this->resource->search as $field)
                 {
@@ -48,6 +47,7 @@ class Table extends Component
         ->paginate();
         
         return view('admin::livewire.table', [
+            'has_search' => $this->resource->search ?? false,
             'registers' => $this->_getData($collection),
             'collection' => $collection,
             'table' => $this->resource->getTable(),

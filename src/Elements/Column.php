@@ -61,7 +61,7 @@ class Column
 		return $this;
 	}
 
-	public function datetime(string $format = 'Y-m-d H:i')
+	public function datetime(string $format = 'd/m/Y H:i')
 	{
 		$this->callback(function($item) use ($format)
 		{
