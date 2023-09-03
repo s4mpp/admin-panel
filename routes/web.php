@@ -12,14 +12,25 @@ use S4mpp\AdminPanel\Resources\Update;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Controllers\AdminController;
 
-Route::prefix('painel')->middleware('web')->group(function()
+$route = Route::middleware('web');
+
+$prefix = config('admin.prefix');
+
+if($prefix)
+{
+	$route->prefix($prefix);
+}
+
+$route->group(function()
 {
 	Route::controller(AdminController::class)->group(function()
 	{
 		Routes::authGroup();
-
+		
 		Routes::forgotAndRecoveryPasswordGroup();
 	});
+
+	Route::redirect('/', 'entrar');
 
 	$guard = config('admin.guard', 'web');
 

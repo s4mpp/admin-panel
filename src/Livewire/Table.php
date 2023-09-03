@@ -33,7 +33,7 @@ class Table extends Component
     {
         $this->resource = Resource::getResource($this->resource_name);
 
-        $collection = []; /*$this->resource->model::orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC')
+        $collection = $this->resource->getModel()::orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC')
         ->where(function($builder)
         {
             if($this->search && is_array($this->resource->search))
@@ -44,7 +44,7 @@ class Table extends Component
                 }
             };
         })
-        ->paginate();*/
+        ->paginate();
         
         return view('admin::livewire.table', [
             'has_search' => $this->resource->search ?? false,

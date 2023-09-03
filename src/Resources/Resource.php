@@ -24,14 +24,17 @@ abstract class Resource
 	public $ordenation = ['id', 'DESC'];
 		
 	public function __construct(public string $resource_name)
-	{
-		// $this->model = app('\App\Models\\'.$resource_name);
-		
+	{		
 		$this->name = Str::plural(strtolower($resource_name));
 		
 		$this->title = !empty($this->title) ? $this->title : Str::plural($resource_name);
 		
 		$this->slug = Str::slug($this->title);
+	}
+
+	public function getModel()
+	{
+		return app('\App\Models\\'.$this->resource_name);
 	}
 
 	public function getCustomActions()
