@@ -3,7 +3,7 @@
     "description": "Admin Panel for Laravel apps",
     "authors": [
         {
-            "name": "Samuel Pacheco",
+            "name": "Samuel P.",
             "email": "S4mpp.dev@gmail.com"
         }
     ],
@@ -16,7 +16,6 @@
         "php": "^8.1",
         "laravel/framework": "^10.10",
         "s4mpp/laraguard": "^1.0",
-        "s4mpp/input": "^1.0",
         "s4mpp/element": "^1.0",
         "livewire/livewire": "^2.0"
     },

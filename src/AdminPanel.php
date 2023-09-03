@@ -3,6 +3,7 @@
 namespace S4mpp\AdminPanel;
 
 use Illuminate\Support\Facades\Auth;
+use S4mpp\AdminPanel\Navigation\Page;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Navigation\MenuItem;
 use S4mpp\AdminPanel\Navigation\MenuSection;
@@ -11,16 +12,11 @@ class AdminPanel
 {
 	public static function getNavigation()
 	{
-		$route_prefix = explode('/', request()->route()->action['prefix'])[1];
-
-		MenuSection::create('', 'main', 0);
+		$uri = request()->route()->uri();
+		
+		MenuSection::create('')->identifier('main')->order(0);
 
 		$sections = MenuSection::getSections();
-
-		$dashboard = new MenuItem('Dashboard', route('dashboard_admin'), 'dashboard', 'home');
-		$dashboard->setActiveOrNot($route_prefix);
-
-		$sections['main']->add($dashboard);
 
 		foreach(Resource::getResources() as $resource)
 		{
@@ -35,13 +31,50 @@ class AdminPanel
 			{
 				$resource_menu_section = 'main';
 			}
+
+			$route = route($resource->getRouteName('index'));
 			
-			$menu_item = new MenuItem($resource->title, route($resource->getRouteName('index')), $resource->name);
-			$menu_item->setActiveOrNot($route_prefix);
+			$menu_item = new MenuItem($resource->title, $route, $resource->menu_order);
+			$menu_item->setActiveOrNot($resource->slug, $uri);
 			
-			$sections[$resource_menu_section]->add($menu_item);
+			$sections[$resource_menu_section]->addItem($menu_item);
 		}
 
+		foreach(Page::getPages() as $page)
+		{
+			$route = route($page->route_name);
+
+			$menu_item = new MenuItem($page->title, $route, $page->menu_order);
+			$menu_item->setActiveOrNot($page->slug, $uri);
+
+			$resource_menu_section = $page->section ?? 'main';
+			
+			$sections[$resource_menu_section]->addItem($menu_item);
+		}
+
+		foreach($sections as $section)
+		{
+			uasort($section->items, function($a, $b)
+			{
+				if($a->order === null && $b->order === null)
+				{
+					return 0;
+				}
+				elseif ($a->order === null)
+				{
+					return 1;
+				}
+				elseif ($b->order === null)
+				{
+					return -1;
+				}
+				else
+				{
+					return ($a->order < $b->order) ? -1 : 1;
+				}
+		   });
+			
+		}
 
 		return $sections;
 	}

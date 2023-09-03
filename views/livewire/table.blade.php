@@ -119,8 +119,9 @@
 	  </table>
 	</div>
 
-	<div class="min-w-full px-3  p-5">
-
-		{{ $collection->links('admin::pagination') }}
-	</div>
+	@if($collection)
+		<div class="min-w-full px-3  p-5">
+			{{ $collection->links('admin::pagination') }}
+		</div>
+	@endif
 </div>

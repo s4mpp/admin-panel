@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Str;
 use S4mpp\Laraguard\Routes;
-use Illuminate\Http\Request;
 use S4mpp\AdminPanel\Resources\Read;
 use Illuminate\Support\Facades\Route;
+use S4mpp\AdminPanel\Navigation\Page;
 use S4mpp\AdminPanel\Resources\Index;
 use S4mpp\AdminPanel\Resources\Create;
 use S4mpp\AdminPanel\Resources\Delete;
@@ -11,14 +12,12 @@ use S4mpp\AdminPanel\Resources\Update;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Controllers\AdminController;
 
-use function PHPUnit\Framework\throwException;
-
 Route::prefix('painel')->middleware('web')->group(function()
 {
 	Route::controller(AdminController::class)->group(function()
 	{
 		Routes::authGroup();
-		
+
 		Routes::forgotAndRecoveryPasswordGroup();
 	});
 
@@ -26,16 +25,23 @@ Route::prefix('painel')->middleware('web')->group(function()
 
 	Route::middleware('auth:'.$guard)->group(function()
 	{
-		Route::prefix('dashboard')->group(function()
+		$pages = Page::getPages();
+
+		foreach($pages as $page)
 		{
-			Route::view('/', 'admin::dashboard')->name('dashboard_admin');
-		});
-		
+			if(!isset($page->target))
+			{
+				throw new \Exception('Target of Page "'.$page->slug.' "not defined');
+			}
+
+			Route::{$page->route_type}($page->slug, $page->target)->name($page->route_name);
+		}
+
 		$resources = Resource::getResources();
 
 		foreach($resources as $resource)
 		{
-			$routes_resource = Route::prefix($resource->name);
+			$routes_resource = Route::prefix($resource->slug);
 			
 			if(isset($resource->roles))
 			{

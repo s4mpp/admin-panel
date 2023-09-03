@@ -20,7 +20,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 		]);
 
 		$this->_loadResources();
-
+		
 		$this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
 
 		$this->loadViewsFrom(__DIR__.'/../../views', 'admin');
@@ -72,7 +72,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 
 			$instance = new $class_path($resource_name);
 	
-			Resource::loadResource($instance);
+			Resource::add($instance);
 		}
 	}
 }

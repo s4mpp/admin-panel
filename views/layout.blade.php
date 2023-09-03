@@ -275,7 +275,7 @@
 
 					<nav class="flex" aria-label="Breadcrumb">
 						<ol role="list" class="flex items-center space-x-4">
-						<li>
+						{{-- <li>
 							<div>
 							<a href="{{ route('dashboard_admin') }}" class="text-slate-400 hover:text-slate-500">
 								<svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -284,7 +284,7 @@
 								<span class="sr-only">Home</span>
 							</a>
 							</div>
-						</li>
+						</li> --}}
 
 						@foreach($breadcrumbs as $breadcrumb)
 							<li>

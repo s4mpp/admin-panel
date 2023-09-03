@@ -2,23 +2,49 @@
 
 namespace S4mpp\AdminPanel\Navigation;
 
+use Illuminate\Support\Str;
+
 class MenuSection
 {
 	private static $sections = [];
 
 	public $items = [];
 
-	public function __construct(public ?string $title = null, public string $identifier, public int $order)
-	{}
+	public $identifier = null;
+	
+	public $order = 1;
 
-	public function add(MenuItem $item)
+	public function __construct(public ?string $title = null)
+	{
+		$this->identifier = Str::slug($title);
+	}
+
+	public function addItem(MenuItem $item)
 	{
 		$this->items[] = $item;
 	}
 
-	public static function create(string $name, string $identifier, int $order = 1)
+	public function identifier($identifier)
 	{
-		self::$sections[] = new MenuSection($name, $identifier, $order);
+		$this->identifier = $identifier;
+		
+		return $this;
+	}
+
+	public function order($order)
+	{
+		$this->order = $order;
+
+		return $this;
+	}
+
+	public static function create(string $name)
+	{
+		$section = new MenuSection($name);
+		
+		self::$sections[] = $section;
+
+		return $section;
 	}
 
 	public static function getSections(): array

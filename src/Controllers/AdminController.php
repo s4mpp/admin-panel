@@ -18,10 +18,10 @@ class AdminController extends Controller
     
     public $view_change_password = 'admin::change_password';
 
-    public $route_redirect_after_login = 'dashboard_admin';
-
     public function __construct()
     {
+        $this->route_redirect_after_login = config('admin.route_redirect_after_login');
+
         $this->guard = config('admin.guard', 'web');
     }
 

@@ -17,15 +17,21 @@ abstract class Resource
 	
 	public $title;
 
+	public $slug;
+
+	public $menu_order = null;
+
 	public $ordenation = ['id', 'DESC'];
 		
 	public function __construct(public string $resource_name)
 	{
-		$this->model = app('\App\Models\\'.$resource_name);
+		// $this->model = app('\App\Models\\'.$resource_name);
 		
 		$this->name = Str::plural(strtolower($resource_name));
 		
 		$this->title = !empty($this->title) ? $this->title : Str::plural($resource_name);
+		
+		$this->slug = Str::slug($this->title);
 	}
 
 	public function getCustomActions()
@@ -38,7 +44,7 @@ abstract class Resource
 	// 	return '\App\Http\Controllers\\'.$this->resource_name.'Controller';
 	// }
 
-	public static function loadResource(Resource $resource)
+	public static function add(Resource $resource)
 	{
 		self::$resources[$resource->name] = $resource;
 	}
