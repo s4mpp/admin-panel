@@ -10,7 +10,7 @@ abstract class Delete
 	{
 		return function(int $id, Request $request) use ($resource)
 		{
-			$item = $resource->model::findOrFail($id);
+			$item = $resource->getModel()::findOrFail($id);
 	
 			$item->delete();
 

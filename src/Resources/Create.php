@@ -32,7 +32,9 @@ abstract class Create
 
 			self::_validate($resource, $request, $fields);
 
-			$new_register = new $resource->model;
+			$model = $resource->getModel();
+
+			$new_register = new $model;
 
 			foreach($fields as $field)
 			{

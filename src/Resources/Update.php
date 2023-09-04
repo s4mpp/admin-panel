@@ -14,7 +14,7 @@ abstract class Update
 	{
 		return function(int $id) use ($resource)
 		{
-			$register = $resource->model->findOrFail($id);
+			$register = $resource->getModel()->findOrFail($id);
 
 			$form = self::_getForm($resource);
 			
@@ -36,7 +36,7 @@ abstract class Update
 
 			self::_validate($resource, $request, $fields, $id);
 
-			$register = $resource->model->findOrFail($id);
+			$register = $resource->getModel()->findOrFail($id);
 
 			foreach($fields as $field)
 			{

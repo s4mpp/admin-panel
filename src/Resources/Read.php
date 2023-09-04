@@ -9,7 +9,7 @@ abstract class Read
 		return function($id) use ($resource)
 		{
 			return $resource->getView('read', [
-				'register'=> $resource->model::findOrFail($id),
+				'register'=> $resource->getModel()::findOrFail($id),
 				'read' => self::_getRead($resource, $id),
 				'current_action' => 'read'
 			]);
