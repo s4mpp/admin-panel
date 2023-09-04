@@ -4,6 +4,8 @@
 	$guard = config('admin.guard', 'web');
 
 	$navigations = S4mpp\AdminPanel\AdminPanel::getNavigation();
+
+	$route_home = config('admin.route_redirect_after_login');
 @endphp
 
 @section('main-content')
@@ -275,16 +277,16 @@
 
 					<nav class="flex" aria-label="Breadcrumb">
 						<ol role="list" class="flex items-center space-x-4">
-						{{-- <li>
+						<li>
 							<div>
-							<a href="{{ route('dashboard_admin') }}" class="text-slate-400 hover:text-slate-500">
+							<a href="{{ route($route_home) }}" class="text-slate-400 hover:text-slate-500">
 								<svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 								<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
 								</svg>
 								<span class="sr-only">Home</span>
 							</a>
 							</div>
-						</li> --}}
+						</li>
 
 						@foreach($breadcrumbs as $breadcrumb)
 							<li>
