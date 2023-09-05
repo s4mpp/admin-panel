@@ -23,7 +23,7 @@
 				   @endphp
 
 					<div x-data="{loading: false}">
-					   <x-link x-on:click="loading = true" href="{{ $link }}" className="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : 'btn-primary' }}">
+					   <x-link x-on:click="loading = true" href="{{ $link }}" className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}">
 
 							@switch($action->route)
 								@case('update')
@@ -51,7 +51,7 @@
 					   @method(strtoupper($action->method))
 					   @csrf
 					   
-						<x-button className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600' : 'btn-primary' }}" type="submit">
+						<x-button className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}" type="submit">
 							@switch($action->route)
 								@case('delete')
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">

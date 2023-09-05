@@ -83,7 +83,7 @@
 											   $link = route($routes[$action->route], ['id' => $id]);
 										   @endphp
 						   
-											<a href="{{ $link }}" class="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : 'text-indigo-500 hover:text-indigo-600' }} inline-flex gap-1">
+											<a href="{{ $link }}" class="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-600' }} inline-flex gap-1">
 												<span>{{ $action->title }}</span>
 											</a>
 									   @else
