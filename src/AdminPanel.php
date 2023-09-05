@@ -14,7 +14,7 @@ class AdminPanel
 	{
 		$uri = request()->route()->uri();
 		
-		MenuSection::create('')->identifier('main')->order(0);
+		MenuSection::create('')->slug('main')->order(0);
 
 		$sections = MenuSection::getSections();
 
@@ -47,9 +47,14 @@ class AdminPanel
 			$menu_item = new MenuItem($page->title, $route, $page->menu_order);
 			$menu_item->setActiveOrNot($page->slug, $uri);
 
-			$resource_menu_section = $page->section ?? 'main';
+			$page_menu_section = $page->section ?? 'main';
+
+			if(!array_key_exists($page_menu_section, $sections))
+			{
+				$page_menu_section = 'main';
+			}
 			
-			$sections[$resource_menu_section]->addItem($menu_item);
+			$sections[$page_menu_section]->addItem($menu_item);
 		}
 
 		foreach($sections as $section)

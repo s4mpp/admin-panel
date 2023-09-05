@@ -10,13 +10,13 @@ class MenuSection
 
 	public $items = [];
 
-	public $identifier = null;
+	public $slug = null;
 	
 	public $order = 1;
 
 	public function __construct(public ?string $title = null)
 	{
-		$this->identifier = Str::slug($title);
+		$this->slug = Str::slug($title);
 	}
 
 	public function addItem(MenuItem $item)
@@ -24,9 +24,9 @@ class MenuSection
 		$this->items[] = $item;
 	}
 
-	public function identifier($identifier)
+	public function slug($slug)
 	{
-		$this->identifier = $identifier;
+		$this->slug = $slug;
 		
 		return $this;
 	}
@@ -63,7 +63,7 @@ class MenuSection
 
 		foreach(self::$sections as $section)
 		{
-			$sections[$section->identifier] = $section;
+			$sections[$section->slug] = $section;
 		}
 
 		return $sections;

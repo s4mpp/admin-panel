@@ -42,11 +42,6 @@ abstract class Resource
 		return [];
 	}
 
-	// public function getController()
-	// {
-	// 	return '\App\Http\Controllers\\'.$this->resource_name.'Controller';
-	// }
-
 	public static function add(Resource $resource)
 	{
 		self::$resources[$resource->name] = $resource;
@@ -88,13 +83,11 @@ abstract class Resource
 			$routes['store'] = $this->getRouteName('store');
 		}
 
-		$custom_actions = $this->getCustomActions();
-
-		foreach($custom_actions as $action)
+		foreach($this->_getCustomActionsResource() as $custom_action)
 		{
-			$routes[$action->slug] = $this->getRouteName($action->slug);
+			$routes[$custom_action->slug] = $this->getRouteName($custom_action->slug);
 		}
-
+		
 		return $routes;
 	}
 
@@ -131,18 +124,21 @@ abstract class Resource
 			}
 		}
 
-		foreach($this->getCustomActions() as $customer_action)
+		foreach($this->_getCustomActionsResource() as $custom_action)
 		{
-			$actions[$customer_action->slug] = $customer_action;
+			$actions[$custom_action->slug] = $custom_action;
+		}
+	
+		return $actions;
+	}
+
+	private function _getCustomActionsResource(): array
+	{
+		if(method_exists($this, 'getCustomActions'))
+		{
+			return $this->getCustomActions() ?? [];
 		}
 
-		// $actions = array_merge($actions, $this->getCustomActions()); dd($actions);
-
-		// foreach($actions as $action)
-		// {
-		// 	// $action->url = route($actionRoutes[$action->route], ['id' => $id]);
-		// }
-
-		return $actions;
+		return [];
 	}
 }

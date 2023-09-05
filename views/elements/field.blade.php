@@ -42,5 +42,3 @@
 		@endswitch
 	</div>
 </div>
-
- 
