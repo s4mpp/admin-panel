@@ -205,7 +205,7 @@
 				  <p class="truncate text-sm font-medium text-slate-900" role="none">{{ auth()->guard(config('admin.guard'))->user()->email }}</p>
 				</div>
 				<div class="py-1 " role="none">
-					<a href="{{ route(S4mpp\Laraguard\Routes::logout()) }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+					<a href="{{ route(S4mpp\Laraguard\Routes::identifier('admin-panel')->logout()) }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 					  Sair
 					  
 					  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

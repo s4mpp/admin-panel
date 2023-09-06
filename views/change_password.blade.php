@@ -4,13 +4,13 @@
 	
 @section('auth-content')
 	
-	<div class="card mb-4 bg-light border-0 mt-3">
-		<div class="card-body  text-center">
-			<p class="mb-0">E-mail: <strong>{{ $user->email }}</strong></p>
-		</div>
-	</div>
+	<x-card className="bg-gray-100 mb-4 text-center space-y-3 mt-5">
+		<p class="text-xs">E-mail:</p>
+		<p class="text-sm font-bold">{{ $user->email }}</p>
+	</x-card>
+		
 
-	<form class="space-y-4" method="post" action="{{ route(S4mpp\Laraguard\Routes::storePasswordRecovery(), ['token_password_recovery' => $token_password_recovery]) }}" x-data="{loading: false}" x-on:submit="loading = true">
+	<form class="space-y-4" method="post" action="{{ route(S4mpp\Laraguard\Routes::identifier('admin-panel')->storePasswordRecovery(), ['token_password_recovery' => $token_password_recovery]) }}" x-data="{loading: false}" x-on:submit="loading = true">
 		@csrf
 		@method('PUT')
 		
@@ -22,7 +22,7 @@
 	</form>
 
 	<p class="mt-10 text-center text-sm text-gray-500">
-		<a tabindex="-1" href="{{route(S4mpp\Laraguard\Routes::login())}}" class="text-gray-600 hover:text-gray-800 text-base">Voltar</a>
+		<a tabindex="-1" href="{{route(S4mpp\Laraguard\Routes::identifier('admin-panel')->login())}}" class="text-gray-600 hover:text-gray-800 text-base">Voltar</a>
 	</p>
 
 @endsection

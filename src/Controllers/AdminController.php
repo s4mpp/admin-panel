@@ -18,6 +18,10 @@ class AdminController extends Controller
     
     public $view_change_password = 'admin::change_password';
 
+    public $field_username = 'email';
+
+    public $route_identifier = 'admin-panel';
+
     public function __construct()
     {
         $this->route_redirect_after_login = config('admin.route_redirect_after_login');

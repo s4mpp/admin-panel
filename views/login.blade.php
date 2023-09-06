@@ -8,10 +8,10 @@
 		Entre com seu usuário e senha:</a>
     </p>
 
-	<form class="space-y-4" method="POST" action="{{ route(S4mpp\Laraguard\Routes::attemptLogin()) }}" x-data="{loading: false}" x-on:submit="loading = true">
+	<form class="space-y-4" method="POST" action="{{ route(S4mpp\Laraguard\Routes::identifier('admin-panel')->attemptLogin()) }}" x-data="{loading: false}" x-on:submit="loading = true">
 		@csrf
 		
-		<x-input type="text" placeholder="nome@email.com" :required=true name="email" title="E-mail">{{ request()->email ?? null }}</x-input>
+		<x-input type="email" placeholder="nome@email.com" :required=true name="username" title="E-mail">{{ old('username') }}</x-input>
 
 		<x-input type="password" :required=true name="password" title="Senha"></x-input>
 
@@ -20,6 +20,6 @@
 	</form>
 
 	<p class="mt-10 text-center text-sm text-gray-500">Esqueceu sua senha?
-		<a href="{{route(S4mpp\Laraguard\Routes::forgotPassword()) }}" class="font-semibold leading-6 text-primary">Recuperar</a>
+		<a href="{{route(S4mpp\Laraguard\Routes::identifier('admin-panel')->forgotPassword()) }}" class="font-semibold leading-6 text-primary">Recuperar</a>
 	</p>
 @endsection

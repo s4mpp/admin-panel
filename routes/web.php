@@ -25,9 +25,9 @@ $route->group(function()
 {
 	Route::controller(AdminController::class)->group(function()
 	{
-		Routes::authGroup();
-		
-		Routes::forgotAndRecoveryPasswordGroup();
+		Routes::identifier('admin-panel')
+		->authGroup()
+		->forgotAndRecoveryPasswordGroup();
 	});
 
 	Route::redirect('/', 'entrar');
