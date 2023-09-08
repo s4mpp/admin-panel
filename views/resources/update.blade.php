@@ -5,6 +5,21 @@
 
 @section('title', 'Editar')
 
+@section('title-page')
+
+
+	<div x-data="{loading: false}">
+		<x-link x-on:click="loading = true" href="{{ isset($routes['read']) ? route($routes['read'], ['id' => $register->id]) : route($routes['index']) }}" className="">
+
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+			</svg>
+
+			<span>Voltar</span>
+		</x-link>
+	</div>
+@endsection
+
 @section('content-resource')
 
 	<form method="POST" class="mb-0" action={{ route($routes['save'], ['id' => $register->id]) }} x-data="{loading: false}" x-on:submit="loading = true">

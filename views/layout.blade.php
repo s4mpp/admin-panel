@@ -172,7 +172,7 @@
  			
 			<!-- Profile dropdown -->
 			<div class="relative" x-data="{ dropdownUserMenu: false }">
-				<button x-on:blur="dropdownUserMenu = false;" x-on:click="dropdownUserMenu = !dropdownUserMenu" type="button" class="-m-1.5 flex items-center p-1.5" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+				<button  x-on:click="dropdownUserMenu = !dropdownUserMenu" type="button" class="-m-1.5 flex items-center p-1.5" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
 				  <span class="sr-only">Open user menu</span>
 				  
 				  <span class="inline-block h-6 w-6 overflow-hidden rounded-full bg-slate-100">
@@ -190,6 +190,7 @@
 				</button>
 	
 				<div 
+				x-on:click.outside="dropdownUserMenu = false;"
 					x-show="dropdownUserMenu" x-cloak
 				  x-transition:enter="transition ease-out duration-100"
 				  x-transition:enter-start="transform opacity-0 scale-95"

@@ -12,7 +12,7 @@
 		<div class="min-w-full px-5 py-2 flex justify-end">
 			@if($has_search)
 				<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12">
-					<x-input wire:model="search" placeholder="Pesquisar..." type="search" name="search"></x-input>
+					<x-input placeholder="{{ $placeholder_field_search }}" wire:model="search"  type="search" name="search"></x-input>
 				</div>
 			@endif
 		</div>

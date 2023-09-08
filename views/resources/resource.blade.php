@@ -5,8 +5,6 @@
 @section('title-page')
  	
 	@if($actions && isset($register->id))
-
-
 	   <div class="inline-flex gap-3" x-data="{loading: false}">
 		   @foreach($actions as $action)
 			   @if(!in_array('read', $action->show_in))
@@ -67,9 +65,9 @@
 			   @endif
 		   @endforeach
 	   </div>
-  
+
 	@endif
-@endsection
+@endsection 
 
 @section('content')
 

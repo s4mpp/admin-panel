@@ -94,6 +94,8 @@ class Column
 	public function callback(callable $callback)
 	{
 		$this->callback = $callback;
+
+		return $this;
 	}
 
 	public function align(string $alignment)
