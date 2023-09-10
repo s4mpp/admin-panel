@@ -1,5 +1,5 @@
 
-<div class="border rounded-lg bg-white"> 
+<div class="border sm:rounded-lg bg-white"> 
     @php
         $rowspan_empty = count($table) ?? 1;
     
@@ -8,15 +8,64 @@
             $rowspan_empty++;
         }
     @endphp
-	<div class="overflow-x-auto ">
-		<div class="min-w-full px-5 py-2 flex justify-end">
-			@if($has_search)
-				<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12">
-					<x-input placeholder="{{ $placeholder_field_search }}" wire:model="search"  type="search" name="search"></x-input>
-				</div>
-			@endif
-		</div>
+	<div class="min-w-full px-5 py-2 flex justify-start">
+		@if($has_search)
+			<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12 mr-3">
+				<x-input placeholder="{{ $placeholder_field_search }}" wire:model="search"  type="search" name="search"></x-input>
+			</div>
+		@endif
 
+		
+
+		{{-- <div class="relative inline-block text-left">
+			<div>
+			  <x-button type="button" className="btn-light">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+				  </svg>
+			  </x-button>
+			</div>
+		  
+			<!--
+			  Dropdown menu, show/hide based on menu state.
+		  
+			  Entering: "transition ease-out duration-100"
+				From: "transform opacity-0 scale-95"
+				To: "transform opacity-100 scale-100"
+			  Leaving: "transition ease-in duration-75"
+				From: "transform opacity-100 scale-100"
+				To: "transform opacity-0 scale-95"
+			-->
+			<div class="absolute right-0 z-10 mt-2 w-80  origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+ 				<div class="p-4">
+					<div class="flex justify-between mb-5 items-center " >
+						<p class="font-semibold text-gray-900">Filtros</p>
+						<a href="#" class="text-red-500 text-sm font-semibold">Limpar</a>
+					</div>
+
+					<div class="divide-y divide-gray-100">
+						<div class="py-4">
+							<x-input type="checkbox" title="Tipo" name="type[]">
+								@foreach(\App\Enums\CustomerType::cases() as $option)
+								<x-check value="{{ $option->value }}">{{ $option->label() }}</x-check>
+								@endforeach
+							</x-input>
+						</div>
+
+						<div class="py-4">
+							<x-input type="checkbox" title="Tipo" name="type[]">
+								@foreach(\App\Enums\CustomerType::cases() as $option)
+									<x-check value="{{ $option->value }}">{{ $option->label() }}</x-check>
+								@endforeach
+							</x-input>
+						</div>
+					</div>
+				</div>
+ 			</div>
+		  </div> --}}
+	</div>
+	
+	<div class="overflow-x-auto ">
 		<table class="min-w-full divide-y border-t divide-gray-200">
 		<thead class="bg-gray-100 rounded">
 		  <tr>
@@ -83,11 +132,18 @@
 											   $link = route($routes[$action->route], ['id' => $id]);
 										   @endphp
 						   
-											<a href="{{ $link }}" class="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-600' }} inline-flex gap-1">
+											<a
+											@if($action->new_tab)
+												target="_blank"
+											@endif
+											 href="{{ $link }}" class="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-600' }} inline-flex gap-1">
 												<span>{{ $action->title }}</span>
 											</a>
 									   @else
 										   <form 
+										   @if($action->new_tab)
+												target="_blank"
+											@endif
 											@isset($action->question)
 												onsubmit="return window.confirm('{{ $action->question }}')"
 											@endisset

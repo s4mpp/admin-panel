@@ -6,8 +6,10 @@
 	<div class="text-sm font-medium text-slate-900  xl:col-span-2 xl:h-9 flex flex-col justify-center " >
 		<span class="">
 			{{ $field->title }}
-			
-			<span class="text-red-300 text-xs truncate">*</span>
+
+			@if($required)
+				<span class="text-red-300 text-xs truncate">*</span>
+			@endif
 		</span>
 
 	</div>

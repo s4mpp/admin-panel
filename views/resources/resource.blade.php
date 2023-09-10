@@ -20,36 +20,38 @@
 					   $link = route($routes[$action->route], ['id' => $register->id]);
 				   @endphp
 
-					<div x-data="{loading: false}">
-					   <x-link x-on:click="loading = true" href="{{ $link }}" className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}">
+					 
+					<x-link target="{{ $action->new_tab ? '_blank' : null }}" href="{{ $link }}" className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}">
 
-							@switch($action->route)
-								@case('update')
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-									<path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" />
-									</svg>
-								@break
-		
-								@case('read')
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-									<path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
-									<path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+						@switch($action->route)
+							@case('update')
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+								<path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" />
 								</svg>
-							@endswitch
-		
-							<span>{{ $action->title }}</span>
-					   </x-link>
-					</div>
+							@break
+	
+							@case('read')
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+								<path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+								<path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+							</svg>
+						@endswitch
+	
+						<span>{{ $action->title }}</span>
+					</x-link>
+					 
 			   @else
-				   <form x-data="{loading: false}" x-on:submit="loading = true"
+				   <form x-data="{loading: false}" x-on:submit="loading = true" target="{{ $action->new_tab ? '_blank' : null }}" 
 				   @isset($action->question)
 					   onsubmit="return window.confirm('{{ $action->question }}')"
 				   @endisset
+				   
 				   method="POST" action="{{ route($routes[$action->route], ['id' => $register->id]) }}">
 					   @method(strtoupper($action->method))
 					   @csrf
 					   
-						<x-button className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}" type="submit">
+						<x-button 
+						className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}" type="submit">
 							@switch($action->route)
 								@case('delete')
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
@@ -60,7 +62,6 @@
 
 							{{ $action->title }}
 						</x-button>
-					 
 				   </form>
 			   @endif
 		   @endforeach

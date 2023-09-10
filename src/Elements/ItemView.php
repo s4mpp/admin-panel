@@ -25,7 +25,7 @@ class ItemView implements ElementInteface
 
 	public function col(string $size, int $column_size)
 	{
-		$this->class[] = 'col-'.$size.'-'.$column_size;
+		// $this->class[] = 'col-'.$size.'-'.$column_size;
 
 		return $this;
 	}
@@ -47,6 +47,13 @@ class ItemView implements ElementInteface
 	public function markDown()
 	{
 		$this->type = 'markdown';
+
+		return $this;
+	}
+
+	public function file()
+	{
+		$this->type = 'file';
 
 		return $this;
 	}

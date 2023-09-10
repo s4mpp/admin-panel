@@ -87,7 +87,7 @@ class Table extends Component
 
     private function _getMessagePlaceholderSearch()
     {
-        if(!$this->resource->search)
+        if(!isset($this->resource->search) || empty($this->resource->search))
         {
             return null;
         }

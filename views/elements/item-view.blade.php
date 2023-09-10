@@ -16,6 +16,21 @@
 				</div>
 			@break;
 
+			@case('file')
+				@break(empty($resource->{$item->value}))
+
+				@php
+					$exp = explode('.', $resource->{$item->value});
+					$type_file = end($exp);
+				@endphp
+
+				@if(in_array(strtolower($type_file), ['png', 'jpg', 'jpeg', 'gif']))
+					<a href="{{ Storage::url($resource->{$item->value}) }}" target="_blank"><img src="{{ Storage::url($resource->{$item->value}) }}" alt="{{ $item->title }}" class="h-12"></a>
+				@else
+					<a href="{{ Storage::url($resource->{$item->value}) }}" target="_blank">Visualizar {{ strtoupper($type_file) }}</a>
+				@endif
+			@break;
+
 			@default
 				{{ $resource->{$item->value} }}
 		@endswitch 

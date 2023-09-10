@@ -20,6 +20,12 @@ class Action
 
 	public ?string $question = null;
 
+	public bool $new_tab = false;
+
+	public $disabled_callback;
+
+	public ?string $disabled_message = null;
+
 	function __construct(public string $title, public ?string $route = null)
 	{
 		$this->slug = Str::slug($title);
@@ -33,6 +39,15 @@ class Action
 	public static function create(string $title, string $route = null)
 	{
 		return new Action($title, $route);
+	}
+
+	public function disabled(bool | callable $disabled_callback, ?string $disabled_message = null)
+	{
+		$this->disabled_callback = $disabled_callback;
+
+		$this->disabled_message = $disabled_message;
+
+		return $this;
 	}
 
 	public function target(string | array $target)
@@ -85,6 +100,13 @@ class Action
 	public function showIn(array $show_in)
 	{
 		$this->show_in = $show_in;
+
+		return $this;
+	}
+
+	public function newTab()
+	{
+		$this->new_tab = true;
 
 		return $this;
 	}

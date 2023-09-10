@@ -12,13 +12,15 @@
 		<h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">@yield('title')</h2>
 	</div>
   
-	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-	  <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-		
+	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px] ">
+	  <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12 sm:w-full">
 		<x-alert/>
-
-		@yield('auth-content')
-  
+		
+		<div class=" max-w-[400px] mx-auto">
+			
+			@yield('auth-content')
+			
+		</div>
 	</div>
   </div>
   

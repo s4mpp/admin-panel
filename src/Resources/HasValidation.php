@@ -20,7 +20,7 @@ trait HasValidation
 				switch($rule)
 				{
 					case 'unique':
-						$rules[] = Rule::unique($resource->model->getModel()->getTable())->ignore($id);
+						$rules[] = Rule::unique($resource->getModel()->getTable())->ignore($id);
 						break;
 						
 					default:
