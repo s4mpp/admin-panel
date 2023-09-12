@@ -123,6 +123,8 @@
 							<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
 							   <div class="inline-flex gap-3">
 								   @foreach($actions as $action)
+
+								   		{{-- TO-DO: colocar no metodo getRoutes --}}
 									   @if(!in_array('table', $action->show_in))
 										   @continue
 									   @endif

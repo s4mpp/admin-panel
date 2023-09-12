@@ -8,9 +8,17 @@ abstract class Read
 	{
 		return function($id) use ($resource)
 		{
+			$register = $resource->getModel()::findOrFail($id);
+
+			$routes = $resource->getRoutes();
+
 			return $resource->getView('read', [
-				'register'=> $resource->getModel()::findOrFail($id),
+				'register'=> $register,
+				'routes'=> $routes,
 				'read' => self::_getRead($resource, $id),
+				'actions' => $resource->getActions(),
+				'custom_actions' => $resource->getCustomActionsResource($register),
+				'back_url' => route($routes['index']),
 				'current_action' => 'read'
 			]);
 		};

@@ -17,10 +17,16 @@ abstract class Update
 			$register = $resource->getModel()->findOrFail($id);
 
 			$form = self::_getForm($resource);
+
+			$routes = $resource->getRoutes();
 			
 			return $resource->getView('update', [
 				'register' => $register,
+				'routes' => $routes,
+				'custom_actions' => $resource->getCustomActionsResource($register),
+				'actions' => $resource->getActions(),
 				'form' => $form,
+				'back_url' => route($routes['index']),
 				'current_action' => 'update'
 			]);
 		};

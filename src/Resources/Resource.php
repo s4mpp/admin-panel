@@ -37,11 +37,6 @@ abstract class Resource
 		return app('\App\Models\\'.$this->resource_name);
 	}
 
-	public function getCustomActions()
-	{
-		return [];
-	}
-
 	public static function add(Resource $resource)
 	{
 		self::$resources[$resource->name] = $resource;
@@ -83,9 +78,12 @@ abstract class Resource
 			$routes['store'] = $this->getRouteName('store');
 		}
 
-		foreach($this->_getCustomActionsResource() as $custom_action)
+		if(method_exists($this, 'getCustomActions'))
 		{
-			$routes[$custom_action->slug] = $this->getRouteName($custom_action->slug);
+			foreach($this->getCustomActions() ?? [] as $custom_action)
+			{
+				$routes[$custom_action->slug] = $this->getRouteName($custom_action->slug);
+			}
 		}
 		
 		return $routes;
@@ -94,9 +92,7 @@ abstract class Resource
 	public function getView(string $view, array $data = [])
 	{
 		return view('admin::resources.'.$view, array_merge($data, [
-			'title' => $this->title,
-			'actions' => $this->getActions(),
-			'routes' => $this->getRoutes(),
+			'title' => $this->title
 		]));
 	}
 
@@ -104,18 +100,16 @@ abstract class Resource
 	{
 		$actions = [];
 
-		// $routes = $this->getRoutes();
-
 		foreach($this->actions as $action)
 		{
 			switch($action)
 			{
 				case 'update':
-					$actions['update'] = Action::create('Editar', 'update')->icon('pencil');
+					$actions['update'] = Action::create('Editar', 'update')->icon('pencil')->showIn(['read', 'table']);
 					break;
 
 				case 'read':
-					$actions['read'] = Action::create('Visualizar', 'read')->icon('eye');
+					$actions['read'] = Action::create('Visualizar', 'read')->icon('eye')->showIn(['update', 'table']);
 					break;
 
 				case 'delete':
@@ -123,22 +117,26 @@ abstract class Resource
 					break;
 			}
 		}
-
-		foreach($this->_getCustomActionsResource() as $custom_action)
-		{
-			$actions[$custom_action->slug] = $custom_action;
-		}
 	
 		return $actions;
 	}
 
-	private function _getCustomActionsResource(): array
+	public function getCustomActionsResource($register)
 	{
-		if(method_exists($this, 'getCustomActions'))
+		if(!method_exists($this, 'getCustomActions'))
 		{
-			return $this->getCustomActions() ?? [];
+			return null;
 		}
 
-		return [];
+		foreach($this->getCustomActions() ?? [] as $custom_action)
+		{
+			$custom_action->is_disabled = is_callable($custom_action->disabled_callback)
+			? call_user_func($custom_action->disabled_callback, $register)
+			: boolval($custom_action->disabled_callback);
+
+			$actions[$custom_action->slug] = $custom_action;
+		}
+
+		return $actions ?? [];
 	}
 }

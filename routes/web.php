@@ -87,16 +87,19 @@ $route->group(function()
 					Route::delete('/excluir/{id}', Delete::delete($resource))->name($resource->getRouteName('delete'));
 				}
 
-				$custom_actions = $resource->getCustomActions() ?? [];
-
-				foreach($custom_actions as $action)
+				if(method_exists($resource, 'getCustomActions'))
 				{
-					if(!isset($action->target))
+					$custom_actions = $resource->getCustomActions() ?? [];
+	
+					foreach($custom_actions as $action)
 					{
-						throw new \Exception('Target of Custom Route "'.$action->slug.' "not defined');
+						if(!isset($action->target))
+						{
+							throw new \Exception('Target of Custom Route "'.$action->slug.' "not defined');
+						}
+	
+						Route::{$action->method}('/'.$action->slug.'/{id}', $action->target ?? '')->name($resource->getRouteName($action->route));
 					}
-
-					Route::{$action->method}('/'.$action->slug.'/{id}', $action->target ?? '')->name($resource->getRouteName($action->route));
 				}
 			});
 		}

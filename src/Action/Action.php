@@ -22,6 +22,8 @@ class Action
 
 	public bool $new_tab = false;
 
+	public $is_disabled = false;
+
 	public $disabled_callback;
 
 	public ?string $disabled_message = null;
@@ -41,11 +43,11 @@ class Action
 		return new Action($title, $route);
 	}
 
-	public function disabled(bool | callable $disabled_callback, ?string $disabled_message = null)
+	public function disabled(bool | callable $disabled_callback = true, ?string $disabled_message = null)
 	{
 		$this->disabled_callback = $disabled_callback;
 
-		$this->disabled_message = $disabled_message;
+		$this->disabled_message = $disabled_message ?? 'Função não disponível no momento.';
 
 		return $this;
 	}
