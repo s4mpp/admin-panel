@@ -39,7 +39,7 @@
 
 			@case('currency')
 				<x-input :required=$required  type="{{ $field->type }}" title="" name="{{ $field->name }}" x-mask:dynamic="$money($input, ',', '.')" placeholder="0,00">
-					{{ Format::currency($resource->{$field->name} ?? null, $field->additional_data['has_cents']) }};
+					{{ ($resource->{$field->name} ?? null)  ? Format::currency($resource->{$field->name}, $field->additional_data['has_cents']) : null }};
 				</x-input>
 			@break;
 
