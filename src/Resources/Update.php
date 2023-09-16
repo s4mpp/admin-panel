@@ -46,7 +46,7 @@ abstract class Update
 
 			foreach($fields as $field)
 			{
-				$register->{$field->name} = $fields_validated[$field->name];
+				$register->{$field->name} = $fields_validated[$field->name] ?? null;
 			}
 		
 			UpdateHook::before($resource, $register, $request);

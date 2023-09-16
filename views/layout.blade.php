@@ -21,7 +21,7 @@
 		x-transition:enter-start="opacity-0" 
 		x-transition:enter-end="opacity-100" 
 		x-transition:leave="transition-opacity ease-linear duration-300" 
-		x-transition:leave-start="opacity-1000"
+		x-transition:leave-start="opacity-100"
 		x-transition:leave-end="opacity-0" 
 	  class="fixed inset-0 bg-gray-900/80" ></div>
   
@@ -29,11 +29,11 @@
 		
 		<div x-show="menuOfCanvasMobile" x-cloak
 			x-transition:enter="transition ease-in-out duration-300 transform" 
-			x-transition:enter-start="-trangray-x-full" 
-			x-transition:enter-end="trangray-x-0" 
+			x-transition:enter-start="-translate-x-full" 
+			x-transition:enter-end="translate-x-0" 
 			x-transition:leave="transition ease-in-out duration-300 transform" 
-			x-transition:leave-start="trangray-x-00"
-			x-transition:leave-end="-trangray-x-full" 
+			x-transition:leave-start="translate-x-00"
+			x-transition:leave-end="-translate-x-full" 
 			@click.away="menuOfCanvasMobile = false"
 		 class="relative mr-16 flex w-full max-w-xs flex-1">
 		  <div 

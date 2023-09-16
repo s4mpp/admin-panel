@@ -2,8 +2,8 @@
 	$required = in_array('required', $field->rules);
 @endphp
 
-<div class="p-4 sm:gap-4 sm:p-3 xl:p-6 xl:grid xl:grid-cols-12">
-	<div class="text-sm font-medium text-slate-900  xl:col-span-2 xl:h-9 flex flex-col justify-center " >
+<div class="p-4 sm:gap-4 sm:p-3 xl:p-6 md:grid md:grid-cols-12">
+	<div class="text-sm font-medium text-slate-900  md:col-span-3 lg:col-span-2 xl:h-9 flex flex-col justify-center mb-2 md:mb-0" >
 		<span class="">
 			{{ $field->title }}
 
@@ -13,7 +13,7 @@
 		</span>
 
 	</div>
-	<div class="text-sm font-normal text-slate-700 xl:col-span-10">
+	<div class="text-sm font-normal text-slate-700 md:col-span-9 lg:col-span-10 ">
 		@switch($field->type)
 			@case('select')
 				<x-input :required=$required type="{{ $field->type }}" title="" name="{{ $field->name }}" >

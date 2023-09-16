@@ -42,7 +42,7 @@ abstract class Create
 
 			foreach($fields as $field)
 			{
-				$new_register->{$field->name} = $fields_validated[$field->name];
+				$new_register->{$field->name} = $fields_validated[$field->name] ?? null;
 			}
 
 			CreateHook::before($resource, $new_register, $request);

@@ -1,14 +1,14 @@
+@php
+	$rowspan_empty = count($table) ?? 1;
 
-<div class="border sm:rounded-lg bg-white"> 
-    @php
-        $rowspan_empty = count($table) ?? 1;
-    
-        if($actions)
-        {
-            $rowspan_empty++;
-        }
-    @endphp
-	<div class="min-w-full px-5 py-2 flex justify-start">
+	if($actions)
+	{
+		$rowspan_empty++;
+	}
+@endphp
+
+<div class="border lg:rounded-lg bg-white mx-0 sm:-mx-6 lg:mx-0"> 
+	<div class="min-w-full px-4 sm:px-6 py-2 flex justify-start">
 		@if($has_search)
 			<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12 mr-3">
 				<x-input placeholder="{{ $placeholder_field_search }}" wire:model="search"  type="search" name="search"></x-input>
@@ -65,12 +65,12 @@
 		  </div> --}}
 	</div>
 	
-	<div class="overflow-x-auto ">
+	<div class="overflow-x-auto mb-2">
 		<table class="min-w-full divide-y border-t divide-gray-200">
 		<thead class="bg-gray-100 rounded">
 		  <tr>
 			  @forelse($table as $column)
-				  <th scope="col" @class(array_merge($column->style_class, ['px-5 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap']))>{{ $column->title }}</th>
+				  <th scope="col" @class(array_merge($column->style_class, ['px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap']))>{{ $column->title }}</th>
 			  @empty
 				  <th scope="col" class="px-3 py-3.5">&nbsp;</th>
 			  @endforelse
@@ -85,7 +85,7 @@
 				@foreach($registers as $id => $row)
 					<tr>
 						@forelse ($row as $field)
-							<td @class(array_merge($field->style_class, ['whitespace-nowrap px-5 py-4 text-sm text-gray-500']))>
+							<td @class(array_merge($field->style_class, ['whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500']))>
 								@php
 									$data = $field->data;
 								@endphp
@@ -177,8 +177,8 @@
 	  </table>
 	</div>
 
-	@if($collection)
-		<div class="min-w-full px-3  p-5">
+	@if($collection->hasPages())
+		<div class="min-w-full px-3 pb-4">
 			{{ $collection->links('admin::pagination') }}
 		</div>
 	@endif
