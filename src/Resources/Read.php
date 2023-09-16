@@ -8,14 +8,29 @@ abstract class Read
 	{
 		return function($id) use ($resource)
 		{
+			$routes = $resource->getRoutes();
+			
 			$register = $resource->getModel()::findOrFail($id);
 
-			$routes = $resource->getRoutes();
+			$read = self::_getRead($resource);
+
+			foreach($read as $item)
+			{
+				if($item->callback)
+				{
+					$field = $item->value;
+
+					if(isset($register->{$field}))
+					{
+						$register->{$field} = call_user_func($item->callback, $register->{$field});
+					}
+				}
+			}
 
 			return $resource->getView('read', [
 				'register'=> $register,
 				'routes'=> $routes,
-				'read' => self::_getRead($resource, $id),
+				'read' => $read,
 				'actions' => $resource->getActions(),
 				'custom_actions' => $resource->getCustomActionsResource($register),
 				'back_url' => route($routes['index']),
@@ -24,10 +39,10 @@ abstract class Read
 		};
 	}
 
-	private static function _getRead($resource, int $id)
+	private static function _getRead($resource)
 	{
 		throw_if(!method_exists($resource, 'getRead'), 'Método getRead não existe.');
-						
+
 		return $resource->getRead();
 	}
 }

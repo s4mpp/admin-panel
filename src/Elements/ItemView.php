@@ -9,6 +9,12 @@ class ItemView implements ElementInteface
 	public array $class = [];
 
 	public string $type = 'text';
+
+	public $callback = null;
+
+	public string $format_datetime = 'd/m/Y H:i';
+
+	public ?string $default_text = null;
  		
 	function __construct(public $title, public $value)
 	{}
@@ -21,13 +27,6 @@ class ItemView implements ElementInteface
 	public function render($resource = null)
 	{
 		return view('admin::elements.item-view', ['item' => $this, 'resource' => $resource]);
-	}
-
-	public function col(string $size, int $column_size)
-	{
-		// $this->class[] = 'col-'.$size.'-'.$column_size;
-
-		return $this;
 	}
 
 	public function boolean()
@@ -54,6 +53,29 @@ class ItemView implements ElementInteface
 	public function file()
 	{
 		$this->type = 'file';
+
+		return $this;
+	}
+
+	public function default(string $default_text)
+	{
+		$this->default_text = $default_text;
+
+		return $this;
+	}
+
+	public function callback(callable $callback)
+	{
+		$this->callback = $callback;
+
+		return $this;
+	}
+
+	public function datetime(string $format = 'd/m/Y H:i')
+	{
+		$this->type = 'datetime';
+
+		$this->format_datetime = $format;
 
 		return $this;
 	}
