@@ -34,7 +34,7 @@ abstract class Create
 
 			$fields = self::_getFields($form);
 
-			self::_validate($resource, $request, $fields);
+			$fields_validated = self::_validate($resource, $request, $fields);
 
 			$model = $resource->getModel();
 
@@ -42,7 +42,7 @@ abstract class Create
 
 			foreach($fields as $field)
 			{
-				$new_register->{$field->name} = $request->{$field->name};
+				$new_register->{$field->name} = $fields_validated[$field->name];
 			}
 
 			CreateHook::before($resource, $new_register, $request);

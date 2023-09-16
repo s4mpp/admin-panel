@@ -40,13 +40,13 @@ abstract class Update
 
 			$fields = self::_getFields($form);
 
-			self::_validate($resource, $request, $fields, $id);
+			$fields_validated = self::_validate($resource, $request, $fields, $id);
 
 			$register = $resource->getModel()->findOrFail($id);
 
 			foreach($fields as $field)
 			{
-				$register->{$field->name} = $request->{$field->name};
+				$register->{$field->name} = $fields_validated[$field->name];
 			}
 		
 			UpdateHook::before($resource, $register, $request);

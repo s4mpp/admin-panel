@@ -37,6 +37,12 @@
 				</x-input>
 			@break;
 
+			@case('currency')
+				<x-input :required=$required  type="{{ $field->type }}" title="" name="{{ $field->name }}" x-mask:dynamic="$money($input, ',', '.')" placeholder="0,00">
+					{{ Format::currency($resource->{$field->name} ?? null, $field->additional_data['has_cents']) }};
+				</x-input>
+			@break;
+
 			@default
 				<x-input :required=$required rows="{{ $field->rows }}" max="{{ $field->max }}" min="{{ $field->min }}" step="{{ $field->step }}"  type="{{ $field->type }}" title="" name="{{ $field->name }}">
 					{{ $resource->{$field->name} ?? null }}

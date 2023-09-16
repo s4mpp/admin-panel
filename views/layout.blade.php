@@ -6,6 +6,8 @@
 	$navigations = S4mpp\AdminPanel\AdminPanel::getNavigation();
 
 	$route_home = config('admin.route_redirect_after_login');
+
+	$logo_admin_light = config('admin.logo.light');
 @endphp
 
 @section('main-content')
@@ -54,10 +56,10 @@
   
 		  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
 			<div class="flex h-16 shrink-0 items-center">
-				@if(file_exists('images/logo.png'))
-					<img class="h-8 w-auto" src="{{ asset('images/logo.png') }}" alt="{{ env('APP_NAME') }}">
+				@if($logo_admin_light && file_exists($logo_admin_light))
+					<img class="h-8 w-auto mx-auto" src="{{ asset($logo_admin_light) }}" alt="{{ env('APP_NAME') }}">
 				@else
-					<h1 class="font-bold text-lg text-center text-white">{{ env('APP_NAME')  }}</h1>
+					<h1 class="font-bold text-lg text-center text-gray-900 truncate">{{ env('APP_NAME')  }}</h1>
 				@endif
 			</div>
 			<nav class="flex flex-1 flex-col">
@@ -109,11 +111,11 @@
 	  <!-- Sidebar component, swap this element with another sidebar if you like -->
 	  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white  border-r border-gray-200 px-6">
 		
-		<div class="flex h-16 shrink-0 items-center">
-			@if(file_exists('images/logo.png'))
-				<img class="h-8 w-auto" src="{{ asset('images/logo.png') }}" alt="{{ env('APP_NAME') }}">
+		<div class="flex h-14 shrink-0 items-center">
+			@if($logo_admin_light && file_exists($logo_admin_light))
+				<img class="h-8 w-auto mx-auto" src="{{ asset($logo_admin_light) }}" alt="{{ env('APP_NAME') }}">
 			@else
-				<h1 class="font-bold text-lg text-center text-white">{{ env('APP_NAME')  }}</h1>
+				<h1 class="font-bold text-lg text-center text-gray-900 truncate">{{ env('APP_NAME')  }}</h1>
 			@endif
 		</div>
 		

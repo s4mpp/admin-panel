@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
+use S4mpp\Format\Format;
 use Illuminate\Database\Eloquent\Collection;
 use S4mpp\AdminPanel\Elements\ElementInteface;
 
@@ -25,6 +26,8 @@ class Field implements ElementInteface
 	
 	public ?float $step = null;
 
+	public $prepare_for_validation = null;
+
 	function __construct(public $title, public $name)
 	{}
 
@@ -38,11 +41,9 @@ class Field implements ElementInteface
 		return view('admin::elements.field', ['field' => $this, 'resource' => $resource]);
 	}
 
-	public function col(string $size, int $column_size)
+	public function prepareForValidation(callable $callback)
 	{
-		$this->class[] = $size.':w-'.$column_size.'/12';	
-
-		return $this;
+		$this->prepare_for_validation = $callback;
 	}
 
 	public function email()
@@ -75,9 +76,38 @@ class Field implements ElementInteface
 		return $this;
 	}
 
-	public function rows(int $rows)
+	public function currency(bool $has_cents = false)
 	{
-		$this->rows = $rows;
+		$this->type = 'currency';
+
+		$this->prepare_for_validation = function(string $value) use ($has_cents)
+		{
+			$nb_float = Format::numberToFloat($value);
+
+			if($has_cents)
+			{
+				return intval($nb_float * 100);
+			}
+
+			return $nb_float;
+		};
+
+		if($has_cents)
+		{
+			$this->rules[] = 'integer';
+			$this->rules[] = 'min:1';
+			$this->rules[] = 'max:21000000';
+		}
+		else
+		{
+			$this->rules[] = 'numeric';
+			$this->rules[] = 'min:0.01';
+			$this->rules[] = 'max:21000000.00';
+		}
+		
+		$this->_removeRule('string');
+
+		$this->additional_data['has_cents'] = $has_cents;
 
 		return $this;
 	}

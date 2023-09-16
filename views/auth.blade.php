@@ -1,11 +1,15 @@
 @extends('admin::html', ['color' => 'bg-gray-50'])
 
+@php
+	$logo_admin_light = config('admin.logo.light');
+@endphp
+
 @section('main-content')
 
 <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-md">
-		@if(file_exists('images/logo.png'))
-			<img class="mx-auto h-10 w-auto" src="{{ asset('images/logo.png') }}" alt="{{ env('APP_NAME') }}">
+		@if($logo_admin_light && file_exists($logo_admin_light))
+			<img class="h-10  w-auto mx-auto" src="{{ asset($logo_admin_light) }}" alt="{{ env('APP_NAME') }}">
 		@else
 			<h1 class="font-bold text-lg text-center text-slate-600">{{ env('APP_NAME')  }}</h1>
 		@endif
