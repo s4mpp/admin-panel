@@ -11,7 +11,7 @@
 	<div class="min-w-full px-4 sm:px-6 py-2 flex justify-start">
 		@if($has_search)
 			<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12 mr-3">
-				<x-input placeholder="{{ $placeholder_field_search }}" wire:model="search"  type="search" name="search"></x-input>
+				<x-input placeholder="{{ $placeholder_field_search }}" wire:model.debounce.500ms="search" type="search" name="search"></x-input>
 			</div>
 		@endif
 

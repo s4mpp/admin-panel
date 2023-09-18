@@ -28,11 +28,11 @@ class Filter
 		return new Filter($title, $field);
 	}
 
-	public function enum(array $cases)
+	public function enum($class)
 	{
-		$options = [];
+ 		$options = [];
 
-		foreach($cases as $case)
+		foreach($class::cases() as $case)
 		{
 			$options[] = [
 				'id' => $case->value,

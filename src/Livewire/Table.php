@@ -52,13 +52,16 @@ class Table extends Component
 
             if($this->search && is_array($this->resource->search))
             {
-                foreach($this->resource->search as $key => $value)
+                $builder->where(function($builder)
                 {
-                    $field_to_search = (is_string($key)) ? $key : $value;
-
-                    $builder->orWhere($field_to_search, 'like', '%'.$this->search.'%');
-                }
-            };
+                    foreach($this->resource->search as $key => $value)
+                    {
+                        $field_to_search = (is_string($key)) ? $key : $value;
+    
+                        $builder->orWhere($field_to_search, 'like', '%'.$this->search.'%');
+                    }
+                });
+            }
             
         })
         ->paginate();
