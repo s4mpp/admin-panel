@@ -14,16 +14,25 @@ class Table extends Component
     public string $resource_name;
 
     public ?string $search = null;
-
+    
+    public $filters = [];
+    
     private $columns = [];
     
     private Resource $resource;
 
+    private $filters_available = [];
+
     public function mount(string $resource_name)
     {
-        
-
         $this->resource_name = $resource_name;
+    }
+
+    public function booted()
+    {
+        $this->resource = Resource::getResource($this->resource_name);
+
+        $this->_setFilters();   
     }
 
     public function updatingSearch()
@@ -33,11 +42,14 @@ class Table extends Component
 
     public function render()
     {
-        $this->resource = Resource::getResource($this->resource_name);
-
         $collection = $this->resource->getModel()::orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC')
         ->where(function($builder)
         {
+            foreach($this->filters as $field => $filter)
+            {
+                $builder->whereIn($field, array_values($filter['values']));
+            }
+
             if($this->search && is_array($this->resource->search))
             {
                 foreach($this->resource->search as $key => $value)
@@ -47,6 +59,7 @@ class Table extends Component
                     $builder->orWhere($field_to_search, 'like', '%'.$this->search.'%');
                 }
             };
+            
         })
         ->paginate();
 
@@ -59,6 +72,71 @@ class Table extends Component
             'routes' => $this->resource->getRoutes(),
             'placeholder_field_search' => $this->_getMessagePlaceholderSearch(),
         ]);
+    }
+
+    public function setFilter()
+    {
+        foreach ($this->filters_available as $filter)
+        {
+            if(isset($this->filters[$filter->field]))
+            {
+                $values = array_filter($this->filters[$filter->field]['values']);
+
+                if(!$values)
+                {
+                    unset($this->filters[$filter->field]);
+
+                    continue;
+                }
+
+                $title = $filter->title;
+
+                $values_label = [];
+
+                foreach($values as $value)
+                {
+                    $option = $this->filters_available[$filter->field]->getOption(intval($value));
+
+                    $values_label[] = $option['label'] ?? '--';
+                }
+
+                $title .= ': '.join(', ', $values_label);
+                
+
+                $this->filters[$filter->field] = ['title' => $title, 'values' => $values];
+            }
+        }
+
+        $this->dispatchBrowserEvent('close-slide');
+        $this->dispatchBrowserEvent('reset-form');
+    }
+
+    public function resetFilter()
+    {
+        $this->filters = [];
+
+        $this->dispatchBrowserEvent('close-slide');
+        $this->dispatchBrowserEvent('reset-form');
+    }
+
+    public function removeFilter(string $filter)
+    {
+        unset($this->filters[$filter]);
+    }
+
+    private function _setFilters()
+    {
+        if(!method_exists($this->resource, 'getFilters'))
+        {
+            return;
+        }
+
+        $filters = $this->resource->getFilters();
+
+        foreach($filters as $filter)
+        {
+            $this->filters_available[$filter->field] = $filter;
+        }
     }
 
     private function _getData($collection)

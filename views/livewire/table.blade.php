@@ -15,58 +15,74 @@
 			</div>
 		@endif
 
-		
+		@if($this->filters_available)
+			<div class="relative inline-block text-left" x-data="{openSlideFilter: false}" x-on:close-slide.window="openSlideFilter = false">
+				<x-button type="button" className="btn-light" x-on:click="openSlideFilter = true">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+					</svg>
+					@if($this->filters)
+						<span class="absolute justify-center flex items-center right-0 top-0 h-4 w-4 -translate-y-1/2 translate-x-1/2 transform rounded-full bg-orange-300 ring-2 ring-white">
+							<span class="text-[12px] text-white">{{ count($this->filters) }}</span>
+						</span>
+					@endif
+				</x-button>
 
-		{{-- <div class="relative inline-block text-left">
-			<div>
-			  <x-button type="button" className="btn-light">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
-				  </svg>
-			  </x-button>
+				<x-slide-over id="openSlideFilter" title="Filtros">
+					<form wire:submit.prevent="setFilter" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
+						<div class="divide-y divide-gray-100">
+							@foreach($this->filters_available as $filter)
+								@php $i=0; @endphp
+								<div class="py-4">
+									<x-input type="checkbox" title="{{ $filter->title }}" name="{{ $filter->field }}[]">
+										@foreach($filter->getOptions() as $option)
+											<x-check 
+											wire:model.defer="filters.{{ $filter->field }}.values.{{ $i++ }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
+										@endforeach
+									</x-input>
+								</div>
+							@endforeach
+						</div>
+
+						<div class="mt-3 flex justify-between items-center border-t pt-3">
+							<a href="#" wire:click.prevent="resetFilter" class="text-red-500 text-sm font-semibold">Limpar</a>
+							<x-button className="btn-primary">Aplicar</x-button>
+						</div>
+					</form>
+				</x-slide-over>
 			</div>
-		  
-			<!--
-			  Dropdown menu, show/hide based on menu state.
-		  
-			  Entering: "transition ease-out duration-100"
-				From: "transform opacity-0 scale-95"
-				To: "transform opacity-100 scale-100"
-			  Leaving: "transition ease-in duration-75"
-				From: "transform opacity-100 scale-100"
-				To: "transform opacity-0 scale-95"
-			-->
-			<div class="absolute right-0 z-10 mt-2 w-80  origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
- 				<div class="p-4">
-					<div class="flex justify-between mb-5 items-center " >
-						<p class="font-semibold text-gray-900">Filtros</p>
-						<a href="#" class="text-red-500 text-sm font-semibold">Limpar</a>
-					</div>
-
-					<div class="divide-y divide-gray-100">
-						<div class="py-4">
-							<x-input type="checkbox" title="Tipo" name="type[]">
-								@foreach(\App\Enums\CustomerType::cases() as $option)
-								<x-check value="{{ $option->value }}">{{ $option->label() }}</x-check>
-								@endforeach
-							</x-input>
-						</div>
-
-						<div class="py-4">
-							<x-input type="checkbox" title="Tipo" name="type[]">
-								@foreach(\App\Enums\CustomerType::cases() as $option)
-									<x-check value="{{ $option->value }}">{{ $option->label() }}</x-check>
-								@endforeach
-							</x-input>
-						</div>
-					</div>
-				</div>
- 			</div>
-		  </div> --}}
+		@endif
 	</div>
-	
+
+	@if($this->filters)
+		<div class="min-w-full px-4 sm:px-6 py-2 flex justify-between items-center bg-gray-50 border-t">
+			<div>
+				<span class="text-sm font-semibold text-gray-600 mr-3">Filtros: </span>
+
+				@foreach($this->filters as $field => $filter)
+					<span class="inline-flex items-center gap-x-0.5 rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+						{{ $filter['title'] }}
+						<button wire:click.prevent="removeFilter('{{ $field }}')" type="button" class="group relative -mr-1 h-3.5 w-3.5 rounded-sm hover:bg-yellow-600/20">
+							<span class="sr-only">Remove</span>
+								<svg viewBox="0 0 14 14" class="h-3.5 w-3.5 stroke-yellow-700/50 group-hover:stroke-yellow-700/75" >
+									<path d="M4 4l6 6m0-6l-6 6" />
+								</svg>
+							<span class="absolute -inset-1"></span>
+						</button>
+					</span>
+				@endforeach
+			</div>
+				
+			<a href="#" wire:click.prevent="resetFilter" class="text-gray-500">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+				</svg>
+			</a>
+		</div>
+	@endif
+
 	<div class="overflow-x-auto mb-2">
-		<table class="min-w-full divide-y border-t divide-gray-200">
+		<table class="min-w-full divide-y border-t divide-gray-100">
 		<thead class="bg-gray-100 rounded">
 		  <tr>
 			  @forelse($table as $column)
@@ -182,4 +198,6 @@
 			{{ $collection->links('admin::pagination') }}
 		</div>
 	@endif
+
+	
 </div>

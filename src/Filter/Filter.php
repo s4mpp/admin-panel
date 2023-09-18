@@ -18,12 +18,49 @@ class Filter
 
 	// public ?string $question = null;
 
+	private array $options = [];
+
 	function __construct(public string $title, public ?string $field)
 	{}
 
 	public static function create(string $title, string $field)
 	{
 		return new Filter($title, $field);
+	}
+
+	public function enum(array $cases)
+	{
+		$options = [];
+
+		foreach($cases as $case)
+		{
+			$options[] = [
+				'id' => $case->value,
+				'label' => (method_exists($case, 'label')) ? $case->label() : $case->name,
+			];
+		}
+		
+		$this->options = $options;
+
+		return $this;
+	}
+
+	public function getOptions(): array
+	{
+		return $this->options;
+	}
+
+	public function getOption(int $value): ?array
+	{
+		foreach($this->options as $option)
+		{
+			if($option['id'] == $value)
+			{
+				return $option;
+			}
+		}
+
+		return null;
 	}
 
 	/*public function target(string | array $target)
