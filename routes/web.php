@@ -14,7 +14,7 @@ use S4mpp\AdminPanel\Controllers\AdminController;
 
 $route = Route::middleware('web');
 
-$prefix = config('admin.prefix');
+$prefix = config('admin.prefix', 'painel');
 
 if($prefix)
 {

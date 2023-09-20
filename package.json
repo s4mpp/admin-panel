@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx tailwindcss -i ./assets/input.css -o ./dist/style.css -o ../../public/vendor/s4mpp/admin-panel.css  --watch",
-    "build": "npx tailwindcss -o ./dist/style.css --minify"
+    "dev": "npx tailwindcss -i ./assets/input.css -o ../../public/vendor/s4mpp/admin-panel.css  --watch",
+    "build": "npx tailwindcss -i ./assets/input.css  -o ./dist/style.css --minify"
   },
   "author": "",
   "license": "ISC",
