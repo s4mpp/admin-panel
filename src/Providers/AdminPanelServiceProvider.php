@@ -4,7 +4,6 @@ namespace S4mpp\AdminPanel\Providers;
 
 use Livewire\Livewire;
 use Illuminate\Pagination\Paginator;
-use S4mpp\AdminPanel\Commands\Install;
 use Illuminate\Support\ServiceProvider;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
@@ -36,8 +35,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 		{
 			$this->commands([
 				CreateAdmin::class,
-				ResetPasswordAdmin::class,
-				Install::class,
+				ResetPasswordAdmin::class
 			]);
 
 			$this->publishes([
