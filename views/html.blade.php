@@ -13,15 +13,21 @@
 	@endif
 
 	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	
+	<link rel="stylesheet" href="{{ asset('vendor/s4mpp/admin-panel.css') }}">
+	<link rel="stylesheet" href="{{ asset('vendor/s4mpp/element.css') }}">
+	
 
-	@vite(['resources/css/app.css'])
+	{{-- @vite(['resources/css/app.css']) --}}
 
 	@livewireStyles
 </head>
 <body class="h-full">
 	@yield('main-content')
 
-	@vite(['resources/js/app.js'])
+	<script src="//unpkg.com/alpinejs" defer></script>
+
+	{{-- @vite(['resources/js/app.js']) --}}
 
 	@livewireScripts
 </body>

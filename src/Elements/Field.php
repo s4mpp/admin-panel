@@ -69,9 +69,11 @@ class Field implements ElementInteface
 		return $this;
 	}
 
-	public function textarea()
+	public function textarea(int $rows)
 	{
 		$this->type = 'textarea';
+		
+		$this->rows = $rows;
 
 		return $this;
 	}

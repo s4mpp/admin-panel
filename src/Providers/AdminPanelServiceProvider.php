@@ -49,6 +49,10 @@ class AdminPanelServiceProvider extends ServiceProvider
 			$this->publishes([
 				__DIR__.'/../../stubs/UserResource.stub' => app_path('AdminPanel/UserResource.php'), 
 			], 'admin-user-resource');
+			
+			$this->publishes([
+				__DIR__.'/../../dist/style.css' => public_path('vendor/s4mpp/admin-panel.css'), 
+			], 'admin-style');
 		}
     }
 
