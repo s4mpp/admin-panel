@@ -4,7 +4,7 @@
 
 @section('auth-content')
 
-	<p class="text-center mb-4 text-sm leading-6 text-gray-500">
+	<p class="text-center mb-4 text-sm leading-6 text-gray-500 bg-primary-500">
 		Entre com seu usuário e senha:</a>
     </p>
 
