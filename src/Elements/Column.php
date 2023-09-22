@@ -7,9 +7,9 @@ use Illuminate\Support\Str;
 class Column
 {
 	public string $type = 'text';
-	
-	public array $style_class = [];
 
+	public bool $is_relation = false;
+	
 	public $callback;
 
 	function __construct(public $title, public $field)
@@ -53,6 +53,10 @@ class Column
 
 	public function relation(string $fk_field)
 	{
+		$this->is_relation = true;
+
+		$this->fk_field = $fk_field;
+
 		$this->callback(function($item) use ($fk_field)
 		{
 			return $item->{$fk_field} ?? null;
@@ -100,14 +104,14 @@ class Column
 
 	public function align(string $alignment)
 	{
-		$this->style_class[] = 'text-'.$alignment;
+		$this->alignment = $alignment;
 		
 		return $this;
 	}
 
 	public function strong()
 	{
-		$this->style_class[] = 'font-semibold text-gray-900';
+		$this->strong = true;
 		
 		return $this;
 	}

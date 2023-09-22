@@ -42,30 +42,8 @@ class Table extends Component
 
     public function render()
     {
-        $collection = $this->resource->getModel()::orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC')
-        ->where(function($builder)
-        {
-            foreach($this->filters as $field => $filter)
-            {
-                $builder->whereIn($field, array_values($filter['values']));
-            }
-
-            if($this->search && is_array($this->resource->search))
-            {
-                $builder->where(function($builder)
-                {
-                    foreach($this->resource->search as $key => $value)
-                    {
-                        $field_to_search = (is_string($key)) ? $key : $value;
-    
-                        $builder->orWhere($field_to_search, 'like', '%'.$this->search.'%');
-                    }
-                });
-            }
-            
-        })
-        ->paginate();
-
+        $collection = $this->_getRegisters();
+        
         return view('admin::livewire.table', [
             'has_search' => $this->resource->search ?? false,
             'registers' => $this->_getData($collection),
@@ -140,6 +118,54 @@ class Table extends Component
         {
             $this->filters_available[$filter->field] = $filter;
         }
+    }
+
+    private function _getRegisters()
+    {
+        $table_info = $this->resource->getTable();
+
+        $fields = ['id'];
+        $with_eager_loading = [];
+        
+        foreach($table_info as $column)
+        {
+            if($column->is_relation)
+            {
+                $fields[] = $column->field.'_id';
+
+                $with_eager_loading = $column->field.':id,'.$column->fk_field;
+
+                continue;   
+            }
+
+            $fields[] = $column->field;
+        }
+
+        $query = $this->resource->getModel()->select($fields);
+        
+        $query = $query->with($with_eager_loading);
+        
+        $query->orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC');
+        
+        foreach($this->filters as $field => $filter)
+        {
+            $query->whereIn($field, array_values($filter['values']));
+        }
+        
+        if($this->search && is_array($this->resource->search))
+        {
+            $query->where(function($builder)
+            {
+                foreach($this->resource->search as $key => $value)
+                {
+                    $field_to_search = (is_string($key)) ? $key : $value;
+
+                    $builder->orWhere($field_to_search, 'like', '%'.$this->search.'%');
+                }
+            });
+        } 
+        
+        return $query->paginate();
     }
 
     private function _getData($collection)

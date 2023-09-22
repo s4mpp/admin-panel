@@ -5,8 +5,6 @@
 
 @section('title', 'Visualizar')
 
-
-
 @section('content-resource')
 
 	<div class="overflow-hidden rounded-lg bg-white border">

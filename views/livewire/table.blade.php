@@ -5,6 +5,8 @@
 	{
 		$rowspan_empty++;
 	}
+
+	$default_action = (isset($actions['read'])) ? $actions['read'] : ((isset($actions['update'])) ? $actions['update'] : null);
 @endphp
 
 <div class="border lg:rounded-lg bg-white mx-0 sm:-mx-6 lg:mx-0"> 
@@ -86,7 +88,10 @@
 		<thead class="bg-gray-100 rounded">
 		  <tr>
 			  @forelse($table as $column)
-				  <th scope="col" @class(array_merge($column->style_class, ['px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap']))>{{ $column->title }}</th>
+				  <th scope="col" @class([
+					'text-center' => (($column->alignment ?? null) == 'center'),
+					'text-right' => (($column->alignment ?? null) == 'right'),
+					'px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap'])>{{ $column->title }}</th>
 			  @empty
 				  <th scope="col" class="px-3 py-3.5">&nbsp;</th>
 			  @endforelse
@@ -99,9 +104,23 @@
 		<tbody class="divide-y divide-gray-200 bg-white">
 			@if($registers)
 				@foreach($registers as $id => $row)
-					<tr>
+					<tr class="group">
 						@forelse ($row as $field)
-							<td @class(array_merge($field->style_class, ['whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500']))>
+							<td 
+							@if($default_action)
+								x-on:click="window.location.href = '{{ route($routes[$default_action->route], ['id' => $id])  }}'"
+							@endif
+							@class([
+								'text-center' => (($field->alignment ?? null) == 'center'),
+								'text-right' => (($field->alignment ?? null) == 'right'),
+								
+								'font-semibold text-gray-900' => $field->strong ?? false,
+								'cursor-pointer' => $default_action,
+								'group-hover:bg-gray-100/75' => $default_action,
+								'transition-colors' => $default_action,
+								'peer' => $default_action,
+								'whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500'
+							])>
 								@php
 									$data = $field->data;
 								@endphp
@@ -136,7 +155,12 @@
 						@endforelse 
 
 						@if($actions)
-							<td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+							<td
+							@class([
+								'hover:bg-gray-100/75' => $default_action,
+								'peer-hover:bg-gray-100/75 transition-colors' => $default_action,
+								'whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'
+							])>
 							   <div class="inline-flex gap-3">
 								   @foreach($actions as $action)
 
