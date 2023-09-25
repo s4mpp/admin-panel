@@ -115,10 +115,7 @@
 								'text-right' => (($field->alignment ?? null) == 'right'),
 								
 								'font-semibold text-gray-900' => $field->strong ?? false,
-								'cursor-pointer' => $default_action,
-								'group-hover:bg-gray-100/75' => $default_action,
-								'transition-colors' => $default_action,
-								'peer' => $default_action,
+								'cursor-pointer group-hover:bg-gray-50/90 transition peer' => $default_action,
 								'whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500'
 							])>
 								@php
@@ -157,8 +154,7 @@
 						@if($actions)
 							<td
 							@class([
-								'hover:bg-gray-100/75' => $default_action,
-								'peer-hover:bg-gray-100/75 transition-colors' => $default_action,
+								'hover:bg-gray-50/90 peer-hover:bg-gray-50/90 transition-colors' => $default_action,
 								'whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'
 							])>
 							   <div class="inline-flex gap-3">

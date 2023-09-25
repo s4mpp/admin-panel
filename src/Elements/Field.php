@@ -46,6 +46,16 @@ class Field implements ElementInteface
 		$this->prepare_for_validation = $callback;
 	}
 
+	public function rules(string ...$rules)
+	{
+		foreach($rules as $rule)
+		{
+			$this->rules[] = $rule;
+		}
+
+		return $this;
+	}
+
 	public function email()
 	{
 		$this->type = 'email';
@@ -82,8 +92,13 @@ class Field implements ElementInteface
 	{
 		$this->type = 'currency';
 
-		$this->prepare_for_validation = function(string $value) use ($has_cents)
+		$this->prepare_for_validation = function(string $value = null) use ($has_cents)
 		{
+			if(is_null($value) || !$value)
+			{
+				return null;
+			}
+
 			$nb_float = Format::numberToFloat($value);
 
 			if($has_cents)
@@ -94,18 +109,9 @@ class Field implements ElementInteface
 			return $nb_float;
 		};
 
-		if($has_cents)
-		{
-			$this->rules[] = 'integer';
-			$this->rules[] = 'min:1';
-			$this->rules[] = 'max:21000000';
-		}
-		else
-		{
-			$this->rules[] = 'numeric';
-			$this->rules[] = 'min:0.01';
-			$this->rules[] = 'max:21000000.00';
-		}
+		$this->rules = ($has_cents)
+		? array_merge($this->rules, ['integer', 'min:1', 'max:21000000'])
+		: array_merge($this->rules, ['numeric', 'min:0.01', 'max:21000000.00']);
 		
 		$this->_removeRule('string');
 

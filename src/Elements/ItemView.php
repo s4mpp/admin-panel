@@ -79,4 +79,20 @@ class ItemView implements ElementInteface
 
 		return $this;
 	}
+
+	public function relation(string $fk_field)
+	{
+		$this->is_relation = true;
+
+		$this->fk_field = $fk_field;
+
+		$this->callback(function($item) use ($fk_field)
+		{
+			return $item->{$fk_field} ?? null;
+		});
+
+		return $this;
+	}
+
+	
 }
