@@ -1,7 +1,4 @@
-@extends('admin::layout', ['breadcrumbs' => [
-	[$title, route($routes['index'])],
-	['Listar', ''],
-]])
+@extends('admin::layout', ['breadcrumbs' => []])
 
 @section('title', $title)
 

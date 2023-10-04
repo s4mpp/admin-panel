@@ -1,21 +1,17 @@
-@extends('admin::resources.resource')
+@extends('admin::layout')
 
-@section('title', 'Editar')
+@section('title', 'Configurações')
 
-@section('content-resource')
-
-	<form method="POST" class="mb-0" action={{ route($routes['save'], ['id' => $register->id]) }} x-data="{loading: false}" x-on:submit="loading = true">
+@section('content')
+	<form method="POST" class="mb-0" action={{ route('store_settings') }} x-data="{loading: false}" x-on:submit="loading = true">
 		@csrf
 		@method('PUT')
-
+			
 		<div class="overflow-hidden sm:rounded-lg bg-white border-t border-b sm:border-l sm:border-r  mb-6">
-			@include('admin::resources.form')
+			
 		</div>
 
-		@livewire('repeater', [
-			
-		])
-
+		
 		<div class="px-4 sm:px-0">
 			<x-button type="submit" className="btn-primary">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
@@ -25,5 +21,6 @@
 				<span>Salvar</span>
 			</x-button>
 		</div>
+
 	</form>
 @endsection

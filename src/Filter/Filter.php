@@ -18,6 +18,8 @@ class Filter
 
 	// public ?string $question = null;
 
+	private string $type = 'enum';
+
 	private array $options = [];
 
 	function __construct(public string $title, public ?string $field)
@@ -26,6 +28,13 @@ class Filter
 	public static function create(string $title, string $field)
 	{
 		return new Filter($title, $field);
+	}
+
+	public function period()
+	{
+		$this->type = 'period';
+
+		return $this;
 	}
 
 	public function enum($class)
@@ -62,6 +71,13 @@ class Filter
 
 		return null;
 	}
+
+	public function getType(): string
+	{
+		return $this->type;
+	}
+
+
 
 	/*public function target(string | array $target)
 	{

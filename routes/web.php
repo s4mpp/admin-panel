@@ -104,4 +104,11 @@ $route->group(function()
 			});
 		}
 	});
+
+
+	Route::middleware('auth:'.$guard)->controller(AdminController::class)->group(function()
+	{
+		Route::get('configuracoes', 'settings')->name('admin_settings');
+		Route::put('configuracoes', 'storeSettings')->name('store_settings');
+	});
 });

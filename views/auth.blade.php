@@ -1,4 +1,4 @@
-@extends('admin::html', ['color' => 'bg-gray-50'])
+@extends(config('admin.layout_extends', 'admin::html'), ['color' => 'bg-gray-50'])
 
 @php
 	$logo_admin_light = config('admin.logo.light');

@@ -66,7 +66,7 @@ class CreateAdmin extends Command
                 $this->info('Role: '.$this->role_user->name);
             }
 
-            $this->info('URL: '.route(Routes::login()));
+            $this->info('URL: '.route(Routes::identifier('admin-panel')->login()));
         }
         catch(\Exception $e)
         {

@@ -16,13 +16,13 @@ abstract class Read
 
 			foreach($read as $item)
 			{
-				if($item->callback)
+				if($item->getCallback())
 				{
 					$field = $item->value;
 
 					if(isset($register->{$field}))
 					{
-						$register->{$field} = call_user_func($item->callback, $register->{$field});
+						$register->{$field} = call_user_func($item->getCallback(), $register->{$field});
 					}
 				}
 			}

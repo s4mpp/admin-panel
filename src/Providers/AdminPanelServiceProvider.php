@@ -9,7 +9,8 @@ use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
-use S4mpp\AdminPanel\Livewire\Table as LivewireTable;
+use S4mpp\AdminPanel\Livewire\Repeater;
+use S4mpp\AdminPanel\Livewire\Table;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -27,7 +28,8 @@ class AdminPanelServiceProvider extends ServiceProvider
 
 		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
-		Livewire::component('table', LivewireTable::class);
+		Livewire::component('table', Table::class);
+		Livewire::component('repeater', Repeater::class);
 
 		Paginator::defaultView('admin::pagination');
 

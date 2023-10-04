@@ -10,10 +10,23 @@
 @endphp
 
 <div class="border lg:rounded-lg bg-white mx-0 sm:-mx-6 lg:mx-0"> 
-	<div class="min-w-full px-4 sm:px-6 py-2 flex justify-start">
+	<div class="min-w-full px-2  py-2 flex justify-start">
 		@if($has_search)
 			<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12 mr-3">
-				<x-input placeholder="{{ $placeholder_field_search }}" wire:model.debounce.500ms="search" type="search" name="search"></x-input>
+				<x-input autofocus placeholder="{{ $placeholder_field_search }}" wire:model.debounce.500ms="search" type="search" name="search">
+					<x-slot:start>
+						<div wire:loading wire:target="search">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class=" animate-spin w-5 h-5">
+								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+							</svg>
+						</div>
+						<div wire:loading.remove wire:target="search">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+							</svg>
+						</div>
+					</x-slot:start>
+				</x-input>
 			</div>
 		@endif
 
@@ -36,12 +49,25 @@
 							@foreach($this->filters_available as $filter)
 								@php $i=0; @endphp
 								<div class="py-4">
-									<x-input type="checkbox" title="{{ $filter->title }}" name="{{ $filter->field }}[]">
-										@foreach($filter->getOptions() as $option)
-											<x-check 
-											wire:model.defer="filters.{{ $filter->field }}.values.{{ $i++ }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
-										@endforeach
-									</x-input>
+									 
+									@if($filter->getType() == 'enum')
+										<x-input type="checkbox" title="{{ $filter->title }}" name="{{ $filter->field }}[]">
+											@foreach($filter->getOptions() as $option)
+												<x-check 
+												wire:model.defer="filters.{{ $filter->field }}.values.{{ $i++ }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
+											@endforeach
+										</x-input>
+									@elseif($filter->getType() == 'period')
+										<div class="flex justify-between align-end">
+											<div class="flex-fill">
+												<x-input type="date" wire:model.defer="filters.{{ $filter->field }}.start" name="start" title="Data inicial" />
+											</div>
+											<span class="text-base text-gray-700 w-12 text-center pb-2 justify-end flex flex-col">até</span>
+											<div class="flex-fill">
+												<x-input type="date" wire:model.defer="filters.{{ $filter->field }}.end" name="end" title="Data final" />
+											</div>
+										</div>
+									@endif
 								</div>
 							@endforeach
 						</div>
@@ -57,7 +83,7 @@
 	</div>
 
 	@if($this->filters)
-		<div class="min-w-full px-4 sm:px-6 py-2 flex justify-between items-center bg-gray-50 border-t">
+ 		<div class="min-w-full px-4 sm:px-6 py-2 flex justify-between items-center bg-gray-50 border-t">
 			<div>
 				<span class="text-sm font-semibold text-gray-600 mr-3">Filtros: </span>
 
@@ -105,7 +131,7 @@
 			@if($registers)
 				@foreach($registers as $id => $row)
 					<tr class="group">
-						@forelse ($row as $field)
+						@forelse ($row['registers'] as $field)
 							<td 
 							@if($default_action)
 								x-on:click="window.location.href = '{{ route($routes[$default_action->route], ['id' => $id])  }}'"
@@ -121,7 +147,7 @@
 								@php
 									$data = $field->data;
 								@endphp
-								@switch($field->type)
+								@switch($field->getType())
 									@case('boolean')
 										
 										@if($data)
@@ -151,7 +177,7 @@
 							<td>&nbsp;</td>
 						@endforelse 
 
-						@if($actions)
+						@if($actions || $row['custom_actions'])
 							<td
 							@class([
 								'hover:bg-gray-50/90 peer-hover:bg-gray-50/90 transition-colors' => $default_action,
@@ -193,9 +219,68 @@
 										   </form>
 									   @endif
 								   @endforeach
+
+								   {{-- @if($row['custom_actions'])
+								
+									<div class="inline-flex   -ml-2 -mt-0.5 -mr-4" x-data="{dropdownCustomActions : false}">
+											<button type="button" class=" w-full pl-2 pr-3" x-on:click="dropdownCustomActions = !dropdownCustomActions">
+												<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+													<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+												</svg>
+											</button>
+		
+											<div x-on:click.outside="dropdownCustomActions = false;"
+											x-cloak
+											x-show="dropdownCustomActions"
+											x-transition:enter="transition ease-out duration-100"
+											x-transition:enter-start="transform opacity-0 scale-95"
+											x-transition:enter-end="transform opacity-100 scale-100"
+											x-transition:leave="transition ease-in duration-75"
+											x-transition:leave-start="transform opacity-100 scale-100"
+											x-transition:leave-end="transform opacity-0 scale-95"
+										class="absolute right-10 z-10 mt-6 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+											<div class="py-1" role="none">
+		
+												@foreach ($row['custom_actions'] ?? [] as $action)
+		
+													@if($action->is_disabled)
+		
+														<div data-tippy-content="{{ $action->disabled_message }}" >
+															<button disabled type="button" class="text-gray-700/50 cursor-not-allowed w-full text-start block px-4 py-2 text-sm">
+																{{ $action->title }}
+															</button>
+														</div>
+		
+														@continue
+													@endif
+		
+													@if($action->question)
+														<a href="#" x-on:click="modal{{ Str::camel($action->slug) }} = true, dropdownCustomActions = false" class="text-gray-700 hover:bg-gray-100 text-start hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->title }}</a>
+													@else
+														@if($action->method == 'GET')
+															<div x-data="{loading: false}">
+																<a href="{{ route($routes[$action->route], ['id' => $id]) }}" class="text-gray-700 text-start hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->title }}</a>
+															</div>
+														@else
+															<form x-data="{loading: false}" x-on:submit="loading = true" action="{{ route($routes[$action->route], ['id' => $id]) }}" method="POST">
+																@csrf
+																@method($action->method)
+																<button type="submit" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-start block px-4 py-2 text-sm">{{ $action->title }}</button>
+															</form>
+														@endif
+													@endif
+												@endforeach
+											</div>
+										</div>
+									</div>
+									@endif --}}
 							   </div>
+
 							</td>
 						@endif
+
+
+						
 					</tr>
 				@endforeach
 			@else
@@ -213,11 +298,12 @@
 	  </table>
 	</div>
 
+	
 	@if($collection->hasPages())
-		<div class="min-w-full px-3 pb-4">
+		<div class="flex-auto px-3">
 			{{ $collection->links('admin::pagination') }}
 		</div>
 	@endif
-
 	
+	<p class="text-center border-t pt-3 text-xs mb-3 text-gray-700">{{ $collection->total() }} {{ Str::plural('registro', $collection->total()) }}</p>
 </div>

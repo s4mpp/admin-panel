@@ -2,10 +2,10 @@
 	<div class="text-sm font-medium text-slate-900 xl:col-span-2">{{ $item->title }}</div>
 	<div class="text-sm font-normal text-slate-700 xl:col-span-10">
 
-		@if($item->default_text && is_null($resource->{$item->value}))
-			<span class="opacity-60">{{ $item->default_text }}</span>
+		@if($item->getDefaultText() && is_null($resource->{$item->value}))
+			<span class="opacity-60">{{ $item->getDefaultText() }}</span>
 		@else
-			@switch($item->type)
+			@switch($item->getType())
 				@case('boolean')
 					{{ $resource->{$item->value} ? 'Sim' : 'Não' }}
 				@break;

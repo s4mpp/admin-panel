@@ -1,7 +1,4 @@
-@extends('admin::resources.resource', ['breadcrumbs' => [
-	[$title, route($routes['index'])],
-	['Visualizar', ''],
-]])
+@extends('admin::resources.resource')
 
 @section('title', 'Visualizar')
 

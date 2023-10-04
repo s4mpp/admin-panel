@@ -5,6 +5,7 @@ namespace S4mpp\AdminPanel\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Resources\Resource;
 
 class Table extends Component
@@ -61,30 +62,68 @@ class Table extends Component
         {
             if(isset($this->filters[$filter->field]))
             {
-                $values = array_filter($this->filters[$filter->field]['values']);
-
-                if(!$values)
-                {
-                    unset($this->filters[$filter->field]);
-
-                    continue;
-                }
-
                 $title = $filter->title;
 
-                $values_label = [];
-
-                foreach($values as $value)
+                switch($filter->getType())
                 {
-                    $option = $this->filters_available[$filter->field]->getOption(intval($value));
+                    case 'enum':
 
-                    $values_label[] = $option['label'] ?? '--';
-                }
+                        $values = array_filter($this->filters[$filter->field]['values']);
+        
+                        if(!$values)
+                        {
+                            unset($this->filters[$filter->field]);
+        
+                            break;
+                        }                    
+        
+                        $values_label = [];
+        
+                        foreach($values as $value)
+                        {
+                            $option = $this->filters_available[$filter->field]->getOption(intval($value));
+        
+                            $values_label[] = $option['label'] ?? '--';
+                        }
+        
+                        $title .= ': '.join(', ', $values_label);
+                        
+                        $this->filters[$filter->field] = ['type' => 'enum', 'title' => $title, 'values' => $values];
+                        
+                        break;
 
-                $title .= ': '.join(', ', $values_label);
-                
+                    case 'period';
 
-                $this->filters[$filter->field] = ['title' => $title, 'values' => $values];
+                        $start = $this->filters[$filter->field]['start'] ?? null;
+                        $end = $this->filters[$filter->field]['end'] ?? null;
+
+                        if($start && $end)
+                        {
+                            $title .= ': '.date('d/m/Y', strtotime($start)).' a '.date('d/m/Y', strtotime($end));
+                        }
+                        else if($start && !$end)
+                        {
+                            $title .= ': a partir de '.date('d/m/Y', strtotime($start));
+                        }
+                        else if($start && !$end)
+                        {
+                            $title .= ': até '.date('d/m/Y', strtotime($end));
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        
+                        $this->filters[$filter->field] = [
+                            'type' => 'period',
+                            'title' => $title, 
+                            'start' => $start,
+                            'end' => $end
+                        ];
+                        
+                        break;
+                }            
+
             }
         }
 
@@ -107,6 +146,13 @@ class Table extends Component
 
     private function _setFilters()
     {
+        $model = $this->resource->getModel();
+
+        if($model->timestamps)
+        {
+            $this->filters_available['created_at'] = Filter::create('Período', 'created_at')->period();
+        }
+
         if(!method_exists($this->resource, 'getFilters'))
         {
             return;
@@ -129,7 +175,7 @@ class Table extends Component
         
         foreach($table_info as $column)
         {
-            if($column->is_relation)
+            if($column->isRelation())
             {
                 $fields[] = $column->field.'_id';
 
@@ -149,7 +195,25 @@ class Table extends Component
         
         foreach($this->filters as $field => $filter)
         {
-            $query->whereIn($field, array_values($filter['values']));
+            if($filter['type'] == 'enum')
+            {
+                $query->whereIn($field, array_values($filter['values']));
+            }
+            elseif($filter['type'] == 'period')
+            {
+                $query->where(function($query) use ($field, $filter)
+                {
+                    if($filter['start'])
+                    {
+                        $query->where($field, '>=', $filter['start'].' 00:00:00');
+                    }
+
+                    if($filter['end'])
+                    {
+                        $query->where($field, '<=', $filter['end'].' 23:59:59');
+                    }
+                });
+            }
         }
         
         if($this->search && is_array($this->resource->search))
@@ -181,12 +245,15 @@ class Table extends Component
 				$data = clone $column;
 
 				$data->original_data =  $row->{$column->field};
-				$data->data = is_callable($column->callback) ? call_user_func($column->callback, $data->original_data) : $data->original_data;
+				$data->data = is_callable($column->getCallback()) ? call_user_func($column->getCallback(), $data->original_data) : $data->original_data;
 
+                
 				$data_row[] = $data;
 			}
-
-			$registers[$row->id] = $data_row;
+            
+            $custom_actions = $this->resource->getCustomActionsResource($row);
+			
+            $registers[$row->id] = ['registers' => $data_row, 'custom_actions' => $custom_actions];
 		}
 
         return $registers;

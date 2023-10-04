@@ -4,29 +4,17 @@ namespace S4mpp\AdminPanel\Elements;
 
 use S4mpp\Format\Format;
 use Illuminate\Database\Eloquent\Collection;
-use S4mpp\AdminPanel\Elements\ElementInteface;
+use S4mpp\AdminPanel\Traits\HasLabel;
 
-class Field implements ElementInteface
+class Field
 {
-	public array $class = [];
-
-	public string $type = 'text';
+	use HasLabel;
 	
-	public array $rules = ['required', 'string'];
+	private array $rules = ['required', 'string'];
 
-	public array $additional_data = [];
-	
-	public array $attributes = [];
-
-	public ?int $rows = null;
-	
-	public float $min = 0;
+	private array $additional_data = [];
 		
-	public ?float $max = null;
-	
-	public ?float $step = null;
-
-	public $prepare_for_validation = null;
+	private $prepare_for_validation = null;
 
 	function __construct(public $title, public $name)
 	{}
@@ -44,6 +32,16 @@ class Field implements ElementInteface
 	public function prepareForValidation(callable $callback)
 	{
 		$this->prepare_for_validation = $callback;
+	}
+
+	public function getRules(): array
+	{
+		return $this->rules;
+	}
+
+	public function getAdditionalData(string $key)
+	{
+		return $this->additional_data[$key] ?? null;
 	}
 
 	public function rules(string ...$rules)
@@ -79,11 +77,11 @@ class Field implements ElementInteface
 		return $this;
 	}
 
-	public function textarea(int $rows)
+	public function textarea(int $rows = 4)
 	{
 		$this->type = 'textarea';
 		
-		$this->rows = $rows;
+		$this->additional_data['rows'] = $rows;
 
 		return $this;
 	}
@@ -124,7 +122,7 @@ class Field implements ElementInteface
 	{
 		$this->type = 'number';
 
-		$this->step = 0.01;
+		$this->additional_data['step'] = 0.01;
 
 		$this->rules[] = 'numeric';
 
@@ -135,7 +133,7 @@ class Field implements ElementInteface
 	{
 		$this->type = 'number';
 
-		$this->step = 1;
+		$this->additional_data['step'] = 1;
 		
 		$this->rules[] = 'integer';
 
@@ -144,7 +142,7 @@ class Field implements ElementInteface
 
 	public function min(float $min)
 	{
-		$this->min = $min;
+		$this->additional_data['min'] = $min;
 
 		$this->rules[] = 'min:'.$min;
 
@@ -153,7 +151,7 @@ class Field implements ElementInteface
 
 	public function max(float $max)
 	{
-		$this->max = $max;
+		$this->additional_data['max'] = $max;
 
 		$this->rules[] = 'max:'.$max;
 
@@ -165,7 +163,7 @@ class Field implements ElementInteface
 		$this->type = 'boolean';
 
 		$this->notRequired();
-
+		
 		$this->rules[] = 'boolean';
 
 		return $this;

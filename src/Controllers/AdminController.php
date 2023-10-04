@@ -33,4 +33,14 @@ class AdminController extends Controller
     {
         return redirect()->back()->with('message', 'Senha gerada com sucesso');
     }
+
+    public function settings()
+    {
+        return view('admin::settings');
+    }
+
+    public function storeSettings()
+    {
+        return redirect()->back()->with('message', 'Alterações salvas com sucesso.');
+    }
 }

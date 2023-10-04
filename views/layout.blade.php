@@ -1,4 +1,4 @@
-@extends('admin::html', ['color' => 'bg-gray-50'])
+@extends(config('admin.layout_extends', 'admin::html'), ['color' => 'bg-gray-50'])
 
 @php
 	$guard = config('admin.guard', 'web');
@@ -80,7 +80,7 @@
 								@class([
 									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors',
 									'hover:bg-gray-50 text-primary text-gray-600 ' => !$item->active,
-									'bg-gray-50 text-primary' => $item->active,
+									'text-white  bg-gray-500 bg-primary' => $item->active,
 								])
 								href="{{ $item->route ?? '#' }}">
 						
@@ -134,9 +134,9 @@
 						<li>
 							<a 
 							@class([
-								'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors',
-								'hover:bg-gray-50 text-primary text-gray-600 ' => !$item->active,
-								'bg-gray-50 text-primary' => $item->active,
+								'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors ',
+								'hover:bg-gray-100 text-primary text-gray-600 ' => !$item->active,
+								'text-white  bg-gray-500 bg-primary' => $item->active,
 							])
 							href="{{ $item->route ?? '#' }}">
 								<svg @class([
@@ -163,8 +163,9 @@
   
 	<div class="lg:pl-72">
 
-		<div class="sticky top-0 z-40 flex items-center lg:justify-end gap-x-6 bg-primary lg:bg-white px-4 py-4 shadow-sm sm:px-6 ">
-			<button x-on:click="menuOfCanvasMobile = !menuOfCanvasMobile"  type="button" class="-m-2.5 p-2.5 text-white/90 ">
+		<div class=" bg-primary shadow-sm sticky top-0 z-40 ">
+			<div class="bg-white/0 lg:bg-white/100 flex items-center lg:justify-end  gap-x-6  px-4 py-4  sm:px-6 ">
+			<button x-on:click="menuOfCanvasMobile = !menuOfCanvasMobile"  type="button" class="-m-2.5 p-2.5 text-white/90 lg:hidden ">
 			  <span class="sr-only">Open sidebar</span>
 			  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -220,6 +221,7 @@
 			  </div>
 		  
 		</div>
+		</div>
 
   
 	  <main class="pb-10 pt-6">
@@ -239,32 +241,41 @@
 
 				  @isset($breadcrumbs)
 					<nav class="flex" aria-label="Breadcrumb">
-						<ol role="list" class="flex items-center space-x-2">
-						<li>
-							<div>
-							<a href="{{ route($route_home) }}" class="text-gray-400 hover:text-gray-500">
-								<svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-									<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
-								</svg>
-								<span class="sr-only">Home</span>
-							</a>
-							</div>
-						</li>
-
-						@foreach($breadcrumbs as $breadcrumb)
+							<ol role="list" class="flex items-center space-x-2">
 							<li>
-								<div class="flex items-center">
-								<svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-									<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-								</svg>
-								@if(isset($breadcrumb[1]) && !empty($breadcrumb[1]))
-									<a href="{{ $breadcrumb[1] }}" class="ml-2 text-sm font-medium text-gray-500 hover:text-gray-700">{{ $breadcrumb[0] }}</a>
-								@else
-									<span class="ml-2 text-sm font-medium text-gray-500">{{ $breadcrumb[0] }}</span>
-								@endif
+								<div>
+								<a href="{{ route($route_home) }}" class="text-gray-400 hover:text-gray-500">
+									<svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+										<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
+									</svg>
+									<span class="sr-only">Home</span>
+								</a>
 								</div>
 							</li>
-						@endforeach
+
+							@foreach($breadcrumbs as $breadcrumb)
+								<li>
+									<div class="flex items-center">
+										<svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+											<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+										</svg>
+										@if(isset($breadcrumb[1]) && !empty($breadcrumb[1]))
+											<a href="{{ $breadcrumb[1] }}" class="ml-2 text-sm font-medium text-gray-500 hover:text-gray-700">{{ $breadcrumb[0] }}</a>
+										@else
+											<span class="ml-2 text-sm font-medium text-gray-500">{{ $breadcrumb[0] }}</span>
+										@endif
+									</div>
+								</li>
+							@endforeach
+							
+							<li>
+								<div class="flex items-center">
+									<svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+										<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+									</svg>
+									<span class="ml-2 text-sm font-medium text-gray-500">@yield('title')</span>
+								</div>
+							</li>
 						</ol>
 					</nav>
 				@endisset

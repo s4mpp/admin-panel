@@ -2,9 +2,7 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
-use S4mpp\AdminPanel\Elements\ElementInteface;
-
-class Card implements ElementInteface
+class Card
 {
 	function __construct(public $title, public array $elements)
 	{}

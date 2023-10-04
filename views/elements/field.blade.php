@@ -1,5 +1,5 @@
 @php
-	$required = in_array('required', $field->rules);
+	$required = in_array('required', $field->getRules());
 @endphp
 
 <div class="p-4 sm:gap-4 sm:p-3 xl:p-6 md:grid md:grid-cols-12">
@@ -14,10 +14,10 @@
 
 	</div>
 	<div class="text-sm font-normal text-slate-700 md:col-span-9 lg:col-span-10 ">
-		@switch($field->type)
+		@switch($field->getType())
 			@case('select')
-				<x-input :required=$required type="{{ $field->type }}" title="" name="{{ $field->name }}" >
-					@foreach($field->additional_data['options'] as $option)
+				<x-input :required=$required type="{{ $field->getType() }}" title="" name="{{ $field->name }}" >
+					@foreach($field->getAdditionalData('options') as $option)
 						<x-option selected="{{ $resource && (($resource->{$field->name}->value ?? $resource->{$field->name}) == $option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-option>
 					@endforeach
 				</x-input>
@@ -25,7 +25,7 @@
 			
 			@case('permissions')
 				<x-input type="checkbox" title="" name="{{ $field->name }}[]">
-					@foreach($field->additional_data['permissions'] as $option)
+					@foreach($field->getAdditionalData('permissions') as $option)
 						<x-check checked="{{ $resource && $resource->can($option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
 					@endforeach
 				</x-input>
@@ -38,13 +38,21 @@
 			@break;
 
 			@case('currency')
-				<x-input :required=$required  type="{{ $field->type }}" title="" name="{{ $field->name }}" x-mask:dynamic="$money($input, ',', '.')" placeholder="0,00">
+				<x-input :required=$required  type="{{ $field->getType() }}" title="" name="{{ $field->name }}" x-mask:dynamic="$money($input, ',', '.')" placeholder="0,00">
 					{{ ($resource->{$field->name} ?? null)  ? Format::currency($resource->{$field->name}, $field->additional_data['has_cents']) : null }}
 				</x-input>
 			@break;
 
 			@default
-				<x-input :required=$required rows="{{ $field->rows }}" max="{{ $field->max }}" min="{{ $field->min }}" step="{{ $field->step }}"  type="{{ $field->type }}" title="" name="{{ $field->name }}">
+				<x-input 
+					:required=$required
+					rows="{{ $field->getAdditionalData('rows') }}"
+					max="{{ $field->getAdditionalData('max') }}"
+					min="{{ $field->getAdditionalData('min') }}"
+					step="{{ $field->getAdditionalData('step') }}"
+					type="{{ $field->getType() }}"
+					name="{{ $field->name }}"
+					title="">
 					{{ $resource->{$field->name} ?? null }}
 				</x-input>
 		@endswitch
