@@ -13,7 +13,7 @@
 	<div class="min-w-full px-2  py-2 flex justify-start">
 		@if($has_search)
 			<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12 mr-3">
-				<x-input autofocus placeholder="{{ $placeholder_field_search }}" wire:model.debounce.500ms="search" type="search" name="search">
+				<x-input placeholder="{{ $placeholder_field_search }}" wire:model.debounce.500ms="search" type="search" name="search">
 					<x-slot:start>
 						<div wire:loading wire:target="search">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class=" animate-spin w-5 h-5">
@@ -51,12 +51,12 @@
 								<div class="py-4">
 									 
 									@if($filter->getType() == 'enum')
-										<x-input type="checkbox" title="{{ $filter->title }}" name="{{ $filter->field }}[]">
+										{{-- <x-input type="checkbox" title="{{ $filter->title }}" name="{{ $filter->field }}[]">
 											@foreach($filter->getOptions() as $option)
 												<x-check 
 												wire:model.defer="filters.{{ $filter->field }}.values.{{ $i++ }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
 											@endforeach
-										</x-input>
+										</x-input> --}}
 									@elseif($filter->getType() == 'period')
 										<div class="flex justify-between align-end">
 											<div class="flex-fill">
@@ -152,8 +152,8 @@
 										
 										@if($data)
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="mx-auto w-5 h-5 fill-green-500">
-											<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-										</svg>
+												<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+											</svg>
 										@else
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="mx-auto w-5 h-5 fill-red-500">
 												<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />

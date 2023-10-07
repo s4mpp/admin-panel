@@ -34,6 +34,11 @@ class Field
 		$this->prepare_for_validation = $callback;
 	}
 
+	public function getPrepareForValidation()
+	{
+		return $this->prepare_for_validation;
+	}
+
 	public function getRules(): array
 	{
 		return $this->rules;

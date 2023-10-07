@@ -15,7 +15,10 @@
 				@break;
 
 				@case('datetime')
-					{{ $resource->{$item->value}?->format($item->format_datetime) }}
+					{{ $resource->{$item->value}?->format($item->getAdditionalData('format')) }}
+					@if($resource->{$item->value})
+						<span class="opacity-50">({{ $resource->{$item->value}?->diffForHumans() }})</span>
+					@endif
 				@break;
 
 				@case('markdown')

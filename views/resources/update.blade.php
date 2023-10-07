@@ -12,9 +12,9 @@
 			@include('admin::resources.form')
 		</div>
 
-		@livewire('repeater', [
+		{{-- @livewire('repeater', [
 			
-		])
+		]) --}}
 
 		<div class="px-4 sm:px-0">
 			<x-button type="submit" className="btn-primary">

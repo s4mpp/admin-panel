@@ -78,23 +78,23 @@
 							<li>
 								<a 
 								@class([
-									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors',
-									'hover:bg-gray-50 text-primary text-gray-600 ' => !$item->active,
+									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-ease-in transition-colors ',
+									'hover:bg-gray-100 text-gray-600 hover:text-primary' => !$item->active,
 									'text-white  bg-gray-500 bg-primary' => $item->active,
 								])
 								href="{{ $item->route ?? '#' }}">
-						
-								<svg @class([
-									'h-6 w-6 shrink-0',
-									'text-gray-400 group-hover:text-primary' => !$item->active,
-									'text-primary' => $item->active
-								]) fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+									<svg @class([
+										'h-6 w-6 shrink-0 transition-colors',
+										'text-gray-400 group-hover:text-primary' => !$item->active,
+										'text-white' => $item->active
+
+									]) fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
 									</svg>
-									
+								
 									<span class="truncate">{{ $item->title }}</span>
 								</a>
-								</li>
+							</li>
 							@endforeach
 						</ul>
 					</li>
@@ -131,25 +131,25 @@
 
 					<ul role="list" class="-mx-2 mt-2 space-y-1">
 						@foreach ($navigation->items as $item)
-						<li>
-							<a 
-							@class([
-								'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors ',
-								'hover:bg-gray-100 text-primary text-gray-600 ' => !$item->active,
-								'text-white  bg-gray-500 bg-primary' => $item->active,
-							])
-							href="{{ $item->route ?? '#' }}">
-								<svg @class([
-									'h-6 w-6 shrink-0',
-									'text-gray-400 group-hover:text-primary' => !$item->active,
-									'text-primary' => $item->active
+							<li>
+								<a 
+								@class([
+									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-ease-in transition-colors ',
+									'hover:bg-gray-100 text-gray-600 hover:text-primary' => !$item->active,
+									'text-white  bg-gray-500 bg-primary' => $item->active,
+								])
+								href="{{ $item->route ?? '#' }}">
+									<svg @class([
+										'h-6 w-6 shrink-0 transition-colors',
+										'text-gray-400 group-hover:text-primary' => !$item->active,
+										'text-white' => $item->active
 
-								]) fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-									<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-							  	</svg>
-							  
-								<span class="truncate">{{ $item->title }}</span>
-							</a>
+									]) fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+									</svg>
+								
+									<span class="truncate">{{ $item->title }}</span>
+								</a>
 							</li>
 						@endforeach
 					</ul>

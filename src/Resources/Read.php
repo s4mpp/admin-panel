@@ -16,7 +16,7 @@ abstract class Read
 
 			foreach($read as $item)
 			{
-				if($item->getCallback())
+				if(is_callable($item->getCallback()))
 				{
 					$field = $item->value;
 

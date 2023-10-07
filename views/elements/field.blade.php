@@ -21,7 +21,7 @@
 						<x-option selected="{{ $resource && (($resource->{$field->name}->value ?? $resource->{$field->name}) == $option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-option>
 					@endforeach
 				</x-input>
-			@break;
+				@break;
 			
 			@case('permissions')
 				<x-input type="checkbox" title="" name="{{ $field->name }}[]">
@@ -29,19 +29,26 @@
 						<x-check checked="{{ $resource && $resource->can($option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
 					@endforeach
 				</x-input>
-			@break;
+				@break;
 			
 			@case('boolean')
 				<x-input type="checkbox" title="" name="{{ $field->name }}" >
 					<x-check checked="{{ $resource->{$field->name} ?? null }}" value="1">Habilitar</x-check>
 				</x-input>
-			@break;
+				@break;
 
 			@case('currency')
 				<x-input :required=$required  type="{{ $field->getType() }}" title="" name="{{ $field->name }}" x-mask:dynamic="$money($input, ',', '.')" placeholder="0,00">
-					{{ ($resource->{$field->name} ?? null)  ? Format::currency($resource->{$field->name}, $field->additional_data['has_cents']) : null }}
+					{{ ($resource->{$field->name} ?? null)  ? Format::currency($resource->{$field->name}, $field->getAdditionalData('has_cents')) : null }}
 				</x-input>
-			@break;
+				@break;
+
+			@case('date')
+				<x-input  :required=$required  type="date" name="{{ $field->name }}" title="">
+						
+					{{ $resource->{$field->name} ? $resource->{$field->name}->format('Y-m-d') : null }}
+				</x-input>
+				@break;
 
 			@default
 				<x-input 
@@ -53,6 +60,7 @@
 					type="{{ $field->getType() }}"
 					name="{{ $field->name }}"
 					title="">
+						
 					{{ $resource->{$field->name} ?? null }}
 				</x-input>
 		@endswitch

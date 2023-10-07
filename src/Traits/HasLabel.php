@@ -16,9 +16,16 @@ trait HasLabel
 
 	private bool $strong = false;
 
+	private array $additional_data = [];
+
 	public function getCallback(): ?callable
 	{
 		return $this->callback ?? null;
+	}
+
+	public function getAdditionalData(string $key)
+	{
+		return $this->additional_data[$key] ?? null;
 	}
 
 	public function getDefaultText(): ?string
@@ -38,17 +45,16 @@ trait HasLabel
 
 	public function datetime(string $format = 'd/m/Y H:i')
 	{
-		$this->callback = function($item) use ($format)
-		{
-			return $item ? $item->format($format) : null;
-		};
+		$this->type = 'datetime';
+
+		$this->additional_data['format'] = $format;
 
 		return $this;
 	}
 
 	public function currency(bool $convert_cents = true, string $prefix = 'R$')
 	{
-		$this->callback(function($value) use ($prefix, $convert_cents)
+		$this->callback = function($value) use ($prefix, $convert_cents)
 		{
 			if(!is_numeric($value))
 			{
@@ -61,7 +67,7 @@ trait HasLabel
 			}
 
 			return $prefix.' '.number_format($value, 2, ',', '.');
-		});
+		};
 
 		return $this;
 	}
@@ -86,6 +92,13 @@ trait HasLabel
 		{
 			return $item->{$fk_field} ?? null;
 		};
+
+		return $this;
+	}
+
+	public function callback(callable $callback)
+	{
+		$this->callback = $callback;
 
 		return $this;
 	}
@@ -121,6 +134,13 @@ trait HasLabel
 	public function file()
 	{
 		$this->type = 'file';
+
+		return $this;
+	}
+
+	public function default(string $text)
+	{
+		$this->default_text = $text;
 
 		return $this;
 	}
