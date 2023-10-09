@@ -11,6 +11,7 @@ use S4mpp\AdminPanel\Resources\Delete;
 use S4mpp\AdminPanel\Resources\Update;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Controllers\AdminController;
+use S4mpp\AdminPanel\Middleware\CustomActionEnabled;
 
 $route = Route::middleware('web');
 
@@ -97,8 +98,13 @@ $route->group(function()
 						{
 							throw new \Exception('Target of Custom Route "'.$action->slug.' "not defined');
 						}
+
+						$is_disabled = $action->is_disabled ? 1 : 0; 
+						$message_disabled = $action->disabled_message;
 	
-						Route::{$action->method}('/'.$action->slug.'/{id}', $action->target ?? '')->name($resource->getRouteName($action->route));
+						Route::{$action->method}('/'.$action->slug.'/{id}', $action->target ?? '')
+						->middleware('custom-action-enabled:'.$is_disabled.','.$message_disabled)
+						->name($resource->getRouteName($action->route));
 					}
 				}
 			});

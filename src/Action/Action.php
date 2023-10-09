@@ -45,6 +45,11 @@ class Action
 
 	public function disabled(bool | callable $disabled_callback = true, ?string $disabled_message = null)
 	{
+		if(is_bool($disabled_callback))
+		{
+			$this->is_disabled = $disabled_callback;
+		}
+		
 		$this->disabled_callback = $disabled_callback;
 
 		$this->disabled_message = $disabled_message ?? 'Função não disponível no momento.';

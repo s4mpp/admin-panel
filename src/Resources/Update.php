@@ -3,8 +3,9 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Http\Request;
+use S4mpp\AdminPanel\Traits\HasForm;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
-use S4mpp\AdminPanel\Resources\HasValidation;
+use S4mpp\AdminPanel\Traits\HasValidation;
 
 abstract class Update
 {

@@ -3,18 +3,20 @@
 namespace S4mpp\AdminPanel\Providers;
 
 use Livewire\Livewire;
+use Illuminate\Routing\Router;
 use Illuminate\Pagination\Paginator;
+use S4mpp\AdminPanel\Livewire\Table;
 use Illuminate\Support\ServiceProvider;
+use S4mpp\AdminPanel\Livewire\Repeater;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
-use S4mpp\AdminPanel\Livewire\Repeater;
-use S4mpp\AdminPanel\Livewire\Table;
+use S4mpp\AdminPanel\Middleware\CustomActionEnabled;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
-    public function boot()
+    public function boot(Router $router)
     {
 		AboutCommand::add('AdminPanel', fn () => [
 			'Guard' => config('admin.guard')
@@ -32,6 +34,8 @@ class AdminPanelServiceProvider extends ServiceProvider
 		Livewire::component('repeater', Repeater::class);
 
 		Paginator::defaultView('admin::pagination');
+
+		app('router')->aliasMiddleware('custom-action-enabled', CustomActionEnabled::class);
 
 		if($this->app->runningInConsole())
 		{

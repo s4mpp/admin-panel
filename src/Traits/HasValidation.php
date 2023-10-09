@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Resources;
+namespace S4mpp\AdminPanel\Traits;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -17,13 +17,13 @@ trait HasValidation
 
 		foreach($fields as $field)
 		{
-			if($field->prepare_for_validation)
+			if($field->getPrepareForValidation())
 			{
-				$input[$field->name] = call_user_func($field->prepare_for_validation, $input[$field->name]);
+				$input[$field->name] = call_user_func($field->getPrepareForValidation(), $input[$field->name]);
 			}
 
 			$rules = [];
-			foreach($field->rules as $rule)
+			foreach($field->getRules() as $rule)
 			{
 				switch($rule)
 				{

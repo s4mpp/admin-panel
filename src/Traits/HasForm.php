@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Resources;
+namespace S4mpp\AdminPanel\Traits;
 
 use S4mpp\AdminPanel\Elements\Field;
 

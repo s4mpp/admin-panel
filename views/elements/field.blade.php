@@ -24,15 +24,17 @@
 				@break;
 			
 			@case('permissions')
-				<x-input type="checkbox" title="" name="{{ $field->name }}[]">
-					@foreach($field->getAdditionalData('permissions') as $option)
-						<x-check checked="{{ $resource && $resource->can($option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
-					@endforeach
+				<x-input title="" name="{{ $field->name }}[]">
+					<div class="flex">
+						@foreach($field->getAdditionalData('permissions') as $option)
+							<x-check checked="{{ $resource && $resource->can($option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
+						@endforeach
+					</div>
 				</x-input>
 				@break;
 			
 			@case('boolean')
-				<x-input type="checkbox" title="" name="{{ $field->name }}" >
+				<x-input title="" name="{{ $field->name }}" >
 					<x-check checked="{{ $resource->{$field->name} ?? null }}" value="1">Habilitar</x-check>
 				</x-input>
 				@break;
@@ -44,8 +46,7 @@
 				@break;
 
 			@case('date')
-				<x-input  :required=$required  type="date" name="{{ $field->name }}" title="">
-						
+				<x-input :required=$required  type="date" name="{{ $field->name }}" title="">
 					{{ $resource->{$field->name} ? $resource->{$field->name}->format('Y-m-d') : null }}
 				</x-input>
 				@break;
