@@ -4,13 +4,17 @@
 
 
 @php
-
-	$data_modals = [];
+	$data_modals = $data_slides = [];
 	foreach(array_merge($actions ?? [], $custom_actions ?? []) as $action)
 	{
-		if($action->question && !$action->is_disabled)
+		if($action->getQuestion() && !$action->isDisabled())
 		{
-			$data_modals[] = 'modal'.Str::camel($action->slug).': false';
+			$data_modals[] = 'modal'.Str::camel($action->getSlug()).': false';
+		}
+
+		if($action->isView())
+		{
+			$data_slides[] = 'slide'.Str::camel($action->getSlug()).': false';
 		}
 	}
 @endphp
@@ -19,12 +23,10 @@
 
 @section('title-page')
 
-	<div x-data="{ {{ join(',', $data_modals) }} }">
+	<div x-data="{ {{ join(',', array_merge($data_modals, $data_slides)) }} }">
 
 		<div class="inline-flex gap-3">
 	
-			
-				
 			<div class="relative  inline-block text-left" x-data="{dropdownCustomActions : false}">
 
 				@if($custom_actions ?? false)
@@ -58,29 +60,31 @@
 
 							@foreach ($custom_actions ?? [] as $action)
 
-								@if($action->is_disabled)
+								@if($action->isDisabled($register ?? null))
 
-									<div data-tippy-content="{{ $action->disabled_message }}" >
+									<div data-tippy-content="{{ $action->getDisabledMessage() }}" >
 										<button disabled type="button" class="text-gray-700/50 cursor-not-allowed w-full text-start block px-4 py-2 text-sm">
-											{{ $action->title }}
+											{{ $action->getTitle() }}
 										</button>
 									</div>
 
 									@continue
 								@endif
 
-								@if($action->question)
-									<a href="#" x-on:click="modal{{ Str::camel($action->slug) }} = true, dropdownCustomActions = false" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->title }}</a>
+								@if($action->isView())
+									<a href="#" x-on:click.prevent="slide{{ Str::camel($action->getSlug()) }} = true, dropdownCustomActions = false" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->getTitle() }}</a>
+								@elseif($action->getQuestion())
+									<a href="#" x-on:click.prevent="modal{{ Str::camel($action->getSlug()) }} = true, dropdownCustomActions = false" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->getTitle() }}</a>
 								@else
-									@if($action->method == 'GET')
+									@if($action->getMethod() == 'GET')
 										<div x-data="{loading: false}">
-											<a href="{{ route($routes[$action->route], ['id' => $register->id]) }}" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->title }}</a>
+											<a href="{{ route($routes[$action->getRoute()], ['id' => $register->id]) }}" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->getTitle() }}</a>
 										</div>
 									@else
-										<form x-data="{loading: false}" x-on:submit="loading = true" action="{{ route($routes[$action->route], ['id' => $register->id]) }}" method="POST">
+										<form x-data="{loading: false}" x-on:submit="loading = true" action="{{ route($routes[$action->getRoute()], ['id' => $register->id]) }}" method="POST">
 											@csrf
-											@method($action->method)
-											<button type="submit" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-start block px-4 py-2 text-sm">{{ $action->title }}</button>
+											@method($action->getMethod())
+											<button type="submit" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-start block px-4 py-2 text-sm">{{ $action->getTitle() }}</button>
 										</form>
 									@endif
 								@endif
@@ -93,29 +97,29 @@
 			@foreach ($actions ?? [] as $action)
 
 				{{-- TO-DO: colocar no metodo getRoutes --}}
-				@if(!in_array($current_action, $action->show_in))
+				@if(!in_array($current_action, $action->getShowIn()))
 					@continue
 				@endif
 
-				@if($action->question)
-					<x-link href="#" x-on:click="modal{{ Str::camel($action->slug) }} = true" className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}">
-						{{ $action->title }}
+				
+				@if($action->getQuestion())
+					<x-link href="#" x-on:click="modal{{ Str::camel($action->getSlug()) }} = true" className="{{ $action->getIsDanger() ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}">
+						{{ $action->getTitle() }}
 					</x-link>
-
  				@else
-					@if($action->method == 'GET')
-						<x-link href="{{ route($routes[$action->route], ['id' => $register->id]) }}" target="{{ $action->new_tab ? '_blank' : null }}"  className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}">		
-							{{ $action->title }}
+					@if($action->getMethod() == 'GET')
+						<x-link href="{{ route($routes[$action->getRoute()], ['id' => $register->id]) }}" target="{{ $action->getNewTab() ? '_blank' : null }}"  className="{{ $action->getIsDanger() ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}">		
+							{{ $action->getTitle() }}
 						</x-link>
 					@else
-						<form x-data="{loading: false}" x-on:submit="loading = true" target="{{ $action->new_tab ? '_blank' : null }}" 
+						<form x-data="{loading: false}" x-on:submit="loading = true" target="{{ $action->getNewTab() ? '_blank' : null }}" 
 							method="POST" action="{{ route($routes[$action->route], ['id' => $register->id]) }}">
-							@method(strtoupper($action->method))
+							@method(strtoupper($action->getMethod()))
 							@csrf
 							
 							<x-button 
-							className="{{ $action->is_danger ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}" type="submit">	
-								{{ $action->title }}
+							className="{{ $action->getIsDanger() ?  'bg-red-500 hover:bg-red-600 text-white' : 'btn-primary' }}" type="submit">	
+								{{ $action->getTitle() }}
 							</x-button>
 						</form>
 					@endif
@@ -133,14 +137,23 @@
 			</x-link>
 		</div>
 
-		@foreach (array_merge($actions ?? [], $custom_actions ?? []) as $action)
-			
-			@continue(!$action->question || $action->is_disabled)
+		@foreach(array_merge($actions ?? [], $custom_actions ?? []) as $action)
+			@continue(!$action->getQuestion() || $action->isDisabled() || $action->isView())
 
 			<x-modal 
-				idModal="modal{{ Str::camel($action->slug) }}"
-				route="{{ route($routes[$action->route], ['id' => $register->id])  }}"
-				method="{{ $action->method }}" danger="{{ $action->is_danger }}">{{ $action->question }}</x-modal>
+				idModal="modal{{ Str::camel($action->getSlug()) }}"
+				route="{{ route($routes[$action->getRoute()], ['id' => $register->id])  }}"
+				method="{{ $action->getMethod() }}" danger="{{ $action->getIsDanger() }}">{{ $action->getQuestion() }}</x-modal>
+		@endforeach
+
+
+		@foreach($custom_actions ?? [] as $action)
+			
+			@continue(!$action->isView())
+
+			<x-slide-over id="slide{{ Str::camel($action->getSlug()) }}" title="{{ $action->getTitle() }}">
+				@include($action->getView(), ['register' => $register])
+			</x-slide-over>
 		@endforeach
 	</div>
 	  

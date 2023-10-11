@@ -35,7 +35,7 @@
 			
 			@case('boolean')
 				<x-input title="" name="{{ $field->name }}" >
-					<x-check checked="{{ $resource->{$field->name} ?? null }}" value="1">Habilitar</x-check>
+					<x-check checked="{{ $resource?->{$field->name} ?? null }}" value="1">Habilitar</x-check>
 				</x-input>
 				@break;
 

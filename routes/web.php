@@ -94,17 +94,17 @@ $route->group(function()
 	
 					foreach($custom_actions as $action)
 					{
-						if(!isset($action->target))
+						if(!$action->getTarget())
 						{
-							throw new \Exception('Target of Custom Route "'.$action->slug.' "not defined');
+							continue;
 						}
 
-						$is_disabled = $action->is_disabled ? 1 : 0; 
-						$message_disabled = $action->disabled_message;
+						$is_disabled = $action->isDisabled() ? 1 : 0; 
+						$message_disabled = $action->getDisabledMessage();
 	
-						Route::{$action->method}('/'.$action->slug.'/{id}', $action->target ?? '')
+						Route::{$action->getMethod()}('/'.$action->getSlug().'/{id}', $action->getTarget() ?? '')
 						->middleware('custom-action-enabled:'.$is_disabled.','.$message_disabled)
-						->name($resource->getRouteName($action->route));
+						->name($resource->getRouteName($action->getRoute()));
 					}
 				}
 			});

@@ -22,6 +22,8 @@ class AdminController extends Controller
 
     public $route_identifier = 'admin-panel';
 
+    public $login_2fa = true;
+
     public function __construct()
     {
         $this->route_redirect_after_login = config('admin.route_redirect_after_login');

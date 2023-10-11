@@ -25,4 +25,9 @@ class Column
 			
 		return $this;
 	}
+
+	public function getAlignment(): ?string
+	{
+		return $this->alignment;
+	}
 }

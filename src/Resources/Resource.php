@@ -3,7 +3,7 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Support\Str;
-use S4mpp\AdminPanel\Action\Action;
+use S4mpp\AdminPanel\Elements\Action;
 
 abstract class Resource
 {
@@ -82,7 +82,7 @@ abstract class Resource
 		{
 			foreach($this->getCustomActions() ?? [] as $custom_action)
 			{
-				$routes[$custom_action->slug] = $this->getRouteName($custom_action->slug);
+				$routes[$custom_action->getSlug()] = $this->getRouteName($custom_action->getSlug());
 			}
 		}
 		
@@ -130,11 +130,7 @@ abstract class Resource
 
 		foreach($this->getCustomActions() ?? [] as $custom_action)
 		{
-			$custom_action->is_disabled = is_callable($custom_action->disabled_callback)
-			? call_user_func($custom_action->disabled_callback, $register)
-			: boolval($custom_action->disabled_callback);
-
-			$actions[$custom_action->slug] = $custom_action;
+			$actions[$custom_action->getSlug()] = $custom_action;
 		}
 
 		return $actions ?? [];

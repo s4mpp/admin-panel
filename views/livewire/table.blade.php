@@ -115,8 +115,8 @@
 		  <tr>
 			  @forelse($table as $column)
 				  <th scope="col" @class([
-					'text-center' => (($column->alignment ?? null) == 'center'),
-					'text-right' => (($column->alignment ?? null) == 'right'),
+					'text-center' => (($column->getAlignment() ?? null) == 'center'),
+					'text-right' => (($column->getAlignment() ?? null) == 'right'),
 					'px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap'])>{{ $column->title }}</th>
 			  @empty
 				  <th scope="col" class="px-3 py-3.5">&nbsp;</th>
@@ -137,8 +137,8 @@
 								x-on:click="window.location.href = '{{ route($routes[$default_action->route], ['id' => $id])  }}'"
 							@endif
 							@class([
-								'text-center' => (($field->alignment ?? null) == 'center'),
-								'text-right' => (($field->alignment ?? null) == 'right'),
+								'text-center' => (($field->getAlignment() ?? null) == 'center'),
+								'text-right' => (($field->getAlignment() ?? null) == 'right'),
 								
 								'font-semibold text-gray-900' => $field->strong ?? false,
 								'cursor-pointer group-hover:bg-gray-50/90 transition peer' => $default_action,
@@ -149,7 +149,8 @@
 								@endphp
 								@switch($field->getType())
 									@case('boolean')
-										
+
+									@if(!is_null($data))
 										@if($data)
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="mx-auto w-5 h-5 fill-green-500">
 												<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
@@ -159,10 +160,19 @@
 												<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
 											</svg>
 										@endif
+									@endif
+										
 										@break
 									
 									@case('enum')
 										<x-badge :provider=$data></x-badge>
+										@break
+
+									@case('datetime')
+										{{ $data?->format($field->getAdditionalData('format')) }}
+										@if($data)
+											<span class="opacity-50">({{ $data?->diffForHumans() }})</span>
+										@endif
 										@break
 									
 									@case('dump')
