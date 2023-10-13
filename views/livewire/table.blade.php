@@ -134,7 +134,7 @@
 						@forelse ($row['registers'] as $field)
 							<td 
 							@if($default_action)
-								x-on:click="window.location.href = '{{ route($routes[$default_action->route], ['id' => $id])  }}'"
+								x-on:click="window.location.href = '{{ route($routes[$default_action->getRoute()], ['id' => $id])  }}'"
 							@endif
 							@class([
 								'text-center' => (($field->getAlignment() ?? null) == 'center'),
@@ -197,35 +197,35 @@
 								   @foreach($actions as $action)
 
 								   		{{-- TO-DO: colocar no metodo getRoutes --}}
-									   @if(!in_array('table', $action->show_in))
+									   @if(!in_array('table', $action->getShowIn()))
 										   @continue
 									   @endif
 						   
-									   @if($action->method == 'GET')
+									   @if($action->getMethod() == 'GET')
 										   @php
-											   $link = route($routes[$action->route], ['id' => $id]);
+											   $link = route($routes[$action->getRoute()], ['id' => $id]);
 										   @endphp
 						   
 											<a
-											@if($action->new_tab)
+											@if($action->newTab())
 												target="_blank"
 											@endif
-											 href="{{ $link }}" class="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-600' }} inline-flex gap-1">
-												<span>{{ $action->title }}</span>
+											 href="{{ $link }}" class="{{ $action->getIsDanger() ?  'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-600' }} inline-flex gap-1">
+												<span>{{ $action->getTitle() }}</span>
 											</a>
 									   @else
 										   <form 
-										   @if($action->new_tab)
+										   @if($action->newTab())
 												target="_blank"
 											@endif
-											@isset($action->question)
-												onsubmit="return window.confirm('{{ $action->question }}')"
-											@endisset
-											method="POST"  action="{{ route($routes[$action->route], ['id' => $id]) }}">
-											   @method(strtoupper($action->method))
+											@if($action->getQuestion())
+												onsubmit="return window.confirm('{{ $action->getQuestion() }}')"
+											@endif
+											method="POST"  action="{{ route($routes[$action->getRoute()], ['id' => $id]) }}">
+											   @method(strtoupper($action->getMethod()))
 											   @csrf
 											   
-												<button class="{{ $action->is_danger ?  'text-red-500 hover:text-red-600' : null }} inline-flex gap-1" type="submit">{{ $action->title }}</button>
+												<button class="{{ $action->getIsDanger() ?  'text-red-500 hover:text-red-600' : null }} inline-flex gap-1" type="submit">{{ $action->title }}</button>
 										   </form>
 									   @endif
 								   @endforeach

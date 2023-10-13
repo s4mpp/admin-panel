@@ -113,7 +113,7 @@
 						</x-link>
 					@else
 						<form x-data="{loading: false}" x-on:submit="loading = true" target="{{ $action->getNewTab() ? '_blank' : null }}" 
-							method="POST" action="{{ route($routes[$action->route], ['id' => $register->id]) }}">
+							method="POST" action="{{ route($routes[$action->getRoute()], ['id' => $register->id]) }}">
 							@method(strtoupper($action->getMethod()))
 							@csrf
 							
