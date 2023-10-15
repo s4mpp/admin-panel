@@ -1,23 +1,30 @@
 <div>
 	<x-card title="Produtos" className="bg-white border mb-6">
-		<x-button type="button">Adicionar</x-button>
 		
-		<div class="my-3">
-			<x-input title="Titulo" name="title" wire:model.defer="title"></x-input>
+		<div x-data="{loading:false}" x-on:reset-loading.window="loading = false">
+			<div class="my-3">
+				<x-input type="text" title="Titulo" name="title" wire:model.defer="item.title"></x-input>
+			</div>
+			
+			<x-button x-on:click="loading = true" type="button" wire:click="addItem">Adicionar</x-button>
 		</div>
 
 		<div class="overflow-x-auto mb-2">
 			<table class="min-w-full divide-y border-t divide-gray-100">
 				<thead class="bg-gray-100 rounded">
 					<tr>
+						<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap  ">ID</th>
 						<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap  ">Titulo</th>
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-gray-200 bg-white">
-					@if(true)
-						<tr class="group">
-							<td class="whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500">abc</td>
-						</tr>
+					@if($this->items)
+						@foreach($this->items as $i => $item)
+							<tr class="group">
+								<td>{{ $i }}</td>
+								<td class="whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500">{{ $item['title'] ?? '' }}</td>
+							</tr>
+						@endforeach
 					@else
 						<tr>
 							<td colspan="2" class="text-center bg-white pt-12 pb-4 text-gray-500 text-sm">

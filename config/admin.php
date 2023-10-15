@@ -2,6 +2,8 @@
 
 return [
 	'guard' => 'web',
+	
+	'2fa' => false,
 
 	'prefix' => 'painel',
 

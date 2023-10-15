@@ -225,7 +225,7 @@
 											   @method(strtoupper($action->getMethod()))
 											   @csrf
 											   
-												<button class="{{ $action->getIsDanger() ?  'text-red-500 hover:text-red-600' : null }} inline-flex gap-1" type="submit">{{ $action->title }}</button>
+												<button class="{{ $action->getIsDanger() ?  'text-red-500 hover:text-red-600' : null }} inline-flex gap-1" type="submit">{{ $action->getTitle() }}</button>
 										   </form>
 									   @endif
 								   @endforeach
