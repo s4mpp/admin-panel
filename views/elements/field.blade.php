@@ -47,7 +47,7 @@
 
 			@case('date')
 				<x-input :required=$required  type="date" name="{{ $field->name }}" title="">
-					{{ $resource->{$field->name} ? $resource->{$field->name}->format('Y-m-d') : null }}
+					{{ ($resource->{$field->name} ?? null) ? $resource->{$field->name}->format('Y-m-d') : null }}
 				</x-input>
 				@break;
 

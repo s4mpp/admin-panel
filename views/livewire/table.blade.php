@@ -207,7 +207,7 @@
 										   @endphp
 						   
 											<a
-											@if($action->newTab())
+											@if($action->getNewTab())
 												target="_blank"
 											@endif
 											 href="{{ $link }}" class="{{ $action->getIsDanger() ?  'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-600' }} inline-flex gap-1">
@@ -215,7 +215,7 @@
 											</a>
 									   @else
 										   <form 
-										   @if($action->newTab())
+										   @if($action->getNewTab())
 												target="_blank"
 											@endif
 											@if($action->getQuestion())

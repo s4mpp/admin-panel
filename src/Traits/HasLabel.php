@@ -82,15 +82,22 @@ trait HasLabel
 		return $this;
 	}
 
-	public function relation(string $fk_field)
+	public function relation(string $fk_relation, string $fk_field = null)
 	{
 		$this->is_relation = true;
 
-		$this->fk_field = $fk_field;
+		$this->fk_field = $fk_relation;
 
-		$this->callback = function($item) use ($fk_field)
+		$this->callback = function($item) use ($fk_relation, $fk_field)
 		{
-			return $item->{$fk_field} ?? null;
+			$data = $item->{$fk_relation} ?? null;
+
+			if($fk_field)
+			{
+				$data = $data->{$fk_field};
+			}
+
+			return $data;
 		};
 
 		return $this;

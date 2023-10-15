@@ -175,21 +175,21 @@ class Table extends Component
         
         foreach($table_info as $column)
         {
-            if($column->isRelation())
-            {
-                $fields[] = $column->field.'_id';
+            // if($column->isRelation())
+            // {
+            //     $fields[] = $column->field.'_id';
 
-                $with_eager_loading = $column->field.':id,'.$column->fk_field;
+            //     $with_eager_loading = $column->field.':id,'.$column->fk_field;
 
-                continue;   
-            }
+            //     continue;   
+            // }
 
-            $fields[] = $column->field;
+            // $fields[] = $column->field;
         }
 
-        $query = $this->resource->getModel()->select($fields);
+        $query = $this->resource->getModel(); //->select($fields);
         
-        $query = $query->with($with_eager_loading);
+        // $query = $query->with($with_eager_loading);
         
         $query->orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC');
         

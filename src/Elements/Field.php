@@ -216,7 +216,7 @@ class Field
 		return $this;
 	}
 
-	public function relation(Collection $model_options, string $fk_relation)
+	public function relation(Collection $model_options, string $fk_relation, string $fk_field = null)
 	{
 		$this->type = 'select';
 
@@ -224,9 +224,16 @@ class Field
 
 		foreach($model_options as $model_item)
 		{
+			$label = collect($model_item)->get($fk_relation);
+
+			if($fk_field)
+			{
+				$label = $label[$fk_field];
+			}
+
 			$options[] = [
 				'id' => $model_item->id,
-				'label' => $model_item->{$fk_relation},
+				'label' =>$label,
 			];
 		}
 		
