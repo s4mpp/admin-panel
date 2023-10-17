@@ -150,7 +150,7 @@
 								@switch($field->getType())
 									@case('boolean')
 
-									@if(!is_null($data))
+									
 										@if($data)
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="mx-auto w-5 h-5 fill-green-500">
 												<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
@@ -160,7 +160,7 @@
 												<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
 											</svg>
 										@endif
-									@endif
+									
 										
 										@break
 									
@@ -187,7 +187,7 @@
 							<td>&nbsp;</td>
 						@endforelse 
 
-						@if($actions || $row['custom_actions'])
+						@if($actions)
 							<td
 							@class([
 								'hover:bg-gray-50/90 peer-hover:bg-gray-50/90 transition-colors' => $default_action,
@@ -229,61 +229,6 @@
 										   </form>
 									   @endif
 								   @endforeach
-
-								   {{-- @if($row['custom_actions'])
-								
-									<div class="inline-flex   -ml-2 -mt-0.5 -mr-4" x-data="{dropdownCustomActions : false}">
-											<button type="button" class=" w-full pl-2 pr-3" x-on:click="dropdownCustomActions = !dropdownCustomActions">
-												<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-													<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-												</svg>
-											</button>
-		
-											<div x-on:click.outside="dropdownCustomActions = false;"
-											x-cloak
-											x-show="dropdownCustomActions"
-											x-transition:enter="transition ease-out duration-100"
-											x-transition:enter-start="transform opacity-0 scale-95"
-											x-transition:enter-end="transform opacity-100 scale-100"
-											x-transition:leave="transition ease-in duration-75"
-											x-transition:leave-start="transform opacity-100 scale-100"
-											x-transition:leave-end="transform opacity-0 scale-95"
-										class="absolute right-10 z-10 mt-6 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-											<div class="py-1" role="none">
-		
-												@foreach ($row['custom_actions'] ?? [] as $action)
-		
-													@if($action->is_disabled)
-		
-														<div data-tippy-content="{{ $action->disabled_message }}" >
-															<button disabled type="button" class="text-gray-700/50 cursor-not-allowed w-full text-start block px-4 py-2 text-sm">
-																{{ $action->title }}
-															</button>
-														</div>
-		
-														@continue
-													@endif
-		
-													@if($action->question)
-														<a href="#" x-on:click="modal{{ Str::camel($action->slug) }} = true, dropdownCustomActions = false" class="text-gray-700 hover:bg-gray-100 text-start hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->title }}</a>
-													@else
-														@if($action->method == 'GET')
-															<div x-data="{loading: false}">
-																<a href="{{ route($routes[$action->route], ['id' => $id]) }}" class="text-gray-700 text-start hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->title }}</a>
-															</div>
-														@else
-															<form x-data="{loading: false}" x-on:submit="loading = true" action="{{ route($routes[$action->route], ['id' => $id]) }}" method="POST">
-																@csrf
-																@method($action->method)
-																<button type="submit" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-start block px-4 py-2 text-sm">{{ $action->title }}</button>
-															</form>
-														@endif
-													@endif
-												@endforeach
-											</div>
-										</div>
-									</div>
-									@endif --}}
 							   </div>
 
 							</td>

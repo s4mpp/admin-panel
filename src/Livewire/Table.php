@@ -187,11 +187,7 @@ class Table extends Component
             // $fields[] = $column->field;
         }
 
-        $query = $this->resource->getModel(); //->select($fields);
-        
-        // $query = $query->with($with_eager_loading);
-        
-        $query->orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC');
+        $query = $this->resource->getModel()->orderBy($this->resource->ordenation[0] ?? 'id', $this->resource->ordenation[1] ?? 'DESC');
         
         foreach($this->filters as $field => $filter)
         {
@@ -215,6 +211,7 @@ class Table extends Component
                 });
             }
         }
+
         
         if($this->search && is_array($this->resource->search))
         {
