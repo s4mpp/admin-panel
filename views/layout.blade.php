@@ -5,9 +5,12 @@
 
 	$navigations = S4mpp\AdminPanel\AdminPanel::getNavigation();
 
+	$user_has_settings_access = S4mpp\AdminPanel\AdminPanel::getUserAccessSettings();
+	
 	$route_home = config('admin.route_redirect_after_login');
 
 	$logo_admin_light = config('admin.logo.light');
+
 @endphp
 
 @section('main-content')
@@ -209,6 +212,12 @@
 				  <p class="truncate text-sm font-medium text-gray-900" role="none">{{ auth()->guard(config('admin.guard'))->user()->email }}</p>
 				</div>
 				<div class="py-1 " role="none">
+					@if($user_has_settings_access)
+						<a href="{{ route('admin_settings') }}" class="text-gray-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+							Configurações
+						</a>
+					@endif
+					
 					<a href="{{ route(S4mpp\Laraguard\Routes::identifier('admin-panel')->logout()) }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 					  Sair
 					  

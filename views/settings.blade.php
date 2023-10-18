@@ -8,7 +8,7 @@
 		@method('PUT')
 			
 		<div class="overflow-hidden sm:rounded-lg bg-white border-t border-b sm:border-l sm:border-r  mb-6">
-			
+			@include('admin::resources.form')
 		</div>
 
 		

@@ -4,6 +4,7 @@ use Illuminate\Support\Str;
 use S4mpp\Laraguard\Routes;
 use S4mpp\AdminPanel\Resources\Read;
 use Illuminate\Support\Facades\Route;
+use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Navigation\Page;
 use S4mpp\AdminPanel\Resources\Index;
 use S4mpp\AdminPanel\Resources\Create;
@@ -11,6 +12,7 @@ use S4mpp\AdminPanel\Resources\Delete;
 use S4mpp\AdminPanel\Resources\Update;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Controllers\AdminController;
+use S4mpp\AdminPanel\Controllers\SettingsController;
 use S4mpp\AdminPanel\Middleware\CustomActionEnabled;
 
 $route = Route::middleware('web');
@@ -111,8 +113,17 @@ $route->group(function()
 		}
 	});
 
+	
+	$routes_settings = Route::middleware('auth:'.$guard);
+	
+	$settings_roles = AdminPanel::getSettingsRoles();
+	
+	if(!empty($settings_roles))
+	{
+		$routes_settings->middleware('role:'.join('|', ($settings_roles ?? [])));
+	}
 
-	Route::middleware('auth:'.$guard)->controller(AdminController::class)->group(function()
+	$routes_settings->controller(SettingsController::class)->group(function()
 	{
 		Route::get('configuracoes', 'settings')->name('admin_settings');
 		Route::put('configuracoes', 'storeSettings')->name('store_settings');

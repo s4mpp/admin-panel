@@ -55,6 +55,11 @@ class AdminPanelServiceProvider extends ServiceProvider
 			$this->publishes([
 				__DIR__.'/../../stubs/UserResource.stub' => app_path('AdminPanel/UserResource.php'), 
 			], 'admin-user-resource');
+
+			$this->publishes([
+				__DIR__.'/../../stubs/migration_create_settings_table.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_settings_table.php'), 
+				__DIR__.'/../../stubs/ModelSetting.stub' => app_path('Models/Setting.php'), 
+			], 'admin-settings');
 		}
     }
 

@@ -41,7 +41,7 @@ abstract class Update
 
 			$fields = self::_getFields($form);
 
-			$fields_validated = self::_validate($resource, $request, $fields, $id);
+			$fields_validated = self::_validate($request, $fields, $resource->getModel()->getTable(), $id);
 
 			$register = $resource->getModel()->findOrFail($id);
 

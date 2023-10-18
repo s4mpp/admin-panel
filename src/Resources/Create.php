@@ -35,7 +35,7 @@ abstract class Create
 
 			$fields = self::_getFields($form);
 
-			$fields_validated = self::_validate($resource, $request, $fields);
+			$fields_validated = self::_validate($request, $fields, $resource->getModel()->getTable());
 
 			$model = $resource->getModel();
 

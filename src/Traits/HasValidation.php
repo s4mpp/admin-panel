@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 trait HasValidation
 {
-	private static function _validate($resource, Request $request, array $fields, int $id = null): ValidatedInput
+	private static function _validate(Request $request, array $fields, string $table, int $id = null): ValidatedInput
 	{
 		$validation_rules = $attributes = [];
 
@@ -28,7 +28,7 @@ trait HasValidation
 				switch($rule)
 				{
 					case 'unique':
-						$rules[] = Rule::unique($resource->getModel()->getTable())->ignore($id);
+						$rules[] = Rule::unique($table)->ignore($id);
 						break;
 						
 					default:

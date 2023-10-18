@@ -10,6 +10,37 @@ use S4mpp\AdminPanel\Navigation\MenuSection;
 
 class AdminPanel
 {
+	private static $settings = [];
+
+	private static $settings_roles = [];
+
+	public static function settings(array $settings, array $settings_roles = [])
+	{
+		self::$settings = $settings;
+
+		self::$settings_roles = $settings_roles;
+	}
+
+	public static function getSettings(): array
+	{
+		return self::$settings;
+	}
+
+	public static function getSettingsRoles(): array
+	{
+		return self::$settings_roles;
+	}
+
+	public static function getUserAccessSettings(): bool
+	{
+		if(self::$settings_roles && !Auth::guard(config('admin.guard'))->user()->hasAnyRole(self::$settings_roles))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	public static function getNavigation()
 	{
 		$uri = request()->route()->uri();
