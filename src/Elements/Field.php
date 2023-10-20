@@ -3,12 +3,15 @@
 namespace S4mpp\AdminPanel\Elements;
 
 use S4mpp\Format\Format;
-use Illuminate\Database\Eloquent\Collection;
 use S4mpp\AdminPanel\Traits\HasLabel;
+use S4mpp\AdminPanel\Traits\HasDefaultText;
+use Illuminate\Database\Eloquent\Collection;
+use S4mpp\AdminPanel\Traits\HasType;
 
 class Field
 {
-	use HasLabel;
+	// use HasLabel;
+	use HasDefaultText, HasType;
 	
 	private array $rules = ['required', 'string'];
 

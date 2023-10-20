@@ -32,6 +32,11 @@ abstract class Resource
 		$this->slug = Str::slug($this->title);
 	}
 
+	public function getOrder(): int
+	{
+		return $this->order ?? 0;
+	}
+
 	public function getModel()
 	{
 		return app('\App\Models\\'.$this->resource_name);

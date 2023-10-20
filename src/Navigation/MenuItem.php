@@ -15,4 +15,9 @@ class MenuItem
 	{
 		$this->active = strpos($uri, $slug) !== false;
 	}
+
+	public function getOrder(): int
+	{
+		return $this->order ?? 0;
+	}
 }

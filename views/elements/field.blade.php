@@ -1,5 +1,9 @@
 @php
 	$required = in_array('required', $field->getRules());
+
+	$value = $resource?->{$field->name} ?? null;
+
+	$default_value = (!is_null($field) && is_null($value) ? $field->getDefaultText() : null);
 @endphp
 
 <div class="p-4 sm:gap-4 sm:p-3 xl:p-6 md:grid md:grid-cols-12">
@@ -18,7 +22,7 @@
 			@case('select')
 				<x-input :required=$required type="{{ $field->getType() }}" title="" name="{{ $field->name }}" >
 					@foreach($field->getAdditionalData('options') as $option)
-						<x-option selected="{{ $resource && (($resource->{$field->name}->value ?? $resource->{$field->name}) == $option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-option>
+						<x-option selected="{{ $resource && (($field->value ?? $value) == $option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-option>
 					@endforeach
 				</x-input>
 				@break;
@@ -35,20 +39,22 @@
 			
 			@case('boolean')
 				<x-input title="" name="{{ $field->name }}" >
-					<x-check checked="{{ $resource?->{$field->name} ?? null }}" value="1">Habilitar</x-check>
+					<x-check checked="{{ $value ?? null }}" value="1">Habilitar</x-check>
 				</x-input>
 				@break;
 
 			@case('currency')
 				<x-input :required=$required  type="{{ $field->getType() }}" title="" name="{{ $field->name }}" x-mask:dynamic="$money($input, ',', '.')" placeholder="0,00">
-					{{ ($resource->{$field->name} ?? null)  ? Format::currency($resource->{$field->name}, $field->getAdditionalData('has_cents')) : null }}
+					{{ ($value)  ? Format::currency($value, $field->getAdditionalData('has_cents')) : $default_value }}
 				</x-input>
 				@break;
 
 			@case('date')
-				<x-input :required=$required  type="date" name="{{ $field->name }}" title="">
-					{{ ($resource->{$field->name} ?? null) ? $resource->{$field->name}->format('Y-m-d') : null }}
-				</x-input>
+				<div class="w-[150px]">
+					<x-input :required=$required  type="date" name="{{ $field->name }}" title="" >
+						{{ $value ? $value->format('Y-m-d') : $default_value }}
+					</x-input>
+				</div>
 				@break;
 
 			@default
@@ -62,7 +68,7 @@
 					name="{{ $field->name }}"
 					title="">
 						
-					{{ $resource->{$field->name} ?? null }}
+					{{ $value ?? $default_value }}
 				</x-input>
 		@endswitch
 	</div>

@@ -253,12 +253,13 @@
 	  </table>
 	</div>
 
-	
-	@if($collection->hasPages())
-		<div class="flex-auto px-3">
-			{{ $collection->links('admin::pagination') }}
-		</div>
+	@if($collection->count() > 0)
+		@if($collection->hasPages())
+			<div class="flex-auto px-3">
+				{{ $collection->links('admin::pagination') }}
+			</div>
+		@endif
+		
+		<p class="text-center border-t pt-3 text-xs mb-3 text-gray-700">{{ $collection->total() }} {{ Str::plural('registro', $collection->total()) }}</p>
 	@endif
-	
-	<p class="text-center border-t pt-3 text-xs mb-3 text-gray-700">{{ $collection->total() }} {{ Str::plural('registro', $collection->total()) }}</p>
 </div>

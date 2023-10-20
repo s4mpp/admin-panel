@@ -3,11 +3,12 @@
 namespace S4mpp\AdminPanel\Elements;
 
 use Illuminate\Support\Str;
+use S4mpp\AdminPanel\Traits\HasDefaultText;
 use S4mpp\AdminPanel\Traits\HasLabel;
 
 class Column
 {
-	use HasLabel;
+	use HasLabel, HasDefaultText;
 
 	private ?string $alignment = null;
 

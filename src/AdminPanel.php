@@ -90,26 +90,31 @@ class AdminPanel
 
 		foreach($sections as $section)
 		{
-			uasort($section->items, function($a, $b)
+
+			usort($section->items, function ($a, $b)
 			{
-				if($a->order === null && $b->order === null)
-				{
-					return 0;
+				// Primeiro, verificamos a propriedade "order"
+				if ($a->getOrder() === null && $b->getOrder() === null) {
+					// Se ambos têm ordem nula, ordenamos alfabeticamente por "title"
+					return strcasecmp($a->title, $b->title);
 				}
-				elseif ($a->order === null)
-				{
+				if ($a->getOrder() === null) {
+					// Se apenas "a" tem ordem nula, colocamos "a" após "b"
 					return 1;
 				}
-				elseif ($b->order === null)
-				{
+				if ($b->getOrder() === null) {
+					// Se apenas "b" tem ordem nula, colocamos "b" após "a"
 					return -1;
 				}
-				else
-				{
-					return ($a->order < $b->order) ? -1 : 1;
+				
+				// Se ambos têm ordens definidas, ordenamos com base em "getOrder()"
+				if ($a->getOrder() !== $b->getOrder()) {
+					return $a->getOrder() - $b->getOrder();
 				}
-		   });
-			
+				
+				// Se as ordens são iguais, ordenamos alfabeticamente por "title"
+				return strcasecmp($a->title, $b->title);
+			});
 		}
 
 		return $sections;

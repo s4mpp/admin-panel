@@ -212,8 +212,14 @@
 				  <p class="truncate text-sm font-medium text-gray-900" role="none">{{ auth()->guard(config('admin.guard'))->user()->email }}</p>
 				</div>
 				<div class="py-1 " role="none">
+					@if($route_home = config('admin.route_home', false))
+						<a href="{{ route($route_home) }}" target="_blank" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+							Acessar site
+						</a>
+					@endif
+
 					@if($user_has_settings_access)
-						<a href="{{ route('admin_settings') }}" class="text-gray-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+						<a href="{{ route('admin_settings') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 							Configurações
 						</a>
 					@endif
@@ -231,7 +237,6 @@
 		  
 		</div>
 		</div>
-
   
 	  <main class="pb-10 pt-6">
 		

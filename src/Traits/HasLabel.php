@@ -3,13 +3,12 @@
 namespace S4mpp\AdminPanel\Traits;
 
 use Illuminate\Support\Str;
+use S4mpp\AdminPanel\Traits\HasType;
 
 trait HasLabel
 {
-	private string $type = 'text';
-	
-	private ?string $default_text = null;
-	
+	use HasType;
+
 	private $callback = null;
 
 	private bool $is_relation = false;
@@ -26,16 +25,6 @@ trait HasLabel
 	public function getAdditionalData(string $key)
 	{
 		return $this->additional_data[$key] ?? null;
-	}
-
-	public function getDefaultText(): ?string
-	{
-		return $this->default_text ?? null;
-	}
-
-	public function getType(): string
-	{
-		return $this->type;
 	}
 
 	public function isRelation(): bool
@@ -144,18 +133,7 @@ trait HasLabel
 
 		return $this;
 	}
-
-	public function default(string $text)
-	{
-		$this->default_text = $text;
-
-		return $this;
-	}
 	
-	/**
-	 * 
-	 * @deprecated
-	 */
 	public function enum()
 	{
 		$this->type = 'enum';

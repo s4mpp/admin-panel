@@ -2,11 +2,12 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
+use S4mpp\AdminPanel\Traits\HasDefaultText;
 use S4mpp\AdminPanel\Traits\HasLabel;
 
 class ItemView
 {
-	use HasLabel;
+	use HasLabel, HasDefaultText;
  		
 	function __construct(public $title, public $value)
 	{}

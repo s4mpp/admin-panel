@@ -17,10 +17,13 @@
 				<div class="sm:p-6 flex justify-between md:flex-col">
 
 					<x-item-view title="ID">#{{ Str::padLeft($register->id, 5, '0') }}</x-item-view>
-				
-					<x-item-view title="Cadastrado em">{{ $register->created_at->format('d/m/Y H:i') }} ({{ $register->created_at->diffForHumans(['short' => true]) }})</x-item-view>
 					
-					<x-item-view title="Última alteração em">{{ $register->updated_at->format('d/m/Y H:i') }} ({{ $register->updated_at->diffForHumans(['short' => true]) }})</x-item-view>
+					@if($register->timestamps)
+				
+						<x-item-view title="Cadastrado em">{{ $register->created_at->format('d/m/Y H:i') }} ({{ $register->created_at->diffForHumans(['short' => true]) }})</x-item-view>
+					
+						<x-item-view title="Última alteração em">{{ $register->updated_at->format('d/m/Y H:i') }} ({{ $register->updated_at->diffForHumans(['short' => true]) }})</x-item-view>
+					@endif
 				</div>
 			</div>
 		</div>
