@@ -75,7 +75,7 @@
 									<a href="#" x-on:click.prevent="slide{{ Str::camel($action->getSlug()) }} = true, dropdownCustomActions = false" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->getTitle() }}</a>
 								@elseif($action->getQuestion())
 									<a href="#" x-on:click.prevent="modal{{ Str::camel($action->getSlug()) }} = true, dropdownCustomActions = false" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->getTitle() }}</a>
-								@else
+								@elseif($action->getTarget())
 									@if($action->getMethod() == 'GET')
 										<div x-data="{loading: false}">
 											<a href="{{ route($routes[$action->getRoute()], ['id' => $register->id]) }}" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm">{{ $action->getTitle() }}</a>
@@ -87,6 +87,10 @@
 											<button type="submit" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-start block px-4 py-2 text-sm">{{ $action->getTitle() }}</button>
 										</form>
 									@endif
+								@else
+									<button disabled type="button" class="text-gray-700/50 cursor-not-allowed w-full text-start block px-4 py-2 text-sm">
+										{{ $action->getTitle() }} (NO ACTION)
+									</button>
 								@endif
 							@endforeach
 						</div>
@@ -138,18 +142,18 @@
 		</div>
 
 		@foreach(array_merge($actions ?? [], $custom_actions ?? []) as $action)
-			@continue(!$action->getQuestion() || $action->isDisabled() || $action->isView())
+			@continue(!$action->getQuestion() || !$action->getTarget() || $action->isDisabled() || $action->isView() )
 
-			<x-modal 
+			{{-- <x-modal 
 				idModal="modal{{ Str::camel($action->getSlug()) }}"
 				route="{{ route($routes[$action->getRoute()], ['id' => $register->id])  }}"
-				method="{{ $action->getMethod() }}" danger="{{ $action->getIsDanger() }}">{{ $action->getQuestion() }}</x-modal>
+				method="{{ $action->getMethod() }}" danger="{{ $action->getIsDanger() }}">{{ $action->getQuestion() }}</x-modal> --}}
 		@endforeach
 
 
 		@foreach($custom_actions ?? [] as $action)
 			
-			@continue(!$action->isView())
+			@continue(!$action->isView() )
 
 			<x-slide-over id="slide{{ Str::camel($action->getSlug()) }}" title="{{ $action->getTitle() }}">
 				@include($action->getView(), ['register' => $register])

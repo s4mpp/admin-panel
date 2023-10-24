@@ -7,7 +7,9 @@
 
 	$user_has_settings_access = S4mpp\AdminPanel\AdminPanel::getUserAccessSettings();
 	
-	$route_home = config('admin.route_redirect_after_login');
+	$route_start = current($navigations)->items[0]->route ?? null;
+
+	$route_home = config('admin.route_home', false);
 
 	$logo_admin_light = config('admin.logo.light');
 
@@ -212,10 +214,10 @@
 				  <p class="truncate text-sm font-medium text-gray-900" role="none">{{ auth()->guard(config('admin.guard'))->user()->email }}</p>
 				</div>
 				<div class="py-1 " role="none">
-					@if($route_home = config('admin.route_home', false))
-						<a href="{{ route($route_home) }}" target="_blank" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+					@if($route_home)
+						{{-- <a href="{{ route($route_home) }}" target="_blank" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 							Acessar site
-						</a>
+						</a> --}}
 					@endif
 
 					@if($user_has_settings_access)
@@ -258,12 +260,16 @@
 							<ol role="list" class="flex items-center space-x-2">
 							<li>
 								<div>
-								<a href="{{ route($route_home) }}" class="text-gray-400 hover:text-gray-500">
+								@if($route_start)
+									<a href="{{ $route_start }}" class="text-gray-400 hover:text-gray-500">
+								@endif
 									<svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 										<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
 									</svg>
 									<span class="sr-only">Home</span>
-								</a>
+								@if($route_start)
+									</a>
+								@endif
 								</div>
 							</li>
 
