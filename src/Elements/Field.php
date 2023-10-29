@@ -10,7 +10,6 @@ use S4mpp\AdminPanel\Traits\HasType;
 
 class Field
 {
-	// use HasLabel;
 	use HasDefaultText, HasType;
 	
 	private array $rules = ['required', 'string'];
@@ -18,6 +17,8 @@ class Field
 	private array $additional_data = [];
 		
 	private $prepare_for_validation = null;
+
+	private $prefix = 'data';
 
 	function __construct(public $title, public $name)
 	{}
@@ -30,6 +31,28 @@ class Field
 	public function render($resource = null)
 	{
 		return view('admin::elements.field', ['field' => $this, 'resource' => $resource]);
+	}
+
+	public function renderInput($resource = null)
+	{
+		return view('admin::elements.input', ['field' => $this, 'resource' => $resource]);
+	}
+
+	public function isRequired(): bool
+	{
+		return in_array('required', $this->getRules());
+	}
+
+	public function setPrefix(string $prefix)
+	{
+		$this->prefix = $prefix;
+
+		return $this;
+	}
+
+	public function getPrefix(): string
+	{
+		return $this->prefix;
 	}
 
 	public function prepareForValidation(callable $callback)
@@ -132,6 +155,8 @@ class Field
 
 		$this->additional_data['step'] = 0.01;
 
+		$this->_removeRule('string');
+
 		$this->rules[] = 'numeric';
 
 		return $this;
@@ -142,6 +167,8 @@ class Field
 		$this->type = 'number';
 
 		$this->additional_data['step'] = 1;
+
+		$this->_removeRule('string');
 		
 		$this->rules[] = 'integer';
 
@@ -183,13 +210,19 @@ class Field
 
 		$options = [];
 
+		$ids = [];
+
 		foreach($cases as $case)
 		{
+			$ids[] = $id = $case->value;
+
 			$options[] = [
-				'id' => $case->value,
+				'id' => $id,
 				'label' => (method_exists($case, 'label')) ? $case->label() : $case->name,
 			];
 		}
+
+		$this->rules('in:'.join(',', $ids));
 		
 		$this->additional_data['options'] = $options;
 

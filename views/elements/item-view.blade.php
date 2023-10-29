@@ -42,6 +42,10 @@
 					@endif
 				@break;
 
+				@case('text')
+					{{ $item->getContent() }}
+				@break;
+
 				@default
 					{{ $resource->{$item->value} }}
 			@endswitch 

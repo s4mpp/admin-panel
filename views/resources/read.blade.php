@@ -2,7 +2,14 @@
 
 @section('title', 'Visualizar')
 
+@section('title-page')
+	{{-- @include('admin::resources.actions') --}}
+	@include('admin::resources.custom-actions')
+@endsection 
+
 @section('content-resource')
+
+	<x-alert/>
 
 	<div class="overflow-hidden rounded-lg bg-white border">
 		<div class="flex flex-col md:flex-row  ">

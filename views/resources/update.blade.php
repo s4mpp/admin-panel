@@ -2,9 +2,18 @@
 
 @section('title', 'Editar')
 
+@section('title-page')
+	@include('admin::resources.actions')
+@endsection 
+
 @section('content-resource')
 
-	<form method="POST" class="mb-0" action={{ route($routes['save'], ['id' => $register->id]) }} x-data="{loading: false}" x-on:submit="loading = true">
+	@livewire('form', [
+		'resource_name' => $resource_name,
+		'id' => $register->id
+	])
+
+	{{-- <form method="POST" class="mb-0" action={{ route($routes['save'], ['id' => $register->id]) }} x-data="{loading: false}" x-on:submit="loading = true">
 		@csrf
 		@method('PUT')
 
@@ -12,9 +21,9 @@
 			@include('admin::resources.form')
 		</div>
 
-		{{-- @livewire('repeater', [
-			
-		]) --}}
+		@dump($repeaters)
+			<x-repeater :repeater=$repeater />
+		@endforeach
 
 		<div class="px-4 sm:px-0">
 			<x-button type="submit" className="btn-primary">
@@ -25,5 +34,5 @@
 				<span>Salvar</span>
 			</x-button>
 		</div>
-	</form>
+	</form> --}}
 @endsection

@@ -22,7 +22,7 @@ abstract class Resource
 	public $menu_order = null;
 
 	public $ordenation = ['id', 'DESC'];
-		
+	
 	public function __construct(public string $resource_name)
 	{		
 		$this->name = Str::plural(strtolower($resource_name));
@@ -83,13 +83,13 @@ abstract class Resource
 			$routes['store'] = $this->getRouteName('store');
 		}
 
-		if(method_exists($this, 'getCustomActions'))
-		{
-			foreach($this->getCustomActions() ?? [] as $custom_action)
-			{
-				$routes[$custom_action->getSlug()] = $this->getRouteName($custom_action->getSlug());
-			}
-		}
+		// if(method_exists($this, 'getCustomActions'))
+		// {
+		// 	foreach($this->getCustomActions() ?? [] as $custom_action)
+		// 	{
+		// 		$routes[$custom_action->getSlug()] = $this->getRouteName($custom_action->getSlug());
+		// 	}
+		// }
 		
 		return $routes;
 	}
@@ -110,15 +110,15 @@ abstract class Resource
 			switch($action)
 			{
 				case 'update':
-					$actions['update'] = Action::create('Editar', 'update')->icon('pencil')->showIn(['read', 'table']);
+					// $actions['update'] = Action::create('Editar', 'update')->icon('pencil')->showIn(['read', 'table']);
 					break;
 
 				case 'read':
-					$actions['read'] = Action::create('Visualizar', 'read')->icon('eye')->showIn(['update', 'table']);
+					// $actions['read'] = Action::create('Visualizar', 'read')->icon('eye')->showIn(['update', 'table']);
 					break;
 
 				case 'delete':
-					$actions['delete'] = Action::create('Excluir', 'delete')->icon('trash')->danger()->method('delete')->question('Tem certeza que deseja excluir este registro?');
+					// $actions['delete'] = Action::create('Excluir', 'delete')->icon('trash')->danger()->method('delete')->question('Tem certeza que deseja excluir este registro?');
 					break;
 			}
 		}
@@ -126,18 +126,35 @@ abstract class Resource
 		return $actions;
 	}
 
-	public function getCustomActionsResource($register)
+	// public function getCustomActionsResource($register)
+	// {
+	// 	if(!method_exists($this, 'getCustomActions'))
+	// 	{
+	// 		return null;
+	// 	}
+
+	// 	// foreach($this->getCustomActions() ?? [] as $custom_action)
+	// 	// {
+	// 	// 	$actions[$custom_action->getSlug()] = $custom_action;
+	// 	// }
+
+	// 	return $actions ?? [];
+	// }
+
+	public function getRepeatersResource(): array
 	{
-		if(!method_exists($this, 'getCustomActions'))
+		if(!method_exists($this, 'getRepeaters'))
 		{
-			return null;
+			return [];
 		}
 
-		foreach($this->getCustomActions() ?? [] as $custom_action)
+		$repeaters = $this->getRepeaters();
+
+		foreach($repeaters as $repeater)
 		{
-			$actions[$custom_action->getSlug()] = $custom_action;
+			$arr[$repeater->getRelation()] = $repeater;
 		}
 
-		return $actions ?? [];
+		return $arr ?? [];
 	}
 }

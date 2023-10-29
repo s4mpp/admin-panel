@@ -9,7 +9,7 @@ use S4mpp\AdminPanel\Traits\HasValidation;
 
 abstract class Update
 {
-	use HasForm, HasValidation;
+	// use HasForm, HasValidation;
 
 	public static function get($resource)
 	{
@@ -17,7 +17,7 @@ abstract class Update
 		{
 			$register = $resource->getModel()->findOrFail($id);
 
-			$form = self::_getForm($resource);
+			// $form = self::_getForm($resource);
 
 			$routes = $resource->getRoutes();
 			
@@ -26,41 +26,41 @@ abstract class Update
 				'routes' => $routes,
 				'custom_actions' => $resource->getCustomActionsResource($register),
 				'actions' => $resource->getActions(),
-				'form' => $form,
+				// 'repeaters' => $resource->getRepeatersResource(),
+				// 'form' => $form,
 				'back_url' => route($routes['index']),
-				'current_action' => 'update'
+				'current_action' => 'update',
+				'resource_name' => $resource->name
 			]);
 		};
 	}
 
-	public static function put($resource)
-	{
-		return function(int $id, Request $request) use($resource)
-		{
- 			$form = self::_getForm($resource, $id);
+	// public static function put($resource)
+	// {
+	// 	return function(int $id, Request $request) use($resource)
+	// 	{
+ 	// 		$form = self::_getForm($resource, $id);
 
-			$fields = self::_getFields($form);
+	// 		$fields = self::_getFields($form);
 
-			$fields_validated = self::_validate($request, $fields, $resource->getModel()->getTable(), $id);
+	// 		$fields_validated = self::_validate($request, $fields, $resource->getModel()->getTable(), $id);
 
-			$register = $resource->getModel()->findOrFail($id);
+	// 		$register = $resource->getModel()->findOrFail($id);
 
-			foreach($fields as $field)
-			{
-				$register->{$field->name} = $fields_validated[$field->name] ?? null;
-			}
+	// 		foreach($fields as $field)
+	// 		{
+	// 			$register->{$field->name} = $fields_validated[$field->name] ?? null;
+	// 		}
 		
-			UpdateHook::before($resource, $register, $request);
+	// 		UpdateHook::before($resource, $register, $request);
 			
-			$register->save();
+	// 		$register->save();
 			
-			UpdateHook::after($resource, $register, $request);
+	// 		UpdateHook::after($resource, $register, $request);
 						
-			$request->session()->flash('message', 'Alteração realizada com sucesso!');
+	// 		$request->session()->flash('message', 'Alteração realizada com sucesso!');
 
-			return redirect()->route($resource->getRouteName('index'));
-		};
-	}
-
-	
+	// 		return redirect()->route($resource->getRouteName('index'));
+	// 	};
+	// }
 }

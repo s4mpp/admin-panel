@@ -9,6 +9,8 @@ trait HasLabel
 {
 	use HasType;
 
+	private $content = null;
+
 	private $callback = null;
 
 	private bool $is_relation = false;
@@ -16,6 +18,18 @@ trait HasLabel
 	private bool $strong = false;
 
 	private array $additional_data = [];
+
+	private $relation = [];
+
+	public function setContent($content)
+	{
+		$this->content = $content;
+	}
+
+	public function getContent()
+	{
+		return $this->content;
+	}
 
 	public function getCallback(): ?callable
 	{

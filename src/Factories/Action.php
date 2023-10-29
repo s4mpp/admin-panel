@@ -1,12 +1,58 @@
 <?php
 
-namespace S4mpp\AdminPanel\Elements;
+namespace S4mpp\AdminPanel\Factories;
 
-use Illuminate\Support\Str;
+use S4mpp\AdminPanel\Actions\Link;
+use S4mpp\AdminPanel\Actions\View;
+use S4mpp\AdminPanel\Actions\Method;
+use S4mpp\AdminPanel\Actions\Prompt;
+use S4mpp\AdminPanel\Actions\Update;
+use S4mpp\AdminPanel\Actions\Callback;
+use S4mpp\AdminPanel\Actions\Livewire;
 
-class Action
+abstract class Action
 {
-	private string $slug;
+	public static function link(string $title, string $url)
+	{
+		return (new Link($url))->setTitle($title);
+	}
+
+	public static function method(string $title, string $controller, string $method)
+	{
+		return (new Method($controller, $method))->setTitle($title);
+	}
+
+	public static function view(string $title, string $view)
+	{
+		return (new View($view))->setTitle($title);
+	}
+
+	public static function update(string $title, array $data)
+	{
+		return (new Update($data))->setTitle($title);
+	}
+
+	public static function callback(string $title, callable $callback)
+	{
+		return (new Callback($callback))->setTitle($title);
+	}
+
+	public static function livewire(string $title, string $component)
+	{
+		return (new Livewire($component))->setTitle($title);
+	}
+	
+	public static function prompt(string $title, string $field, string $question)
+	{
+		return (new Prompt($question, $field))->setTitle($title);
+	}
+
+
+
+
+
+
+	/*private string $slug;
 		
 	private ?string $method = 'GET';
 	
@@ -183,5 +229,5 @@ class Action
 	public function getNewTab(): bool
 	{
 		return $this->new_tab;
-	}
+	}*/
 }

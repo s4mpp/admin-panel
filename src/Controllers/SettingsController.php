@@ -11,7 +11,7 @@ use S4mpp\AdminPanel\Traits\HasValidation;
 
 class SettingsController extends Controller
 {
-	use HasForm, HasValidation;
+	// use HasForm, HasValidation;
 
     public function settings()
     {

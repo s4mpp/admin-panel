@@ -4,8 +4,10 @@ namespace S4mpp\AdminPanel\Providers;
 
 use Livewire\Livewire;
 use Illuminate\Routing\Router;
+use S4mpp\AdminPanel\Livewire\Form;
 use Illuminate\Pagination\Paginator;
 use S4mpp\AdminPanel\Livewire\Table;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use S4mpp\AdminPanel\Livewire\Repeater;
 use S4mpp\AdminPanel\Resources\Resource;
@@ -31,8 +33,8 @@ class AdminPanelServiceProvider extends ServiceProvider
 		$this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
 		Livewire::component('table', Table::class);
-		Livewire::component('repeater', Repeater::class);
-
+		Livewire::component('form', Form::class);
+ 
 		Paginator::defaultView('admin::pagination');
 
 		app('router')->aliasMiddleware('custom-action-enabled', CustomActionEnabled::class);

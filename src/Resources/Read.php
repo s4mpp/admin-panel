@@ -16,14 +16,18 @@ abstract class Read
 
 			foreach($read as $item)
 			{
+				$field = $item->value;
+				
 				if(is_callable($item->getCallback()))
 				{
-					$field = $item->value;
-
 					if(isset($register->{$field}))
 					{
-						$register->{$field} = call_user_func($item->getCallback(), $register->{$field});
+						$item->setContent(call_user_func($item->getCallback(), $register->{$field}));
 					}
+				}
+				else
+				{
+					$item->setContent($register->{$field});
 				}
 			}
 
@@ -32,7 +36,7 @@ abstract class Read
 				'routes'=> $routes,
 				'read' => $read,
 				'actions' => $resource->getActions(),
-				'custom_actions' => $resource->getCustomActionsResource($register),
+				'custom_actions' => self::getCustomActions($resource, $register),
 				'back_url' => route($routes['index']),
 				'current_action' => 'read'
 			]);
@@ -44,5 +48,27 @@ abstract class Read
 		throw_if(!method_exists($resource, 'getRead'), 'Método getRead não existe.');
 
 		return $resource->getRead();
+	}
+
+	private static function getCustomActions($resource, $register)
+	{
+		if(!method_exists($resource, 'getCustomActions'))
+		{
+			return null;
+		}
+
+		foreach($resource->getCustomActions($register) ?? [] as $custom_action)
+		{
+			if(!$custom_action->checkPermissions())
+			{
+				continue;
+			}
+
+			$custom_action->setRegister($register);
+
+			$actions[$custom_action->getSlug()] = $custom_action;
+		}
+
+		return $actions ?? [];
 	}
 }

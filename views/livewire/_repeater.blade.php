@@ -1,28 +1,39 @@
 <div>
-	<x-card title="Produtos" className="bg-white border mb-6">
+	<x-card title="{{ $title }}" className="bg-white border mb-6">
+{{-- 
+		<x-alert/>
 		
-		<div x-data="{loading:false}" x-on:reset-loading.window="loading = false">
+		@dump($this->items)
+		@dump($this->fields)
+		{{-- @dump($this->validation_rules) --}}
+		{{-- <div x-data="{loading:false}" x-on:reset-loading.window="loading = false">
 			<div class="my-3">
-				<x-input type="text" title="Titulo" name="title" wire:model.defer="item.title"></x-input>
+				@foreach($this->form ?? [] as $element)
+					{{ $element->render($register ?? null) }}
+				@endforeach
 			</div>
 			
 			<x-button x-on:click="loading = true" type="button" wire:click="addItem">Adicionar</x-button>
-		</div>
+		</div> --}} --}}
 
-		<div class="overflow-x-auto mb-2">
+		{{-- <div class="overflow-x-auto mb-2">
 			<table class="min-w-full divide-y border-t divide-gray-100">
 				<thead class="bg-gray-100 rounded">
 					<tr>
 						<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap  ">ID</th>
-						<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap  ">Titulo</th>
+						@foreach($this->fields as $field)
+							<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800 whitespace-nowrap">{{ $field['title'] }}</th>
+						@endforeach
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-gray-200 bg-white">
 					@if($this->items)
-						@foreach($this->items as $i => $item)
+						@foreach($this->items as $item)
 							<tr class="group">
-								<td>{{ $i }}</td>
-								<td class="whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500">{{ $item['title'] ?? '' }}</td>
+								<td>{{ $item['id'] ?? null }}</td>
+								@foreach($this->fields as $field)
+									<td class="whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500">{{ $item[$field['name']] ?? '' }}</td>
+								@endforeach
 							</tr>
 						@endforeach
 					@else
@@ -38,6 +49,6 @@
 					@endif
 				</tbody>
 		  </table>
-		</div>
+		</div> --}}
 	</x-card>
 </div>

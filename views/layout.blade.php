@@ -313,9 +313,6 @@
 				</div>
 			  </div>
 			  
-			  <x-alert />
-
-
 			@yield('content')
 		</div>
 	  </main>

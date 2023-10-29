@@ -3,7 +3,12 @@
 @section('title', 'Cadastrar')
 
 @section('content-resource')
-	<form method="POST" class="mb-0" action={{ route($routes['store']) }} x-data="{loading: false}" x-on:submit="loading = true">
+
+	@livewire('form', [
+		'resource_name' => $resource_name,
+	])
+
+	{{-- <form method="POST" class="mb-0" action={{ route($routes['store']) }} x-data="{loading: false}" x-on:submit="loading = true">
 		@csrf
 			
 		<div class="overflow-hidden sm:rounded-lg bg-white border-t border-b sm:border-l sm:border-r  mb-6">
@@ -21,5 +26,5 @@
 			</x-button>
 		</div>
 
-	</form>
+	</form> --}}
 @endsection

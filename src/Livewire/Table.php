@@ -247,10 +247,8 @@ class Table extends Component
                 
 				$data_row[] = $data;
 			}
-            
-            $custom_actions = $this->resource->getCustomActionsResource($row);
-			
-            $registers[$row->id] = ['registers' => $data_row, 'custom_actions' => $custom_actions];
+            			
+            $registers[$row->id] = ['registers' => $data_row];
 		}
 
         return $registers;
