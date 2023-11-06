@@ -2,8 +2,6 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Repeater
 {
 	function __construct(private string $title, private string $relation, private array $fields)
@@ -28,9 +26,4 @@ class Repeater
 	{
 		return $this->title;
 	}
-
-	// public function render($resource)
-	// {
-	// 	return view('admin::elements.card', ['card' => $this, 'resource' => $resource]);
-	// }
 }

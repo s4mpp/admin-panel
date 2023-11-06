@@ -89,8 +89,6 @@ $route->middleware('web', 'auth:'.$guard)->group(function() use ($guard)
 			if(in_array('create', $resource->actions))
 			{
 				Route::get('/cadastrar', Create::get($resource))->name($resource->getRouteName('create'));
-			
-				// Route::post('/cadastrar', Create::post($resource))->name($resource->getRouteName('store'));
 			}
 
 			if(in_array('read', $resource->actions))
@@ -101,8 +99,6 @@ $route->middleware('web', 'auth:'.$guard)->group(function() use ($guard)
 			if(in_array('update', $resource->actions))
 			{
 				Route::get('/editar/{id}', Update::get($resource))->name($resource->getRouteName('update'));
-			
-				// Route::put('/editar/{id}', Update::put($resource))->name($resource->getRouteName('save'));
 			}
 	
 			if(in_array('delete', $resource->actions))

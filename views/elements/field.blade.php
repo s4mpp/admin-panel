@@ -1,7 +1,7 @@
 <div class="p-4 sm:gap-4 sm:p-3 xl:p-6 md:grid md:grid-cols-12">
 	<div class="text-sm font-medium text-slate-900  md:col-span-3 lg:col-span-2 xl:h-9 flex flex-col justify-center mb-2 md:mb-0" >
 		<span class="">
-			{{ $field->title }}
+			{{ $field->getTitle() }}
 
 			@if($field->isRequired())
 				<span class="text-red-300 text-xs truncate">*</span>

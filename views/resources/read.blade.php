@@ -2,9 +2,11 @@
 
 @section('title', 'Visualizar')
 
-@section('title-page')
+@section('title-page-resource')
 	{{-- @include('admin::resources.actions') --}}
-	@include('admin::resources.custom-actions')
+	@if($custom_actions)
+		@include('admin::resources.custom-actions', ['custom_actions' => $custom_actions])
+	@endif
 @endsection 
 
 @section('content-resource')

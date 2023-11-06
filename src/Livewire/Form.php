@@ -9,9 +9,12 @@ use S4mpp\AdminPanel\Elements\Field;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
 use S4mpp\AdminPanel\Resources\Resource;
 use Illuminate\Support\Facades\Validator;
+use Livewire\WithFileUploads;
 
 class Form extends Component
 {
+	use WithFileUploads;
+
 	public string $resource_name;
 	
 	public ?int $register_id = null;
@@ -44,21 +47,21 @@ class Form extends Component
 
 		$this->register = ($this->register_id) ? $this->resource->getModel()->findOrFail($this->register_id) : null;
 
-		$fields = self::_getFields($this->form);
+		$fields = $this->_getFields();
 
 		foreach($fields as $field)
 		{
-			$value = $this->register?->{$field->name} ?? null;
+			$value = $this->register?->{$field->getName()} ?? null;
 
 			$default_value = (!is_null($field) && is_null($value) ? $field->getDefaultText() : null);
 
 			if($field->getType() == 'date')
 			{
-				$this->data[$field->name] = $value ? $value->format('Y-m-d') : $default_value;
+				$this->data[$field->getName()] = $value ? $value->format('Y-m-d') : $default_value;
 			}
 			else
 			{
-				$this->data[$field->name] = $value ?? $default_value;
+				$this->data[$field->getName()] = $value ?? $default_value;
 			}
 		}
 
@@ -136,11 +139,11 @@ class Form extends Component
 
 		try
 		{
-			$form = self::_getForm($this->resource, $this->register_id);
-
-			$fields = self::_getFields($form);
+			$fields = $this->_getFields();
 
 			$fields_validated = $this->_validate($fields, $this->resource->getModel()->getTable());
+
+			dump($fields_validated);
 
 			$model = $this->resource->getModel();
 
@@ -148,7 +151,15 @@ class Form extends Component
 
 			foreach($fields as $field)
 			{
-				$register->{$field->name} = $fields_validated[$field->name] ?? null;
+				if($field->type == 'file')
+				{
+					$register->{$field->getName()} = $fields_validated[$field->getName()]->storePublicly('documents');
+				}
+				else
+				{
+					$register->{$field->getName()} = $fields_validated[$field->getName()] ?? null;
+				}
+
 			}
 		
 			// UpdateHook::before($this->resource, $register, $fields_validated);
@@ -166,9 +177,7 @@ class Form extends Component
 		catch(\Exception $e)
 		{
 			$this->addError('exception', $e->getMessage());
-		}
-		finally
-		{
+			
 			$this->dispatchBrowserEvent('reset-form');
 		}
 	}
@@ -206,9 +215,9 @@ class Form extends Component
 		return $resource->getForm($id);
 	}
 
-	private static function _getFields(array $elements): array
+	private function _getFields(): array
 	{
-		return self::_findFields($elements, []);
+		return self::_findFields($this->form, []);
 	}
 
 	private static function _findFields(array $elements, array $fields_found): array
@@ -221,7 +230,7 @@ class Form extends Component
 			}
 			else
 			{
-				$fields_found = self::_findFields($element->elements ?? [], $fields_found);
+				$fields_found = self::_findFields($element->getElements(), $fields_found);
 			}
 		}
 
@@ -253,9 +262,9 @@ class Form extends Component
 				}
 			}
 
-			$validation_rules[$field->name] = $rules;
+			$validation_rules[$field->getName()] = $rules;
 
-			$attributes[$field->name] = $field->title;
+			$attributes[$field->getName()] = $field->getTitle();
 		}
 
 		$validator = Validator::make($this->data, $validation_rules, [], $attributes);

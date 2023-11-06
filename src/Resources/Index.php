@@ -8,11 +8,11 @@ abstract class Index
 	{
 		return function() use ($resource)
 		{
-			$routes = $resource->getRoutes();
-			
-			$data['resource_name'] = $resource->name;
+			// $routes = $resource->getRoutes();
 
-			$data['routes'] = $routes;
+			$data['resource'] = $resource;
+
+			// $data['routes'] = $routes;
 		
 			if(method_exists($resource, 'getTable'))
 			{

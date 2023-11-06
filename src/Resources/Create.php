@@ -17,13 +17,11 @@ abstract class Create
 		{
 			// $form = self::_getForm($resource);
 
-			$routes = $resource->getRoutes();
+			// $routes = $resource->getRoutes();
 			
 			return $resource->getView('create', [
 				// 'form' => $form,
-				'routes' => $routes,
-				'back_url' => route($routes['index']),
-				'resource_name' => $resource->name
+				'resource' => $resource
 			]);
 		};
 	}

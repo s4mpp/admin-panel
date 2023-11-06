@@ -22,15 +22,16 @@ final class View extends Action
 				return response($this->getDisabledMessage(), 400);
 			}
 
-			$routes = $resource->getRoutes();
+			// $routes = $resource->getRoutes();
 			
 			$register = $resource->getModel()::findOrFail($id);
 
-			return view('admin::actions.view', [
+			return view('admin::resources.view-action', [
 				'title' => $resource->title,
 				'action_title'=> $this->getTitle(),
 				'register'=> $register,
-				'routes'=> $routes,
+				'resource'=> $resource,
+				// 'routes'=> $routes,
 				'view' => $this->view
 			]);
 		};

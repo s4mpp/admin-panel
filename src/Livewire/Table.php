@@ -33,7 +33,7 @@ class Table extends Component
     {
         $this->resource = Resource::getResource($this->resource_name);
 
-        $this->_setFilters();   
+        $this->_setFilters();
     }
 
     public function updatingSearch()
@@ -50,8 +50,9 @@ class Table extends Component
             'registers' => $this->_getData($collection),
             'collection' => $collection,
             'table' => $this->resource->getTable(),
-            'actions' => $this->resource->getActions(),
-            'routes' => $this->resource->getRoutes(),
+            'default_action' => $this->resource->getDefaultRoute(),
+            // 'actions' => $this->resource->getActions(),
+            // 'routes' => $this->resource->getRoutes(),
             'placeholder_field_search' => $this->_getMessagePlaceholderSearch(),
         ]);
     }
@@ -241,7 +242,7 @@ class Table extends Component
 			{
 				$data = clone $column;
 
-				$data->original_data =  $row->{$column->field};
+				$data->original_data =  $row->{$column->getField()};
 				$data->data = is_callable($column->getCallback()) ? call_user_func($column->getCallback(), $data->original_data) : $data->original_data;
 
                 

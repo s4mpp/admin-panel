@@ -34,7 +34,7 @@
 								<tr>
 									<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap  ">Seq.</th>
 									@foreach($repeater->getFields() as $field)
-										<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800 whitespace-nowrap">{{ $field->title }}</th>
+										<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800 whitespace-nowrap">{{ $field->getTitle() }}</th>
 									@endforeach
 								</tr>
 							</thead>
@@ -85,7 +85,7 @@
 						<div>
 							<div class="text-sm mb-2 font-medium text-slate-900">
 								<p class="">
-									{{ $element->title }}
+									{{ $element->getTitle() }}
 						
 									@if($element->isRequired())
 										<span class="text-red-300 text-xs truncate">*</span>

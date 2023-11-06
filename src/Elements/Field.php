@@ -20,12 +20,22 @@ class Field
 
 	private $prefix = 'data';
 
-	function __construct(public $title, public $name)
+	function __construct(private string $title, private string $name)
 	{}
 
 	public static function create(string $title, string $name)
 	{
 		return new Field($title, $name);
+	}
+
+	public function getTitle(): string
+	{
+		return $this->title;
+	}
+
+	public function getName(): string
+	{
+		return $this->name;
 	}
 
 	public function render($resource = null)
@@ -90,6 +100,15 @@ class Field
 		$this->type = 'email';
 
 		$this->rules[] = 'email';
+		
+		return $this;
+	}
+
+	public function file()
+	{
+		$this->type = 'file';
+
+		$this->rules[] = 'file';
 		
 		return $this;
 	}
@@ -254,6 +273,9 @@ class Field
 
 	public function relation(Collection $model_options, string $fk_relation, string $fk_field = null)
 	{
+		$this->_removeRule('string');
+		$this->rules[] = 'integer';
+
 		$this->type = 'select';
 
 		$options = [];

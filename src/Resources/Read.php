@@ -8,7 +8,7 @@ abstract class Read
 	{
 		return function($id) use ($resource)
 		{
-			$routes = $resource->getRoutes();
+			// $routes = $resource->getRoutes();
 			
 			$register = $resource->getModel()::findOrFail($id);
 
@@ -16,7 +16,7 @@ abstract class Read
 
 			foreach($read as $item)
 			{
-				$field = $item->value;
+				$field = $item->getValue();
 				
 				if(is_callable($item->getCallback()))
 				{
@@ -33,12 +33,14 @@ abstract class Read
 
 			return $resource->getView('read', [
 				'register'=> $register,
-				'routes'=> $routes,
+				// 'routes'=> $routes,
 				'read' => $read,
-				'actions' => $resource->getActions(),
+				// 'actions' => $resource->getActions(),
 				'custom_actions' => self::getCustomActions($resource, $register),
-				'back_url' => route($routes['index']),
-				'current_action' => 'read'
+				// 'back_url' => route($routes['index']),
+				// 'current_action' => 'read'
+				
+				'resource' => $resource
 			]);
 		};
 	}

@@ -19,18 +19,18 @@ abstract class Update
 
 			// $form = self::_getForm($resource);
 
-			$routes = $resource->getRoutes();
+			// $routes = $resource->getRoutes();
 			
 			return $resource->getView('update', [
 				'register' => $register,
-				'routes' => $routes,
-				'custom_actions' => $resource->getCustomActionsResource($register),
-				'actions' => $resource->getActions(),
+				// 'routes' => $routes,
+				// 'custom_actions' => $resource->getCustomActionsResource($register),
+				// 'actions' => $resource->getActions(),
 				// 'repeaters' => $resource->getRepeatersResource(),
 				// 'form' => $form,
-				'back_url' => route($routes['index']),
-				'current_action' => 'update',
-				'resource_name' => $resource->name
+				// 'back_url' => route($routes['index']),
+				// 'current_action' => 'update',
+				'resource' => $resource
 			]);
 		};
 	}

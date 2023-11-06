@@ -3,7 +3,9 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Support\Str;
+use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Elements\Action;
+use S4mpp\AdminPanel\Navigation\MenuSection;
 
 abstract class Resource
 {
@@ -62,37 +64,48 @@ abstract class Resource
 		return Str::lower($this->resource_name).'_'.$action.'_admin';
 	}
 
-	public function getRoutes(): array
+	public function getDefaultRoute(): ?string
 	{
-		$routes = [
-			'index' => $this->getRouteName('index')
-		];
+		$default_action = in_array('read', $this->actions, 'read') ? 'read' : (in_array('update', $this->actions) ? 'update' : null);
 
-		foreach($this->actions as $action)
-		{
-			$routes[$action] = $this->getRouteName($action);
-		}
-
-		if(in_array('update', $this->actions))
-		{
-			$routes['save'] = $this->getRouteName('save');
-		}
-
-		if(in_array('create', $this->actions))
-		{
-			$routes['store'] = $this->getRouteName('store');
-		}
-
-		// if(method_exists($this, 'getCustomActions'))
-		// {
-		// 	foreach($this->getCustomActions() ?? [] as $custom_action)
-		// 	{
-		// 		$routes[$custom_action->getSlug()] = $this->getRouteName($custom_action->getSlug());
-		// 	}
-		// }
-		
-		return $routes;
+		return ($default_action) ? $this->getRouteName($default_action) : null;
 	}
+
+	public function getSection(): ?string
+	{
+		if(!isset($this->section))
+		{
+			return null;
+		}
+
+		$sections = MenuSection::getSections();
+
+		return $sections[$this->section]->title ?? null;
+	}
+
+	// public function getRoutes(): array
+	// {
+	// 	$routes = [
+	// 		'index' => $this->getRouteName('index')
+	// 	];
+
+	// 	foreach($this->actions as $action)
+	// 	{
+	// 		$routes[$action] = $this->getRouteName($action);
+	// 	}
+
+	// 	if(in_array('update', $this->actions))
+	// 	{
+	// 		$routes['save'] = $this->getRouteName('save');
+	// 	}
+
+	// 	if(in_array('create', $this->actions))
+	// 	{
+	// 		$routes['store'] = $this->getRouteName('store');
+	// 	}
+		
+	// 	return $routes;
+	// }
 
 	public function getView(string $view, array $data = [])
 	{
@@ -101,42 +114,49 @@ abstract class Resource
 		]));
 	}
 
-	public function getActions()
-	{
-		$actions = [];
+	// public function getActions()
+	// {
+	// 	$actions = [];
 
-		foreach($this->actions as $action)
-		{
-			switch($action)
-			{
-				case 'update':
-					// $actions['update'] = Action::create('Editar', 'update')->icon('pencil')->showIn(['read', 'table']);
-					break;
+	// 	foreach($this->actions as $action)
+	// 	{
+	// 		switch($action)
+	// 		{
+	// 			case 'update':
+	// 				// $actions['update'] = Action::create('Editar', 'update')->icon('pencil')->showIn(['read', 'table']);
+	// 				break;
 
-				case 'read':
-					// $actions['read'] = Action::create('Visualizar', 'read')->icon('eye')->showIn(['update', 'table']);
-					break;
+	// 			case 'read':
+	// 				// $actions['read'] = Action::create('Visualizar', 'read')->icon('eye')->showIn(['update', 'table']);
+	// 				break;
 
-				case 'delete':
-					// $actions['delete'] = Action::create('Excluir', 'delete')->icon('trash')->danger()->method('delete')->question('Tem certeza que deseja excluir este registro?');
-					break;
-			}
-		}
+	// 			case 'delete':
+	// 				// $actions['delete'] = Action::create('Excluir', 'delete')->icon('trash')->danger()->method('delete')->question('Tem certeza que deseja excluir este registro?');
+	// 				break;
+	// 		}
+	// 	}
 	
-		return $actions;
-	}
+	// 	return $actions;
+	// }
 
 	// public function getCustomActionsResource($register)
 	// {
 	// 	if(!method_exists($this, 'getCustomActions'))
 	// 	{
-	// 		return null;
+	// 		return [];
 	// 	}
 
-	// 	// foreach($this->getCustomActions() ?? [] as $custom_action)
-	// 	// {
-	// 	// 	$actions[$custom_action->getSlug()] = $custom_action;
-	// 	// }
+	// 	foreach($this->getCustomActions() ?? [] as $custom_action)
+	// 	{
+	// 		if(!$custom_action->checkPermissions())
+	// 		{
+	// 			continue;
+	// 		}
+
+	// 		$custom_action->setRegister($register);
+
+	// 		$actions[$custom_action->getSlug()] = $custom_action;
+	// 	}
 
 	// 	return $actions ?? [];
 	// }

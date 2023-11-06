@@ -9,7 +9,7 @@ class ItemView
 {
 	use HasLabel, HasDefaultText;
  		
-	function __construct(public $title, public $value)
+	function __construct(private string $title, private ?string $value)
 	{}
 
 	public static function create(string $title, string $name)
@@ -20,5 +20,15 @@ class ItemView
 	public function render($resource = null)
 	{
 		return view('admin::elements.item-view', ['item' => $this, 'resource' => $resource]);
+	}
+
+	public function getValue(): ?string
+	{
+		return $this->value;
+	}
+
+	public function getTitle(): string
+	{
+		return $this->title;
 	}
 }

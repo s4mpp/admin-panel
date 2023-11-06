@@ -3,13 +3,13 @@
 @section('title', 'Editar')
 
 @section('title-page')
-	@include('admin::resources.actions')
+	
 @endsection 
 
 @section('content-resource')
 
 	@livewire('form', [
-		'resource_name' => $resource_name,
+		'resource_name' => $resource->name,
 		'id' => $register->id
 	])
 

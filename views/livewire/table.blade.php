@@ -1,12 +1,12 @@
 @php
 	$rowspan_empty = count($table) ?? 1;
 
-	if($actions)
+	if($this->resource->actions)
 	{
 		$rowspan_empty++;
 	}
+	
 
-	$default_action = (isset($actions['read'])) ? $actions['read'] : ((isset($actions['update'])) ? $actions['update'] : null);
 @endphp
 
 <div class="border lg:rounded-lg bg-white mx-0 sm:-mx-6 lg:mx-0"> 
@@ -117,12 +117,12 @@
 				  <th scope="col" @class([
 					'text-center' => (($column->getAlignment() ?? null) == 'center'),
 					'text-right' => (($column->getAlignment() ?? null) == 'right'),
-					'px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap'])>{{ $column->title }}</th>
+					'px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap'])>{{ $column->getTitle() }}</th>
 			  @empty
 				  <th scope="col" class="px-3 py-3.5">&nbsp;</th>
 			  @endforelse
 
-			  @if($actions)
+			  @if($this->resource->actions)
 				<th></th>
 			@endif
 		  </tr>
@@ -134,7 +134,7 @@
 						@forelse ($row['registers'] as $field)
 							<td 
 							@if($default_action)
-								x-on:click="window.location.href = '{{ route($routes[$default_action->getRoute()], ['id' => $id])  }}'"
+								x-on:click="window.location.href = '{{ route($default_action, ['id' => $id])  }}'"
 							@endif
 							@class([
 								'text-center' => (($field->getAlignment() ?? null) == 'center'),
@@ -187,55 +187,36 @@
 							<td>&nbsp;</td>
 						@endforelse 
 
-						@if($actions)
+						@if($this->resource->actions)
 							<td
 							@class([
 								'hover:bg-gray-50/90 peer-hover:bg-gray-50/90 transition-colors' => $default_action,
 								'whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'
 							])>
-							   <div class="inline-flex gap-3">
-								   @foreach($actions as $action)
+								<div class="inline-flex gap-3">
+									@if(in_array('read', $this->resource->actions))
+										<a	href="{{ route($this->resource->getRouteName('read'), ['id' => $id]) }}" class="text-gray-500 hover:text-gray-600 inline-flex gap-1">
+											<span>Visualizar</span>
+										</a>
+									@endif
+									
+									@if(in_array('update', $this->resource->actions))
+										<a	href="{{ route($this->resource->getRouteName('update'), ['id' => $id]) }}" class="text-gray-500 hover:text-gray-600 inline-flex gap-1">
+											<span>Editar</span>
+										</a>
+									@endif
 
-								   		{{-- TO-DO: colocar no metodo getRoutes --}}
-									   @if(!in_array('table', $action->getShowIn()))
-										   @continue
-									   @endif
-						   
-									   @if($action->getMethod() == 'GET')
-										   @php
-											   $link = route($routes[$action->getRoute()], ['id' => $id]);
-										   @endphp
-						   
-											<a
-											@if($action->getNewTab())
-												target="_blank"
-											@endif
-											 href="{{ $link }}" class="{{ $action->getIsDanger() ?  'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-600' }} inline-flex gap-1">
-												<span>{{ $action->getTitle() }}</span>
-											</a>
-									   @else
-										   <form 
-										   @if($action->getNewTab())
-												target="_blank"
-											@endif
-											@if($action->getQuestion())
-												onsubmit="return window.confirm('{{ $action->getQuestion() }}')"
-											@endif
-											method="POST"  action="{{ route($routes[$action->getRoute()], ['id' => $id]) }}">
-											   @method(strtoupper($action->getMethod()))
-											   @csrf
-											   
-												<button class="{{ $action->getIsDanger() ?  'text-red-500 hover:text-red-600' : null }} inline-flex gap-1" type="submit">{{ $action->getTitle() }}</button>
-										   </form>
-									   @endif
-								   @endforeach
-							   </div>
-
+									@if(in_array('delete', $this->resource->actions))
+										<form onsubmit="return window.confirm('Tem certeza que deseja excluir este registro?')" method="POST"  action="{{ route($this->resource->getRouteName('delete'), ['id' => $id]) }}">
+												@method('DELETE')
+												@csrf
+											
+											 <button class="text-red-500 hover:text-red-600 inline-flex gap-1" type="submit">Excluir</button>
+										</form>
+									@endif
+								</div>
 							</td>
 						@endif
-
-
-						
 					</tr>
 				@endforeach
 			@else

@@ -5,7 +5,7 @@
 @section('content-resource')
 
 	@livewire('form', [
-		'resource_name' => $resource_name,
+		'resource_name' => $resource->name,
 	])
 
 	{{-- <form method="POST" class="mb-0" action={{ route($routes['store']) }} x-data="{loading: false}" x-on:submit="loading = true">

@@ -12,7 +12,7 @@ class Column
 
 	private ?string $alignment = null;
 
-	function __construct(public $title, public $field)
+	function __construct(private string $title, private string $field)
 	{}
 
 	public static function create(string $title, string $field)
@@ -30,5 +30,15 @@ class Column
 	public function getAlignment(): ?string
 	{
 		return $this->alignment;
+	}
+
+	public function getField(): string
+	{
+		return $this->field;
+	}
+
+	public function getTitle(): string
+	{
+		return $this->title;
 	}
 }

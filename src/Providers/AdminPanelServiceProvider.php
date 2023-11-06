@@ -37,8 +37,6 @@ class AdminPanelServiceProvider extends ServiceProvider
  
 		Paginator::defaultView('admin::pagination');
 
-		app('router')->aliasMiddleware('custom-action-enabled', CustomActionEnabled::class);
-
 		if($this->app->runningInConsole())
 		{
 			$this->commands([
