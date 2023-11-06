@@ -2,43 +2,43 @@
 	<div class="text-sm font-medium text-slate-900 xl:col-span-2">{{ $item->getTitle() }}</div>
 	<div class="text-sm font-normal text-slate-700 xl:col-span-10">
 
-		@if($item->getDefaultText() && is_null($resource->{$item->value}))
+		@if($item->getDefaultText() && is_null($resource->{$item->getValue()}))
 			<span class="opacity-60">{{ $item->getDefaultText() }}</span>
 		@else
 			@switch($item->getType())
 				@case('boolean')
-					{{ $resource->{$item->value} ? 'Sim' : 'Não' }}
+					{{ $resource->{$item->getValue()} ? 'Sim' : 'Não' }}
 				@break;
 				
 				@case('enum')
-					<x-badge :provider="$resource->{$item->value}"></x-badge>
+					<x-badge :provider="$resource->{$item->getValue()}"></x-badge>
 				@break;
 
 				@case('datetime')
-					{{ $resource->{$item->value}?->format($item->getAdditionalData('format')) }}
-					@if($resource->{$item->value})
-						<span class="opacity-50">({{ $resource->{$item->value}?->diffForHumans() }})</span>
+					{{ $resource->{$item->getValue()}?->format($item->getAdditionalData('format')) }}
+					@if($resource->{$item->getValue()})
+						<span class="opacity-50">({{ $resource->{$item->getValue()}?->diffForHumans() }})</span>
 					@endif
 				@break;
 
 				@case('markdown')
 					<div class="prose max-w-none text-base">	
-						{!! Str::of($resource->{$item->value})->markdown() !!}
+						{!! Str::of($resource->{$item->getValue()})->markdown() !!}
 					</div>
 				@break;
 
 				@case('file')
-					@break(empty($resource->{$item->value}))
+					@break(empty($resource->{$item->getValue()}))
 
 					@php
-						$exp = explode('.', $resource->{$item->value});
+						$exp = explode('.', $resource->{$item->getValue()});
 						$type_file = end($exp);
 					@endphp
 
 					@if(in_array(strtolower($type_file), ['png', 'jpg', 'jpeg', 'gif']))
-						<a href="{{ Storage::url($resource->{$item->value}) }}" target="_blank"><img src="{{ Storage::url($resource->{$item->value}) }}" alt="{{ $item->title }}" class="h-12"></a>
+						<a href="{{ Storage::url($resource->{$item->getValue()}) }}" target="_blank"><img src="{{ Storage::url($resource->{$item->getValue()}) }}" alt="{{ $item->title }}" class="h-12"></a>
 					@else
-						<a href="{{ Storage::url($resource->{$item->value}) }}" target="_blank">Visualizar {{ strtoupper($type_file) }}</a>
+						<a href="{{ Storage::url($resource->{$item->getValue()}) }}" target="_blank">Visualizar {{ strtoupper($type_file) }}</a>
 					@endif
 				@break;
 
@@ -47,7 +47,7 @@
 				@break;
 
 				@default
-					{{ $resource->{$item->value} }}
+					{{ $resource->{$item->getValue()} }}
 			@endswitch 
 		@endif
 	</div>

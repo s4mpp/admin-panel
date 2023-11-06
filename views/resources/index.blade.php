@@ -16,6 +16,8 @@
 
 @section('content')
 
+		<x-alert></x-alert>
+
 	@isset($has_table)
 
 		@livewire('table', [

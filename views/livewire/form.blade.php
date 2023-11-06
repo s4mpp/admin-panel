@@ -44,7 +44,7 @@
 										<tr x-on:click="slide{{ $repeater->getRelation() }} = true" wire:click.prevent="setChild('{{ $repeater->getRelation() }}', {{ $i }})" class="cursor-pointer hover:bg-gray-50 transition-colors">
 											<td class="whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500">{{ $i }}</td>
 											@foreach($repeater->getFields() as $field)
-												<td class="whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500">{{ $item[$field->name] ?? '' }}</td>
+												<td class="whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500">{{ $item[$field->getName()] ?? '' }}</td>
 											@endforeach
 										</tr>
 									@endforeach

@@ -143,15 +143,13 @@ class Form extends Component
 
 			$fields_validated = $this->_validate($fields, $this->resource->getModel()->getTable());
 
-			dump($fields_validated);
-
 			$model = $this->resource->getModel();
 
 			$register = ($this->register_id) ? $model->findOrFail($this->register_id) : new $model();
 
 			foreach($fields as $field)
 			{
-				if($field->type == 'file')
+				if($field->getType() == 'file')
 				{
 					$register->{$field->getName()} = $fields_validated[$field->getName()]->storePublicly('documents');
 				}
