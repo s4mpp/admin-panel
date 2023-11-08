@@ -36,7 +36,7 @@
 					@endphp
 
 					@if(in_array(strtolower($type_file), ['png', 'jpg', 'jpeg', 'gif']))
-						<a href="{{ Storage::url($resource->{$item->getValue()}) }}" target="_blank"><img src="{{ Storage::url($resource->{$item->getValue()}) }}" alt="{{ $item->title }}" class="h-12"></a>
+						<a href="{{ Storage::url($resource->{$item->getValue()}) }}" target="_blank"><img src="{{ Storage::url($resource->{$item->getValue()}) }}" alt="{{ $item->getTitle() }}" class="h-12"></a>
 					@else
 						<a href="{{ Storage::url($resource->{$item->getValue()}) }}" target="_blank">Visualizar {{ strtoupper($type_file) }}</a>
 					@endif

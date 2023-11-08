@@ -13,10 +13,10 @@
 		@break;
 	
 	@case('permissions')
-		<x-input title="" name="{{ $field->getName() }}[]">
+		<x-input title="">
 			<div class="flex">
 				@foreach($field->getAdditionalData('permissions') as $option)
-					{{-- <x-check checked="{{ $resource && $resource->can($option['id']) }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check> --}}
+					<x-check wire:model.defer="data.{{ $field->getName() }}" value="{{ $option['id'] }}">{{ $option['label'] }}</x-check>
 				@endforeach
 			</div>
 		</x-input>
@@ -24,12 +24,12 @@
 	
 	@case('boolean')
 		<x-input title="" name="{{ $field->getName() }}" >
-			{{-- <x-check checked="{{ $value }}" value="1">Habilitar</x-check> --}}
+			<x-check wire:model.defer="data.{{ $field->getName() }}"  value="1">Habilitar</x-check>
 		</x-input>
 		@break;
 
 	@case('currency')
-		<x-input :required=$required  type="{{ $field->getType() }}" title="" name="{{ $field->getName() }}" x-mask:dynamic="$money($input, ',', '.')" placeholder="0,00">
+		<x-input wire:model.defer="data.{{ $field->getName() }}" :required=$required  type="{{ $field->getType() }}" title="" name="{{ $field->getName() }}" x-mask:dynamic="$money($input, ',', '.')" placeholder="0,00">
 			{{-- {{ ($value)  ? Format::currency($value, $field->getAdditionalData('has_cents')) : $default_value }} --}}
 		</x-input>
 		@break;

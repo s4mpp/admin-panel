@@ -2,22 +2,22 @@
 
 namespace S4mpp\AdminPanel\Hooks;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\ValidatedInput;
 
 trait HasHooks
 {
-	public static function before($resource, $register, Request $request)
+	public static function before($resource, $register, ValidatedInput $fields_validated)
 	{
-		self::_call($resource, $register, 'before'.self::$action, $request);
+		self::_call($resource, $register, 'before'.self::$action, $fields_validated);
 
-		self::_call($resource, $register, 'beforeSave', $request);
+		self::_call($resource, $register, 'beforeSave', $fields_validated);
 	}
 
-	public static function after($resource, $register, Request $request)
+	public static function after($resource, $register, ValidatedInput $fields_validated)
 	{
-		$has_update_hook = self::_call($resource, $register, 'after'.self::$action, $request);
+		$has_update_hook = self::_call($resource, $register, 'after'.self::$action, $fields_validated);
 		
-		$has_save_hook = self::_call($resource, $register, 'afterSave', $request);
+		$has_save_hook = self::_call($resource, $register, 'afterSave', $fields_validated);
 
 		if($has_update_hook || $has_save_hook)
 		{
@@ -25,14 +25,14 @@ trait HasHooks
 		}
 	}
 
-	private static function _call($resource, $register, string $method, Request $request)
+	private static function _call($resource, $register, string $method, ValidatedInput $fields_validated)
 	{
 		if(!method_exists($resource, $method))
 		{
 			return false;
 		}
 		
-		$resource->{$method}($register, $request);
+		$resource->{$method}($register, $fields_validated);
 
 		return true;
 	}

@@ -16,7 +16,8 @@
 		x-on:close-slide.window="{{ join(',', $close_slides) }}" >
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
 			
-			<div class="overflow-hidden sm:rounded-lg bg-white border-t border-b sm:border-l sm:border-r  mb-6">
+			{{-- <div class="overflow-hidden sm:rounded-lg bg-white border-t border-b sm:border-l sm:border-r  mb-6"> --}}
+			<div class="space-y-4 mb-4">
 				@foreach($this->form ?? [] as $element)
 					{{ $element->render($register ?? null) }}
 				@endforeach

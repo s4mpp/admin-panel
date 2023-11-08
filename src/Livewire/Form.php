@@ -3,13 +3,16 @@
 namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
+use S4mpp\Format\Format;
 use App\Models\Participant;
+use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
+use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Elements\Field;
+use S4mpp\AdminPanel\Hooks\CreateHook;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
 use S4mpp\AdminPanel\Resources\Resource;
 use Illuminate\Support\Facades\Validator;
-use Livewire\WithFileUploads;
 
 class Form extends Component
 {
@@ -58,6 +61,14 @@ class Form extends Component
 			if($field->getType() == 'date')
 			{
 				$this->data[$field->getName()] = $value ? $value->format('Y-m-d') : $default_value;
+			}
+			else if($field->getType() == 'permissions')
+			{
+				$this->data[$field->getName()] = ($value) ? $value->pluck('name') : [];
+			}
+			else if($field->getType() == 'currency')
+			{
+				$this->data[$field->getName()] = ($value)  ? Format::currency($value, $field->getAdditionalData('has_cents')) : $default_value;
 			}
 			else
 			{
@@ -139,7 +150,7 @@ class Form extends Component
 
 		try
 		{
-			$fields = $this->_getFields();
+			$fields = $this->_getFields();  
 
 			$fields_validated = $this->_validate($fields, $this->resource->getModel()->getTable());
 
@@ -159,12 +170,14 @@ class Form extends Component
 				}
 
 			}
+
+			$hook = (!$this->register_id) ? CreateHook::class : Updatehook::class;
 		
-			// UpdateHook::before($this->resource, $register, $fields_validated);
+			$hook::before($this->resource, $register, $fields_validated);
 			
 			$register->save();
 			
-			// UpdateHook::after($this->resource, $register, $fields_validated);
+			$hook::after($this->resource, $register, $fields_validated);
 
 			$this->_saveChilds($register);
 						
@@ -206,11 +219,36 @@ class Form extends Component
 		}
 	}
 
-	private static function _getForm($resource, int $id = null)
+	private static function _getForm($resource, int $id = null): array
 	{
 		throw_if(!method_exists($resource, 'getForm'), 'Método getForm não existe.');
 						
-		return $resource->getForm($id);
+		$form = $resource->getForm($id);
+
+		$main_card_elements = [];
+
+		$elements = [];
+
+		foreach($form as $element)
+		{
+			if(is_a($element, Card::class))
+			{
+				$elements[] = $element;
+
+				continue;
+			}
+			else if(is_a($element, Field::class))
+			{
+				$main_card_elements[] = $element;
+			}
+		}
+
+		if($main_card_elements)
+		{
+			array_unshift($elements, Card::create('', $main_card_elements));
+		}
+
+		return $elements;
 	}
 
 	private function _getFields(): array
@@ -243,7 +281,7 @@ class Form extends Component
 		{
 			if($field->getPrepareForValidation())
 			{
-				$this->data[$field->name] = call_user_func($field->getPrepareForValidation(), $this->data[$field->name]);
+				$this->data[$field->getName()] = call_user_func($field->getPrepareForValidation(), $this->data[$field->getName()]);
 			}
 
 			$rules = [];

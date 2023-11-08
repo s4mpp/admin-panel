@@ -12,7 +12,7 @@ class Field
 {
 	use HasDefaultText, HasType;
 	
-	private array $rules = ['required', 'string'];
+	private array $rules = ['required'];
 
 	private array $additional_data = [];
 		
