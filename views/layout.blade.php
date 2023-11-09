@@ -3,7 +3,7 @@
 @php
 	$guard = config('admin.guard', 'web');
 
-	$navigations = S4mpp\AdminPanel\AdminPanel::getNavigation();
+	$navigations = S4mpp\AdminPanel\AdminPanel::getInstance()->getMenu(); dump($navigations);
 
 	$user_has_settings_access = S4mpp\AdminPanel\AdminPanel::getUserAccessSettings();
 	

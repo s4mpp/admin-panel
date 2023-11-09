@@ -15,6 +15,8 @@ class AdminPanel
 
 	private array $modules = [];
 
+	private array $menu_sections = [];
+
 	private function __construct()
 	{}
 
@@ -62,6 +64,16 @@ class AdminPanel
 	public function getModules(): array
 	{
 		return $this->modules;
+	}
+
+	public function getMenu(): array
+	{
+		foreach($this->modules as $module)
+		{
+
+		}
+
+		return [];
 	}
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel;
+namespace S4mpp\AdminPanel\Resources;
 
 use Illuminate\Support\Str;
 use S4mpp\AdminPanel\AdminPanel;
