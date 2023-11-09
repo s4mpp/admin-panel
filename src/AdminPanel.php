@@ -4,12 +4,86 @@ namespace S4mpp\AdminPanel;
 
 use Illuminate\Support\Facades\Auth;
 use S4mpp\AdminPanel\Navigation\Page;
+use S4mpp\AdminPanel\Module;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Navigation\MenuItem;
 use S4mpp\AdminPanel\Navigation\MenuSection;
 
 class AdminPanel
 {
+	private static $instance;
+
+	private array $modules = [];
+
+	private function __construct()
+	{}
+
+	private function __clone()
+	{}
+
+	public static function getInstance()
+	{
+		if(self::$instance === null)
+		{
+			self::$instance = new self;
+		}
+		
+		return self::$instance;
+	}
+
+	public function loadModules()
+	{
+		if(!empty($this->modules))
+		{
+			return;
+		}
+
+		$path = app_path('AdminPanel');
+
+		if(!file_exists($path))
+		{
+			return;
+		}
+
+		$files = new \FileSystemIterator($path);
+
+		foreach($files as $file)
+		{
+			$file_name = str_replace('.php', '', $file->getFilename());
+
+			$class_path = '\App\AdminPanel\\'.$file_name;
+			
+			$resource = new $class_path();
+
+			$this->modules[] = new Module($resource->getTitle());
+		}
+	}
+
+	public function getModules(): array
+	{
+		return $this->modules;
+	}
+
+
+
+
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	private static $settings = [];
 
 	private static $settings_roles = [];
@@ -43,7 +117,7 @@ class AdminPanel
 
 	public static function getNavigation()
 	{
-		$uri = request()->route()->uri();
+		/*$uri = request()->route()->uri();
 		
 		MenuSection::create('')->slug('main')->order(0);
 
@@ -117,6 +191,8 @@ class AdminPanel
 			});
 		}
 
-		return $sections;
+		return $sections;*/
+
+		return [];
 	}
 }

@@ -1,7 +1,12 @@
 <div class="flex mt-5 justify-end items-center gap-4">
-	<x-button type="button" x-on:click="{{ $action->getNameModalConfirmation() }} = false" className="ring-inset ring-1 ring-gray-200 btn-muted">Voltar</x-button>
+	<x-button :loading=false type="button" 
+		x-on:click="{{ $action->getNameModalConfirmation() }} = false"
+		className="ring-inset ring-1 ring-gray-200 btn-muted">Voltar</x-button>
 	
-	<form action="{{ $action->getUrl() }}" method="POST" target="{{ $action->getTargetWindow() }}">
+	<form action="{{ $action->getUrl() }}" x-data="{loading: false}"
+		method="POST" 
+		x-on:click="{{ !$action->isNewTab() ? 'loading = true' : null }}"
+		target="{{ $action->getTargetWindow() }}">
 		@csrf
 		@method($method)
 		

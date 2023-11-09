@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Resources;
+namespace S4mpp\AdminPanel\Crud;
 
 abstract class Index
 {

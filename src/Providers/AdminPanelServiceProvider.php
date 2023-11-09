@@ -7,9 +7,7 @@ use Illuminate\Routing\Router;
 use S4mpp\AdminPanel\Livewire\Form;
 use Illuminate\Pagination\Paginator;
 use S4mpp\AdminPanel\Livewire\Table;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use S4mpp\AdminPanel\Livewire\Repeater;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
 use Illuminate\Foundation\Console\AboutCommand;
@@ -20,11 +18,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 {
     public function boot(Router $router)
     {
-		AboutCommand::add('AdminPanel', fn () => [
-			'Guard' => config('admin.guard')
-		]);
-
-		$this->_loadResources();
+		// $this->_loadResources();
 		
 		$this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
 
@@ -37,8 +31,14 @@ class AdminPanelServiceProvider extends ServiceProvider
  
 		Paginator::defaultView('admin::pagination');
 
+		app('router')->aliasMiddleware('custom-action-enabled', CustomActionEnabled::class);
+
 		if($this->app->runningInConsole())
 		{
+			AboutCommand::add('AdminPanel', fn () => [
+				'Guard' => config('admin.guard')
+			]);
+
 			$this->commands([
 				CreateAdmin::class,
 				ResetPasswordAdmin::class
@@ -63,27 +63,27 @@ class AdminPanelServiceProvider extends ServiceProvider
 		}
     }
 
-	private function _loadResources()
-	{
-		$path = app_path('AdminPanel');
+	// private function _loadResources()
+	// {
+	// 	$path = app_path('AdminPanel');
 
-		if(!file_exists($path))
-		{
-			return;
-		}
+	// 	if(!file_exists($path))
+	// 	{
+	// 		return;
+	// 	}
 
-		$resources = new \FileSystemIterator($path);
+	// 	$resources = new \FileSystemIterator($path);
 
-		foreach($resources as $resource)
-		{
-			$resource_class_name = str_replace('.php', '', $resource->getFilename());
-			$resource_name = str_replace('Resource', '', $resource_class_name);
+	// 	foreach($resources as $resource)
+	// 	{
+	// 		$resource_class_name = str_replace('.php', '', $resource->getFilename());
+	// 		$resource_name = str_replace('Resource', '', $resource_class_name);
 
-			$class_path = '\App\AdminPanel\\'.$resource_class_name;
+	// 		$class_path = '\App\AdminPanel\\'.$resource_class_name;
 
-			$instance = new $class_path($resource_name);
+	// 		$instance = new $class_path($resource_name);
 	
-			Resource::add($instance);
-		}
-	}
+	// 		Resource::add($instance);
+	// 	}
+	// }
 }

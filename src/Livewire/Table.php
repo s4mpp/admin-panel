@@ -24,6 +24,8 @@ class Table extends Component
 
     private $filters_available = [];
 
+    protected $listeners = ['searchTable' => '$refresh'];
+
     public function mount(string $resource_name)
     {
         $this->resource_name = $resource_name;

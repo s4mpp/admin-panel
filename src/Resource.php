@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Resources;
+namespace S4mpp\AdminPanel;
 
 use Illuminate\Support\Str;
 use S4mpp\AdminPanel\AdminPanel;
@@ -9,6 +9,33 @@ use S4mpp\AdminPanel\Navigation\MenuSection;
 
 abstract class Resource
 {
+	public function getTitle()
+	{
+		return $this->title ?? 'No title';
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	public static $resources = array();
 
 	public $model;
@@ -17,22 +44,22 @@ abstract class Resource
 
 	public $name;
 	
-	public $title;
+	// public $title;
 
-	public $slug;
+	// public $slug;
 
 	public $menu_order = null;
 
 	public $ordenation = ['id', 'DESC'];
 	
-	public function __construct(public string $resource_name)
-	{		
-		$this->name = Str::plural(strtolower($resource_name));
+	// public function __construct(public string $resource_name)
+	// {		
+	// 	$this->name = Str::plural(strtolower($resource_name));
 		
-		$this->title = !empty($this->title) ? $this->title : Str::plural($resource_name);
+	// 	$this->title = !empty($this->title) ? $this->title : Str::plural($resource_name);
 		
-		$this->slug = Str::slug($this->title);
-	}
+	// 	$this->slug = Str::slug($this->title);
+	// }
 
 	public function getOrder(): int
 	{

@@ -9,7 +9,7 @@
 
 @endphp
 
-<div class="border lg:rounded-lg bg-white mx-0 sm:-mx-6 lg:mx-0"> 
+<div class="border lg:rounded-lg bg-white mx-0 sm:-mx-6 lg:mx-0" x-on:notify.window="$wire.emit('searchTable')"> 
 	<div class="min-w-full px-2  py-2 flex justify-start">
 		@if($has_search)
 			<div class="w-full sm:w-6/12 md:w-5/12 xl:w-4/12 mr-3">

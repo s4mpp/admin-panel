@@ -8,18 +8,22 @@ use S4mpp\AdminPanel\Actions\Method;
 use S4mpp\AdminPanel\Resources\Read;
 use Illuminate\Support\Facades\Route;
 use S4mpp\AdminPanel\Navigation\Page;
-use S4mpp\AdminPanel\Resources\Index;
+use S4mpp\AdminPanel\Crud\Index;
 use S4mpp\AdminPanel\Actions\Callback;
 use S4mpp\AdminPanel\Actions\Prompt;
-use S4mpp\AdminPanel\Resources\Create;
-use S4mpp\AdminPanel\Resources\Delete;
-use S4mpp\AdminPanel\Resources\Update;
-use S4mpp\AdminPanel\Resources\Resource;
+use S4mpp\AdminPanel\Crud\Create;
+use S4mpp\AdminPanel\Crud\Delete;
+use S4mpp\AdminPanel\Crud\Update;
+use S4mpp\AdminPanel\Crud\Resource;
 use S4mpp\AdminPanel\Controllers\AdminController;
 use S4mpp\AdminPanel\Actions\Update as UpdateAction;
 use S4mpp\AdminPanel\Controllers\SettingsController;
 use S4mpp\AdminPanel\Middleware\CustomActionEnabled;
 use S4mpp\AdminPanel\Controllers\CustomActionController;
+
+$admin_panel = AdminPanel::getInstance();
+
+$admin_panel->loadModules();
 
 $route = Route::middleware('web');
 
@@ -51,7 +55,7 @@ $route->group(function()
 /**
  * Private
  */
-$route->middleware('web', 'auth:'.$guard)->group(function() use ($guard)
+$route->middleware('web', 'auth:'.$guard)->group(function() use ($guard, $admin_panel)
 {
 	/**
 	 * Pages
@@ -71,60 +75,65 @@ $route->middleware('web', 'auth:'.$guard)->group(function() use ($guard)
 	/**
 	 * Resources
 	 */
-	$resources = Resource::getResources();
-
-	foreach($resources as $resource)
+	$modules = $admin_panel->getModules();
+ 
+	foreach($modules as $module)
 	{
-		$routes_resource = Route::prefix($resource->slug);
+		$routes_module = Route::prefix($module->getSlug());
 		
-		if(isset($resource->roles))
+		/*if(isset($module->roles))
 		{
-			$routes_resource->middleware('role:'.join('|', ($resource->roles ?? [])));
-		}
+			$routes_module->middleware('role:'.join('|', ($module->roles ?? [])));
+		}*/
 		
-		$routes_resource->group(function() use ($resource)
+		$routes_module->group(function() use ($module)
 		{
-			Route::get('/', Index::get($resource))->name($resource->getRouteName('index'));
+			Route::get('/', Index::get($module))->name($module->getRouteName('index'));
 	
-			if(in_array('create', $resource->actions))
-			{
-				Route::get('/cadastrar', Create::get($resource))->name($resource->getRouteName('create'));
-			}
+			// if(in_array('create', $module->actions))
+			// {
+			// 	Route::get('/cadastrar', Create::get($module))->name($module->getRouteName('create'));
+			// }
 
-			if(in_array('read', $resource->actions))
-			{
-				Route::get('/visualizar/{id}', Read::get($resource))->name($resource->getRouteName('read'));
-			}
+			// if(in_array('read', $module->actions))
+			// {
+			// 	Route::get('/visualizar/{id}', Read::get($module))->name($module->getRouteName('read'));
+			// }
 	
-			if(in_array('update', $resource->actions))
-			{
-				Route::get('/editar/{id}', Update::get($resource))->name($resource->getRouteName('update'));
-			}
+			// if(in_array('update', $module->actions))
+			// {
+			// 	Route::get('/editar/{id}', Update::get($module))->name($module->getRouteName('update'));
+			// }
 	
-			if(in_array('delete', $resource->actions))
-			{
-				Route::delete('/excluir/{id}', Delete::delete($resource))->name($resource->getRouteName('delete'));
-			}
+			// if(in_array('delete', $module->actions))
+			// {
+			// 	Route::delete('/excluir/{id}', Delete::delete($module))->name($module->getRouteName('delete'));
+			// }
 
-			if(method_exists($resource, 'getCustomActions'))
-			{
-				$custom_actions = $resource->getCustomActions() ?? [];
+			// if(method_exists($module, 'getCustomActions'))
+			// {
+			// 	$custom_actions = $module->getCustomActions() ?? [];
 
-				foreach($custom_actions as $custom_action)
-				{
-					if(method_exists($custom_action, 'getCallbackRoute'))
-					{
-						$route_custom_action = Route::middleware('web');
+			// 	foreach($custom_actions as $custom_action)
+			// 	{
+			// 		if(method_exists($custom_action, 'getCallbackRoute'))
+			// 		{
+			// 			$route_custom_action = Route::middleware('web');
 
-						if($permissions_custom_action = $custom_action->getPermissions())
-						{
-							$route_custom_action->middleware('can:'.join('|', $permissions_custom_action));
-						}
+			// 			if($permissions_custom_action = $custom_action->getPermissions())
+			// 			{
+			// 				$route_custom_action->middleware('can:'.join('|', $permissions_custom_action));
+			// 			}
 
-						$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($resource))->name($custom_action->getRouteName());
-					}
-				}
-			}
+			// 			if(is_a($custom_action, Method::class))
+			// 			{
+			// 				$route_custom_action->middleware('custom-action-enabled:'.$module->slug.'.'.$custom_action->getSlug());
+			// 			}
+
+			// 			$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($module))->name($custom_action->getRouteName());
+			// 		}
+			// 	}
+			//}
 		});
 	}
 	
