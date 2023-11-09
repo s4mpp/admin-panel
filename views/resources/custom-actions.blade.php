@@ -44,7 +44,7 @@
 		@endif
 	@endforeach
 
-	<div class="inline-flex gap-3">
+	<div class="inline-flex mr-3">
 		<div class="relative  inline-block text-left" x-data="{dropdownCustomActions : false}">
 			<x-button type="button" className="btn-secondary" x-on:click="dropdownCustomActions = !dropdownCustomActions">
 				<span>Ações</span> <x-icon class=" w-5 h-5 mt-0.5" name="chevron-down" solid mini />			
