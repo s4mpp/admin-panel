@@ -1,16 +1,15 @@
-@extends('admin::resources.resource')
+@extends('admin::crud.resource')
 
 @section('title', 'Visualizar')
 
 @section('title-page-resource')
 	{{-- @include('admin::resources.actions') --}}
-	@if($custom_actions)
+	{{-- @if($custom_actions)
 		@include('admin::resources.custom-actions', ['custom_actions' => $custom_actions])
-	@endif
+	@endif --}}
 @endsection 
 
 @section('content-resource')
-
 	<x-alert/>
 
 	<div class="overflow-hidden rounded-lg bg-white border">

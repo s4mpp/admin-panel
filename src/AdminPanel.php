@@ -2,21 +2,22 @@
 
 namespace S4mpp\AdminPanel;
 
+use S4mpp\AdminPanel\Module;
+use S4mpp\AdminPanel\Navigation;
 use Illuminate\Support\Facades\Auth;
 use S4mpp\AdminPanel\Navigation\Page;
-use S4mpp\AdminPanel\Module;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Navigation\MenuItem;
 use S4mpp\AdminPanel\Navigation\MenuSection;
 
-class AdminPanel
+final class AdminPanel
 {
+	public const MAIN_SECTION = 'main';
+	
 	private static $instance;
-
-	private array $modules = [];
-
-	private array $menu_sections = [];
-
+	
+	private array $resources = [];
+	
 	private function __construct()
 	{}
 
@@ -33,18 +34,18 @@ class AdminPanel
 		return self::$instance;
 	}
 
-	public function loadModules()
+	public function loadResources(): self
 	{
-		if(!empty($this->modules))
+		if(!empty($this->resources))
 		{
-			return;
+			return $this;
 		}
 
 		$path = app_path('AdminPanel');
 
 		if(!file_exists($path))
 		{
-			return;
+			return $this;
 		}
 
 		$files = new \FileSystemIterator($path);
@@ -54,27 +55,35 @@ class AdminPanel
 			$file_name = str_replace('.php', '', $file->getFilename());
 
 			$class_path = '\App\AdminPanel\\'.$file_name;
-			
-			$resource = new $class_path();
 
-			$this->modules[] = new Module($resource->getTitle());
+			$resource = new $class_path($file->getFilename());
+
+			$this->resources[$resource->getSlug()] = $resource;
 		}
+
+		return $this;
 	}
 
-	public function getModules(): array
+	public function getResource(string $resource_name): Resource
 	{
-		return $this->modules;
-	}
-
-	public function getMenu(): array
-	{
-		foreach($this->modules as $module)
+		if(!isset($this->resources[$resource_name]))
 		{
+			$class_path = '\App\AdminPanel\\'.$resource_name;
 
+			$resource = new $class_path($resource_name);
+
+			$this->resources[$resource_name] = $resource;
 		}
 
-		return [];
+		return $this->resources[$resource_name];
 	}
+
+	public function getResources(): array
+	{
+		return $this->resources;
+	}
+
+	
 
 
 
@@ -127,7 +136,7 @@ class AdminPanel
 		return true;
 	}
 
-	public static function getNavigation()
+	public static function getNavigationOLD()
 	{
 		/*$uri = request()->route()->uri();
 		

@@ -1,4 +1,4 @@
-@extends('admin::resources.resource')
+@extends('admin::crud.resource')
 
 @section('title', 'Editar')
 
@@ -9,7 +9,7 @@
 @section('content-resource')
 
 	@livewire('form', [
-		'resource_name' => $resource->name,
+		'resource_name' => get_class($resource),
 		'id' => $register->id
 	])
 

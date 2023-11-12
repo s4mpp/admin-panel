@@ -3,10 +3,41 @@
 namespace S4mpp\AdminPanel\Navigation;
 
 use Illuminate\Support\Str;
+use S4mpp\AdminPanel\AdminPanel;
+use S4mpp\AdminPanel\Traits\HasSlug;
 
-class MenuSection
+final class Section
 {
-	private static $sections = [];
+	use HasSlug;
+
+	private $items = [];
+
+	public function __construct(private ?string $title = null)
+	{
+		if($title)
+		{
+			$slug = $this->createSlug($title);
+
+			throw_if(($slug == AdminPanel::MAIN_SECTION), '"'.AdminPanel::MAIN_SECTION.'" is reserved werd for sections');
+		}
+	}
+
+	public function addItem(MenuItem $item)
+	{
+		$this->items[$item->getSlug()] = $item;
+	}
+
+	public function getItems(): array
+	{
+		return $this->items;
+	}
+
+	public function getTitle(): ?string
+	{
+		return $this->title;
+	}
+
+	/*private static $sections = [];
 
 	public $items = [];
 
@@ -67,6 +98,6 @@ class MenuSection
 		}
 
 		return $sections;
-	}
+	}*/
 
 }

@@ -3,11 +3,15 @@
 @php
 	$guard = config('admin.guard', 'web');
 
-	$navigations = S4mpp\AdminPanel\AdminPanel::getInstance()->getMenu(); dump($navigations);
+	$navigation = \S4mpp\AdminPanel\Navigation::getInstance();
+		
+	$menu = $navigation->getMenu();
 
-	$user_has_settings_access = S4mpp\AdminPanel\AdminPanel::getUserAccessSettings();
+	// $navigations = S4mpp\AdminPanel\AdminPanel::getInstance()->getMenu(); dump($navigations);
+
+	// $user_has_settings_access = S4mpp\AdminPanel\AdminPanel::getUserAccessSettings();
 	
-	$route_start = current($navigations)->items[0]->route ?? null;
+	$route_start = config('admin.route_redirect_after_login');
 
 	$route_home = config('admin.route_home', false);
 
@@ -67,45 +71,8 @@
 					<h1 class="font-bold text-lg text-center text-gray-900 truncate">{{ env('APP_NAME')  }}</h1>
 				@endif
 			</div>
-			<nav class="flex flex-1 flex-col">
-			  <ul role="list" class="flex flex-1 flex-col gap-y-7">
 
-				@foreach ($navigations ?? [] as $navigation)
-					@continue(!$navigation->items)
-					
-					<li>
-						@if($navigation->title)
-							<div class="text-xs font-semibold leading-6 text-gray-400">{{ $navigation->title }}</div>
-						@endif
-
-						<ul role="list" class="-mx-2 mt-2 space-y-1">
-							@foreach ($navigation->items as $item)
-							<li>
-								<a 
-								@class([
-									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-ease-in transition-colors ',
-									'hover:bg-gray-100 text-gray-600 hover:text-primary' => !$item->active,
-									'text-white  bg-gray-500 bg-primary' => $item->active,
-								])
-								href="{{ $item->route ?? '#' }}">
-									<svg @class([
-										'h-6 w-6 shrink-0 transition-colors',
-										'text-gray-400 group-hover:text-primary' => !$item->active,
-										'text-white' => $item->active
-
-									]) fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-									</svg>
-								
-									<span class="truncate">{{ $item->title }}</span>
-								</a>
-							</li>
-							@endforeach
-						</ul>
-					</li>
-				@endforeach
-			  </ul>
-			</nav>
+			@include('admin::navigation')
 		  </div>
 		</div>
 	  </div>
@@ -124,45 +91,7 @@
 			@endif
 		</div>
 		
-		<nav class="flex flex-1 flex-col">
-		  <ul role="list" class="flex flex-1 flex-col gap-y-7">
-			@foreach ($navigations ?? [] as $navigation)
-				@continue(!$navigation->items)
-				
-				<li>
-					@if($navigation->title)
-						<div class="text-xs font-semibold leading-6 text-gray-400">{{ $navigation->title }}</div>
-					@endif
-
-					<ul role="list" class="-mx-2 mt-2 space-y-1">
-						@foreach ($navigation->items as $item)
-							<li>
-								<a 
-								@class([
-									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-ease-in transition-colors ',
-									'hover:bg-gray-100 text-gray-600 hover:text-primary' => !$item->active,
-									'text-white  bg-gray-500 bg-primary' => $item->active,
-								])
-								href="{{ $item->route ?? '#' }}">
-									<svg @class([
-										'h-6 w-6 shrink-0 transition-colors',
-										'text-gray-400 group-hover:text-primary' => !$item->active,
-										'text-white' => $item->active
-
-									]) fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-									</svg>
-								
-									<span class="truncate">{{ $item->title }}</span>
-								</a>
-							</li>
-						@endforeach
-					</ul>
-				</li>
-			@endforeach
-
-		  </ul>
-		</nav>
+		@include('admin::navigation')
 	  </div>
 	</div>
   
@@ -220,11 +149,11 @@
 						</a>
 					@endif
 
-					@if($user_has_settings_access)
+					{{-- @if($user_has_settings_access)
 						<a href="{{ route('admin_settings') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 							Configurações
 						</a>
-					@endif
+					@endif --}}
 					
 					<a href="{{ route(S4mpp\Laraguard\Routes::identifier('admin-panel')->logout()) }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 					  Sair
@@ -257,13 +186,15 @@
 
 				  @isset($breadcrumbs)
 
-					@php
-						$section = $resource->getSection();
+					@php 
 
-						if($section)
+						if($section_resource = $resource->getSection())
 						{
+							$section = $navigation->getSection($section_resource)->getTitle();
+	
 							array_unshift($breadcrumbs, [$section]);
 						}
+
 					@endphp
 
 					<nav class="flex" aria-label="Breadcrumb">

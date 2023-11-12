@@ -1,6 +1,6 @@
 @extends('admin::layout', ['breadcrumbs' => [
 	[$title, route($resource->getRouteName('index'))],
-	(isset($register) && $register) ? ['#'.$register->id, route($resource->getDefaultRoute(), ['id' => $register->id])] : null,
+	// (isset($register) && $register) ? ['#'.$register->id, route($resource->getDefaultRoute(), ['id' => $register->id])] : null,
 ]])
 
 @section('title', $title)

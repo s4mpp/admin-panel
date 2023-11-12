@@ -1,11 +1,11 @@
-@extends('admin::resources.resource')
+@extends('admin::crud.resource')
 
 @section('title', 'Cadastrar')
 
 @section('content-resource')
 
 	@livewire('form', [
-		'resource_name' => $resource->name,
+		'resource_name' => get_class($resource)
 	])
 
 	{{-- <form method="POST" class="mb-0" action={{ route($routes['store']) }} x-data="{loading: false}" x-on:submit="loading = true">

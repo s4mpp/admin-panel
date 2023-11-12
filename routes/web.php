@@ -3,27 +3,30 @@
 use Illuminate\Support\Str;
 use S4mpp\Laraguard\Routes;
 use S4mpp\AdminPanel\AdminPanel;
-use S4mpp\AdminPanel\Actions\View;
-use S4mpp\AdminPanel\Actions\Method;
-use S4mpp\AdminPanel\Resources\Read;
-use Illuminate\Support\Facades\Route;
-use S4mpp\AdminPanel\Navigation\Page;
 use S4mpp\AdminPanel\Crud\Index;
-use S4mpp\AdminPanel\Actions\Callback;
-use S4mpp\AdminPanel\Actions\Prompt;
+use S4mpp\AdminPanel\Navigation;
 use S4mpp\AdminPanel\Crud\Create;
 use S4mpp\AdminPanel\Crud\Delete;
 use S4mpp\AdminPanel\Crud\Update;
+use S4mpp\AdminPanel\Actions\View;
 use S4mpp\AdminPanel\Crud\Resource;
+use S4mpp\AdminPanel\Actions\Method;
+use S4mpp\AdminPanel\Actions\Prompt;
+use S4mpp\AdminPanel\Resources\Read;
+use Illuminate\Support\Facades\Route;
+use S4mpp\AdminPanel\Navigation\Page;
+use S4mpp\AdminPanel\Actions\Callback;
+use S4mpp\AdminPanel\Controllers\CrudController;
 use S4mpp\AdminPanel\Controllers\AdminController;
+use S4mpp\AdminPanel\Controllers\IndexController;
 use S4mpp\AdminPanel\Actions\Update as UpdateAction;
 use S4mpp\AdminPanel\Controllers\SettingsController;
 use S4mpp\AdminPanel\Middleware\CustomActionEnabled;
 use S4mpp\AdminPanel\Controllers\CustomActionController;
 
-$admin_panel = AdminPanel::getInstance();
+$admin_panel = AdminPanel::getInstance()->loadResources();
 
-$admin_panel->loadModules();
+$navigation = Navigation::getInstance();
 
 $route = Route::middleware('web');
 
@@ -55,64 +58,65 @@ $route->group(function()
 /**
  * Private
  */
-$route->middleware('web', 'auth:'.$guard)->group(function() use ($guard, $admin_panel)
+$route->middleware('web', 'auth:'.$guard)->group(function() use ($guard, $admin_panel, $navigation)
 {
 	/**
 	 * Pages
 	 */
-	$pages = Page::getPages();
+	$pages = $navigation->getPages();
 
 	foreach($pages as $page)
 	{
-		if(!isset($page->target))
-		{
-			throw new \Exception('Target of Page "'.$page->slug.' "not defined');
-		}
+		// if(!isset($page->target))
+		// {
+		// 	throw new \Exception('Target of Page "'.$page->slug.' "not defined');
+		// }
 
-		Route::{$page->route_type}($page->slug, $page->target)->name($page->route_name);
+		Route::get($page->getSlug(), $page->getTarget())->name($page->getRoute());
 	}
 	
 	/**
 	 * Resources
 	 */
-	$modules = $admin_panel->getModules();
+	$resources = $admin_panel->getResources();
  
-	foreach($modules as $module)
+	foreach($resources as $resource)
 	{
-		$routes_module = Route::prefix($module->getSlug());
+		$routes_resource = Route::prefix($resource->getSlug());
 		
-		/*if(isset($module->roles))
+		/*if(isset($resource->roles))
 		{
-			$routes_module->middleware('role:'.join('|', ($module->roles ?? [])));
+			$routes_resource->middleware('role:'.join('|', ($resource->roles ?? [])));
 		}*/
 		
-		$routes_module->group(function() use ($module)
+		$routes_resource->group(function() use ($resource)
 		{
-			Route::get('/', Index::get($module))->name($module->getRouteName('index'));
+			// Route::get('/', Index::get($resource))->name($resource->getRouteName('index'));
+			Route::get('/', [CrudController::class, 'index'])->name($resource->getRouteName('index'));
 	
-			// if(in_array('create', $module->actions))
+			// if(in_array('create', $resource->actions))
 			// {
-			// 	Route::get('/cadastrar', Create::get($module))->name($module->getRouteName('create'));
+				Route::get('/cadastrar', [CrudController::class, 'create'])->name($resource->getRouteName('create'));
 			// }
 
-			// if(in_array('read', $module->actions))
+			// if(in_array('read', $resource->actions))
 			// {
-			// 	Route::get('/visualizar/{id}', Read::get($module))->name($module->getRouteName('read'));
+				Route::get('/visualizar/{id}', [CrudController::class, 'read'])->name($resource->getRouteName('read'));
 			// }
 	
-			// if(in_array('update', $module->actions))
+			// if(in_array('update', $resource->actions))
 			// {
-			// 	Route::get('/editar/{id}', Update::get($module))->name($module->getRouteName('update'));
+				Route::get('/editar/{id}', [CrudController::class, 'update'])->name($resource->getRouteName('update'));
 			// }
 	
-			// if(in_array('delete', $module->actions))
+			// if(in_array('delete', $resource->actions))
 			// {
-			// 	Route::delete('/excluir/{id}', Delete::delete($module))->name($module->getRouteName('delete'));
+				Route::delete('/excluir/{id}', [CrudController::class, 'delete'])->name($resource->getRouteName('delete'));
 			// }
 
-			// if(method_exists($module, 'getCustomActions'))
+			// if(method_exists($resource, 'getCustomActions'))
 			// {
-			// 	$custom_actions = $module->getCustomActions() ?? [];
+			// 	$custom_actions = $resource->getCustomActions() ?? [];
 
 			// 	foreach($custom_actions as $custom_action)
 			// 	{
@@ -127,10 +131,10 @@ $route->middleware('web', 'auth:'.$guard)->group(function() use ($guard, $admin_
 
 			// 			if(is_a($custom_action, Method::class))
 			// 			{
-			// 				$route_custom_action->middleware('custom-action-enabled:'.$module->slug.'.'.$custom_action->getSlug());
+			// 				$route_custom_action->middleware('custom-action-enabled:'.$resource->slug.'.'.$custom_action->getSlug());
 			// 			}
 
-			// 			$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($module))->name($custom_action->getRouteName());
+			// 			$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($resource))->name($custom_action->getRouteName());
 			// 		}
 			// 	}
 			//}

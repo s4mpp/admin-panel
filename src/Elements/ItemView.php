@@ -17,9 +17,9 @@ class ItemView
 		return new ItemView($title, $name);
 	}
 
-	public function render($resource = null)
+	public function render($register = null)
 	{
-		return view('admin::elements.item-view', ['item' => $this, 'resource' => $resource]);
+		return view('admin::elements.item-view', ['item' => $this, 'register' => $register]);
 	}
 
 	public function getValue(): ?string

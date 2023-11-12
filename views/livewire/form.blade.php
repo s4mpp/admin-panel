@@ -1,29 +1,29 @@
 <div>
 
-	@php
+	{{-- @php
 		$data_slides = $close_slides = [];
 		foreach($repeaters as $repeater)
 		{
 			$data_slides[] = 'slide'.$repeater->getRelation().': false';
 			$close_slides[] = 'slide'.$repeater->getRelation().' = false';
 		}
-	@endphp
+	@endphp --}}
 
 	<x-alert />
 
 	<div 
-		x-data="{ {{ join(',', $data_slides) }} }"
-		x-on:close-slide.window="{{ join(',', $close_slides) }}" >
+		{{-- x-data="{ {{ join(',', $data_slides) }} }"
+		x-on:close-slide.window="{{ join(',', $close_slides) }}" --}}
+		 >
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
 			
-			{{-- <div class="overflow-hidden sm:rounded-lg bg-white border-t border-b sm:border-l sm:border-r  mb-6"> --}}
-			<div class="space-y-4 mb-4">
-				@foreach($this->form ?? [] as $element)
+ 			<div class="space-y-4 mb-4">
+				@foreach($this->resource->getForm() ?? [] as $element)
 					{{ $element->render($register ?? null) }}
 				@endforeach
 			</div>
 
-			@foreach($repeaters as $repeater)
+			{{-- @foreach($repeaters as $repeater)
 				<x-card title="{{ $repeater->getTitle() }}" className="bg-white border mb-6" :padding=false>
 					<x-slot:header class=" flex justify-end">
 						<x-button x-on:click="slide{{ $repeater->getRelation() }} = true; $wire.set('child_id', [])" type="button">Adicionar</x-button>
@@ -64,7 +64,7 @@
 						</table>
 					</div>
 				</x-card>
-			@endforeach
+			@endforeach --}}
 
 			<div class="px-4 sm:px-0">
 				<x-button type="submit" className="btn-primary">
@@ -77,7 +77,7 @@
 			</div>
 		</form>
 
-		@foreach($repeaters as $repeater)
+		{{-- @foreach($repeaters as $repeater)
 
 			<x-slide-over id="slide{{ $repeater->getRelation() }}" title="{{ $repeater->getTitle() }}">
 				<form wire:submit.prevent="saveChild('{{ $repeater->getRelation() }}')" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
@@ -109,6 +109,6 @@
 					</div>
 				</form>
 			</x-slide-over>
-		@endforeach
+		@endforeach --}}
 	</div>
 </div>
