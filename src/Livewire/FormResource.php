@@ -10,7 +10,7 @@ use S4mpp\AdminPanel\Traits\WithAdminResource;
 
 class FormResource extends Component
 {
-	use WithAdminResource, ValidateForm, WithFileUploads, CreatesForm;
+	use WithAdminResource, WithFileUploads, CreatesForm;
 
 	private $success_message = 'Registro salvo com sucesso!';
 		

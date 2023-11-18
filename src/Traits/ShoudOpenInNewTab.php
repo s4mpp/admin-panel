@@ -2,7 +2,7 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
-trait OpenInNewTab
+trait ShoudOpenInNewTab
 {
 	private bool $new_tab = false;
 

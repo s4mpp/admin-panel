@@ -1,0 +1,1 @@
+<x-badge :provider=$value></x-badge>

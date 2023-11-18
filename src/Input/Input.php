@@ -43,17 +43,18 @@ abstract class Input
 		return $this;
 	}
 
-	public function render($register = null)
+	public function render(array $data, $register = null)
 	{
 		return view('admin::input.field', [
 			'input' => $this,
 			'register' => $register,
+			'data' => $data,
 		]);
 	}
 
 	public function isRequired(): bool
 	{
-		return in_array('required', $this->getRules());
+		return in_array('required', $this->rules);
 	}
 
 	public function prepareForValidation(callable $callback)
@@ -68,14 +69,14 @@ abstract class Input
 		return $this->prepare_for_validation;
 	}
 
-	public function getRules(int $register_id = null): array
+	public function getRules(string $table, int $register_id = null): array
 	{
 		foreach($this->rules as $rule)
 		{
 			switch($rule)
 			{
 				case 'unique':
-					$rules[] = Rule::unique($this->getModel()->table)->ignore($register_id);
+					$rules[] = Rule::unique($table)->ignore($register_id);
 					break;
 					
 				default:

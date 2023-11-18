@@ -2,12 +2,16 @@
 
 namespace S4mpp\AdminPanel;
 
+use S4mpp\AdminPanel\Column\Column;
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Elements\Card;
+use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Traits\Slugable;
-use S4mpp\AdminPanel\Factories\Filter;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\ItemView\ItemView;
+use S4mpp\AdminPanel\CustomActions\CustomAction;
+use S4mpp\AdminPanel\Elements\Repeater;
+use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 
 abstract class Resource
 {
@@ -74,53 +78,6 @@ abstract class Resource
 		return join(', ', $fields).' ou '.$last_item;
     }
 
-	final public function getTable(): ?array
-	{
-		if(!method_exists($this, 'table'))
-		{
-			return null;
-		}
-
-		return $this->table();
-	}
-
-	final public function getRepeaters(): ?array
-	{
-		if(!method_exists($this, 'repeaters'))
-		{
-			return null;
-		}
-
-		foreach($this->repeaters() as $repeater)
-		{
-			$repeater->setRelationShipMethod($this->getModel()->{$repeater->getRelation()}());
-
-			$repeaters[$repeater->getRelation()] = $repeater;
-		}
-
-		return $repeaters ?? [];
-	}
-
-	final public function getForm(): ?array
-	{
-		if(!method_exists($this, 'form'))
-		{
-			return null;
-		}
-
-		return $this->_getOnlyOfThisOrCard($this->form(), Input::class);
-	}
-
-	final public function getRead(): ?array
-	{
-		if(!method_exists($this, 'read'))
-		{
-			return null;
-		}
-
-		return $this->_getOnlyOfThisOrCard($this->read(), ItemView::class);
-	}
-
 	final public function getRouteName(string $crud_action): string
 	{
 		return 'admin.'.$this->name.'.'.$crud_action;
@@ -167,11 +124,58 @@ abstract class Resource
 		return app($this->getNameModel());
 	}
 
+	final public function getTable(): ?array
+	{
+		if(!method_exists($this, 'table'))
+		{
+			return null;
+		}
+
+		return $this->_getOnlyOf($this->table(), Column::class);
+	}
+
+	final public function getRepeaters(): ?array
+	{
+		if(!method_exists($this, 'repeaters'))
+		{
+			return null;
+		}
+
+		foreach($this->repeaters() as $repeater)
+		{
+			$repeater->setRelationShipMethod($this->getModel()->{$repeater->getRelation()}());
+
+			$repeaters[$repeater->getRelation()] = $repeater;
+		}
+
+		return $this->_getOnlyOf($repeaters, Repeater::class);
+	}
+
+	final public function getForm(): ?array
+	{
+		if(!method_exists($this, 'form'))
+		{
+			return null;
+		}
+
+		return $this->_getOnlyOfThisOrCard($this->form(), Input::class);
+	}
+
+	final public function getRead(): ?array
+	{
+		if(!method_exists($this, 'read'))
+		{
+			return null;
+		}
+
+		return $this->_getOnlyOfThisOrCard($this->read(), ItemView::class);
+	}
+
 	final public function getFilters(): array
     {
         if($this->getModel()->timestamps)
         {
-            $filters['created_at'] = Filter::period('Período', 'created_at');
+            $filters['created_at'] = FilterFactory::period('Período', 'created_at');
         }
 
         if(method_exists($this, 'filter'))
@@ -182,7 +186,7 @@ abstract class Resource
 			}
         }
 
-		return $filters ?? [];
+		return $this->_getOnlyOf($filters, Filter::class);
     }
 
 	final public function getCustomActions()
@@ -192,7 +196,20 @@ abstract class Resource
 			return [];
 		}
 
-		return $this->customActions();
+		return $this->_getOnlyOf($this->customActions(), CustomAction::class);
+	}
+
+	private function _getOnlyOf(array $items = null, $class): array
+	{
+		foreach($items ?? [] as $element)
+		{
+			if(is_subclass_of($element, $class) || is_a($element, $class))
+			{
+				$elements[] = $element;
+			}
+		}
+
+		return $elements ?? [];
 	}
 
 	private function _getOnlyOfThisOrCard(array $items, $class): array

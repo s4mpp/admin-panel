@@ -16,8 +16,8 @@ final class Textarea extends Input
 		return $this->rows;
 	}
 
-	public function renderInput()
+	public function renderInput(array $data)
 	{
-		return view('admin::input.textarea', ['input' => $this, 'required' => $this->isRequired()]);
+		return view('admin::input.textarea', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
 	}
 }

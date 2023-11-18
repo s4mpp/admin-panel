@@ -3,13 +3,13 @@
 namespace S4mpp\AdminPanel\CustomActions;
 
 use S4mpp\AdminPanel\Traits\SendForm;
-use S4mpp\AdminPanel\Traits\OpenInNewTab;
-use S4mpp\AdminPanel\Traits\CallRoutemethod;
+use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
+use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\HasSuccessMessage;
 
 final class Update extends CustomAction
 {
-	use OpenInNewTab, SendForm, CallRoutemethod, HasSuccessMessage;
+	use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
 
 	public function __construct(public string $title, private array $data)
 	{

@@ -14,7 +14,7 @@ abstract class Filter
 		return (new Period($title, $field));
 	}
 
-	public static function options(string $title, string $field, $options)
+	public static function multiple(string $title, string $field, $options)
 	{
 		return (new Multiple($title, $field, $options));
 	}

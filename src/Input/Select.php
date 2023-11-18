@@ -25,8 +25,8 @@ final class Select extends Input
 		parent::__construct($title, $name);
 	}
 
-	public function renderInput()
+	public function renderInput(array $data)
 	{
-		return view('admin::input.select', ['input' => $this, 'required' => $this->isRequired()]);
+		return view('admin::input.select', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
 	}
 }

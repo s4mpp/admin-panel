@@ -7,7 +7,7 @@
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
  			<div class="space-y-4 mb-4">
 				@foreach($this->form ?? [] as $element)
-					{{ $element->render($register ?? null) }}
+					{{ $element->render($data, $register ?? null) }}
 				@endforeach
 			</div>
 

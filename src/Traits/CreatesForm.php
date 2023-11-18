@@ -3,12 +3,15 @@
 namespace S4mpp\AdminPanel\Traits;
 
 use Livewire\WithFileUploads;
+use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Input;
-use S4mpp\AdminPanel\Traits\ValidateForm;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Livewire\TemporaryUploadedFile;
 
 trait CreatesForm 
 {
-	use ValidateForm, WithFileUploads;
+	use WithFileUploads;
 		
 	public $register;
 	
@@ -164,14 +167,30 @@ trait CreatesForm
 
 			foreach($fields as $field)
 			{
-				// if($field->getType() == 'file')
-				// {
-				// 	$register->{$field->getName()} = $fields_validated[$field->getName()]->storePublicly('documents');
-				// }
-				// else
-				// {
-					$register->{$field->getName()} = $fields_validated[$field->getName()] ?? null;
-				// }
+				$input = $fields_validated[$field->getName()] ?? null;
+
+				if(is_a($field, File::class))
+				{
+					if(!is_a($input, TemporaryUploadedFile::class))
+					{
+						continue;
+					}
+
+					if($field->isPublic())
+					{
+						$value = $input->storePublicly($field->getFolder(), 'public');
+					}
+					else
+					{
+						$value = $input->store($field->getFolder());
+					}
+				}
+				else
+				{
+					$value = $input ?? null;
+				}
+
+				$register->{$field->getName()} = $value;
 			}
 
 			// $hook = (!$this->register) ? CreateHook::class : Updatehook::class;
@@ -194,6 +213,34 @@ trait CreatesForm
 			
 			$this->dispatchBrowserEvent('reset-form');
 		}
+	}
+
+	private function _validate($data, array $fields, int $register_id = null)
+	{
+		$validation_rules = $attributes = [];
+
+		foreach($fields as $field)
+		{
+			if($field->getPrepareForValidation())
+			{
+				$data[$field->getName()] = call_user_func($field->getPrepareForValidation(), $data[$field->getName()]);
+			}
+
+			if(is_a($field, File::class) && is_string($data[$field->getName()] ?? null))
+			{
+				continue;
+			}
+			
+			$validation_rules[$field->getName()] = $field->getRules($this->_getModel()->getTable(), $register_id);
+			
+			$attributes[$field->getName()] = $field->getTitle();
+		}
+
+		$validator = Validator::make($data, $validation_rules, [], $attributes);
+
+		$validator->validate();
+
+		return $validator->safe();
 	}
 
 	private function _saveChilds($register)

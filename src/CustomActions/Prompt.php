@@ -5,13 +5,13 @@ namespace S4mpp\AdminPanel\CustomActions;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use S4mpp\AdminPanel\Traits\OpenInNewTab;
+use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\HasSuccessMessage;
 
 final class Prompt extends CustomAction
 {
-	use OpenInNewTab, CallRouteMethod, HasSuccessMessage;
+	use ShoudOpenInNewTab, CallRouteMethod, HasSuccessMessage;
 
 	public function __construct(public string $title, private string $message, private string $field)
 	{

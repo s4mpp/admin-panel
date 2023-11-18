@@ -109,16 +109,35 @@ trait HasLabel
 		return $this;
 	}*/
 
-	
+	public function currency(bool $convert_cents = true, string $prefix = 'R$')
+	{
+		$this->callback = function($value) use ($prefix, $convert_cents)
+		{
+			if(!is_numeric($value))
+			{
+				return null;
+			}
 
-	/*public function strong()
+			if($convert_cents)
+			{
+				$value /= 100;
+			}
+
+			return $prefix.' '.number_format($value, 2, ',', '.');
+		};
+
+		return $this;
+	}
+
+
+	public function strong()
 	{
 		$this->strong = true;
 		
 		return $this;
 	}
 
-	public function boolean()
+	/*public function boolean()
 	{
 		$this->type = 'boolean';
 
@@ -153,15 +172,15 @@ trait HasLabel
 		return $this;
 	}*/
 
-	public function datetime(string $format)
-	{
-		$this->callback(function($register) use ($format) : string
-		{
-			return $register?->format($format);
-		});
+	// public function datetime(string $format)
+	// {
+	// 	$this->callback(function($register) use ($format) : string
+	// 	{
+	// 		return $register?->format($format);
+	// 	});
 
-		return $this;
-	}
+	// 	return $this;
+	// }
 
 	public function enum()
 	{

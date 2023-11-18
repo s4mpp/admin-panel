@@ -2,7 +2,10 @@
 
 namespace S4mpp\AdminPanel\Factories;
 
+use S4mpp\AdminPanel\Column\Date;
+use S4mpp\AdminPanel\Column\Badge;
 use S4mpp\AdminPanel\Column\Boolean;
+use S4mpp\AdminPanel\Column\Datetime;
 use S4mpp\AdminPanel\Column\Column as ColumnElement;
 
 abstract class Column
@@ -14,17 +17,17 @@ abstract class Column
 
 	public static function date(string $title, string $field)
 	{
-		return (new ColumnElement($title, $field))->datetime('d/m/Y');
+		return (new Datetime($title, $field, 'd/m/Y'));
 	}
 
 	public static function datetime(string $title, string $field)
 	{
-		return (new ColumnElement($title, $field))->datetime('d/m/Y H:i');
+		return (new Datetime($title, $field, 'd/m/Y H:i'));
 	}
 	
-	public static function enum(string $title, string $field)
+	public static function badge(string $title, string $field)
 	{
-		return (new ColumnElement($title, $field))->enum();
+		return (new Badge($title, $field));
 	}
 
 	public static function boolean(string $title, string $field)

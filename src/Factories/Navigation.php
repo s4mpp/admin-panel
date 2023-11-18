@@ -21,7 +21,7 @@ abstract class Navigation
 	{
 		if($section == AdminPanelNavigation::MAIN_SECTION && !isset(self::$sections[AdminPanelNavigation::MAIN_SECTION]))
 		{
-			AdminPanelNavigation::addSection((new Section())->setOrder(0), AdminPanelNavigation::MAIN_SECTION);
+			AdminPanelNavigation::addSection((new Section(''))->setOrder(0), AdminPanelNavigation::MAIN_SECTION);
 		}
 
 		$item = new MenuItem($title);

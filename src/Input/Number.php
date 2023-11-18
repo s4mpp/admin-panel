@@ -6,7 +6,7 @@ use S4mpp\AdminPanel\Input\Input;
 
 final class Number extends Input
 {
-	private static const MAX_NUMBER = 99999999999;
+	private const MAX_NUMBER = 99999999999;
 
 	private int | float $step;
 
@@ -14,9 +14,9 @@ final class Number extends Input
 
 	private int | float $max = self::MAX_NUMBER;
 
-	public function renderInput()
+	public function renderInput(array $data)
 	{
-		return view('admin::input.text', ['input' => $this, 'required' => $this->isRequired()]);
+		return view('admin::input.text', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
 	}
 
 	public function step(int | float $step)
