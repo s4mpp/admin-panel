@@ -3,38 +3,29 @@
 @section('title', 'Visualizar')
 
 @section('title-page-resource')
-	{{-- @include('admin::resources.actions') --}}
-	{{-- @if($custom_actions)
-		@include('admin::resources.custom-actions', ['custom_actions' => $custom_actions])
-	@endif --}}
+	
+	@if($custom_actions)
+		@include('admin::custom-actions.custom-actions', ['custom_actions' => $custom_actions])
+	@endif
 @endsection 
 
 @section('content-resource')
+
+	<div class="flex justify-start gap-5 -mt-4 mb-5">
+		<span class="text-xs text-gray-500"><span class="font-semibold">ID</span> #{{ Str::padLeft($register->id, 5, '0') }}</span>
+		
+		@if($register->timestamps)
+			<span class="text-xs text-gray-500"><span class="font-semibold">Cadastrado em</span> {{ $register->created_at->format('d/m/Y H:i') }} ({{ $register->created_at->diffForHumans(['short' => true]) }})</span>
+			<span class="text-xs text-gray-500"><span class="font-semibold">última alteração em</span> {{ $register->updated_at->format('d/m/Y H:i') }} ({{ $register->updated_at->diffForHumans(['short' => true]) }})</span>
+		@endif
+	</div>
+
 	<x-alert/>
 
-	<div class="overflow-hidden rounded-lg bg-white border">
-		<div class="flex flex-col md:flex-row  ">
-			<div class=" w-full md:w-8/12  xl:w-9/12">
-				<dl class="divide-y divide-gray-200">
-					@foreach($read ?? [] as $element)
-						{{ $element->render($register ?? null) }}
-					@endforeach
-				</dl>
-			</div>
-			<div class="bg-gray-100 w-full md:w-4/12 xl:w-3/12">
-				<div class="sm:p-6 flex justify-between md:flex-col">
-
-					<x-item-view title="ID">#{{ Str::padLeft($register->id, 5, '0') }}</x-item-view>
-					
-					@if($register->timestamps)
-				
-						<x-item-view title="Cadastrado em">{{ $register->created_at->format('d/m/Y H:i') }} ({{ $register->created_at->diffForHumans(['short' => true]) }})</x-item-view>
-					
-						<x-item-view title="Última alteração em">{{ $register->updated_at->format('d/m/Y H:i') }} ({{ $register->updated_at->diffForHumans(['short' => true]) }})</x-item-view>
-					@endif
-				</div>
-			</div>
-		</div>
+	<div class="space-y-4 mb-4">
+		@foreach($resource->getRead() ?? [] as $element)
+			{{ $element->render($register ?? null) }}
+		@endforeach
 	</div>
 	 
 @endsection

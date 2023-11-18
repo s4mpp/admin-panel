@@ -2,13 +2,14 @@
 
 namespace S4mpp\AdminPanel\Navigation;
 
-use Illuminate\Support\Str;
-use S4mpp\AdminPanel\AdminPanel;
-use S4mpp\AdminPanel\Traits\HasSlug;
+use S4mpp\AdminPanel\Navigation;
+use S4mpp\AdminPanel\Traits\Slugable;
+use S4mpp\AdminPanel\Traits\Ordenable;
+use S4mpp\AdminPanel\Traits\Titleable;
 
 final class Section
 {
-	use HasSlug;
+	use Slugable, Ordenable, Titleable;
 
 	private $items = [];
 
@@ -18,7 +19,7 @@ final class Section
 		{
 			$slug = $this->createSlug($title);
 
-			throw_if(($slug == AdminPanel::MAIN_SECTION), '"'.AdminPanel::MAIN_SECTION.'" is reserved werd for sections');
+			throw_if(($slug == Navigation::MAIN_SECTION), '"'.Navigation::MAIN_SECTION.'" is reserved werd for sections');
 		}
 	}
 
@@ -27,77 +28,13 @@ final class Section
 		$this->items[$item->getSlug()] = $item;
 	}
 
+	public function getItem(string $slug): ?MenuItem
+	{
+		return $this->items[$slug] ?? null;
+	}
+
 	public function getItems(): array
 	{
 		return $this->items;
 	}
-
-	public function getTitle(): ?string
-	{
-		return $this->title;
-	}
-
-	/*private static $sections = [];
-
-	public $items = [];
-
-	public $slug = null;
-	
-	public $order = 1;
-
-	public function __construct(public ?string $title = null)
-	{
-		$this->slug = Str::slug($title);
-	}
-
-	public function addItem(MenuItem $item)
-	{
-		$this->items[] = $item;
-	}
-
-	public function slug($slug)
-	{
-		$this->slug = $slug;
-		
-		return $this;
-	}
-
-	public function order($order)
-	{
-		$this->order = $order;
-
-		return $this;
-	}
-
-	public static function create(string $name)
-	{
-		$section = new MenuSection($name);
-		
-		self::$sections[] = $section;
-
-		return $section;
-	}
-
-	public static function getSections(): array
-	{
-		$sections = [];
-
-		usort(self::$sections, function ($a, $b)
-		{
-			if($a->order == $b->order)
-			{
-				return 0;
-			}
-			
-			return ($a->order < $b->order) ? -1 : 1;
-		});
-
-		foreach(self::$sections as $section)
-		{
-			$sections[$section->slug] = $section;
-		}
-
-		return $sections;
-	}*/
-
 }

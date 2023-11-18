@@ -16,7 +16,6 @@
 		<x-input type="password" :required=true name="password" title="Senha"></x-input>
 
 		<x-button full type="submit" className="btn-primary">Entrar</x-button>
-  		
 	</form>
 
 	<p class="mt-10 text-center text-sm text-gray-500">Esqueceu sua senha?

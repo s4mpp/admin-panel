@@ -1,19 +1,15 @@
 <?php
 
 namespace S4mpp\AdminPanel\Traits;
-
-use Illuminate\Support\Str;
-use S4mpp\AdminPanel\Traits\HasType;
-
 trait HasLabel
 {
-	use HasType;
+	/*use HasType;
 
-	private $content = null;
+	private $content = null;*/
 
 	private $callback = null;
 
-	private bool $is_relation = false;
+	/*private bool $is_relation = false;
 
 	private bool $strong = false;
 
@@ -29,6 +25,13 @@ trait HasLabel
 	public function getContent()
 	{
 		return $this->content;
+	}*/
+
+	public function callback(callable $callback)
+	{
+		$this->callback = $callback;
+
+		return $this;
 	}
 
 	public function getCallback(): ?callable
@@ -36,7 +39,7 @@ trait HasLabel
 		return $this->callback ?? null;
 	}
 
-	public function getAdditionalData(string $key)
+	/*public function getAdditionalData(string $key)
 	{
 		return $this->additional_data[$key] ?? null;
 	}
@@ -104,16 +107,11 @@ trait HasLabel
 		};
 
 		return $this;
-	}
+	}*/
 
-	public function callback(callable $callback)
-	{
-		$this->callback = $callback;
+	
 
-		return $this;
-	}
-
-	public function strong()
+	/*public function strong()
 	{
 		$this->strong = true;
 		
@@ -151,6 +149,26 @@ trait HasLabel
 	public function enum()
 	{
 		$this->type = 'enum';
+
+		return $this;
+	}*/
+
+	public function datetime(string $format)
+	{
+		$this->callback(function($register) use ($format) : string
+		{
+			return $register?->format($format);
+		});
+
+		return $this;
+	}
+
+	public function enum()
+	{
+		$this->callback(function($register): string
+		{
+			return $register->name;
+		});
 
 		return $this;
 	}

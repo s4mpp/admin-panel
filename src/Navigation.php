@@ -5,52 +5,31 @@ namespace S4mpp\AdminPanel;
 use S4mpp\AdminPanel\Navigation\Section;
 use S4mpp\AdminPanel\Navigation\MenuItem;
 
-final class Navigation
+abstract class Navigation
 {
-	private static $instance;
+	public const MAIN_SECTION = 'main';
+	
+	private static $sections = [];
 
-	private $sections = [];
-
-	private function __construct()
+	public static function addSection(Section $section, string $slug = null)
 	{
-		$this->sections['main'] = new Section();
+		$slug = ($slug) ? $slug : $section->getSlug();
+
+		self::$sections[$slug] = $section;
 	}
 
-	private function __clone()
-	{}
-
-	public static function getInstance()
+	public static function getSection(string $slug): ?Section
 	{
-		if(self::$instance === null)
-		{
-			self::$instance = new self;
-		}
-		
-		return self::$instance;
-	}
-
-	public function addSection(Section $section)
-	{
-		$this->sections[$section->getSlug()] = $section;
-	}
-
-	public function getSection(string $slug): ?Section
-	{
-		$section = $this->sections[$slug] ?? null;
+		$section = self::$sections[$slug] ?? null;
 
 		throw_if(!$section, 'Section "'.$slug.'" do not exist on Admin Panel');
 
 		return $section;
 	}
 
-	public function getSections()
+	public static function getPages(): array
 	{
-		return $this->sections;
-	}
-
-	public function getPages(): array
-	{
-		foreach($this->sections as $section)
+		foreach(self::$sections as $section)
 		{
 			foreach($section->getItems() as $item)
 			{
@@ -61,53 +40,49 @@ final class Navigation
 		return $pages;
 	}
 
-	public function getMenu(): array
+	public static function getMenu(): array
 	{
-		$admin_panel = AdminPanel::getInstance();
-
-		$navigation = Navigation::getInstance();
-
-		$current_route = request()->route()->action['as'];
-
-		foreach($admin_panel->getResources() as $resource)
-		{
-			// if(isset($resource->roles) && (!Auth::guard(config('admin.guard'))->user()->hasAnyRole($resource->roles)))
-			// {
-			// 	continue;
-			// }
-
-			$resource_menu_section = $resource->getSection() ?? $admin_panel::MAIN_SECTION;
-
-			// if(!array_key_exists($resource_menu_section, $sections))
-			// {
-			// 	$resource_menu_section = 'main';
-			// }
-
-			// $route = route($resource->getRouteName('index'));
-			
-			// $menu_item = new MenuItem($resource->title, $route, $resource->menu_order);
-			// $menu_item->setActiveOrNot($resource->slug, $uri);
-
- 
-			$navigation->getSection($resource_menu_section)?->addItem(
-				(new MenuItem($resource->getTitle()))->route($resource->getRouteName('index')),
-			);
-		}
+		self::_loadResourcesOnMenu();
 		
-		$sections = $navigation->getSections();
+		$sections = Section::sort(self::$sections);
 
-		foreach($sections as $section)
-		{
-			foreach($section->getItems() as $item)
-			{				
-				if(strpos($current_route, str_replace('.index', '', $item->getRoute())) !== false)
-				{
-					$item->activate();
-				} 
-			}
-		}
+		self::_activateMenu($sections);
 
 		return $sections;
 	}
-	
+
+	private static function _loadResourcesOnMenu()
+	{
+		foreach(AdminPanel::getResources() as $resource)
+		{
+			if(!Utils::checkRoles($resource->getRolesForAccess()))
+			{
+				continue;
+			}
+
+			$resource_menu_section = $resource->getSection() ?? self::MAIN_SECTION;
+ 
+			Navigation::getSection($resource_menu_section)?->addItem(
+				(new MenuItem($resource->getTitle()))->route($resource->getRouteName('index'))->setOrder($resource->getMenuOrder()),
+			);
+		}
+	}
+
+	private static function _activateMenu(array $sections)
+	{
+		$current_route = request()->route()->action['as'];
+		
+		foreach($sections as $section)
+		{
+			foreach($section->getItems() as $item)
+			{	
+				if(strpos($current_route, str_replace('.index', '', $item->getRoute())) !== false)
+				{
+					$item->activate();
+
+					return;
+				} 
+			}
+		}
+	}
 }

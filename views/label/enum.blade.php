@@ -1,0 +1,1 @@
+<x-badge :provider="$register->{$item->getValue()}"></x-badge>

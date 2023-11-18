@@ -2,11 +2,11 @@
 
 namespace S4mpp\AdminPanel\Hooks;
 
-use S4mpp\AdminPanel\Hooks\HasHooks;
+use S4mpp\AdminPanel\Traits\EmitsHook;
 
 class UpdateHook
 {
-	use HasHooks;
+	use EmitsHook;
 
 	protected static $action = 'Update';
 }

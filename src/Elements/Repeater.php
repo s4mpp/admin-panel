@@ -2,14 +2,24 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
-class Repeater
+use S4mpp\AdminPanel\Factories\Column;
+use S4mpp\AdminPanel\Traits\Titleable;
+use S4mpp\AdminPanel\Column\RepeaterActions;
+
+final class Repeater
 {
+	use Titleable;
+
+	private  $model = null;
+
 	function __construct(private string $title, private string $relation, private array $fields)
 	{}
 
-	public static function create(string $title, string $relation, array $fields)
+	public function setRelationShipMethod($model)
 	{
-		return new Repeater($title, $relation, $fields);
+		$this->model = $model;
+
+		return $this;
 	}
 
 	public function getRelation(): string
@@ -17,13 +27,24 @@ class Repeater
 		return $this->relation;
 	}
 
+	public function getModelRelation()
+	{
+		return $this->model->getRelated();
+	}
+
 	public function getFields(): array
 	{
 		return $this->fields;
 	}
-	
-	public function getTitle(): string
+
+	public function getColumns(): array
 	{
-		return $this->title;
+		$columns = [
+			Column::text('ID', 'id'),
+		];
+		
+		array_push($columns, (new RepeaterActions($this->relation))->align('right'));
+
+		return $columns;
 	}
 }

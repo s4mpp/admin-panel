@@ -5,10 +5,10 @@ namespace App\AdminPanel;
 use App\Models\User;
 use S4mpp\AdminPanel\Action\Action;
 use S4mpp\AdminPanel\Elements\Card;
-use S4mpp\AdminPanel\Elements\Field;
-use S4mpp\AdminPanel\Elements\Column;
-use S4mpp\AdminPanel\Elements\ItemView;
-use S4mpp\AdminPanel\Resources\Resource;
+use S4mpp\AdminPanel\Factories\Input;
+use S4mpp\AdminPanel\Factories\Column;
+use S4mpp\AdminPanel\Factories\ItemView;
+use S4mpp\AdminPanel\Resource;
 
 class UserResource extends Resource
 {
@@ -20,50 +20,40 @@ class UserResource extends Resource
 
     public $search = ['name' => 'Nome', 'email' => 'E-mail'];
 
-    public function getCustomActions()
+    public function table()
     {
         return [
-            Action::create('Gerar senha')
-                ->showIn(['read'])
-                ->target([AdminController::class, 'generatePassword'])->method('put')
-                ->question('Tem certeza que deseja gerar uma senha nova para este usuário?')
+            Column::text('Nome', 'name')->strong(),
+
+            Column::email('E-mail', 'email'),
+
+            Column::boolean('Ativo', 'is_active')->align('center'),
+
+            Column::datetime('Criado em', 'created_at'),
         ];
     }
 
-    public function getTable()
-    {
-        return [
-            Column::create('Nome', 'name')->strong(),
-
-            Column::create('E-mail', 'email'),
-
-            Column::create('Ativo', 'is_active')->boolean()->align('center'),
-
-            Column::create('Criado em', 'created_at')->datetime('d/m/Y H:i'),
-        ];
-    }
-
-    public function getForm()
+    public function form()
     {
         return [
             Card::create('Informações básicas', [
-                Field::create('Nome', 'name'),
+                Input::text('Nome', 'name'),
                 
-                Field::create('E-mail', 'email')->email()->unique(),
+                Input::text('E-mail', 'email')->email()->unique(),
                 
-                Field::create('Ativo', 'is_active')->boolean(),
+                Input::text('Ativo', 'is_active')->boolean(),
             ]),
         ];
     }
 
-    public function getRead()
+    public function read()
     {
         return [            
-            ItemView::create('Nome', 'name'),
+            ItemView::text('Nome', 'name'),
             
-            ItemView::create('E-mail', 'email'),
+            ItemView::email('E-mail', 'email'),
             
-            ItemView::create('Ativo', 'is_active')->boolean(),
+            ItemView::boolean('Ativo', 'is_active'),
         ];
     }
 

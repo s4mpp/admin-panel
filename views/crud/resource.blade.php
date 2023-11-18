@@ -1,12 +1,11 @@
 @extends('admin::layout', ['breadcrumbs' => [
 	[$title, route($resource->getRouteName('index'))],
-	// (isset($register) && $register) ? ['#'.$register->id, route($resource->getDefaultRoute(), ['id' => $register->id])] : null,
+	(isset($register) && $register) ? ['#'.$register->id, route($resource->getDefaultRoute(), ['id' => $register->id])] : null,
 ]])
 
 @section('title', $title)
 
 @section('title-page')
-
 	@yield('title-page-resource')
 	
 	<x-link href="{{ route($resource->getRouteName('index')) }}" className="ring-inset ring-1 ring-gray-200 btn-muted">

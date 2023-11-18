@@ -17,5 +17,4 @@ trait HasSuccessMessage
 	{
 		return $this->success_message;
 	}
-
 }

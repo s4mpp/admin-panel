@@ -16,7 +16,6 @@
 		<x-button full type="submit" className="btn-primary">Enviar e-mail</x-button>
 	</form>
 	
-
 	<p class="mt-10 text-center text-sm text-gray-500">
 		<a tabindex="-1" href="{{route(RoutesGuard::identifier('admin-panel')->login())}}" class="text-gray-600 hover:text-gray-800 text-base">Voltar</a>
 	</p>

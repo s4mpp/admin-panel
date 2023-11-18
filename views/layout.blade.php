@@ -3,13 +3,7 @@
 @php
 	$guard = config('admin.guard', 'web');
 
-	$navigation = \S4mpp\AdminPanel\Navigation::getInstance();
-		
-	$menu = $navigation->getMenu();
-
-	// $navigations = S4mpp\AdminPanel\AdminPanel::getInstance()->getMenu(); dump($navigations);
-
-	// $user_has_settings_access = S4mpp\AdminPanel\AdminPanel::getUserAccessSettings();
+	$menu = \S4mpp\AdminPanel\Navigation::getMenu();
 	
 	$route_start = config('admin.route_redirect_after_login');
 
@@ -44,45 +38,42 @@
 			x-transition:leave-start="translate-x-00"
 			x-transition:leave-end="-translate-x-full" 
 			@click.away="menuOfCanvasMobile = false"
-		 class="relative mr-16 flex w-full max-w-xs flex-1">
-		  <div 
-			x-show="menuOfCanvasMobile"  x-cloak
-			x-transition:enter="ease-in-out duration-300" 
-			x-transition:enter-start="opacity-0" 
-			x-transition:enter-end="opacity-100" 
-			x-transition:leave="ease-in-out duration-300" 
-			x-transition:leave-start="opacity-1000"
-			x-transition:leave-end="opacity-0" 
-			x-on:click="menuOfCanvasMobile = !menuOfCanvasMobile"
-		  class="absolute left-full top-0 flex w-16 justify-center pt-5">
-			<button type="button" class="-m-2.5 p-2.5">
-			  <span class="sr-only">Close sidebar</span>
-			  <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-			  </svg>
-			</button>
-		  </div>
-  
-		  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
-			<div class="flex h-16 shrink-0 items-center">
-				@if($logo_admin_light && file_exists($logo_admin_light))
-					<img class="h-8 w-auto mx-auto" src="{{ asset($logo_admin_light) }}" alt="{{ env('APP_NAME') }}">
-				@else
-					<h1 class="font-bold text-lg text-center text-gray-900 truncate">{{ env('APP_NAME')  }}</h1>
-				@endif
+		 	class="relative mr-16 flex w-full max-w-xs flex-1">
+			<div 
+				x-show="menuOfCanvasMobile"  x-cloak
+				x-transition:enter="ease-in-out duration-300" 
+				x-transition:enter-start="opacity-0" 
+				x-transition:enter-end="opacity-100" 
+				x-transition:leave="ease-in-out duration-300" 
+				x-transition:leave-start="opacity-1000"
+				x-transition:leave-end="opacity-0" 
+				x-on:click="menuOfCanvasMobile = !menuOfCanvasMobile"
+			class="absolute left-full top-0 flex w-16 justify-center pt-5">
+				<button type="button" class="-m-2.5 p-2.5">
+					<span class="sr-only">Close sidebar</span>
+					<svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</button>
 			</div>
+  
+			<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+				<div class="flex h-16 shrink-0 items-center">
+					@if($logo_admin_light && file_exists($logo_admin_light))
+						<img class="h-8 w-auto mx-auto" src="{{ asset($logo_admin_light) }}" alt="{{ env('APP_NAME') }}">
+					@else
+						<h1 class="font-bold text-lg text-center text-gray-900 truncate">{{ env('APP_NAME')  }}</h1>
+					@endif
+				</div>
 
-			@include('admin::navigation')
-		  </div>
+				@include('admin::navigation')
+			</div>
 		</div>
 	  </div>
 	</div>
   
-	<!-- Static sidebar for desktop -->
 	<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-	  <!-- Sidebar component, swap this element with another sidebar if you like -->
 	  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white  border-r border-gray-200 px-6">
-		
 		<div class="flex h-14 shrink-0 items-center">
 			@if($logo_admin_light && file_exists($logo_admin_light))
 				<img class="h-8 w-auto mx-auto" src="{{ asset($logo_admin_light) }}" alt="{{ env('APP_NAME') }}">
@@ -149,11 +140,11 @@
 						</a>
 					@endif
 
-					{{-- @if($user_has_settings_access)
-						<a href="{{ route('admin_settings') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+					@if(!empty(\S4mpp\AdminPanel\Settings::isActivated()) && \S4mpp\AdminPanel\Utils::checkRoles(\S4mpp\AdminPanel\Settings::getRolesForAccess()))
+						<a href="{{ route('admin.settings.index') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 							Configurações
 						</a>
-					@endif --}}
+					@endif
 					
 					<a href="{{ route(S4mpp\Laraguard\Routes::identifier('admin-panel')->logout()) }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 					  Sair
@@ -170,78 +161,62 @@
 		</div>
   
 	  <main class="pb-10 pt-6">
-		
 		<div class="px-0 sm:px-6 lg:px-8">
-
 			<div class="mb-5 px-4 sm:px-0 ">
 				<div>
-				  {{-- <nav class="sm:hidden" aria-label="Back">
-					<a href="#" class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700">
-					  <svg class="-ml-1 mr-1 h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-						<path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
-					  </svg>
-					  Voltar
-					</a>
-				  </nav> --}}
+					@isset($breadcrumbs)
+						@php 
+							if($section_resource = $resource->getSection())
+							{
+								$section = \S4mpp\AdminPanel\Navigation::getSection($section_resource)->getTitle();
+		
+								array_unshift($breadcrumbs, [$section]);
+							}
+						@endphp
 
-				  @isset($breadcrumbs)
+						<nav class="flex" aria-label="Breadcrumb">
+								<ol role="list" class="flex items-center space-x-2">
+								<li>
+									<div>
+										@if($route_start)
+											<a href="{{ $route_start }}" class="text-gray-400 hover:text-gray-500">
+										@endif
+											<svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+												<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
+											</svg>
+											<span class="sr-only">Home</span>
+										@if($route_start)
+											</a>
+										@endif
+									</div>
+								</li>
 
-					@php 
-
-						if($section_resource = $resource->getSection())
-						{
-							$section = $navigation->getSection($section_resource)->getTitle();
-	
-							array_unshift($breadcrumbs, [$section]);
-						}
-
-					@endphp
-
-					<nav class="flex" aria-label="Breadcrumb">
-							<ol role="list" class="flex items-center space-x-2">
-							<li>
-								<div>
-									@if($route_start)
-										<a href="{{ $route_start }}" class="text-gray-400 hover:text-gray-500">
-									@endif
-										<svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-											<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
-										</svg>
-										<span class="sr-only">Home</span>
-									@if($route_start)
-										</a>
-									@endif
-								</div>
-							</li>
-
-							@foreach(array_filter($breadcrumbs) as $breadcrumb)
+								@foreach(array_filter($breadcrumbs) as $breadcrumb)
+									<li>
+										<div class="flex items-center">
+											<svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+												<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+											</svg>
+											@if(isset($breadcrumb[1]) && !empty($breadcrumb[1]))
+												<a href="{{ $breadcrumb[1] }}" class="ml-2 text-sm font-medium text-gray-500 hover:text-gray-700">{{ $breadcrumb[0] }}</a>
+											@else
+												<span class="ml-2 text-sm font-medium text-gray-500">{{ $breadcrumb[0] }}</span>
+											@endif
+										</div>
+									</li>
+								@endforeach
+								
 								<li>
 									<div class="flex items-center">
 										<svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 											<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
 										</svg>
-										@if(isset($breadcrumb[1]) && !empty($breadcrumb[1]))
-											<a href="{{ $breadcrumb[1] }}" class="ml-2 text-sm font-medium text-gray-500 hover:text-gray-700">{{ $breadcrumb[0] }}</a>
-										@else
-											<span class="ml-2 text-sm font-medium text-gray-500">{{ $breadcrumb[0] }}</span>
-										@endif
+										<span class="ml-2 text-sm font-medium text-gray-500">@yield('title')</span>
 									</div>
 								</li>
-							@endforeach
-							
-							<li>
-								<div class="flex items-center">
-									<svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-										<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-									</svg>
-									<span class="ml-2 text-sm font-medium text-gray-500">@yield('title')</span>
-								</div>
-							</li>
-						</ol>
-					</nav>
-				@endisset
-				  
-				  
+							</ol>
+						</nav>
+					@endisset
 				</div>
 				
 				<div class="mt-4 flex items-center justify-between">
@@ -252,7 +227,7 @@
 						@yield('title-page')
 					</div>
 				</div>
-			  </div>
+			</div>
 			  
 			@yield('content')
 		</div>

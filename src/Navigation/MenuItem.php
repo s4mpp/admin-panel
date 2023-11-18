@@ -2,11 +2,13 @@
 
 namespace S4mpp\AdminPanel\Navigation;
 
-use S4mpp\AdminPanel\Traits\HasSlug;
+use S4mpp\AdminPanel\Traits\Slugable;
+use S4mpp\AdminPanel\Traits\Ordenable;
+use S4mpp\AdminPanel\Traits\Titleable;
 
 final class MenuItem
 {
-	use HasSlug;
+	use Slugable, Ordenable, Titleable;
 
 	private $is_active = false;
 
@@ -40,11 +42,6 @@ final class MenuItem
 		$this->is_active = true;
 	}
 
-	public function getTitle(): string
-	{
-		return $this->title;
-	}
-
 	public function getTarget(): array | string
 	{
 		return $this->target;
@@ -59,25 +56,4 @@ final class MenuItem
 	{
 		return $this->route;
 	}
-
-	
-
-	
-
-	// public string $uri = '';
-
-	// public bool $active = false;
-	
-	// public function __construct(public string $title, public ?string $route = null, public ?int $order = null)
-	// {}
-
-	// public function setActiveOrNot(string $slug, string $uri): void
-	// {
-	// 	$this->active = strpos($uri, $slug) !== false;
-	// }
-
-	// public function getOrder(): int
-	// {
-	// 	return $this->order ?? 0;
-	// }
 }

@@ -1,36 +1,17 @@
 <?php
 
-use Illuminate\Support\Str;
+use App\Models\Setting;
 use S4mpp\Laraguard\Routes;
+use S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\AdminPanel;
-use S4mpp\AdminPanel\Crud\Index;
 use S4mpp\AdminPanel\Navigation;
-use S4mpp\AdminPanel\Crud\Create;
-use S4mpp\AdminPanel\Crud\Delete;
-use S4mpp\AdminPanel\Crud\Update;
-use S4mpp\AdminPanel\Actions\View;
-use S4mpp\AdminPanel\Crud\Resource;
 use S4mpp\AdminPanel\Actions\Method;
-use S4mpp\AdminPanel\Actions\Prompt;
-use S4mpp\AdminPanel\Resources\Read;
 use Illuminate\Support\Facades\Route;
-use S4mpp\AdminPanel\Navigation\Page;
-use S4mpp\AdminPanel\Actions\Callback;
 use S4mpp\AdminPanel\Controllers\CrudController;
 use S4mpp\AdminPanel\Controllers\AdminController;
-use S4mpp\AdminPanel\Controllers\IndexController;
-use S4mpp\AdminPanel\Actions\Update as UpdateAction;
 use S4mpp\AdminPanel\Controllers\SettingsController;
-use S4mpp\AdminPanel\Middleware\CustomActionEnabled;
-use S4mpp\AdminPanel\Controllers\CustomActionController;
-
-$admin_panel = AdminPanel::getInstance()->loadResources();
-
-$navigation = Navigation::getInstance();
 
 $route = Route::middleware('web');
-
-$guard = config('admin.guard', 'web');
 
 $prefix = config('admin.prefix', 'painel');
 
@@ -58,105 +39,95 @@ $route->group(function()
 /**
  * Private
  */
-$route->middleware('web', 'auth:'.$guard)->group(function() use ($guard, $admin_panel, $navigation)
+$route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function()
 {
 	/**
 	 * Pages
 	 */
-	$pages = $navigation->getPages();
-
-	foreach($pages as $page)
+	foreach(Navigation::getPages() as $page)
 	{
-		// if(!isset($page->target))
-		// {
-		// 	throw new \Exception('Target of Page "'.$page->slug.' "not defined');
-		// }
-
 		Route::get($page->getSlug(), $page->getTarget())->name($page->getRoute());
 	}
 	
 	/**
 	 * Resources
-	 */
-	$resources = $admin_panel->getResources();
- 
-	foreach($resources as $resource)
+	 */ 
+	foreach(AdminPanel::getResources() as $resource)
 	{
 		$routes_resource = Route::prefix($resource->getSlug());
 		
-		/*if(isset($resource->roles))
+		if($roles = $resource->getRolesForAccess())
 		{
-			$routes_resource->middleware('role:'.join('|', ($resource->roles ?? [])));
-		}*/
+			$routes_resource->middleware('role:'.join('|', $roles));
+		}
 		
 		$routes_resource->group(function() use ($resource)
 		{
-			// Route::get('/', Index::get($resource))->name($resource->getRouteName('index'));
 			Route::get('/', [CrudController::class, 'index'])->name($resource->getRouteName('index'));
 	
-			// if(in_array('create', $resource->actions))
-			// {
+			if($resource->hasAction('create'))
+			{
 				Route::get('/cadastrar', [CrudController::class, 'create'])->name($resource->getRouteName('create'));
-			// }
-
-			// if(in_array('read', $resource->actions))
-			// {
+			}
+			
+			if($resource->hasAction('read'))
+			{
 				Route::get('/visualizar/{id}', [CrudController::class, 'read'])->name($resource->getRouteName('read'));
-			// }
-	
-			// if(in_array('update', $resource->actions))
-			// {
+			}
+			
+			if($resource->hasAction('update'))
+			{
 				Route::get('/editar/{id}', [CrudController::class, 'update'])->name($resource->getRouteName('update'));
-			// }
-	
-			// if(in_array('delete', $resource->actions))
-			// {
+			}
+			
+			if($resource->hasAction('delete'))
+			{
 				Route::delete('/excluir/{id}', [CrudController::class, 'delete'])->name($resource->getRouteName('delete'));
-			// }
+			}
 
-			// if(method_exists($resource, 'getCustomActions'))
-			// {
-			// 	$custom_actions = $resource->getCustomActions() ?? [];
+			/**
+			 * Custom actions
+			 */ 
+			foreach($resource->getCustomActions() as $custom_action)
+			{
+				if(!method_exists($custom_action, 'getCallbackRoute'))
+				{
+					continue;
+				}
+				
+				$route_custom_action = Route::middleware('web');
 
-			// 	foreach($custom_actions as $custom_action)
-			// 	{
-			// 		if(method_exists($custom_action, 'getCallbackRoute'))
-			// 		{
-			// 			$route_custom_action = Route::middleware('web');
+				if($permissions_custom_action = $custom_action->getPermissionsForAccess())
+				{
+					$route_custom_action->middleware('can:'.join('|', $permissions_custom_action));
+				}
 
-			// 			if($permissions_custom_action = $custom_action->getPermissions())
-			// 			{
-			// 				$route_custom_action->middleware('can:'.join('|', $permissions_custom_action));
-			// 			}
+				if(is_a($custom_action, Method::class))
+				{
+					$route_custom_action->middleware('custom-action-enabled:'.$resource->slug.'.'.$custom_action->getSlug());
+				}
 
-			// 			if(is_a($custom_action, Method::class))
-			// 			{
-			// 				$route_custom_action->middleware('custom-action-enabled:'.$resource->slug.'.'.$custom_action->getSlug());
-			// 			}
-
-			// 			$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($resource))->name($custom_action->getRouteName());
-			// 		}
-			// 	}
-			//}
+				$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($resource))->name($custom_action->getRouteName());
+			}
 		});
 	}
-	
 
 	/**
 	 * Settings
 	 */
-	$routes_settings = Route::middleware('web');
-	
-	$settings_roles = AdminPanel::getSettingsRoles();
-	
-	if(!empty($settings_roles))
+	if(!empty(Settings::isActivated()))
 	{
-		$routes_settings->middleware('role:'.join('|', ($settings_roles ?? [])));
-	}
+		$routes_settings = Route::middleware('web');
 
-	$routes_settings->controller(SettingsController::class)->group(function()
-	{
-		Route::get('configuracoes', 'settings')->name('admin_settings');
-		Route::put('configuracoes', 'storeSettings')->name('store_settings');
-	});
+		if($settings_roles = Settings::getRolesForAccess())
+		{
+			$routes_settings->middleware('role:'.join('|', $settings_roles));
+		}
+
+		$routes_settings->controller(SettingsController::class)->group(function()
+		{
+			Route::get('configuracoes', 'settings')->name('admin.settings.index');
+			Route::put('configuracoes', 'storeSettings')->name('admin.settings.store');
+		});
+	}
 });
