@@ -102,7 +102,7 @@ abstract class Input
 		string $value_collection = null,
 		string $key_collection = null)
 	{
-		return (new Checkbox($title, $field, $options, $value_collection, $key_collection));
+		return (new Checkbox($title, $field, $options, $value_collection, $key_collection))->rules('array');
 	}
 
 	public static function radio(

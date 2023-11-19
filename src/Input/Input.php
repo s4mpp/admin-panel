@@ -15,6 +15,8 @@ abstract class Input
 	private array $rules = ['required'];
 		
 	private $prepare_for_validation = null;
+	
+	private $prepare_for_form = null;
 
 	function __construct(private string $title, private string $name)
 	{}
@@ -55,6 +57,18 @@ abstract class Input
 	public function isRequired(): bool
 	{
 		return in_array('required', $this->rules);
+	}
+
+	public function prepareForForm(callable $callback)
+	{
+		$this->prepare_for_form = $callback;
+
+		return $this;
+	}
+
+	public function getPrepareForForm()
+	{
+		return $this->prepare_for_form;
 	}
 
 	public function prepareForValidation(callable $callback)

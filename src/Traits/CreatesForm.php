@@ -34,9 +34,7 @@ trait CreatesForm
 	{
 		foreach($this->_getFields($this->form) as $field)
 		{
-			$value = $this->register?->{$field->getName()} ?? null;
-
-			$default_value = (!is_null($field) && is_null($value) ? $field->getDefaultText() : null);
+			
 
 			// if($field->getType() == 'date')
 			// {
@@ -52,10 +50,27 @@ trait CreatesForm
 			// }
 			// else
 			// {
-				$this->data[$field->getName()] = $value ?? $default_value;
+				
 			// }
+
+			$this->data[$field->getName()] = $this->_getValueField($field);
 		}
 	}
+
+	private function _getValueField(Input $field)
+	{
+		$value = $this->register?->{$field->getName()} ?? null;
+
+		$default_value = (!is_null($field) && is_null($value) ? $field->getDefaultText() : null);
+
+		if($field->getPrepareForForm())
+		{
+			return $value ? call_user_func($field->getPrepareForForm(), $value) : $default_value;
+		}
+		
+		return $value ?? $default_value;
+	}
+
 
 	public function save()
 	{

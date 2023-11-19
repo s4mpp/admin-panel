@@ -4,7 +4,7 @@
 			$i=0;
 		@endphp
 		@foreach($input->getOptions() as $id => $value)
-			<x-check wire:model.defer="{{ $input->getNameWithPrefix().'.'.$i }}" value="{{ $id }}">{{ $value }}</x-check>
+			<x-check wire:model.defer="{{ $input->getNameWithPrefix() }}" value="{{ $id }}">{{ $value }}</x-check>
 			
 			@php
 				$i++;
