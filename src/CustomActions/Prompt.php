@@ -5,9 +5,9 @@ namespace S4mpp\AdminPanel\CustomActions;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\HasSuccessMessage;
+use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class Prompt extends CustomAction
 {

@@ -3,9 +3,7 @@
 namespace S4mpp\AdminPanel\Input;
 
 use S4mpp\AdminPanel\Input\Input;
-use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Traits\WithSubOptions;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 final class Checkbox extends Input
 {

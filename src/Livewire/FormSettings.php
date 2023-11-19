@@ -5,13 +5,12 @@ namespace S4mpp\AdminPanel\Livewire;
 use App\Models\Setting;
 use Livewire\Component;
 use S4mpp\AdminPanel\Settings;
+use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Traits\CreatesForm;
 
 class FormSettings extends Component
 {
 	use CreatesForm;
-
-	private $success_message = 'Configurações salvas com sucesso!';
 		
 	public function mount($register = null)
 	{		
@@ -29,11 +28,15 @@ class FormSettings extends Component
 
 	private function _getModel()
 	{
-		return Setting::class;
+		return app(Setting::class);
 	}
 
-	private function _getRouteForRedirect()
-	{
-		return 'admin.settings.index';
+	private function _saving(Model $settings)
+	{			
+		$settings->save();
+		
+		session()->flash('message', 'Configurações salvas com sucesso!');
+
+		return redirect()->route('admin.settings.index');
 	}
 }

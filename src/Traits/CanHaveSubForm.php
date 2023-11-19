@@ -26,7 +26,6 @@ trait CanHaveSubForm
 	{
 		try
 		{
-
 			$repeater = $this->repeaters[$relation] ?? null;
 
 			throw_if(!$repeater, 'Repeater '.$relation.' not found');
@@ -45,8 +44,6 @@ trait CanHaveSubForm
 			{
 				$register = new $model;
 			}
-
-			// $register->xxxxx_id = $this->register->id;
 
 			foreach($repeater->getFields() as $field)
 			{

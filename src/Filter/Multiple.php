@@ -1,9 +1,7 @@
 <?php
 
 namespace S4mpp\AdminPanel\Filter;
-use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Traits\WithSubOptions;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 class Multiple extends Filter
 {

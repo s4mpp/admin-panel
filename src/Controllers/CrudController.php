@@ -2,11 +2,11 @@
 
 namespace S4mpp\AdminPanel\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use S4mpp\AdminPanel\AdminPanel;
-use S4mpp\AdminPanel\Resource;
 use S4mpp\AdminPanel\Utils;
+use Illuminate\Http\Request;
+use S4mpp\AdminPanel\Resource;
+use S4mpp\AdminPanel\AdminPanel;
+use App\Http\Controllers\Controller;
 
 class CrudController extends Controller
 {

@@ -8,7 +8,6 @@ use S4mpp\AdminPanel\Input\Input;
 use Livewire\TemporaryUploadedFile;
 use Illuminate\Support\ValidatedInput;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 trait CreatesForm 
@@ -24,7 +23,7 @@ trait CreatesForm
     public function render()
     {
         return view('admin::livewire.form', [
-			'repeaters' => $this->repeaters,
+			'repeaters' => $this->repeaters ?? [],
 			'data_slides' => method_exists($this, '_getDataSlidesAttribute') ? $this->_getDataSlidesAttribute() : null,
 			'close_slides' => method_exists($this, '_getCloseSlidesAttribute') ? $this->_getCloseSlidesAttribute() : null,
 		]);
@@ -34,25 +33,6 @@ trait CreatesForm
 	{
 		foreach($this->_getFields($this->form) as $field)
 		{
-			
-
-			// if($field->getType() == 'date')
-			// {
-			// 	$this->data[$field->getName()] = $value ? $value->format('Y-m-d') : $default_value;
-			// }
-			// else if($field->getType() == 'permissions')
-			// {
-			// 	$this->data[$field->getName()] = ($value) ? $value->pluck('name') : [];
-			// }
-			// else if($field->getType() == 'currency')
-			// {
-			// 	$this->data[$field->getName()] = ($value)  ? Format::currency($value, $field->getAdditionalData('has_cents')) : $default_value;
-			// }
-			// else
-			// {
-				
-			// }
-
 			$this->data[$field->getName()] = $this->_getValueField($field);
 		}
 	}

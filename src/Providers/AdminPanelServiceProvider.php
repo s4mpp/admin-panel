@@ -11,9 +11,9 @@ use S4mpp\AdminPanel\Commands\CreateAdmin;
 use S4mpp\AdminPanel\Livewire\FormResource;
 use S4mpp\AdminPanel\Livewire\FormSettings;
 use S4mpp\AdminPanel\Livewire\TableResource;
+use S4mpp\AdminPanel\Middleware\CustomAction;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
-use S4mpp\AdminPanel\Middleware\CustomActionEnabled;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -33,7 +33,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 			
 		Paginator::defaultView('admin::pagination');
 
-		app('router')->aliasMiddleware('custom-action-enabled', CustomActionEnabled::class);
+		app('router')->aliasMiddleware('custom-action', CustomAction::class);
 
 		if($this->app->runningInConsole())
 		{

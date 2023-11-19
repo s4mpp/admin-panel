@@ -2,7 +2,6 @@
 
 namespace S4mpp\AdminPanel\Factories;
 
-use S4mpp\AdminPanel\Column\Date;
 use S4mpp\AdminPanel\Column\Badge;
 use S4mpp\AdminPanel\Column\Boolean;
 use S4mpp\AdminPanel\Column\Datetime;

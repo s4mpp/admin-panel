@@ -7,13 +7,13 @@ use S4mpp\AdminPanel\Input\Date;
 use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Text;
 use S4mpp\AdminPanel\Input\Email;
+use S4mpp\AdminPanel\Input\Radio;
 use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Input\Number;
 use S4mpp\AdminPanel\Input\Select;
 use S4mpp\AdminPanel\Input\Checkbox;
 use S4mpp\AdminPanel\Input\Textarea;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use S4mpp\AdminPanel\Input\Radio;
 
 abstract class Input
 {

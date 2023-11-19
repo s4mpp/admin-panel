@@ -2,10 +2,10 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
+use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Factories\Column;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Column\RepeaterActions;
-use S4mpp\AdminPanel\Traits\Slugable;
 
 final class Repeater
 {

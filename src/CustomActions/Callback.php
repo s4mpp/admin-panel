@@ -3,9 +3,9 @@
 namespace S4mpp\AdminPanel\CustomActions;
 
 use S4mpp\AdminPanel\Traits\SendForm;
-use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\HasSuccessMessage;
+use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 
 final class Callback extends CustomAction

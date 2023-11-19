@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use S4mpp\AdminPanel\Resource;
 use S4mpp\AdminPanel\AdminPanel;
 use Symfony\Component\HttpFoundation\Response;
-use S4mpp\AdminPanel\CustomActions\CustomAction;
+use S4mpp\AdminPanel\CustomActions\CustomAction as CustomActionResource;
 
-class CustomActionEnabled
+class CustomAction
 {
     /**
      * Handle an incoming request.
@@ -49,7 +49,7 @@ class CustomActionEnabled
         return $next($request);
     }
 
-    private function _findAction(Resource $resource, string $action_slug): ?CustomAction
+    private function _findAction(Resource $resource, string $action_slug): ?CustomActionResource
     {
         $custom_actions = $resource->getCustomActions();
 

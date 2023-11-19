@@ -102,7 +102,7 @@ $route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function(
 					$route_custom_action->middleware('can:'.join('|', $permissions_custom_action));
 				}
 
-				$route_custom_action->middleware('custom-action-enabled:'.$resource->getName().'.'.$custom_action->getSlug());
+				$route_custom_action->middleware('custom-action:'.$resource->getName().'.'.$custom_action->getSlug());
 				
 				$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($resource))->name($custom_action->getRouteName());
 			}
