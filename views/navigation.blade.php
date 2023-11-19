@@ -1,6 +1,8 @@
 <nav class="flex flex-1 flex-col">
 	<ul role="list" class="flex flex-1 flex-col gap-y-7">
 		@foreach ($menu as $section)
+			@continue(empty($section->getItems()))
+			
 			<li>
 				@if($title = $section->getTitle())
 					<div class="text-xs font-semibold leading-6 text-uppercase text-gray-400">{{ $title }}</div>

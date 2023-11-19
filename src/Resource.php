@@ -41,7 +41,14 @@ abstract class Resource
 
 	final public function getRolesForAccess(): array
 	{
-		return $this->roles ?? [];
+		$roles = $this->roles ?? [];
+		
+		if(config('admin.strict_roles', false))
+		{
+			$roles[] = 'default';
+		}
+		
+		return $roles;
 	}
 
 	final public function getSearchFields(): ?array
