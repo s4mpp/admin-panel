@@ -204,12 +204,12 @@ class TableResource extends Component
         {
             $filter = $filters[$f] ?? null;
 
-            if(!$filter)
+            if(!$filter || !$term || empty($term))
             {
                 continue;
-            }
+            } 
 
-            $filter->query($term, $query);
+            $filter->query($term, $query);  
 
             $description_result = $filter->getDescriptionResult($term);
 

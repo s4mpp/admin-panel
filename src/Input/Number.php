@@ -16,7 +16,7 @@ final class Number extends Input
 
 	public function renderInput(array $data)
 	{
-		return view('admin::input.text', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
+		return view('admin::input.number', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
 	}
 
 	public function step(int | float $step)
