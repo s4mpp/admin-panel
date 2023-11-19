@@ -4,11 +4,11 @@ namespace S4mpp\AdminPanel\CustomActions;
 
 use S4mpp\AdminPanel\Traits\OpenALink;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
-use S4mpp\AdminPanel\Traits\CallRoutemethod;
+use S4mpp\AdminPanel\Traits\CallRouteMethod;
 
 final class Method extends CustomAction
 {
-	use ShoudOpenInNewTab, OpenALink, CallRoutemethod;
+	use ShoudOpenInNewTab, OpenALink, CallRouteMethod;
 
 	public function __construct(public string $title, private string $controller, private string $method)
 	{

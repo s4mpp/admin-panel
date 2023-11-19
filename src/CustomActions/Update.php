@@ -22,8 +22,6 @@ final class Update extends CustomAction
 		{
 			try
 			{
-				throw_if($this->isDisabled(), $this->getDisabledMessage());
-
 				$register = $resource->getModel()::findOrFail($id);
 	
 				foreach($this->data as $key => $new_value)

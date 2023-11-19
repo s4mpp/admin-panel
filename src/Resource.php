@@ -134,11 +134,11 @@ abstract class Resource
 		return $this->_getOnlyOf($this->table(), Column::class);
 	}
 
-	final public function getRepeaters(): ?array
+	final public function getRepeaters(): array
 	{
 		if(!method_exists($this, 'repeaters'))
 		{
-			return null;
+			return [];
 		}
 
 		foreach($this->repeaters() as $repeater)
@@ -148,7 +148,7 @@ abstract class Resource
 			$repeaters[$repeater->getRelation()] = $repeater;
 		}
 
-		return $this->_getOnlyOf($repeaters, Repeater::class);
+		return $this->_getOnlyOf($repeaters ?? [], Repeater::class);
 	}
 
 	final public function getForm(): ?array
@@ -186,7 +186,7 @@ abstract class Resource
 			}
         }
 
-		return $this->_getOnlyOf($filters, Filter::class);
+		return $this->_getOnlyOf($filters ?? [], Filter::class);
     }
 
 	final public function getCustomActions()

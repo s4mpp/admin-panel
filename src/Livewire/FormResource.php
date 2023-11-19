@@ -3,39 +3,40 @@
 namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
-use Livewire\WithFileUploads;
+use Illuminate\Support\ValidatedInput;
+use S4mpp\AdminPanel\Hooks\CreateHook;
+use S4mpp\AdminPanel\Hooks\UpdateHook;
+use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Traits\CreatesForm;
-use S4mpp\AdminPanel\Traits\ValidateForm;
+use S4mpp\AdminPanel\Traits\CanHaveSubForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 
 class FormResource extends Component
 {
-	use WithAdminResource, WithFileUploads, CreatesForm;
+	use WithAdminResource, CreatesForm, CanHaveSubForm;
 
-	private $success_message = 'Registro salvo com sucesso!';
+	private $repeaters = [];
 		
 	public function mount(string $resource_name, $register = null)
 	{
-		$this->setResource($resource_name);
-		
-		$this->register = $register;
+		$this->_setResource($resource_name);
 
-		$this->repeaters = $this->resource->getRepeaters();
-		
+		$this->_setRepeaters();
+
 		$this->form = $this->resource->getForm();
 		
-		$this->_setInitialData();
+		$this->register = $register;
 		
-		$this->_setInitialChilds();
+		$this->_setInitialData();
 	}
 	
     public function booted()
     {
-		$this->setResource($this->resource_name);
-		
-		$this->form = $this->resource->getForm();
+		$this->_setResource($this->resource_name);
 
-		$this->repeaters = $this->resource->getRepeaters();
+		$this->_setRepeaters();
+
+		$this->form = $this->resource->getForm();
     }
 
 	private function _getModel()
@@ -43,8 +44,20 @@ class FormResource extends Component
 		return $this->resource->getModel();
 	}
 
-	private function _getRouteForRedirect()
+	private function _saving(Model $register, ValidatedInput $fields_validated)
 	{
-		return $this->resource->getRouteName('index');
+		$hook = (!$this->register) ? CreateHook::class : Updatehook::class;
+	
+		$hook::before($this->resource, $register, $fields_validated);
+		
+		$register->save();
+		
+		$hook::after($this->resource, $register, $fields_validated);
+
+		$this->_saveChilds($register);
+
+		session()->flash('message', 'Registro salvo com sucesso!');
+
+		return redirect()->route($this->resource->getRouteName('index'));
 	}
 }

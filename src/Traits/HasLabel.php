@@ -184,9 +184,9 @@ trait HasLabel
 
 	public function enum()
 	{
-		$this->callback(function($register): string
+		$this->callback(function($register): ?string
 		{
-			return $register->name;
+			return $register->name ?? null;
 		});
 
 		return $this;

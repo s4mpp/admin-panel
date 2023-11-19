@@ -25,8 +25,6 @@ final class Callback extends CustomAction
 		{
 			try
 			{
-				throw_if($this->isDisabled(), $this->getDisabledMessage());
-
 				$register = $resource->getModel()::findOrFail($id);
 	
 				call_user_func($this->callback, $register);

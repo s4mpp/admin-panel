@@ -4,11 +4,11 @@ namespace S4mpp\AdminPanel\CustomActions;
 
 use S4mpp\AdminPanel\Traits\OpenALink;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
-use S4mpp\AdminPanel\Traits\CallRoutemethod;
+use S4mpp\AdminPanel\Traits\CallRouteMethod;
 
 final class View extends CustomAction
 {
-	use ShoudOpenInNewTab, OpenALink, CallRoutemethod;
+	use ShoudOpenInNewTab, OpenALink, CallRouteMethod;
 
 	public function __construct(public string $title, private string $view)
 	{
@@ -18,15 +18,10 @@ final class View extends CustomAction
 	public function getCallbackRoute($resource)
 	{
 		return function($id) use ($resource)
-		{
-			if($this->isDisabled())
-			{
-				return response($this->getDisabledMessage(), 400);
-			}
-			
+		{			
 			$register = $resource->getModel()::findOrFail($id);
 
-			return view('admin::resources.view-action', [
+			return view('admin::custom-actions.content.view-action', [
 				'title' => $resource->title,
 				'action_title'=> $this->getTitle(),
 				'register'=> $register,

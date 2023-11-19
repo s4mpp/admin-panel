@@ -5,7 +5,7 @@ use S4mpp\Laraguard\Routes;
 use S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Navigation;
-use S4mpp\AdminPanel\Actions\Method;
+use S4mpp\AdminPanel\CustomActions\Method;
 use Illuminate\Support\Facades\Route;
 use S4mpp\AdminPanel\Controllers\CrudController;
 use S4mpp\AdminPanel\Controllers\AdminController;
@@ -102,11 +102,8 @@ $route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function(
 					$route_custom_action->middleware('can:'.join('|', $permissions_custom_action));
 				}
 
-				if(is_a($custom_action, Method::class))
-				{
-					$route_custom_action->middleware('custom-action-enabled:'.$resource->slug.'.'.$custom_action->getSlug());
-				}
-
+				$route_custom_action->middleware('custom-action-enabled:'.$resource->getName().'.'.$custom_action->getSlug());
+				
 				$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($resource))->name($custom_action->getRouteName());
 			}
 		});

@@ -71,12 +71,16 @@ abstract class Navigation
 	private static function _activateMenu(array $sections)
 	{
 		$current_route = request()->route()->action['as'];
+
+		$route_path = explode('.', $current_route);
+
+		$current_route_prefix = join('.', [$route_path[0] ?? null, $route_path[1] ?? null]);
 		
 		foreach($sections as $section)
 		{
 			foreach($section->getItems() as $item)
-			{	
-				if(strpos($current_route, str_replace('.index', '', $item->getRoute())) !== false)
+			{
+				if(($item->getRoute() == $current_route) ||  strpos($item->getRoute(), $current_route_prefix.'.') !== false)
 				{
 					$item->activate();
 

@@ -5,15 +5,18 @@ namespace S4mpp\AdminPanel\Elements;
 use S4mpp\AdminPanel\Factories\Column;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Column\RepeaterActions;
+use S4mpp\AdminPanel\Traits\Slugable;
 
 final class Repeater
 {
-	use Titleable;
+	use Titleable, Slugable;
 
-	private  $model = null;
+	private $model = null;
 
 	function __construct(private string $title, private string $relation, private array $fields)
-	{}
+	{
+		$this->createSlug($title);
+	}
 
 	public function setRelationShipMethod($model)
 	{

@@ -4,7 +4,10 @@ namespace S4mpp\AdminPanel\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use S4mpp\AdminPanel\Resource;
+use S4mpp\AdminPanel\AdminPanel;
 use Symfony\Component\HttpFoundation\Response;
+use S4mpp\AdminPanel\CustomActions\CustomAction;
 
 class CustomActionEnabled
 {
@@ -17,18 +20,45 @@ class CustomActionEnabled
     {
         $params_exp = explode('.', $params);
 
-		$resource = $params_exp[0] ?? null;
-		$action = $params_exp[1] ?? null;
+		$resource_slug = $params_exp[0] ?? null;
+		$action_slug = $params_exp[1] ?? null;
 
-        // dump($resource);
-        // dump($action);
+        $resource = AdminPanel::getResource($resource_slug.'Resource');
 
-        // if($is_disabled)
-        // {
-            
-        //     return response($message, 400);
-        // }
+        $action = $this->_findAction($resource, $action_slug);
+
+        if(!$action)
+        {
+            abort(404);
+        }
+
+        $register = $resource->getModel()->findOrFail($request->id);
+
+        $action->setRegister($register);
+
+        if($action->isDisabled())
+        {
+            return response($action->getDisabledMessage());
+        }
+
+        $request->attributes->add([
+            'resource' => $resource,
+            'register' => $register
+        ]);
         
         return $next($request);
+    }
+
+    private function _findAction(Resource $resource, string $action_slug): ?CustomAction
+    {
+        $custom_actions = $resource->getCustomActions();
+
+        foreach($custom_actions as $action)
+        {
+            if($action->getSlug() == $action_slug)
+            {
+                return $action;
+            }
+        }
     }
 }

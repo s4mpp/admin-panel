@@ -6,11 +6,10 @@ use App\Models\Setting;
 use Livewire\Component;
 use S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\Traits\CreatesForm;
-use S4mpp\AdminPanel\Traits\ValidateForm;
 
 class FormSettings extends Component
 {
-	use ValidateForm, CreatesForm;
+	use CreatesForm;
 
 	private $success_message = 'Configurações salvas com sucesso!';
 		

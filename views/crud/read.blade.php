@@ -16,7 +16,7 @@
 		
 		@if($register->timestamps)
 			<span class="text-xs text-gray-500"><span class="font-semibold">Cadastrado em</span> {{ $register->created_at->format('d/m/Y H:i') }} ({{ $register->created_at->diffForHumans(['short' => true]) }})</span>
-			<span class="text-xs text-gray-500"><span class="font-semibold">última alteração em</span> {{ $register->updated_at->format('d/m/Y H:i') }} ({{ $register->updated_at->diffForHumans(['short' => true]) }})</span>
+			<span class="text-xs text-gray-500"><span class="font-semibold">Última alteração em</span> {{ $register->updated_at->format('d/m/Y H:i') }} ({{ $register->updated_at->diffForHumans(['short' => true]) }})</span>
 		@endif
 	</div>
 

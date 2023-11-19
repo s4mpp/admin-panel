@@ -45,9 +45,7 @@ final class Prompt extends CustomAction
 		return function($id, Request $request) use ($resource)
 		{
 			try
-			{
-				throw_if($this->isDisabled(), $this->getDisabledMessage());
-				
+			{			
 				$validator = Validator::make(
 					['answer' => $request->get('answer') ?? ''],
 					['answer' => ['required', 'string']],

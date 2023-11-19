@@ -10,8 +10,10 @@ use S4mpp\AdminPanel\Input\Email;
 use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Input\Number;
 use S4mpp\AdminPanel\Input\Select;
+use S4mpp\AdminPanel\Input\Checkbox;
 use S4mpp\AdminPanel\Input\Textarea;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use S4mpp\AdminPanel\Input\Radio;
 
 abstract class Input
 {
@@ -91,5 +93,25 @@ abstract class Input
 		string $key_collection = null)
 	{
 		return (new Select($title, $field, $options, $value_collection, $key_collection));
+	}
+
+	public static function checkbox(
+		string $title,
+		string $field,
+		array | Collection | EloquentCollection $options,
+		string $value_collection = null,
+		string $key_collection = null)
+	{
+		return (new Checkbox($title, $field, $options, $value_collection, $key_collection));
+	}
+
+	public static function radio(
+		string $title,
+		string $field,
+		array | Collection | EloquentCollection $options,
+		string $value_collection = null,
+		string $key_collection = null)
+	{
+		return (new Radio($title, $field, $options, $value_collection, $key_collection));
 	}
 }

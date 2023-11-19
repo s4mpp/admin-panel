@@ -14,6 +14,20 @@ trait WithSubOptions
 	
 	private ?string $key_collection = null;
 
+	function __construct(
+		private string $title,
+		private string $name,
+		array | Collection | EloquentCollection $options = [],
+		string $value_collection = null,
+		string $key_collection = null)
+	{
+		$this->options = $options;
+		$this->value_collection = $value_collection;
+		$this->key_collection = $key_collection;
+		
+		parent::__construct($title, $name);
+	}
+
 	public function getOptions()
 	{
 		foreach($this->options as $key => $value)

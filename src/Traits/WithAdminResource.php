@@ -11,7 +11,7 @@ trait WithAdminResource
 
 	private ?Resource $resource = null;
 
-	public function setResource(string $resource_name)
+	private function _setResource(string $resource_name)
 	{ 
 		if($this->resource)
 		{

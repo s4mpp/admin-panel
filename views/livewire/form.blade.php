@@ -2,8 +2,8 @@
 	<x-alert />
 
 	<div 
-		x-data="{ {{ join(',', $data_slides) }} }"
-		x-on:close-slide.window="{{ join(',', $close_slides) }}">
+		x-data="{ {{ join(',', $data_slides ?? []) }} }"
+		x-on:close-slide.window="{{ join(',', $close_slides ?? []) }}">
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
  			<div class="space-y-4 mb-4">
 				@foreach($this->form ?? [] as $element)
@@ -55,7 +55,7 @@
 								</p>
 						
 							</div>
-							{{ $element->setPrefix('current_child_data.'.$repeater->getRelation())->renderInput() }}
+							{{ $element->setPrefix('current_child_data.'.$repeater->getRelation())->renderInput([]) }}
 						</div>
 					@endforeach
 		

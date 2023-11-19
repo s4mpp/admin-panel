@@ -1,4 +1,4 @@
-@extends('admin::resources.resource')
+@extends('admin::crud.resource')
 
 @section('title', $action_title)
 

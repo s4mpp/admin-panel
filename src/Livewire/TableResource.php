@@ -30,7 +30,7 @@ class TableResource extends Component
 
     public function booted()
     {
-        $this->setResource($this->resource_name);
+        $this->_setResource($this->resource_name);
 
         $this->columns = $this->resource->getTable();
 

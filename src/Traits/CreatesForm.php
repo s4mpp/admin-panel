@@ -5,9 +5,11 @@ namespace S4mpp\AdminPanel\Traits;
 use Livewire\WithFileUploads;
 use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Input;
+use Livewire\TemporaryUploadedFile;
+use Illuminate\Support\ValidatedInput;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Livewire\TemporaryUploadedFile;
 
 trait CreatesForm 
 {
@@ -16,14 +18,6 @@ trait CreatesForm
 	public $register;
 	
 	public array $data = [];
-
-	public array $current_child_id = [];
-	
-	public array $current_child_data = [];
-	
-	public array $childs = [];
-	
-	private $repeaters = [];
 	
 	private $form;
 
@@ -31,31 +25,10 @@ trait CreatesForm
     {
         return view('admin::livewire.form', [
 			'repeaters' => $this->repeaters,
-			'data_slides' => $this->_getDataSlidesAttribute(),
-			'close_slides' => $this->_getCloseSlidesAttribute(),
+			'data_slides' => method_exists($this, '_getDataSlidesAttribute') ? $this->_getDataSlidesAttribute() : null,
+			'close_slides' => method_exists($this, '_getCloseSlidesAttribute') ? $this->_getCloseSlidesAttribute() : null,
 		]);
     }
-
-	private function _getDataSlidesAttribute(): array
-	{
-		foreach($this->repeaters ?? [] as $repeater)
-		{
-			$data_slides[] = 'slide'.$repeater->getRelation().': false';
-		}
-
-		return $data_slides ?? [];
-		
-	}
-
-	private function _getCloseSlidesAttribute(): array
-	{
-		foreach($this->repeaters ?? [] as $repeater)
-		{
-			$close_slides[] = 'slide'.$repeater->getRelation().' = false';
-		}
-
-		return $close_slides ?? [];
-	}
 
 	private function _setInitialData()
 	{
@@ -84,73 +57,6 @@ trait CreatesForm
 		}
 	}
 
-	private function _setInitialChilds()
-	{
-		foreach($this->repeaters ?? [] as $repeater)
-		{
-			$this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
-		}
-	}
-
-	public function setCurrentChild(string $relation, int $i)
-	{
-		$this->current_child_id[$relation] = $i;
-
-		$this->current_child_data[$relation] = $this->childs[$relation][$i];
-	}
-
-	public function saveChild(string $relation)
-	{
-		try
-		{
-			$repeater = $this->repeaters[$relation]; 
-
-			$data_id = $this->current_child_data[$relation]['id'] ?? null;
-
-			$model = $repeater->getModelRelation();
-
-			if($data_id)
-			{
-				$register = new $model;
-
-				$register->id = $data_id;
-			}
-			else
-			{
-				$register = new $model;
-			}
-
-			// $register->project_id = $this->register->id;
-
-			foreach($repeater->getFields() as $field)
-			{
-				$register->{$field->getName()} = $this->current_child_data[$relation][$field->getName()];
-			}
-
-			$child_id_relation = $this->current_child_id[$relation] ?? null;
-
-			if(is_numeric($child_id_relation))
-			{
-				$this->childs[$relation][$child_id_relation] = $register;
-			}
-			else
-			{
-				$this->childs[$relation] = collect($this->childs[$relation])->push($register);
-			}
-			
-			$this->reset('current_child_data', 'current_child_id');
-			$this->dispatchBrowserEvent('close-slide');
-		}
-		catch (\Exception $e)
-		{
-			$this->addError('exception', $e->getMessage());
-		}
-		finally
-		{
-			$this->dispatchBrowserEvent('reset-form');
-		}
-	}
-
 	public function save()
 	{
 		$this->resetValidation();
@@ -161,51 +67,9 @@ trait CreatesForm
 
 			$fields_validated = $this->_validate($this->data, $fields, $this->register?->id);
 
-			$model = $this->_getModel();
-
-			$register = ($this->register) ? $this->register : new $model();
-
-			foreach($fields as $field)
-			{
-				$input = $fields_validated[$field->getName()] ?? null;
-
-				if(is_a($field, File::class))
-				{
-					if(!is_a($input, TemporaryUploadedFile::class))
-					{
-						continue;
-					}
-
-					if($field->isPublic())
-					{
-						$value = $input->storePublicly($field->getFolder(), 'public');
-					}
-					else
-					{
-						$value = $input->store($field->getFolder());
-					}
-				}
-				else
-				{
-					$value = $input ?? null;
-				}
-
-				$register->{$field->getName()} = $value;
-			}
-
-			// $hook = (!$this->register) ? CreateHook::class : Updatehook::class;
-		
-			// $hook::before($this->resource, $register, $fields_validated);
+			$register = $this->_fillData($fields, $fields_validated);
 			
-			$register->save();
-			
-			// $hook::after($this->resource, $register, $fields_validated);
-
-			$this->_saveChilds($register);
-
-			session()->flash('message', $this->success_message);
-
-			return redirect()->route($this->_getRouteForRedirect());
+			return $this->_saving($register, $fields_validated);
 		}
 		catch(\Exception $e)
 		{
@@ -213,6 +77,46 @@ trait CreatesForm
 			
 			$this->dispatchBrowserEvent('reset-form');
 		}
+	}
+
+	private function _fillData(array $fields, ValidatedInput $fields_validated): Model
+	{
+		$model = $this->_getModel();
+
+		$register = ($this->register) ? $this->register : new $model();
+
+		foreach($fields as $field)
+		{
+			$data = $fields_validated[$field->getName()] ?? null;
+
+			if(is_a($field, File::class))
+			{
+				if(!is_a($data, TemporaryUploadedFile::class))
+				{
+					continue;
+				}
+
+				$value = $this->_uploadFile($field, $data);
+			}
+			else
+			{
+				$value = $data ?? null;
+			}
+
+			$register->{$field->getName()} = $value;
+		}
+
+		return $register;
+	}
+
+	private function _uploadFile(Input $input, $data)
+	{
+		if($input->isPublic())
+		{
+			return $data->storePublicly($input->getFolder(), 'public');
+		}
+		
+		return $data->store($input->getFolder());
 	}
 
 	private function _validate($data, array $fields, int $register_id = null)
@@ -241,32 +145,6 @@ trait CreatesForm
 		$validator->validate();
 
 		return $validator->safe();
-	}
-
-	private function _saveChilds($register)
-	{
-		foreach($this->repeaters ?? [] as $repeater)
-		{
-			$relation = $repeater->getRelation();
-
-			$model = $repeater->getModelRelation();
-
-			$childs_to_save = [];
-			
-			foreach($this->childs[$relation] ?? [] as $child)
-			{
-				$child_to_save = (isset($child['id']) && $child['id']) ? $model::find($child['id']) : new $model();
-
-				foreach($repeater->getFields() as $field)
-				{
-					$child_to_save->{$field->getName()} = $child[$field->getName()];
-				}
-
-				$childs_to_save[] = $child_to_save;
-			}
-
-			$register->{$relation}()->saveMany($childs_to_save);
-		}
 	}
 
 	private function _getFields(): array
