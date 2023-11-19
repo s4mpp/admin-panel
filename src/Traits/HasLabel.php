@@ -62,6 +62,11 @@ trait HasLabel
 	{
 		$this->callback(function($register): ?string
 		{
+			if(method_exists($register, 'label'))
+			{
+				return $register->label();
+			}
+
 			return $register->name ?? null;
 		});
 

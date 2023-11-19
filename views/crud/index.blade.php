@@ -56,11 +56,11 @@
 						</x-button>
 
 						@php
-							$alpine_data_filters = '';
+							$alpine_data_filters = [];
 
 							foreach($filters as $filter)
 							{
-								$alpine_data_filters .= $filter->getField().': '.$filter->getAlpineExpression();
+								$alpine_data_filters[] = $filter->getField().': '.$filter->getAlpineExpression();
 							}
 						@endphp
 
@@ -71,7 +71,7 @@
 								{
 									this.total = 0,
 									this.loading = false,
-									this.filters = { {{ $alpine_data_filters }} }
+									this.filters = { {{ join(',', $alpine_data_filters) }} }
 								},
 								countFilters()
 								{

@@ -5,6 +5,8 @@ namespace S4mpp\AdminPanel\Factories;
 use S4mpp\AdminPanel\Column\Badge;
 use S4mpp\AdminPanel\Column\Boolean;
 use S4mpp\AdminPanel\Column\Datetime;
+use S4mpp\AdminPanel\Column\LongText;
+use S4mpp\AdminPanel\Column\MarkDown;
 use S4mpp\AdminPanel\Column\Column as ColumnElement;
 
 abstract class Column
@@ -12,6 +14,16 @@ abstract class Column
 	public static function text(string $title, string $field)
 	{
 		return (new ColumnElement($title, $field));
+	}
+
+	public static function longText(string $title, string $field)
+	{
+		return (new LongText($title, $field));
+	}
+
+	public static function markDown(string $title, string $field)
+	{
+		return (new MarkDown($title, $field));
 	}
 
 	public static function date(string $title, string $field)
