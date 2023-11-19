@@ -124,33 +124,6 @@ abstract class Resource
 		return app($this->getNameModel());
 	}
 
-	final public function getTable(): ?array
-	{
-		if(!method_exists($this, 'table'))
-		{
-			return null;
-		}
-
-		return $this->_getOnlyOf($this->table(), Column::class);
-	}
-
-	final public function getRepeaters(): array
-	{
-		if(!method_exists($this, 'repeaters'))
-		{
-			return [];
-		}
-
-		foreach($this->repeaters() as $repeater)
-		{
-			$repeater->setRelationShipMethod($this->getModel()->{$repeater->getRelation()}());
-
-			$repeaters[$repeater->getRelation()] = $repeater;
-		}
-
-		return $this->_getOnlyOf($repeaters ?? [], Repeater::class);
-	}
-
 	final public function getForm(): ?array
 	{
 		if(!method_exists($this, 'form'))
@@ -171,6 +144,33 @@ abstract class Resource
 		return $this->_getOnlyOfThisOrCard($this->read(), ItemView::class);
 	}
 
+	final public function getTable(): ?array
+	{
+		if(!method_exists($this, 'table'))
+		{
+			return null;
+		}
+
+		return $this->_getOnlyOf($this->table(), Column::class);
+	}
+
+	final public function getRepeaters(): array
+	{
+		if(!method_exists($this, 'repeaters'))
+		{
+			return [];
+		}
+
+		foreach($this->_getOnlyOf($this->repeaters(), Repeater::class) as $repeater)
+		{
+			$repeater->setRelationShipMethod($this->getModel()->{$repeater->getRelation()}());
+
+			$repeaters[$repeater->getRelation()] = $repeater;
+		}
+
+		return $repeaters ?? [];
+	}
+
 	final public function getFilters(): array
     {
         if($this->getModel()->timestamps)
@@ -186,7 +186,12 @@ abstract class Resource
 			}
         }
 
-		return $this->_getOnlyOf($filters ?? [], Filter::class);
+		foreach($this->_getOnlyOf($filters ?? [], Filter::class) as $filter)
+		{
+			$filters[$filter->getField()] = $filter;
+		}
+
+		return $filters ?? [];
     }
 
 	final public function getCustomActions()

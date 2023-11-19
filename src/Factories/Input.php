@@ -24,7 +24,7 @@ abstract class Input
 
 	public static function date(string $title, string $field)
 	{
-		return (new Date($title, $field));
+		return (new Date($title, $field))->prepareForForm(function($value):string { return $value->format('Y-m-d'); });
 	}
 
 	public static function email(string $title, string $field)
@@ -58,7 +58,12 @@ abstract class Input
 		? ['integer', 'min:1', 'max:21000000']
 		: ['numeric', 'min:0.01', 'max:21000000.00'];
 
-		return (new Text($title, $field))->prepareForValidation(function(string $value = null) use ($has_cents)
+		extract($rules);
+
+		return (new Text($title, $field))
+		->mask('$money($input, \',\', \'.\')')
+		->prepareForForm(function($value) use ($has_cents) { return Format::currency($value, $has_cents); })
+		->prepareForValidation(function(string $value = null) use ($has_cents)
 		{
 			if(is_null($value) || !$value)
 			{
@@ -74,7 +79,7 @@ abstract class Input
 
 			return $nb_float;
 		})
-		->rules(extract($rules));
+		->rules(...$rules);
 	}
 
 	public static function boolean(string $title, string $field)

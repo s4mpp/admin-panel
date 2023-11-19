@@ -66,7 +66,9 @@ trait WithSubOptions
 
 		if((new \ReflectionClass($value::class))->isEnum())
 		{
-			return [$value->value, $value->name];
+			$label = method_exists($value, 'label') ? $value->label() : $value->name;
+
+			return [$value->value, $label];
 		}
 
 		return [null, null];
