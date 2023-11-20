@@ -11,7 +11,7 @@ final class File extends Input
 
 	private $max_size_mb = 2;
 
-	function __construct(private string $title, private string $name, private string $folder = '')
+	function __construct(private string $title, private string $name, private string $folder = '', private string $disk)
 	{
 		parent::__construct($title, $name);
 	}
@@ -22,7 +22,7 @@ final class File extends Input
 
 		if($file)
 		{
-			$is_visible = Storage::disk('public')->exists($file);
+			$is_visible = Storage::disk($this->getDisk())->exists($file);
 	
 			$exp = explode('.', $file);
 			$type_file = end($exp);
@@ -44,6 +44,11 @@ final class File extends Input
 	public function getFolder(): string
 	{
 		return $this->folder;
+	}
+
+	public function getDisk(): string
+	{
+		return $this->disk;
 	}
 
 	public function public()

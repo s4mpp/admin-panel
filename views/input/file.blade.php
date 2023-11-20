@@ -22,7 +22,7 @@
 			@if(is_string($file))
 
 				@php
-					$is_visible = Storage::disk('public')->exists($file);
+					$is_visible = Storage::disk($input->getDisk())->exists($file);
 
 					$exp = explode('.', $file);
 					$type_file = end($exp);
@@ -30,10 +30,10 @@
 
 				@if($is_visible)
 					@if(in_array(strtolower($type_file), ['png', 'jpg', 'jpeg', 'gif']))
-						<img src="{{ Storage::url($file) }}" alt="{{ $input->getTitle() }}" class="h-8">
+						<img src="{{ Storage::disk($input->getDisk())->url($file) }}" alt="{{ $input->getTitle() }}" class="h-8">
 					@else
 						<div class="h-8 items-center flex">
-							<a href="{{ Storage::url($file) }}" class="font-medium hover:underline" target="_blank">Visualizar {{ strtoupper($type_file) }}</a>
+							<a href="{{ Storage::disk($input->getDisk())->url($file) }}" class="font-medium hover:underline" target="_blank">Visualizar {{ strtoupper($type_file) }}</a>
 						</div>
 					@endif
 				@else

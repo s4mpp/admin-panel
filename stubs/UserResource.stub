@@ -3,12 +3,10 @@
 namespace App\AdminPanel;
 
 use App\Models\User;
-use S4mpp\AdminPanel\Action\Action;
-use S4mpp\AdminPanel\Elements\Card;
+use S4mpp\AdminPanel\Resource;
 use S4mpp\AdminPanel\Factories\Input;
 use S4mpp\AdminPanel\Factories\Column;
 use S4mpp\AdminPanel\Factories\ItemView;
-use S4mpp\AdminPanel\Resource;
 
 class UserResource extends Resource
 {
@@ -25,7 +23,7 @@ class UserResource extends Resource
         return [
             Column::text('Nome', 'name')->strong(),
 
-            Column::email('E-mail', 'email'),
+            Column::text('E-mail', 'email'),
 
             Column::boolean('Ativo', 'is_active')->align('center'),
 
@@ -36,13 +34,11 @@ class UserResource extends Resource
     public function form()
     {
         return [
-            Card::create('Informações básicas', [
-                Input::text('Nome', 'name'),
-                
-                Input::text('E-mail', 'email')->email()->unique(),
-                
-                Input::text('Ativo', 'is_active')->boolean(),
-            ]),
+            Input::text('Nome', 'name'),
+            
+            Input::email('E-mail', 'email')->unique(),
+            
+            Input::boolean('Ativo', 'is_active'),
         ];
     }
 

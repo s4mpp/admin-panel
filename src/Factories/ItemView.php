@@ -47,8 +47,8 @@ abstract class ItemView
 		return (new Boolean($title, $field));
 	}
 
-	public static function file(string $title, string $field)
+	public static function file(string $title, string $field, string $driver = 'local')
 	{
-		return (new File($title, $field));
+		return (new File($title, $field, $driver));
 	}
 }
