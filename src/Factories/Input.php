@@ -37,9 +37,9 @@ abstract class Input
 		return (new Textarea($title, $field, $rows))->rules('string');
 	}
 
-	public static function file(string $title, string $field, string $folder, string $disk = 'local')
+	public static function file(string $title, string $field, string $folder)
 	{
-		return (new File($title, $field, $folder, $disk))->rules('file');
+		return (new File($title, $field, $folder))->rules('file');
 	}
 
 	public static function decimal(string $title, string $field, float $step = 0.01)

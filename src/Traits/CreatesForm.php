@@ -104,11 +104,11 @@ trait CreatesForm
 		return $register;
 	}
 
-	private function _uploadFile(Input $input, $data)
+	private function _uploadFile(File $input, $data)
 	{
 		if($input->isPublic())
 		{
-			return $data->storePublicly($input->getFolder(), 'public');
+			return $data->storePublicly($input->getFolder(), env('FILESYSTEM_DISK', 'public'));
 		}
 		
 		return $data->store($input->getFolder());
