@@ -6,18 +6,10 @@ use S4mpp\AdminPanel\ItemView\ItemView;
 
 final class File extends ItemView
 {
-	function __construct(private string $title, private string $field, private string $driver)
+	public function renderView($value)
 	{
-		parent::__construct($title, $field);
-	}
+		$item = $this;
 
-	public function renderView($value, $item)
-	{
 		return view('admin::label.file', compact('value', 'item'));
-	}
-
-	public function getDriver()
-	{
-		return $this->driver;
 	}
 }
