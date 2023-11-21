@@ -5,7 +5,7 @@
 	
 	<form action="{{ $action->getUrl() }}" x-data="{loading: false}"
 		method="POST" 
-		x-on:click="{{ !$action->isNewTab() ? 'loading = true' : null }}"
+		x-on:submit="{{ !$action->isNewTab() ? 'loading = true' : null }}"
 		target="{{ $action->getTargetWindow() }}">
 		@csrf
 		@method($method)

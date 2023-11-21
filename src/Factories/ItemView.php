@@ -2,12 +2,14 @@
 
 namespace S4mpp\AdminPanel\Factories;
 
+use S4mpp\AdminPanel\Resource;
 use S4mpp\AdminPanel\ItemView\File;
 use S4mpp\AdminPanel\ItemView\Badge;
 use S4mpp\AdminPanel\ItemView\Boolean;
 use S4mpp\AdminPanel\ItemView\Datetime;
 use S4mpp\AdminPanel\ItemView\LongText;
 use S4mpp\AdminPanel\ItemView\MarkDown;
+use S4mpp\AdminPanel\ItemView\Relation;
 use S4mpp\AdminPanel\ItemView\ItemView as ItemViewElement;
 
 abstract class ItemView
@@ -15,6 +17,11 @@ abstract class ItemView
 	public static function text(string $title, string $field)
 	{
 		return (new ItemViewElement($title, $field));
+	}
+
+	public static function relation(string $title, string $field, string $resource)
+	{
+		return (new Relation($title, $field, $resource));
 	}
 
 	public static function longText(string $title, string $field)

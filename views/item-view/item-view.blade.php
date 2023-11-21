@@ -5,7 +5,7 @@
 		@if($item->getDefaultText() && is_null($item->getValue($register)))
 			<span class="opacity-60">{{ $item->getDefaultText() }}</span>
 		@elseif(method_exists($item, 'renderView'))
-			{{ $item->renderView($register->{$item->getField()}, $item) }}
+			{{ $item->renderView($item->getValue($register), $register) }}
 		@else
 			{{ $item->getValue($register) }}
 		@endif
