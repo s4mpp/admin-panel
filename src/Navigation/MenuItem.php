@@ -19,6 +19,9 @@ final class MenuItem
 	public function __construct(private string $title)
 	{
 		$this->createSlug($title);
+
+		$this->route('admin.'.$this->slug);
+
 	}
 
 	public function route(string $route)
@@ -31,8 +34,6 @@ final class MenuItem
 	public function target(array | string $target)
 	{
 		$this->target = $target;
-
-		$this->route('admin.'.$this->slug);
 
 		return $this;
 	}

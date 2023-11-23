@@ -139,15 +139,15 @@ class TableResource extends Component
         foreach(array_filter($this->columns, function($c) { return $c->isRelation();}) as $column)
 		{
             $path = explode('.', $column->getField());
+
+            $select_fields[] = $path[0].'_id';
             
             $field = array_pop($path);
             
             $relation_path = join('.', $path);
 
             if(empty($relation_path))
-            {
-                $select_fields[] = $field.'_id';
-                
+            {                
                 continue;
             }
 
