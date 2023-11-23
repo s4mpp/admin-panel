@@ -43,4 +43,11 @@ class Column
 	{
 		return $this->is_relation;
 	}
+
+	public function relation()
+	{
+		$this->is_relation = true;
+
+		return $this;
+	}
 }

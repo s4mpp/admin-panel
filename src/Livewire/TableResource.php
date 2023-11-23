@@ -99,9 +99,13 @@ class TableResource extends Component
 
     private function _select($query)
     {
-        $query->select($this->_getSelectFields());
+        $select_fields = $this->_getSelectFields(); 
 
-        if(!empty($with_eager_loading = $this->_getWithEagerLoading()))
+        $with_eager_loading = $this->_getWithEagerLoading($select_fields); 
+            
+        $query->select(array_unique($select_fields));
+
+        if(!empty($with_eager_loading))
         {
             $query->with(array_map(function($key, $array)
             {
@@ -115,7 +119,7 @@ class TableResource extends Component
     {
         $select_fields = ['id'];
 
-        foreach($this->columns as $column)
+        foreach(array_filter($this->columns, function($c) { return !$c->isRelation();}) as $column)
 		{
             $field = $column->getField();
 
@@ -124,29 +128,13 @@ class TableResource extends Component
                 continue;
             }
 
-            if(!$column->isRelation())
-            { 
-                $select_fields[] = $field;
-
-                continue;
-            }    
-
-            $path = explode('.', $field);
-
-            if(count($path) > 2)
-            {
-                continue;
-            }
-            
-            array_pop($path);
-                        
-            $select_fields[] = end($path).'_id';
+            $select_fields[] = $field;
         }
 
         return $select_fields;
     }
 
-    private function _getWithEagerLoading()
+    private function _getWithEagerLoading(&$select_fields)
     {
         foreach(array_filter($this->columns, function($c) { return $c->isRelation();}) as $column)
 		{
@@ -155,16 +143,25 @@ class TableResource extends Component
             $field = array_pop($path);
             
             $relation_path = join('.', $path);
-    
-            $with_eager_loading[$relation_path][] = 'id';
-            
-            array_push($with_eager_loading[$relation_path], $field);
+
+            if(empty($relation_path))
+            {
+                $select_fields[] = $field.'_id';
+                
+                continue;
+            }
+
+            $with_eager_loading[$relation_path][] = $field;
                         
             $field_relation = array_pop($path).'_id';
 
             if(!empty($previous_relation = join('.', $path)))
             {
                 $with_eager_loading[$previous_relation][] = $field_relation;
+            }
+            else
+            {
+                $select_fields[] = $field_relation;
             }
         }
 
