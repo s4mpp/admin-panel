@@ -35,6 +35,6 @@ final class Section
 
 	public function getItems(): array
 	{
-		return $this->items;
+		return self::sort($this->items);
 	}
 }

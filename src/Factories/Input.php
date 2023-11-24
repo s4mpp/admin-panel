@@ -84,7 +84,7 @@ abstract class Input
 
 	public static function boolean(string $title, string $field)
 	{
-		return (new Select($title, $field, [
+		return (new Radio($title, $field, [
 			0 => 'Não',
 			1 => 'Sim',
 		]));
