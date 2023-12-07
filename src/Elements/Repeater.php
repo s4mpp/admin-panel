@@ -8,9 +8,7 @@ use S4mpp\AdminPanel\Column\Column;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 use S4mpp\AdminPanel\Column\RepeaterActions;
-use S4mpp\AdminPanel\Factories\Column as ColumnFactory;
 
 final class Repeater
 {
@@ -18,9 +16,34 @@ final class Repeater
 
 	private $model = null;
 
+	private string $order_field = 'id';
+
+	private string $order_direction = 'DESC';
+
 	function __construct(private string $title, private string $relation, private array $fields, private array $columns)
 	{
 		$this->createSlug($title);
+
+		return $this;
+	}
+
+	public function order(string $field = 'id', string $direction = 'DESC')
+	{
+		$this->order_field = $field;
+
+		$this->order_direction = $direction;
+
+		return $this;
+	}
+
+	public function getFieldOrderBy()
+	{
+		return $this->order_field;
+	} 
+	
+	public function getDirectionOrderBy()
+	{
+		return $this->order_direction;
 	}
 
 	public function setRelationShipMethod($model)

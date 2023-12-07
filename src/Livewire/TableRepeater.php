@@ -50,6 +50,8 @@ class TableRepeater extends Component
     {
 		$relation = $this->repeater->getRelation();
 		
-		return $this->resource->getModel()->find($this->register_id)->{$relation}()->paginate(10);
+		return $this->resource->getModel()->find($this->register_id)->{$relation}()
+        ->orderBy($this->repeater->getFieldOrderBy(), $this->repeater->getDirectionOrderBy())
+        ->paginate(10);
     }
 }
