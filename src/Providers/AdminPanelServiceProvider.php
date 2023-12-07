@@ -3,6 +3,7 @@
 namespace S4mpp\AdminPanel\Providers;
 
 use Livewire\Livewire;
+use S4mpp\AdminPanel\Setting;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use S4mpp\AdminPanel\Components\Table;
@@ -14,6 +15,7 @@ use S4mpp\AdminPanel\Livewire\TableResource;
 use S4mpp\AdminPanel\Middleware\CustomAction;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
+use S4mpp\AdminPanel\Livewire\TableRepeater;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -25,6 +27,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 
 		$this->loadMigrationsFrom(__DIR__.'/../../migrations');
 
+		Livewire::component('table-repeater', TableRepeater::class);
 		Livewire::component('table-resource', TableResource::class);
 		Livewire::component('form-resource', FormResource::class);
 		Livewire::component('form-settings', FormSettings::class);
@@ -63,5 +66,10 @@ class AdminPanelServiceProvider extends ServiceProvider
 				__DIR__.'/../../stubs/ModelSetting.stub' => app_path('Models/Setting.php'), 
 			], 'admin-settings');
 		}
+    }
+
+	public function register()
+    {
+        $this->app->singleton('setting', fn() => new Setting);
     }
 }

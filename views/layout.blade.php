@@ -231,6 +231,8 @@
 			  
 			@yield('content')
 		</div>
+
+		<x-notification />
 	  </main>
 	</div>
 </div>

@@ -170,7 +170,7 @@ class TableResource extends Component
 
     private function _search($query)
     {
-        if(!$this->search_term)
+        if(!trim($this->search_term))
         {
             return;
         }
@@ -183,7 +183,7 @@ class TableResource extends Component
             {
                 $field_to_search = (is_string($key)) ? $key : $value;
 
-                $builder->orWhere($field_to_search, 'like', '%'.$this->search_term.'%');
+                $builder->orWhere($field_to_search, 'like', '%'.trim($this->search_term).'%');
             }
         });
     }

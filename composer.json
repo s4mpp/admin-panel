@@ -25,7 +25,10 @@
         "laravel": {
             "providers": [
                 "S4mpp\\AdminPanel\\Providers\\AdminPanelServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Setting": "S4mpp\\AdminPanel\\Facades\\Setting"
+            }
         }
     }
 }

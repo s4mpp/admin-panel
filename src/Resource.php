@@ -138,7 +138,7 @@ abstract class Resource
 			return null;
 		}
 
-		return $this->_getOnlyOfThisOrCard($this->form(), Input::class);
+		return Utils::getOnlyOfThisOrCard($this->form(), Input::class);
 	}
 
 	final public function getRead(): ?array
@@ -148,7 +148,7 @@ abstract class Resource
 			return null;
 		}
 
-		return $this->_getOnlyOfThisOrCard($this->read(), ItemView::class);
+		return Utils::getOnlyOfThisOrCard($this->read(), ItemView::class);
 	}
 
 	final public function getTable(): ?array
@@ -158,7 +158,7 @@ abstract class Resource
 			return null;
 		}
 
-		return $this->_getOnlyOf($this->table(), Column::class);
+		return Utils::getOnlyOf($this->table(), Column::class);
 	}
 
 	final public function getRepeaters(): array
@@ -168,7 +168,7 @@ abstract class Resource
 			return [];
 		}
 
-		foreach($this->_getOnlyOf($this->repeaters(), Repeater::class) as $repeater)
+		foreach(Utils::getOnlyOf($this->repeaters(), Repeater::class) as $repeater)
 		{
 			$repeater->setRelationShipMethod($this->getModel()->{$repeater->getRelation()}());
 
@@ -193,7 +193,7 @@ abstract class Resource
 			}
         }
 
-		foreach($this->_getOnlyOf($filters ?? [], Filter::class) as $filter)
+		foreach(Utils::getOnlyOf($filters ?? [], Filter::class) as $filter)
 		{
 			$filters[$filter->getField()] = $filter;
 		}
@@ -208,45 +208,6 @@ abstract class Resource
 			return [];
 		}
 
-		return $this->_getOnlyOf($this->customActions(), CustomAction::class);
-	}
-
-	private function _getOnlyOf(array $items = null, $class): array
-	{
-		foreach($items ?? [] as $element)
-		{
-			if(is_subclass_of($element, $class) || is_a($element, $class))
-			{
-				$elements[] = $element;
-			}
-		}
-
-		return $elements ?? [];
-	}
-
-	private function _getOnlyOfThisOrCard(array $items, $class): array
-	{
-		$elements = [];
-
-		foreach($items as $element)
-		{
-			if(is_a($element, Card::class))
-			{
-				$elements[] = $element;
-
-				continue;
-			}
-			else if(is_subclass_of($element, $class) || is_a($element, $class))
-			{
-				$main_card_elements[] = $element;
-			}
-		}
-
-		if(isset($main_card_elements))
-		{
-			array_unshift($elements, new Card('', $main_card_elements));
-		}
-
-		return $elements ?? [];
+		return Utils::getOnlyOf($this->customActions(), CustomAction::class);
 	}
 }

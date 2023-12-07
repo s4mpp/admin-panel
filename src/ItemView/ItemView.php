@@ -29,8 +29,8 @@ class ItemView
 				$original_data = $original_data[$relation];
 			}
 		}
-		
-		return is_callable($this->getCallback()) ? call_user_func($this->getCallback(), $original_data) : $original_data;
+
+		return $this->hasCallbacks() ? $this->runCallbacks($original_data) : $original_data;
 	}
 
 	public function render($register = null)

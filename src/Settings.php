@@ -2,12 +2,15 @@
 
 namespace S4mpp\AdminPanel;
 
+use S4mpp\AdminPanel\Input\Input;
+use S4mpp\AdminPanel\Traits\ProtectedByRoles;
+
 abstract class Settings
 {
+	private static array $roles = [];
+
 	private static $fields = [];
-	
-	private static $settings_roles = [];
-	
+		
 	private static bool $is_activated = false;
 
 	public static function init(array $fields)
@@ -20,8 +23,17 @@ abstract class Settings
 		self::$is_activated = true;
 
 		self::$fields = $fields;
+
+		return self::class;
 	}
 
+	public static function roles(...$roles)
+	{
+		self::$roles = $roles;
+
+		return self::class;
+	}
+	
 	public static function isActivated()
 	{
 		return self::$is_activated;
@@ -29,11 +41,19 @@ abstract class Settings
 	
 	public static function getForm(): array
 	{
-		return self::$fields;
+		return Utils::getOnlyOfThisOrCard(self::$fields, Input::class);
 	}
+
 
 	public static function getRolesForAccess(): array
 	{
-		return self::$settings_roles;
+		$roles = self::$roles ?? [];
+		
+		if(config('admin.strict_roles', false))
+		{
+			$roles[] = 'default';
+		}
+		
+		return $roles;
 	}
 }

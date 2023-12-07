@@ -123,3 +123,13 @@
 		@endif
 	</tbody>
 </table>
+
+{{-- @if($collection->count() > 0)
+	@if(method_exists($collection, 'hasPages') && $collection->hasPages())
+		<div class="flex-auto px-3">
+			{{ $collection->links('admin::pagination') }}
+		</div>
+		
+		<p class="text-center border-t pt-3 text-xs mb-3 text-gray-700">{{ $collection->total() }} {{ Str::plural('registro', $collection->total()) }}</p>
+	@endif
+@endif --}}

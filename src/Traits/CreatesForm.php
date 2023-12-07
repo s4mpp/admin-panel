@@ -120,9 +120,9 @@ trait CreatesForm
 
 		foreach($fields as $field)
 		{
-			if($field->getPrepareForValidation())
+			if($field->getPrepareForSave())
 			{
-				$data[$field->getName()] = call_user_func($field->getPrepareForValidation(), $data[$field->getName()]);
+				$data[$field->getName()] = call_user_func($field->getPrepareForSave(), $data[$field->getName()]);
 			}
 
 			if(is_a($field, File::class) && is_string($data[$field->getName()] ?? null))

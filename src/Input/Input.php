@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Input;
 
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Traits\HasDefaultText;
@@ -13,10 +14,12 @@ abstract class Input
 	private ?string $prefix = 'data';
 	
 	private array $rules = ['required'];
-		
-	private $prepare_for_validation = null;
-	
+			
 	private $prepare_for_form = null;
+	
+	private $prepare_for_save = null;
+
+	private ?string $description = null;
 
 	function __construct(private string $title, private string $name)
 	{}
@@ -25,13 +28,25 @@ abstract class Input
 	{
 		return $this->name;
 	}
+	
+	public function getDescription(): ?string
+	{
+		return $this->description;
+	}
 
 	public function getNameWithPrefix(): string
 	{
 		return join('.', array_filter([$this->prefix, $this->name]));
 	}
 
-	public function setPrefix(string $prefix)
+	public function description(string $description)
+	{
+		$this->description = $description;
+
+		return $this;
+	}
+
+	public function prefix(string $prefix)
 	{
 		$this->prefix = $prefix;
 
@@ -59,6 +74,18 @@ abstract class Input
 		return in_array('required', $this->rules);
 	}
 
+	public function prepareForSave(callable $callback)
+	{
+		$this->prepare_for_save = $callback;
+
+		return $this;
+	}
+
+	public function getPrepareForSave()
+	{
+		return $this->prepare_for_save;
+	}
+
 	public function prepareForForm(callable $callback)
 	{
 		$this->prepare_for_form = $callback;
@@ -69,18 +96,6 @@ abstract class Input
 	public function getPrepareForForm()
 	{
 		return $this->prepare_for_form;
-	}
-
-	public function prepareForValidation(callable $callback)
-	{
-		$this->prepare_for_validation = $callback;
-
-		return $this;
-	}
-
-	public function getPrepareForValidation()
-	{
-		return $this->prepare_for_validation;
 	}
 
 	public function getRules(string $table, int $register_id = null): array

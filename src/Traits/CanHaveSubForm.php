@@ -12,7 +12,12 @@ trait CanHaveSubForm
 	
 	public function mountCanHaveSubForm()
 	{				
-		$this->_setInitialChilds();
+		$this->_loadChilds();
+	}
+
+	public function bootedCanHaveSubForm()
+	{				
+		$this->_reloadChilds();
 	}
 
 	public function setCurrentChild(string $relation, int $i)
@@ -36,9 +41,8 @@ trait CanHaveSubForm
 
 			if($data_id)
 			{
-				$register = new $model;
+				$register = $model::find($data_id);
 
-				$register->id = $data_id;
 			}
 			else
 			{
@@ -80,20 +84,11 @@ trait CanHaveSubForm
 		{
 			$relation = $repeater->getRelation();
 
-			$model = $repeater->getModelRelation();
-
 			$childs_to_save = [];
 			
 			foreach($this->childs[$relation] ?? [] as $child)
 			{
-				$child_to_save = (isset($child['id']) && $child['id']) ? $model::find($child['id']) : new $model();
-
-				foreach($repeater->getFields() as $field)
-				{
-					$child_to_save->{$field->getName()} = $child[$field->getName()];
-				}
-
-				$childs_to_save[] = $child_to_save;
+				$childs_to_save[] = $child;
 			}
 
 			$register->{$relation}()->saveMany($childs_to_save);
@@ -120,11 +115,35 @@ trait CanHaveSubForm
 		return $close_slides ?? [];
 	}
 
-	private function _setInitialChilds()
+	private function _loadChilds()
 	{
 		foreach($this->repeaters ?? [] as $repeater)
 		{
 			$this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
+		}
+	}
+
+	private function _reloadChilds()
+	{
+		foreach($this->repeaters ?? [] as $repeater)
+		{
+			$model = $repeater->getModelRelation();
+
+			$registers_saved = $this->childs[$repeater->getRelation()];
+
+			foreach($registers_saved as &$register_saved)
+			{
+				$register_on_db = (isset($register_saved['id'])) ? $this->register->{$repeater->getRelation()}()->find($register_saved['id']) : new $model;
+				
+				foreach($repeater->getFields() as $field)
+				{
+					$register_on_db->{$field->getName()} = $register_saved[$field->getName()];
+				}
+
+				$register_saved = $register_on_db;
+			}
+
+			$this->childs[$repeater->getRelation()] = $registers_saved;
 		}
 	}
 

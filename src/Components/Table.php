@@ -10,12 +10,14 @@ class Table extends Component
 {
     public int $rowspan_empty;
 
+    public array $registers;
+
     /**
      * Create a new component instance.
      */
-    public function __construct(public array $columns, public $registers = [])
+    public function __construct(public array $columns, public $collection = [])
     {
-        $this->registers = $this->_mountColumnsData($registers);
+        $this->registers = $this->_mountColumnsData($collection);
 
         $this->rowspan_empty = count($columns) ?? 1;
     }
@@ -65,9 +67,9 @@ class Table extends Component
                 $column->original_data = $column->original_data[$relation];
             }
         }
-        
-        $column->data = is_callable($column->getCallback()) ? call_user_func($column->getCallback(), $column->original_data) : $column->original_data;
-        
+
+        $column->data = $column->hasCallbacks() ? $column->runCallbacks($column->original_data) : $column->original_data;
+
         return $column;
     }
 }

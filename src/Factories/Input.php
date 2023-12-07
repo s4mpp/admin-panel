@@ -63,7 +63,7 @@ abstract class Input
 		return (new Text($title, $field))
 		->mask('$money($input, \',\', \'.\')')
 		->prepareForForm(function($value) use ($has_cents) { return Format::currency($value, $has_cents); })
-		->prepareForValidation(function(string $value = null) use ($has_cents)
+		->getPrepareForSave(function(string $value = null) use ($has_cents)
 		{
 			if(is_null($value) || !$value)
 			{

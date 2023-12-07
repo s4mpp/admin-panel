@@ -18,12 +18,12 @@
 					</x-slot:header>
 
 					@php
-						$columns = $repeater->getColumns();
+						$columns = $repeater->getColumnsWithActions();
 
 						$registers = $this->childs[$repeater->getRelation()];
 					@endphp
 
-					<x-table :columns=$columns :registers=$registers></x-table>
+					<x-table :columns=$columns :collection=$registers></x-table>
 				</x-card>
 			@endforeach
 
@@ -55,7 +55,7 @@
 								</p>
 						
 							</div>
-							{{ $element->setPrefix('current_child_data.'.$repeater->getRelation())->renderInput([]) }}
+							{{ $element->prefix('current_child_data.'.$repeater->getRelation())->renderInput([]) }}
 						</div>
 					@endforeach
 		

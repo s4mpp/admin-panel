@@ -8,7 +8,7 @@
 			
 			@php
 				$i++;
-			@endphp
+			@endphp'
 		@endforeach
 	</div>
 </x-input>

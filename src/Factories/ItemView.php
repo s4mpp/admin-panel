@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Factories;
 
+use S4mpp\Format\Format;
 use S4mpp\AdminPanel\Resource;
 use S4mpp\AdminPanel\ItemView\File;
 use S4mpp\AdminPanel\ItemView\Badge;
@@ -57,5 +58,21 @@ abstract class ItemView
 	public static function file(string $title, string $field)
 	{
 		return (new File($title, $field));
+	}
+
+	public static function decimal(string $title, string $field, int $decimals = 2)
+	{
+		return (new ItemViewElement($title, $field))->callback(function(float $value) use($decimals)
+		{
+			return number_format($value, $decimals, ',', '.');
+		});
+	}
+
+	public static function currency(string $title, string $field, string $symbol, bool $convert_cents = true)
+	{
+		return (new ItemViewElement($title, $field))->callback(function(float $value) use ($symbol, $convert_cents)
+		{
+			return $symbol.' '.Format::currency($value, $convert_cents);
+		});
 	}
 }
