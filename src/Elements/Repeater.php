@@ -20,7 +20,7 @@ final class Repeater
 
 	private string $order_direction = 'DESC';
 
-	function __construct(private string $title, private string $relation, private array $fields, private array $columns)
+	function __construct(private string $title, private string $relation, private array $fields = [], private array $columns = [])
 	{
 		$this->createSlug($title);
 

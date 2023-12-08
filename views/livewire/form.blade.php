@@ -43,21 +43,23 @@
 			<x-slide-over id="slide{{ $repeater->getRelation() }}" title="{{ $repeater->getTitle() }}">
 				<form wire:submit.prevent="saveChild('{{ $repeater->getRelation() }}')" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
 		
-					@foreach($repeater->getFields() as $element)
-						<div>
-							<div class="text-sm mb-2 font-medium text-slate-900">
-								<p class="">
-									{{ $element->getTitle() }}
-						
-									@if($element->isRequired())
-										<span class="text-red-300 text-xs truncate">*</span>
-									@endif
-								</p>
-						
+					<div class="space-y-4">
+						@foreach($repeater->getFields() as $element)
+							<div>
+								<div class="text-sm mb-2 font-medium text-slate-900">
+									<p class="">
+										{{ $element->getTitle() }}
+							
+										@if($element->isRequired())
+											<span class="text-red-300 text-xs truncate">*</span>
+										@endif
+									</p>
+							
+								</div>
+								{{ $element->prefix('current_child_data.'.$repeater->getRelation())->renderInput([]) }}
 							</div>
-							{{ $element->prefix('current_child_data.'.$repeater->getRelation())->renderInput([]) }}
-						</div>
-					@endforeach
+						@endforeach
+					</div>
 		
 					<div class="px-4 border-t mt-4 pt-4 sm:px-0">
 						<x-button  type="submit" className="btn-primary">
