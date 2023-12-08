@@ -24,7 +24,7 @@
 							'text-center' => (($field->getAlignment() ?? null) == 'center'),
 							'text-right' => (($field->getAlignment() ?? null) == 'right'),
 							
-							'font-semibold text-gray-900' => $field->strong ?? false,
+							'font-semibold text-gray-900' => $field->getIsStrong(),
 							// 'cursor-pointer group-hover:bg-gray-50/90 transition peer' => $default_route,
 							'whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500'
 						])>

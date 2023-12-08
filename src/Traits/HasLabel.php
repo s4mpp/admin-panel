@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 
 trait HasLabel
 {
+	private bool $strong = false;
+
 	private array $callbacks = [];
 
 	public function callback(callable $callback)
@@ -85,5 +87,18 @@ trait HasLabel
 		});
 
 		return $this;
+	}
+
+	public function strong()
+	{
+		$this->strong = true;
+
+		return $this;
+	}
+
+	public function getIsStrong(): bool
+	{
+		return $this->strong;
+		
 	}
 }
