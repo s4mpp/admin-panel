@@ -4,7 +4,6 @@
 		'text-sm font-normal text-slate-700 xl:col-span-10',
 		'font-semibold' => $item->getIsStrong()
 	])>
-
 		@if($item->getDefaultText() && is_null($item->getValue($register)))
 			<span class="opacity-60">{{ $item->getDefaultText() }}</span>
 		@elseif(method_exists($item, 'renderView'))

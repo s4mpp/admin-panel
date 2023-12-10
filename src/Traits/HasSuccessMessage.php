@@ -2,6 +2,8 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
+use Illuminate\Support\Str;
+
 trait HasSuccessMessage
 {	
 	private string $success_message = 'Ação concluída com sucesso.';
@@ -13,8 +15,10 @@ trait HasSuccessMessage
 		return $this;
 	}
 	
-	public function getSuccessMessage()
+	public function getSuccessMessage(array $result = null)
 	{
-		return $this->success_message;
+		$message =  Str::replaceArray('?', $result, $this->success_message);
+
+		return Str::of($message)->inlineMarkdown();
 	}
 }

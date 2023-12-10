@@ -27,9 +27,9 @@ final class Callback extends CustomAction
 			{
 				$register = $resource->getModel()::findOrFail($id);
 	
-				call_user_func($this->callback, $register);
+				$result = call_user_func($this->callback, $register);
 	
-				return redirect()->back()->with('message', $this->getSuccessMessage());
+				return redirect()->back()->with('message', $this->getSuccessMessage($result));
 			}
 			catch(\Exception $e)
 			{

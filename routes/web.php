@@ -117,7 +117,7 @@ $route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function(
 		$routes_settings = Route::middleware('web');
 
 		if($settings_roles = Settings::getRolesForAccess())
-		{dump($settings_roles);
+		{
 			$routes_settings->middleware('role:'.join('|', $settings_roles));
 		}
 
