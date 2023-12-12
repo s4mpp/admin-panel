@@ -10,6 +10,7 @@ use S4mpp\AdminPanel\Input\Email;
 use S4mpp\AdminPanel\Input\Radio;
 use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Input\Number;
+use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Input\Select;
 use S4mpp\AdminPanel\Input\Checkbox;
 use S4mpp\AdminPanel\Input\Textarea;
@@ -55,7 +56,7 @@ abstract class Input
 	public static function currency(string $title, string $field, bool $has_cents = true)
 	{
 		$rules = ($has_cents)
-		? ['integer', 'min:1', 'max:21000000']
+		? ['integer', 'min:1', 'max:21000000000']
 		: ['numeric', 'min:0.01', 'max:21000000.00'];
 
 		extract($rules);
@@ -63,7 +64,7 @@ abstract class Input
 		return (new Text($title, $field))
 		->mask('$money($input, \',\', \'.\')')
 		->prepareForForm(function($value) use ($has_cents) { return Format::currency($value, $has_cents); })
-		->getPrepareForSave(function(string $value = null) use ($has_cents)
+		->prepareForSave(function(string $value = null) use ($has_cents)
 		{
 			if(is_null($value) || !$value)
 			{
@@ -118,5 +119,14 @@ abstract class Input
 		string $key_collection = null)
 	{
 		return (new Radio($title, $field, $options, $value_collection, $key_collection));
+	}
+
+	public static function search(
+		string $title,
+		string $field,
+		string $relationship,
+		string $model_field = null)
+	{
+		return (new Search($title, $field, $relationship, $model_field));
 	}
 }

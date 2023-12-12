@@ -2,12 +2,13 @@
 	<x-alert />
 
 	<div 
-		x-data="{ {{ join(',', $data_slides ?? []) }} }"
-		x-on:close-slide.window="{{ join(',', $close_slides ?? []) }}">
+		x-data="{ {{ join(',', array_merge($data_slides ?? [], $data_modals ?? [])) }} }"
+		x-on:close-slide.window="{{ join(',', $close_slides ?? []) }}"
+		x-on:close-modal.window="{{ join(',', $close_modals ?? []) }}">
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
  			<div class="space-y-4 mb-4">
 				@foreach($this->form ?? [] as $element)
-					{{ $element->render($data, $register ?? null) }}
+					{{ $element->render($data, $register ?? new $model()) }}
 				@endforeach
 			</div>
 
@@ -39,7 +40,6 @@
 		</form>
 
 		@foreach($repeaters ?? [] as $repeater)
-
 			<x-slide-over id="slide{{ $repeater->getRelation() }}" title="{{ $repeater->getTitle() }}">
 				<form wire:submit.prevent="saveChild('{{ $repeater->getRelation() }}')" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
 		
@@ -62,7 +62,7 @@
 					</div>
 		
 					<div class="px-4 border-t mt-4 pt-4 sm:px-0">
-						<x-button  type="submit" className="btn-primary">
+						<x-button type="submit" className="btn-primary">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
 								<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
 							</svg>
@@ -73,5 +73,15 @@
 				</form>
 			</x-slide-over>
 		@endforeach
+		
+		@foreach($search_fields ?? [] as $search)
+			<x-modal title="Selecionar {{ Str::lower($search->getTitle()) }}" idModal="modal{{ $search->getName() }}">
+				@livewire('select-search', [
+					'field_to_search' => $search->getModelField(),
+					'field_to_update' => $search->getName(),
+				])
+			</x-modal>
+		@endforeach
 	</div>
+
 </div>

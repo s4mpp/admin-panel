@@ -17,7 +17,7 @@ abstract class Settings
 	{
 		if(self::$is_activated)
 		{
-			return;
+			return self::class;
 		}
 
 		self::$is_activated = true;
@@ -43,7 +43,6 @@ abstract class Settings
 	{
 		return Utils::getOnlyOfThisOrCard(self::$fields, Input::class);
 	}
-
 
 	public static function getRolesForAccess(): array
 	{

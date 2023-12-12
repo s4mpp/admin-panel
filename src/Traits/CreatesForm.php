@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
+use S4mpp\AdminPanel\Utils;
 use Livewire\WithFileUploads;
 use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Input;
@@ -20,18 +21,24 @@ trait CreatesForm
 	
 	private $form;
 
+	private $search_fields;
+
     public function render()
     {
         return view('admin::livewire.form', [
+			'model' => $this->resource->getModel(),
+			'search_fields' => $this->search_fields ?? [],
 			'repeaters' => $this->repeaters ?? [],
 			'data_slides' => method_exists($this, '_getDataSlidesAttribute') ? $this->_getDataSlidesAttribute() : null,
 			'close_slides' => method_exists($this, '_getCloseSlidesAttribute') ? $this->_getCloseSlidesAttribute() : null,
+			'data_modals' => $this->_getDataModalsAttribute(),
+			'close_modals' => $this->_getCloseModalsAttribute()
 		]);
     }
 
 	private function _setInitialData()
 	{
-		foreach($this->_getFields($this->form) as $field)
+		foreach(Utils::findElement($this->form, Input::class) as $field)
 		{
 			$this->data[$field->getName()] = $this->_getValueField($field);
 		}
@@ -51,14 +58,13 @@ trait CreatesForm
 		return $value ?? $default_value;
 	}
 
-
 	public function save()
 	{
 		$this->resetValidation();
 
 		try
 		{
-			$fields = $this->_getFields($this->form);
+			$fields = Utils::findElement($this->form, Input::class);
 
 			$fields_validated = $this->_validate($this->data, $fields, $this->register?->id);
 
@@ -142,25 +148,45 @@ trait CreatesForm
 		return $validator->safe();
 	}
 
-	private function _getFields(): array
+	private function _getDataModalsAttribute(): array
 	{
-		return self::_findFields($this->form, []);
-	}
-
-	private static function _findFields(array $elements, array $fields_found): array
-	{
-		foreach($elements as $element)
+		foreach($this->search_fields ?? [] as $input)
 		{
-			if(is_subclass_of($element, Input::class))
-			{
-				$fields_found[] = $element;
-			}
-			else
-			{
-				$fields_found = self::_findFields($element->getElements(), $fields_found);
-			}
+			$data_modals[] = 'modal'.$input->getName().': false';
 		}
 
-		return $fields_found;
+		return $data_modals ?? [];
 	}
+
+	private function _getCloseModalsAttribute(): array
+	{
+		foreach($this->search_fields ?? [] as $input)
+		{
+			$close_modals[] = 'modal'.$input->getName().' = false';
+		}
+
+		return $close_modals ?? [];
+	}
+
+	// private function _getFields(): array
+	// {
+	// 	return self::_findFields($this->form, []);
+	// }
+
+	// private static function _findFields(array $elements, array $fields_found): array
+	// {
+	// 	foreach($elements as $element)
+	// 	{
+	// 		if(is_subclass_of($element, Input::class))
+	// 		{
+	// 			$fields_found[] = $element;
+	// 		}
+	// 		else
+	// 		{
+	// 			$fields_found = self::_findFields($element->getElements(), $fields_found);
+	// 		}
+	// 	}
+
+	// 	return $fields_found;
+	// }
 }

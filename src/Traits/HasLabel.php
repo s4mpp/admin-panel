@@ -22,7 +22,7 @@ trait HasLabel
 		return count($this->callbacks) > 0;
 	}
 
-	public function runCallbacks(string $data = null)
+	public function runCallbacks($data = null)
     {
         foreach($this->getCallbacks() as $callback)
         {

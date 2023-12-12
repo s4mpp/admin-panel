@@ -11,11 +11,12 @@ use Illuminate\Support\ServiceProvider;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
 use S4mpp\AdminPanel\Livewire\FormResource;
 use S4mpp\AdminPanel\Livewire\FormSettings;
+use S4mpp\AdminPanel\Livewire\SelectSearch;
+use S4mpp\AdminPanel\Livewire\TableRepeater;
 use S4mpp\AdminPanel\Livewire\TableResource;
 use S4mpp\AdminPanel\Middleware\CustomAction;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
-use S4mpp\AdminPanel\Livewire\TableRepeater;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -31,6 +32,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 		Livewire::component('table-resource', TableResource::class);
 		Livewire::component('form-resource', FormResource::class);
 		Livewire::component('form-settings', FormSettings::class);
+		Livewire::component('select-search', SelectSearch::class);
  
 		Blade::component('table', Table::class);
 			

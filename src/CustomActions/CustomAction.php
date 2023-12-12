@@ -143,7 +143,7 @@ abstract class CustomAction
 		return $this->disabled_message ?? 'Função não disponível no momento';
 	}
 
-	public function permissions(array $permissions)
+	public function permissions(...$permissions)
 	{
 		$this->permissions = $permissions;
 
@@ -152,6 +152,13 @@ abstract class CustomAction
 
 	public function getPermissionsForAccess(): array
 	{
-		return $this->permissions;
+		$permissions = $this->permissions;
+
+		// if(config('admin.strict_roles', false))
+		// {
+		// 	$permissions[] = 'default';
+		// }
+
+		return $permissions;
 	}
 }
