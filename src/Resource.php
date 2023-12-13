@@ -43,11 +43,11 @@ abstract class Resource
 	{
 		$roles = $this->roles ?? [];
 		
-		if(config('admin.strict_roles', false))
+		if(empty($roles) && config('admin.strict_permissions'))
 		{
-			$roles[] = 'default';
+			throw new \Exception('Resource "'.$this->getName().'" has no roles (using Strict Permissions)');
 		}
-		
+
 		return $roles;
 	}
 

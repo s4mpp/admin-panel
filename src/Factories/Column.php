@@ -49,16 +49,26 @@ abstract class Column
 
 	public static function decimal(string $title, string $field, int $decimals = 2)
 	{
-		return (new ColumnElement($title, $field))->callback(function(float $value) use($decimals)
+		return (new ColumnElement($title, $field))->callback(function(float $value = null) use($decimals)
 		{
+			if(is_null($value))
+			{
+				return null;
+			}
+
 			return number_format($value, $decimals, ',', '.');
 		});
 	}
 
 	public static function currency(string $title, string $field, string $symbol, bool $convert_cents = true)
 	{
-		return (new ColumnElement($title, $field))->callback(function(float $value) use ($symbol, $convert_cents)
+		return (new ColumnElement($title, $field))->callback(function(float $value = null) use ($symbol, $convert_cents)
 		{
+			if(is_null($value))
+			{
+				return null;
+			}
+
 			return $symbol.' '.Format::currency($value, $convert_cents);
 		});
 	}

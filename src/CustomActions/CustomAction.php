@@ -154,10 +154,10 @@ abstract class CustomAction
 	{
 		$permissions = $this->permissions;
 
-		// if(config('admin.strict_roles', false))
-		// {
-		// 	$permissions[] = 'default';
-		// }
+		if(empty($permissions) && config('admin.strict_permissions'))
+		{
+			throw new \Exception('Custom action "'.$this->getTitle().'" has no permissions (using Strict Permissions)');
+		}
 
 		return $permissions;
 	}
