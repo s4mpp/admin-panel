@@ -26,7 +26,7 @@ trait CreatesForm
     public function render()
     {
         return view('admin::livewire.form', [
-			'model' => $this->resource->getModel(),
+			'model' => $this->_getModel(),
 			'search_fields' => $this->search_fields ?? [],
 			'repeaters' => $this->repeaters ?? [],
 			'data_slides' => method_exists($this, '_getDataSlidesAttribute') ? $this->_getDataSlidesAttribute() : null,
