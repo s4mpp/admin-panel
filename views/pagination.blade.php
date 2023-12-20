@@ -21,23 +21,26 @@
 			@endif
 		</div>
 
-		<div class="hidden md:-mt-px md:flex">
-			@foreach ($elements as $element)
-				@if (is_string($element))
-					<span class="inline-flex   items-center border-t-2 border-transparent px-4 py-4 text-sm font-medium text-gray-500">...</span>
-				@endif
+		@if(isset($numbers) && $numbers)
 
-				@if (is_array($element))
-					@foreach ($element as $page => $url)
-						@if ($page == $paginator->currentPage())
-							<span class="inline-flex   items-center border-t-2 border-indigo-500 px-4 py-4 text-sm font-medium text-indigo-600" aria-current="page">{{ $page }}</span>
-						@else
-							<button wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="inline-flex   items-center border-t-2 border-transparent px-4 py-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">{{ $page }}</button>
-						@endif
-					@endforeach
-				@endif
-			@endforeach
-		</div>
+			<div class="hidden md:-mt-px md:flex">
+				@foreach ($elements as $element)
+					@if (is_string($element))
+						<span class="inline-flex   items-center border-t-2 border-transparent px-4 py-4 text-sm font-medium text-gray-500">...</span>
+					@endif
+
+					@if (is_array($element))
+						@foreach ($element as $page => $url)
+							@if ($page == $paginator->currentPage())
+								<span class="inline-flex   items-center border-t-2 border-indigo-500 px-4 py-4 text-sm font-medium text-indigo-600" aria-current="page">{{ $page }}</span>
+							@else
+								<button wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" class="inline-flex   items-center border-t-2 border-transparent px-4 py-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">{{ $page }}</button>
+							@endif
+						@endforeach
+					@endif
+				@endforeach
+			</div>
+		@endif
 	
 		<div class="-mt-px flex w-0 flex-1 justify-end">
 			@if ($paginator->hasMorePages())

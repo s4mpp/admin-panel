@@ -11,6 +11,7 @@ use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Elements\Repeater;
 use S4mpp\AdminPanel\ItemView\ItemView;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
+use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 
 abstract class Resource
@@ -209,5 +210,28 @@ abstract class Resource
 		}
 
 		return Utils::getOnlyOf($this->customActions(), CustomAction::class);
+	}
+
+	final public function getReports()
+	{
+		if(!method_exists($this, 'reports'))
+		{
+			return [];
+		}
+
+		return Utils::getOnlyOf($this->reports(), Report::class);
+	}
+
+	final public function getReport(string $slug_report): ?Report
+	{
+		foreach($this->reports() as $r)
+        {
+            if($r->getSlug() == $slug_report)
+            {
+                return $r;
+            }
+        }
+
+		return null;
 	}
 }

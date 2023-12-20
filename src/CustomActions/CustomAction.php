@@ -24,7 +24,13 @@ abstract class CustomAction
 
 	private ?string $disabled_message = null;
 
+	/**
+	 *
+	 * @deprecated
+	 */
 	private array $permissions = [];
+	
+	private array $roles = [];
 
 	public function __construct(private string $title)
 	{
@@ -143,6 +149,28 @@ abstract class CustomAction
 		return $this->disabled_message ?? 'Função não disponível no momento';
 	}
 
+	public function roles(...$roles)
+	{
+		$this->roles = $roles;
+
+		return $this;
+	}
+
+	final public function getRolesForAccess(): array
+	{
+		$roles = $this->roles ?? [];
+		
+		if(empty($roles) && config('admin.strict_permissions'))
+		{
+			throw new \Exception('Custom Action "'.$this->getName().'" has no roles (using Strict Permissions)');
+		}
+
+		return $roles;
+	}
+
+	/**
+	 * @deprecated version
+	 */
 	public function permissions(...$permissions)
 	{
 		$this->permissions = $permissions;
@@ -150,6 +178,9 @@ abstract class CustomAction
 		return $this;
 	}
 
+	/**
+	 * @deprecated version
+	 */
 	public function getPermissionsForAccess(): array
 	{
 		$permissions = $this->permissions;

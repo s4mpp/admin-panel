@@ -1,4 +1,4 @@
-<div class="flex justify-between align-end">
+<div class="flex  justify-between align-end">
 	<div class="flex-fill">
 		<x-input type="date" x-model="filters.{{ $filter->getField() }}.start" name="start" title="Data inicial" />
 	</div>

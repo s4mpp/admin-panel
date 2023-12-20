@@ -14,12 +14,7 @@ abstract class Filter
 		return (new Period($title, $field));
 	}
 
-	public static function multiple(string $title, string $field, $options)
-	{
-		return (new Multiple($title, $field, $options));
-	}
-
-	public static function select(
+	public static function multiple(
 		string $title,
 		string $field,
 		array | Collection | EloquentCollection $options,

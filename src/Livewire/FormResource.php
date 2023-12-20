@@ -31,7 +31,7 @@ class FormResource extends Component
 
 		$this->search_fields = Utils::findElement($this->form, Search::class);
 				
-		$this->register = $register;
+		$this->register = $this->_getRegister($register);
 		
 		$this->_setInitialData();
 	}
@@ -49,8 +49,6 @@ class FormResource extends Component
 	
 	public function set(string $field, $value = null)
 	{
-		sleep(5);
-
 		if(array_key_exists($field, $this->data))
 		{
 			$this->data[$field] = $value;		
@@ -65,6 +63,13 @@ class FormResource extends Component
 	private function _getModel()
 	{
 		return $this->resource->getModel();
+	}
+
+	private function _getRegister($register = null)
+	{
+		$model = $this->_getModel();
+
+		return $register ?? new $model;
 	}
 
 	private function _saving(Model $register, ValidatedInput $fields_validated)

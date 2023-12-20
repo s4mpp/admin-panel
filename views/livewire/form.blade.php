@@ -8,7 +8,7 @@
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
  			<div class="space-y-4 mb-4">
 				@foreach($this->form ?? [] as $element)
-					{{ $element->render($data, $register ?? new $model()) }}
+					{{ $element->render($data, $register) }}
 				@endforeach
 			</div>
 
@@ -77,6 +77,7 @@
 		@foreach($search_fields ?? [] as $search)
 			<x-modal title="Selecionar {{ Str::lower($search->getTitle()) }}" idModal="modal{{ $search->getName() }}">
 				@livewire('select-search', [
+					'model' => get_class($register->{$search->getRelationShip()}()->getRelated()),
 					'field_to_search' => $search->getModelField(),
 					'field_to_update' => $search->getName(),
 				])

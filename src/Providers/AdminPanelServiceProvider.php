@@ -17,6 +17,7 @@ use S4mpp\AdminPanel\Livewire\TableResource;
 use S4mpp\AdminPanel\Middleware\CustomAction;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
+use S4mpp\AdminPanel\Livewire\Report;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -33,6 +34,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 		Livewire::component('form-resource', FormResource::class);
 		Livewire::component('form-settings', FormSettings::class);
 		Livewire::component('select-search', SelectSearch::class);
+		Livewire::component('admin-report', Report::class);
  
 		Blade::component('table', Table::class);
 			

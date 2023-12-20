@@ -97,14 +97,24 @@ $route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function(
 				
 				$route_custom_action = Route::middleware('web');
 
-				if($permissions_custom_action = $custom_action->getPermissionsForAccess())
+				if($permissions_custom_action = $custom_action->getRolesForAccess())
 				{
-					$route_custom_action->middleware('can:'.join('|', $permissions_custom_action));
+					$route_custom_action->middleware('role:'.join('|', $permissions_custom_action));
 				}
 
 				$route_custom_action->middleware('custom-action:'.$resource->getName().'.'.$custom_action->getSlug());
 				
 				$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($resource))->name($custom_action->getRouteName());
+			}
+
+			/**
+			 * Reports
+			 */ 
+			foreach($resource->getReports() as $report)
+			{
+				$route_report = Route::middleware('web');
+				
+				$route_report->get('relatorio/'.$report->getSlug(), [CrudController::class, 'report'])->name($report->getRouteName($resource->getName()));
 			}
 		});
 	}

@@ -3,15 +3,39 @@
 @section('title', $title)
 
 @section('title-page')
-	@if($resource->hasAction('create'))
-		<x-link href="{{ route($resource->getRouteName('create')) }}" className="btn-primary">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-				<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clip-rule="evenodd" />
-			</svg>
+	@if($reports = $resource->getReports())
+		<div x-data="{modalReport: false}">
+			<x-button type="button" className="btn-secondary" x-on:click="modalReport = true">
+				
+				<x-icon name="document-chart-bar" class="w-5 h-5"></x-icon>
+				
+				<span>Relatórios</span>
+			</x-button>
 
-			<span>Cadastrar</span>
-		</x-link>
+			<x-modal idModal="modalReport" title="Relatórios disponíveis:">
+				<div class="space-y-2">
+					@foreach($reports as $report)
+						<a class="bg-gray-100 group font-semibold transition-colors text-gray-800 hover:bg-gray-200 rounded-lg flex justify-between items-center p-4" href="{{ route($report->getRoutename($resource->getName())) }}">
+							{{ $report->getTitle() }}
+							<x-icon name="arrow-right" class="text-gray-400 h-5 opacity-0 group-hover:opacity-100 transition-opacity"></x-icon>
+						</a>
+					@endforeach
+				</div>
+			</x-modal>
+		</div>
 	@endif
+	
+	@if($resource->hasAction('create'))
+	<x-link href="{{ route($resource->getRouteName('create')) }}" className="btn-primary">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+			<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clip-rule="evenodd" />
+		</svg>
+		
+		<span>Cadastrar</span>
+	</x-link>
+	@endif
+	
+	
 @endsection
 
 @section('content')

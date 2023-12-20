@@ -17,6 +17,9 @@ abstract class Utils
 		return Auth::guard(config('admin.guard', 'web'))->user()->hasAnyRole($roles);
 	}
 
+	/**
+	 * @deprecated version
+	 */
 	public static function checkPermissions(array $permissions)
 	{
 		if(empty($permissions))

@@ -19,6 +19,29 @@ class CrudController extends Controller
 		]);
 	}
 
+	public function report()
+	{
+		$report = null;
+
+		$resource = $this->_getResource();
+
+		$path = explode('/', request()->route()->uri);
+
+		$slug_report = end($path);
+
+		$report = $resource->getReport($slug_report);
+
+		if(!$report)
+		{
+			abort(404);
+		}
+
+		return $resource->getView('report', [
+			'resource' => $resource,
+			'report' => $report
+		]);
+	}
+
     public function create()
 	{
 		$resource = $this->_getResource();
@@ -45,7 +68,7 @@ class CrudController extends Controller
 
 		foreach($resource->getCustomActions() as $custom_action)
 		{
-			if(!Utils::checkPermissions($custom_action->getPermissionsForAccess()))
+			if(!Utils::checkRoles($custom_action->getRolesForAccess()))
 			{
 				continue;
 			}
@@ -73,10 +96,10 @@ class CrudController extends Controller
 
 	private function _getResource(): Resource
 	{
-		$name_route = request()->route()->action['as'];
+		$path = request()->route()->action['as'];
 
-		$module_name = explode('.', $name_route)[1];
+		$path_steps = explode('.', $path);
 
-		return AdminPanel::getResource($module_name.'Resource');
+		return AdminPanel::getResource($path_steps[1].'Resource');
 	}
 }
