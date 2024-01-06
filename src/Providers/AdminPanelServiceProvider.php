@@ -6,9 +6,12 @@ use Livewire\Livewire;
 use S4mpp\AdminPanel\Setting;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use S4mpp\AdminPanel\Livewire\Report;
 use S4mpp\AdminPanel\Components\Table;
 use Illuminate\Support\ServiceProvider;
+use S4mpp\AdminPanel\Livewire\FormFilter;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
+use S4mpp\AdminPanel\Livewire\InputSearch;
 use S4mpp\AdminPanel\Livewire\FormResource;
 use S4mpp\AdminPanel\Livewire\FormSettings;
 use S4mpp\AdminPanel\Livewire\SelectSearch;
@@ -17,7 +20,7 @@ use S4mpp\AdminPanel\Livewire\TableResource;
 use S4mpp\AdminPanel\Middleware\CustomAction;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
-use S4mpp\AdminPanel\Livewire\Report;
+use S4mpp\AdminPanel\Livewire\FormReport;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -35,6 +38,9 @@ class AdminPanelServiceProvider extends ServiceProvider
 		Livewire::component('form-settings', FormSettings::class);
 		Livewire::component('select-search', SelectSearch::class);
 		Livewire::component('admin-report', Report::class);
+		Livewire::component('input-search', InputSearch::class);
+		Livewire::component('form-filter', FormFilter::class);
+		Livewire::component('form-report', FormReport::class);
  
 		Blade::component('table', Table::class);
 			

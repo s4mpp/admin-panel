@@ -206,7 +206,7 @@ class TableResource extends Component
                 continue;
             } 
 
-            $filter->query($term, $query);  
+            $filter->filter($term, $query);  
 
             $description_result = $filter->getDescriptionResult($term);
 

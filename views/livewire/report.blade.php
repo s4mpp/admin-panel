@@ -4,6 +4,8 @@
 			<x-card className="border" title="{{ $result['title'] }}" :padding=false>
 				@php
 					$collection = $result['values'];
+
+					$columns = $result['columns'];
 				@endphp
 				<x-table :columns=$columns :collection=$collection />
 			</x-card>

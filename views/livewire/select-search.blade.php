@@ -35,7 +35,7 @@
 					<div x-data="{loadingThis: false}" x-on:reset-loading.window="loadingThis = false"
 						:class="(loadingThis) ? 'bg-gray-200' : ''"
 						class="rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors text-gray-700 hover:cursor-pointer p-3 flex justify-between items-center"
-						x-on:click="(loadingSearch) ? null : ($wire.emitUp('set', '{{ $this->field_to_update }}', {{ $register->id }}), loadingSearch = true, loadingThis = true)">
+						x-on:click="(loadingSearch) ? null : ($wire.emitUp('setField', '{{ $this->repeater ?? 'null' }}', '{{ $this->field_to_update }}', {{ $register->id }}), loadingSearch = true, loadingThis = true)">
 						
 						<span class="text-sm">{{ $register->{$this->field_to_search} }}</span>
 
@@ -46,7 +46,6 @@
 						</div>
 					</div>
 				@endforeach
-
  
 				<div class="flex-auto px-3">
 					{{ $collection->links('admin::pagination', ['numbers' => false]) }}

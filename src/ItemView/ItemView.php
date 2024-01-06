@@ -30,6 +30,8 @@ class ItemView
 			}
 		}
 
+		// $original_data = $this->undotPath($register, $this->getField());
+
 		return $this->hasCallbacks() ? $this->runCallbacks($original_data) : $original_data;
 	}
 
@@ -46,5 +48,24 @@ class ItemView
 	public function getView(): ?string
 	{
 		return $this->view ?? null;
+	}
+
+	protected function undotPath(Model $register, string $field_path)
+	{
+		$path = explode('.', $field_path);
+                
+		$original_data = $register[$path[0]];
+
+		if($original_data)
+		{
+			array_shift($path);
+
+			foreach($path as $relation)
+			{
+				$original_data = $original_data[$relation];
+			}
+		}
+
+		return $original_data;
 	}
 }

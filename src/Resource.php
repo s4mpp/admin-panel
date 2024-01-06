@@ -181,11 +181,6 @@ abstract class Resource
 
 	final public function getFilters(): array
     {
-        if($this->getModel()->timestamps)
-        {
-            $filters['created_at'] = FilterFactory::period('Período', 'created_at');
-        }
-
         if(method_exists($this, 'filter'))
         {
 			foreach($this->filter() as $filter)
@@ -198,6 +193,11 @@ abstract class Resource
 		{
 			$filters[$filter->getField()] = $filter;
 		}
+
+		if($this->getModel()->timestamps)
+        {
+            $filters['created_at'] = FilterFactory::period('Cadastrado em', 'created_at');
+        }
 
 		return $filters ?? [];
     }
@@ -224,11 +224,11 @@ abstract class Resource
 
 	final public function getReport(string $slug_report): ?Report
 	{
-		foreach($this->reports() as $r)
+		foreach($this->reports() as $report)
         {
-            if($r->getSlug() == $slug_report)
+            if($report->getSlug() == $slug_report)
             {
-                return $r;
+                return $report;
             }
         }
 

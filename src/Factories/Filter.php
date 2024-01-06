@@ -4,6 +4,7 @@ namespace S4mpp\AdminPanel\Factories;
 
 use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Filter\Period;
+use S4mpp\AdminPanel\Filter\Search;
 use S4mpp\AdminPanel\Filter\Multiple;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
@@ -22,5 +23,14 @@ abstract class Filter
 		string $key_collection = null)
 	{
 		return (new Multiple($title, $field, $options, $value_collection, $key_collection));
+	}
+
+	public static function search(
+		string $title,
+		string $field,
+		string $relationship,
+		string $model_field = null)
+	{
+		return (new Search($title, $field, $relationship, $model_field));
 	}
 }

@@ -36,6 +36,8 @@ class CrudController extends Controller
 			abort(404);
 		}
 
+		$report->setModel($resource->getModel());
+
 		return $resource->getView('report', [
 			'resource' => $resource,
 			'report' => $report

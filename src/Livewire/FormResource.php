@@ -19,7 +19,7 @@ class FormResource extends Component
 
 	private $repeaters = [];
 
-	protected $listeners = ['set'];
+	protected $listeners = ['setField', 'setChildField'];
 		
 	public function mount(string $resource_name, $register = null)
 	{
@@ -28,9 +28,7 @@ class FormResource extends Component
 		$this->_setRepeaters();
 
 		$this->form = $this->resource->getForm();
-
-		$this->search_fields = Utils::findElement($this->form, Search::class);
-				
+		
 		$this->register = $this->_getRegister($register);
 		
 		$this->_setInitialData();
@@ -39,25 +37,33 @@ class FormResource extends Component
     public function booted()
     {
 		$this->_setResource($this->resource_name);
-
+		
 		$this->_setRepeaters();
-
+		
 		$this->form = $this->resource->getForm();
-
-		$this->search_fields = Utils::findElement($this->form, Search::class);
+		
+		$this->_setSearchFields();
     }
 	
-	public function set(string $field, $value = null)
+	private function _setSearchFields()
 	{
-		if(array_key_exists($field, $this->data))
+		$repeaters_searchs = [];
+
+		foreach($this->repeaters as $repeater)
 		{
-			$this->data[$field] = $value;		
+			$repeaters_search = Utils::findElement($repeater->getFields(), Search::class);
+
+			foreach($repeaters_search as $search)
+			{
+				$search->setModel(get_class(app($repeater->getNameModelRelation())->customer()->getRelated()));
+
+				$search->setRepeater($repeater->getRelation());
+			}
+			
+			$repeaters_searchs = array_merge($repeaters_searchs, $repeaters_search);
 		}
-		
-		$this->dispatchBrowserEvent('close-modal');
-		$this->dispatchBrowserEvent('reset-loading');
-		
-		$this->emitSelf('$refresh');
+				
+		$this->search_fields = array_merge($this->_getSearchFieldsForm(), $repeaters_searchs);
 	}
 
 	private function _getModel()

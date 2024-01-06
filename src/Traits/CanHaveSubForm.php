@@ -137,7 +137,7 @@ trait CanHaveSubForm
 				
 				foreach($repeater->getFields() as $field)
 				{
-					$register_on_db->{$field->getName()} = $register_saved[$field->getName()];
+					$register_on_db->{$field->getName()} = $register_saved[$field->getName()] ?? null;
 				}
 
 				$register_saved = $register_on_db;

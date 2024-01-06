@@ -19,7 +19,7 @@ class Report extends Component
 	protected $listeners = ['filterReport'];
 	
 	public function mount(string $report_name, string $resource_name)
-	{		
+	{
 		$this->report_name = $report_name;
 
 		$this->resource_name = $resource_name;
@@ -36,10 +36,6 @@ class Report extends Component
 	{
 		return view('admin::livewire.report', [
 			'results' => $this->_getResults(),
-			'columns' => [
-				Column::text('Título', 'title'),
-				Column::text('Valor', 'value')
-			]
 		]);
 	}
 
@@ -68,10 +64,13 @@ class Report extends Component
 
 		foreach($possible_results as $result)
 		{
-			$values = $this->resource->getModel()::{$result['model_method']}($this->filter_term);
+			$model = $result->getModel() ?? $this->resource->getModel();
+
+			$values = $model::{$result->getMethod()}($this->filter_term);
 
 			$results[] = [
-				'title' => $result['title'],
+				'title' => $result->getTitle(),
+				'columns' => $result->getColumns(),
 				'values' => collect($values)
 			];
 		}

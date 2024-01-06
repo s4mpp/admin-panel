@@ -7,16 +7,26 @@ class Multiple extends Filter
 {
 	use WithSubOptions;
 
-	protected string $alpine_expression = '[]';
+	// protected string $alpine_expression = '[]';
 
 	public function render()
 	{
 		return view('admin::filter.multiple', ['filter' => $this]);
 	}
 
-	public function query($term, $query)
+	public function filter($term, $query)
 	{
-		$query->whereIn($this->getField(), array_values($term));
+		self::query($query, $this->getField(), array_values($term));
+	}
+
+	public static function query($query, string $field, array $values)
+	{
+		if(empty($values))
+		{
+			return;
+		}
+
+		$query->whereIn($field, $values);
 	}
 
 	public function getDescriptionResult($term)

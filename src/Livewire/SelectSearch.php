@@ -16,18 +16,22 @@ class SelectSearch extends Component
 	public string $model;
 		
 	public ?string $search_term = null;
-	
-	private $collection = [];
-	
+		
 	public int $total_registers = 0;
+
+	public string $event_set;
 	
-	public function mount(string $model, string $field_to_search, string $field_to_update)
+	public ?string $repeater = null;
+	
+	public function mount(string $model, string $field_to_search, string $field_to_update, string $repeater = null)
 	{		
 		$this->field_to_search = $field_to_search;
 
 		$this->field_to_update = $field_to_update;
 
 		$this->model = $model;
+				
+		$this->repeater = $repeater;
 	}
 
 	public function search()
@@ -40,7 +44,6 @@ class SelectSearch extends Component
 
 			return;
 		}
-
 	}
 
 	public function render()
@@ -50,10 +53,14 @@ class SelectSearch extends Component
 
 	private function _getRegisters()
 	{
+		if(!$this->search_term)
+		{
+			return [];
+		}
+
 		$collection = $this->model::orderBy($this->field_to_search, 'ASC')->where($this->field_to_search, 'like', '%'.$this->search_term.'%')->paginate();
 
 		$this->total_registers = $collection->total();
-
 
 		return $collection;
 	}

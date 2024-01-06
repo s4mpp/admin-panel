@@ -11,6 +11,8 @@ use S4mpp\AdminPanel\Traits\CreatesForm;
 class FormSettings extends Component
 {
 	use CreatesForm;
+
+	protected $listeners = ['setField'];
 		
 	public function mount($register = null)
 	{		
@@ -24,6 +26,8 @@ class FormSettings extends Component
     public function booted()
     {		
 		$this->form = Settings::getForm();
+
+		$this->_setSearchFields();
     }
 
 	private function _getModel()
@@ -38,5 +42,10 @@ class FormSettings extends Component
 		session()->flash('message', 'Configurações salvas com sucesso!');
 
 		return redirect()->route('admin.settings.index');
+	}
+
+	private function _setSearchFields()
+	{
+		$this->search_fields = $this->_getSearchFieldsForm();
 	}
 }

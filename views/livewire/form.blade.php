@@ -2,9 +2,9 @@
 	<x-alert />
 
 	<div 
-		x-data="{ {{ join(',', array_merge($data_slides ?? [], $data_modals ?? [])) }} }"
-		x-on:close-slide.window="{{ join(',', $close_slides ?? []) }}"
-		x-on:close-modal.window="{{ join(',', $close_modals ?? []) }}">
+		x-data="{ {{ join(', ', array_merge($data_slides ?? [], $data_modals ?? [])) }} }"
+		x-on:close-slide.window="{{ join(', ', $close_slides ?? []) }}"
+		x-on:close-modal.window="{{ join(', ', $close_modals ?? []) }}">
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
  			<div class="space-y-4 mb-4">
 				@foreach($this->form ?? [] as $element)
@@ -54,9 +54,23 @@
 											<span class="text-red-300 text-xs truncate">*</span>
 										@endif
 									</p>
-							
 								</div>
-								{{ $element->prefix('current_child_data.'.$repeater->getRelation())->renderInput([]) }}
+
+								@php
+									$current_data = $this->current_child_data[$repeater->getRelation()] ?? [];
+
+									if($current_data && !is_array($current_data))
+									{
+										$current_data = $current_data->toArray();
+									}
+
+									$current_id = $this->current_child_id[$repeater->getRelation()] ?? null;
+
+									$current_register = ($current_id) ? $this->childs[$repeater->getRelation()][$current_id] ?? null : null;
+									
+								@endphp
+
+								{{ $element->prefix('current_child_data.'.$repeater->getRelation())->renderInput($current_data, $current_register) }}
 							</div>
 						@endforeach
 					</div>
@@ -76,13 +90,15 @@
 		
 		@foreach($search_fields ?? [] as $search)
 			<x-modal title="Selecionar {{ Str::lower($search->getTitle()) }}" idModal="modal{{ $search->getName() }}">
+				
 				@livewire('select-search', [
-					'model' => get_class($register->{$search->getRelationShip()}()->getRelated()),
+					'model' => $search->getModel(),
 					'field_to_search' => $search->getModelField(),
 					'field_to_update' => $search->getName(),
-				])
+					'repeater' => $search->getRepeater(),
+				], key($search->getName()))
 			</x-modal>
 		@endforeach
 	</div>
-
 </div>
+

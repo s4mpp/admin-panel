@@ -6,6 +6,10 @@ use S4mpp\AdminPanel\Input\Input;
 
 final class Search extends Input
 {
+	private ?string $model = null;
+
+	private ?string $repeater = null;
+
 	function __construct(
 		private string $title,
 		private string $name,
@@ -18,6 +22,27 @@ final class Search extends Input
 	public function getRelationShip(): string
 	{
 		return $this->relationship;
+	}
+
+	public function getModel(): ?string
+	{
+		return $this->model;
+	}
+
+
+	public function setRepeater(string $repeater)
+	{
+		$this->repeater = $repeater;
+	}
+
+	public function getRepeater(): ?string
+	{
+		return $this->repeater ?? null;
+	}
+
+	public function setModel($model)
+	{
+		$this->model = $model;
 	}
 
 	public function getModelField(): string

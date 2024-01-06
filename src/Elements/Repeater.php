@@ -63,6 +63,11 @@ final class Repeater
 		return $this->model->getRelated();
 	}
 
+	public function getNameModelRelation(): string
+	{
+		return get_class($this->model->getRelated());
+	}
+
 	public function getFields(): array
 	{
 		return $this->fields;

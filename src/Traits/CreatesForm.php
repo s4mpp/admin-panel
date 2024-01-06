@@ -6,6 +6,7 @@ use S4mpp\AdminPanel\Utils;
 use Livewire\WithFileUploads;
 use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Input;
+use S4mpp\AdminPanel\Input\Search;
 use Livewire\TemporaryUploadedFile;
 use Illuminate\Support\ValidatedInput;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,23 @@ trait CreatesForm
 	private $form;
 
 	private $search_fields;
+
+	public function setField(string $relation = null, string $field, $value = null)
+	{
+		if($relation && (array_key_exists($field, $this->current_child_data[$relation])))
+		{
+			$this->current_child_data[$relation][$field] = $value;		
+		}
+		else if(array_key_exists($field, $this->data))
+		{
+			$this->data[$field] = $value;		
+		}
+		
+		$this->dispatchBrowserEvent('close-modal');
+		$this->dispatchBrowserEvent('reset-loading');
+		
+		$this->emitSelf('$refresh');
+	}
 
     public function render()
     {
@@ -148,6 +166,10 @@ trait CreatesForm
 		return $validator->safe();
 	}
 
+	/**
+	 *
+	 * @todo DUPLICATED
+	 */
 	private function _getDataModalsAttribute(): array
 	{
 		foreach($this->search_fields ?? [] as $input)
@@ -158,6 +180,10 @@ trait CreatesForm
 		return $data_modals ?? [];
 	}
 
+	/**
+	 *
+	 * @todo DUPLICATED
+	 */
 	private function _getCloseModalsAttribute(): array
 	{
 		foreach($this->search_fields ?? [] as $input)
@@ -168,25 +194,21 @@ trait CreatesForm
 		return $close_modals ?? [];
 	}
 
-	// private function _getFields(): array
-	// {
-	// 	return self::_findFields($this->form, []);
-	// }
+	/**
+	 *
+	 * @todo DUPLICATED
+	 */
+	private function _getSearchFieldsForm(): array
+	{
+		$form_searchs = Utils::findElement($this->form, Search::class);
+	
+		foreach($form_searchs as $search)
+		{
+			$model = ($this->register) ? get_class($this->register->{$search->getRelationShip()}()->getRelated()) : null;
+	
+			$search->setModel($model);
+		}
 
-	// private static function _findFields(array $elements, array $fields_found): array
-	// {
-	// 	foreach($elements as $element)
-	// 	{
-	// 		if(is_subclass_of($element, Input::class))
-	// 		{
-	// 			$fields_found[] = $element;
-	// 		}
-	// 		else
-	// 		{
-	// 			$fields_found = self::_findFields($element->getElements(), $fields_found);
-	// 		}
-	// 	}
-
-	// 	return $fields_found;
-	// }
+		return $form_searchs;
+	}
 }

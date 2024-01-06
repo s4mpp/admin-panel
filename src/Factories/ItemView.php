@@ -20,9 +20,9 @@ abstract class ItemView
 		return (new ItemViewElement($title, $field));
 	}
 
-	public static function relation(string $title, string $field, string $resource)
+	public static function relation(string $title, string $field, string $resource, string $field_main = null)
 	{
-		return (new Relation($title, $field, $resource));
+		return (new Relation($title, $field, $resource, $field_main));
 	}
 
 	public static function longText(string $title, string $field)

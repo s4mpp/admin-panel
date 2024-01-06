@@ -28,7 +28,7 @@ $route->group(function()
 	Route::controller(AdminController::class)->group(function()
 	{
 		Routes::identifier('admin-panel')
-		->authGroup()
+		->authGroup(config('admin.2fa', false))
 		->forgotAndRecoveryPasswordGroup();
 	});
 
