@@ -7,7 +7,7 @@ class Search extends Filter
 	function __construct(
 		private string $title,
 		private string $name,
-		private string $relationship,
+		private string $model,
 		private ?string $model_field = null)
 	{
 		parent::__construct($title, $name);

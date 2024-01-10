@@ -23,7 +23,7 @@
 		<x-modal title="Selecionar {{ Str::lower($search->getTitle()) }}" idModal="modal{{ $search->getField() }}">
 						
 			@livewire('select-search', [
-				'model' => \App\Models\Customer::class,
+				'model' => $search->getModelName(),
 				'field_to_search' => 'name',
 				'field_to_update' => $search->getField(),
 				

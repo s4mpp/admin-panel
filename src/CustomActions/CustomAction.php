@@ -169,7 +169,7 @@ abstract class CustomAction
 	}
 
 	/**
-	 * @deprecated version
+	 * @deprecated
 	 */
 	public function permissions(...$permissions)
 	{
@@ -179,7 +179,7 @@ abstract class CustomAction
 	}
 
 	/**
-	 * @deprecated version
+	 * @deprecated
 	 */
 	public function getPermissionsForAccess(): array
 	{

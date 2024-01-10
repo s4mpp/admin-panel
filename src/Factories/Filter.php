@@ -28,9 +28,9 @@ abstract class Filter
 	public static function search(
 		string $title,
 		string $field,
-		string $relationship,
+		string $model,
 		string $model_field = null)
 	{
-		return (new Search($title, $field, $relationship, $model_field));
+		return (new Search($title, $field, $model, $model_field));
 	}
 }
