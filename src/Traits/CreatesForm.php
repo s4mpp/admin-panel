@@ -11,10 +11,11 @@ use Livewire\TemporaryUploadedFile;
 use Illuminate\Support\ValidatedInput;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use S4mpp\AdminPanel\Traits\HasModalSearchInForm;
 
 trait CreatesForm 
 {
-	use WithFileUploads;
+	use WithFileUploads, HasModalSearchInForm;
 		
 	public $register;
 	
@@ -22,17 +23,15 @@ trait CreatesForm
 	
 	private $form;
 
-	private $search_fields;
-
-	public function setField(string $relation = null, string $field, $value = null)
+	public function setField(string $repeater = null, string $field, $value = null)
 	{
-		if($relation && (array_key_exists($field, $this->current_child_data[$relation])))
+		if($repeater && (array_key_exists($field, $this->current_child_data[$repeater] ?? [])))
 		{
-			$this->current_child_data[$relation][$field] = $value;		
+			$this->current_child_data[$repeater][$field] = $value;		
 		}
 		else if(array_key_exists($field, $this->data))
 		{
-			$this->data[$field] = $value;		
+			$this->data[$field] = $value;
 		}
 		
 		$this->dispatchBrowserEvent('close-modal');
@@ -166,49 +165,31 @@ trait CreatesForm
 		return $validator->safe();
 	}
 
-	/**
-	 *
-	 * @todo DUPLICATED
-	 */
-	private function _getDataModalsAttribute(): array
-	{
-		foreach($this->search_fields ?? [] as $input)
-		{
-			$data_modals[] = 'modal'.$input->getName().': false';
-		}
-
-		return $data_modals ?? [];
-	}
-
-	/**
-	 *
-	 * @todo DUPLICATED
-	 */
-	private function _getCloseModalsAttribute(): array
-	{
-		foreach($this->search_fields ?? [] as $input)
-		{
-			$close_modals[] = 'modal'.$input->getName().' = false';
-		}
-
-		return $close_modals ?? [];
-	}
-
-	/**
-	 *
-	 * @todo DUPLICATED
-	 */
 	private function _getSearchFieldsForm(): array
 	{
-		$form_searchs = Utils::findElement($this->form, Search::class);
-	
-		foreach($form_searchs as $search)
+		$searchs = Utils::findElement($this->form, Search::class);
+
+		foreach($searchs as $search)
 		{
 			$model = ($this->register) ? get_class($this->register->{$search->getRelationShip()}()->getRelated()) : null;
 	
 			$search->setModel($model);
 		}
+		
+		foreach($this->repeaters as $repeater)
+		{
+			$searchs_found = Utils::findElement($repeater->getFields(), Search::class);
 
-		return $form_searchs;
+			foreach($searchs_found as $search)
+			{
+				$search->setModel(get_class(app($repeater->getNameModelRelation())->customer()->getRelated()));
+
+				$search->setRepeater($repeater->getRelation());
+			}
+
+			$searchs = array_merge($searchs, $searchs_found);
+		}
+
+		return $searchs;
 	}
 }

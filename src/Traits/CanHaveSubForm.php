@@ -9,7 +9,9 @@ trait CanHaveSubForm
 	public array $current_child_data = [];
 	
 	public array $childs = [];
-	
+
+	public $error_child = null;
+
 	public function mountCanHaveSubForm()
 	{				
 		$this->_loadChilds();
@@ -20,15 +22,29 @@ trait CanHaveSubForm
 		$this->_reloadChilds();
 	}
 
-	public function setCurrentChild(string $relation, int $i)
+	public function setCurrentChild(string $repeater, int $i)
 	{
-		$this->current_child_id[$relation] = $i;
+		$this->current_child_id[$repeater] = $i;
 
-		$this->current_child_data[$relation] = $this->childs[$relation][$i];
+		$this->current_child_data[$repeater] = $this->childs[$repeater][$i];
+	}
+
+	public function setChildEmpty(string $repeater)
+	{
+		$this->current_child_id[$repeater] = null;
+
+		foreach($this->repeaters[$repeater]->getFields() as $field)
+		{
+			$fields[$field->getName()] = null;
+		}
+
+		$this->current_child_data[$repeater] = $fields ?? [];
 	}
 
 	public function saveChild(string $relation)
 	{
+		$this->reset('error_child');
+		
 		try
 		{
 			$repeater = $this->repeaters[$relation] ?? null;
@@ -37,12 +53,15 @@ trait CanHaveSubForm
 
 			$data_id = $this->current_child_data[$relation]['id'] ?? null;
 
+			throw_if($data_id && !$repeater->canEdit(), 'Edição não permitida');
+			
+			throw_if(!$data_id && !$repeater->canAdd(), 'Cadastro não permitido');
+			
 			$model = $repeater->getModelRelation();
 
 			if($data_id)
 			{
 				$register = $model::find($data_id);
-
 			}
 			else
 			{
@@ -70,11 +89,11 @@ trait CanHaveSubForm
 		}
 		catch (\Exception $e)
 		{
-			$this->addError('exception', $e->getMessage());
+			$this->error_child = $e->getMessage();
 		}
 		finally
 		{
-			$this->dispatchBrowserEvent('reset-form');
+			$this->dispatchBrowserEvent('reset-form-child');
 		}
 	}
 

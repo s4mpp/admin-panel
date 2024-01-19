@@ -24,11 +24,15 @@ final class Search extends Input
 		return $this->relationship;
 	}
 
-	public function getModel(): ?string
+	public function getModelName(): ?string
 	{
 		return $this->model;
 	}
 
+	public function getField(): string
+	{
+		return $this->name;
+	}
 
 	public function setRepeater(string $repeater)
 	{

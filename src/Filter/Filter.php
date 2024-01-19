@@ -15,9 +15,4 @@ abstract class Filter
 	{
 		return $this->field;
 	}
-	
-	// public function getAlpineExpression(): string
-	// {
-	// 	return !empty($this->alpine_expression) ? $this->alpine_expression : 'null';
-	// }
 }

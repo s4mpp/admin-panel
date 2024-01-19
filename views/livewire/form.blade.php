@@ -14,9 +14,12 @@
 
 			@foreach($repeaters ?? [] as $repeater)
 				<x-card title="{{ $repeater->getTitle() }}" className="bg-white border mb-6" :padding=false>
-					<x-slot:header class=" flex justify-end">
-						<x-button :loading=false x-on:click="slide{{ $repeater->getRelation() }} = true; $wire.set('current_child_id', []), $wire.set('current_child_data', [])" type="button">Adicionar</x-button>
-					</x-slot:header>
+
+					@if($repeater->canAdd())
+						<x-slot:header class=" flex justify-end">
+							<x-button :loading=false x-on:click="slide{{ $repeater->getRelation() }} = true; $wire.emit('setChildEmpty', '{{ $repeater->getRelation() }}')" type="button">Adicionar</x-button>
+						</x-slot:header>
+					@endif
 
 					@php
 						$columns = $repeater->getColumnsWithActions();
@@ -40,9 +43,21 @@
 		</form>
 
 		@foreach($repeaters ?? [] as $repeater)
-			<x-slide-over id="slide{{ $repeater->getRelation() }}" title="{{ $repeater->getTitle() }}">
-				<form wire:submit.prevent="saveChild('{{ $repeater->getRelation() }}')" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form.window="loading = false">
 		
+			@continue(!$repeater->canAdd() && !$repeater->canEdit())
+			
+			<x-slide-over id="slide{{ $repeater->getRelation() }}" title="{{ $repeater->getTitle() }}">
+				<form wire:submit.prevent="saveChild('{{ $repeater->getRelation() }}')" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form-child.window="loading = false">
+					
+					@if($this->error_child)
+						<div class="text-red-500 text-strong mb-5 flex justify-start gap-3">
+							<x-icon name="exclamation-triangle" class="h-6 w-6"></x-icon>
+							<p> {{ $this->error_child }}</p>
+						</div>
+					@endif
+
+					@dump($this->current_child_data)
+
 					<div class="space-y-4">
 						@foreach($repeater->getFields() as $element)
 							<div>
@@ -67,7 +82,6 @@
 									$current_id = $this->current_child_id[$repeater->getRelation()] ?? null;
 
 									$current_register = ($current_id) ? $this->childs[$repeater->getRelation()][$current_id] ?? null : null;
-									
 								@endphp
 
 								{{ $element->prefix('current_child_data.'.$repeater->getRelation())->renderInput($current_data, $current_register) }}
@@ -90,9 +104,8 @@
 		
 		@foreach($search_fields ?? [] as $search)
 			<x-modal title="Selecionar {{ Str::lower($search->getTitle()) }}" idModal="modal{{ $search->getName() }}">
-				
 				@livewire('select-search', [
-					'model' => $search->getModel(),
+					'model' => $search->getModelName(),
 					'field_to_search' => $search->getModelField(),
 					'field_to_update' => $search->getName(),
 					'repeater' => $search->getRepeater(),

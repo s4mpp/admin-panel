@@ -208,6 +208,14 @@ class TableResource extends Component
 
             $filter->filter($term, $query);  
 
+            /**
+			 * DUPLICATED
+			 */
+            if(!$term || empty($term))
+			{
+				continue;
+			}
+
             $description_result = $filter->getDescriptionResult($term);
 
             if(!$description_result)

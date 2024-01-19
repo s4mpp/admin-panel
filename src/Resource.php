@@ -4,14 +4,13 @@ namespace S4mpp\AdminPanel;
 
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Column\Column;
-use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Elements\Repeater;
 use S4mpp\AdminPanel\ItemView\ItemView;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
-use S4mpp\AdminPanel\Elements\Report;
+use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 
 abstract class Resource

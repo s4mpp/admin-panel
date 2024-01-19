@@ -13,16 +13,20 @@ class Search extends Filter
 		parent::__construct($title, $name);
 	}
 
-	public function render()
+	public function render($filters)
 	{
-		return view('admin::filter.search', ['filter' => $this]);
+		return view('admin::filter.search', ['filter' => $this, 'filters' => $filters]);
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function filter($term, $query)
 	{
+
 		self::query($query, $this->getField(), $term);
 	}
-
+	
 	public static function query($query, string $field, string | int $term = null)
 	{
 		if(!$term)
@@ -31,6 +35,16 @@ class Search extends Filter
 		}
 		
 		$query->where($field, $term);
+	}
+
+	public function getModelName(): string
+	{
+		return $this->model;
+	}
+
+	public function getFieldToSearch(): string
+	{
+		return $this->model_field ?? 'id';
 	}
 
 	public function getDescriptionResult($term)

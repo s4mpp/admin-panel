@@ -7,7 +7,7 @@
 				'text-right' => (($column->getAlignment() ?? null) == 'right'),
 				'px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap'])>{{ $column->getTitle() }}</th>
 			@empty
-				<th scope="col" class="px-3 py-3.5">&nbsp;</th>
+				<th scope="col" class="px-4 sm:px-6 py-3.5 text-left text-sm font-semibold text-gray-800  whitespace-nowrap">Tabela sem título</th>
 			@endforelse
 		</tr>
 	</thead>
@@ -72,10 +72,9 @@
 							@else
 								{{ $data }}
 							@endif
-
 						</td>
 					@empty
-						<td>&nbsp;</td>
+						<td class="whitespace-nowrap px-4 sm:px-6 py-3.5 text-sm text-gray-500">{{ $row['original'] }}</td>
 					@endforelse 
 
 					{{-- @if($this->resource->actions)

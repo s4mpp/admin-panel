@@ -19,7 +19,7 @@ class FormResource extends Component
 
 	private $repeaters = [];
 
-	protected $listeners = ['setField', 'setChildField'];
+	protected $listeners = ['setField', 'setChildField', 'setChildEmpty'];
 		
 	public function mount(string $resource_name, $register = null)
 	{
@@ -42,29 +42,29 @@ class FormResource extends Component
 		
 		$this->form = $this->resource->getForm();
 		
-		$this->_setSearchFields();
+		// $this->_setSearchFields();
     }
 	
-	private function _setSearchFields()
-	{
-		$repeaters_searchs = [];
+	// private function _setSearchFields()
+	// {
+	// 	$repeaters_searchs = [];
 
-		foreach($this->repeaters as $repeater)
-		{
-			$repeaters_search = Utils::findElement($repeater->getFields(), Search::class);
+	// 	foreach($this->repeaters as $repeater)
+	// 	{
+	// 		$repeaters_search = Utils::findElement($repeater->getFields(), Search::class);
 
-			foreach($repeaters_search as $search)
-			{
-				$search->setModel(get_class(app($repeater->getNameModelRelation())->customer()->getRelated()));
+	// 		foreach($repeaters_search as $search)
+	// 		{
+	// 			$search->setModel(get_class(app($repeater->getNameModelRelation())->customer()->getRelated()));
 
-				$search->setRepeater($repeater->getRelation());
-			}
+	// 			$search->setRepeater($repeater->getRelation());
+	// 		}
 			
-			$repeaters_searchs = array_merge($repeaters_searchs, $repeaters_search);
-		}
+	// 		$repeaters_searchs = array_merge($repeaters_searchs, $repeaters_search);
+	// 	}
 				
-		$this->search_fields = array_merge($this->_getSearchFieldsForm(), $repeaters_searchs);
-	}
+	// 	$this->search_fields = array_merge($this->_getSearchFieldsForm(), $repeaters_searchs);
+	// }
 
 	private function _getModel()
 	{

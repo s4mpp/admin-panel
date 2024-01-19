@@ -20,6 +20,10 @@ final class Repeater
 
 	private string $order_direction = 'DESC';
 
+	private bool $can_edit = false;
+
+	private bool $can_add = false;
+
 	function __construct(private string $title, private string $relation, private array $fields = [], private array $columns = [])
 	{
 		$this->createSlug($title);
@@ -34,6 +38,30 @@ final class Repeater
 		$this->order_direction = $direction;
 
 		return $this;
+	}
+
+	public function allowEdit()
+	{
+		$this->can_edit = true;
+		
+		return $this;
+	}
+
+	public function allowAdd()
+	{
+		$this->can_add = true;
+		
+		return $this;
+	}
+
+	public function canEdit(): bool
+	{
+		return $this->can_edit;
+	}
+
+	public function canAdd(): bool
+	{
+		return $this->can_add;
 	}
 
 	public function getFieldOrderBy()
@@ -89,8 +117,11 @@ final class Repeater
 	public function getColumnsWithActions(): array
 	{
 		$columns = $this->getColumns();
-		
-		array_push($columns, (new RepeaterActions($this->relation))->align('right'));
+
+		if($this->can_edit)
+		{
+			array_push($columns, (new RepeaterActions($this->relation))->align('right'));
+		}
 
 		return $columns;
 	}

@@ -46,7 +46,7 @@ class Table extends Component
                 $data_row[] = $this->_getDataRow(clone $column, $row);
 			}
             			
-            $registers[] = ['registers' => $data_row];
+            $registers[] = ['registers' => $data_row, 'original' => $row];
         }
 
         return $registers ?? [];

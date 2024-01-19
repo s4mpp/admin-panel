@@ -36,14 +36,15 @@ final class ReportResult
 
 	public function getColumns(): array
 	{
-		if(!empty($this->columns))
-		{
-			return $this->columns;
-		}
+		return $this->columns;
+		
+		// if(!empty($this->columns))
+		// {
+		// }
 
-		return [
-			Column::text('Título', 'title'),
-			Column::text('Valor', 'value')
-		];
+		// return [
+		// 	Column::text('Título', 'title'),
+		// 	Column::text('Valor', 'value')
+		// ];
 	}
 }

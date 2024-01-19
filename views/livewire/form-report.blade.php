@@ -6,11 +6,15 @@
 		<div class="mt-3 divide-y divide-gray-300">
 			@foreach($fields as $field)
 				<div class=" py-3">
-					{{ $field->render() }}
+					{{ $field->render($filters) }}
 				</div>
 			@endforeach
 		</div>
 		<x-button full type="submit" className="mt-4 btn-primary">GERAR RELATÓRIO</x-button>
+		
+		<div class="text-center mt-4">
+			<button type="button" wire:click.prevent="resetFilter" class="text-red-500 text-sm font-semibold">Limpar</button>
+		</div>
 	</form>
 
 	@foreach($search_fields ?? [] as $search)
@@ -18,14 +22,8 @@
 						
 			@livewire('select-search', [
 				'model' => $search->getModelName(),
-				'field_to_search' => 'name',
+				'field_to_search' => $search->getFieldToSearch(),
 				'field_to_update' => $search->getField(),
-				
-
-				// 'model' => $search->getModel(),
-				// 'field_to_search' => $search->getModelField(),
-				// 'field_to_update' => $search->getName(),
-				// 'repeater' => $search->getRepeater(),
 			], key('search-'.$search->getField()))
 		</x-modal>
 	@endforeach

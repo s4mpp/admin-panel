@@ -4,18 +4,19 @@ namespace S4mpp\AdminPanel\Filter;
 
 class Period extends Filter
 {
-	// protected string $alpine_expression = '{start: null, end: null}';
-
 	public function render()
 	{
 		return view('admin::filter.period', ['filter' => $this]);
 	}
 
-	public function getInitialValue()
+	public function getInitialValue(): array
 	{
 		return ['start' => null, 'end' => null];
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function filter($term, $query)
 	{
 		self::query($query, $this->getField(), $term['start'], $term['end']);

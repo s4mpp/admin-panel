@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Livewire;
 
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 use S4mpp\AdminPanel\Factories\Column;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
@@ -16,6 +17,8 @@ class Report extends Component
 	
 	private $report;
 
+	public $filter_descriptions = [];
+
 	protected $listeners = ['filterReport'];
 	
 	public function mount(string $report_name, string $resource_name)
@@ -29,7 +32,7 @@ class Report extends Component
     {
 		$this->_setResource($this->resource_name);
 
-		$this->_loadReport();
+		$this->report = $this->resource->getReport($this->report_name);
 	}
 
 	public function render()
@@ -41,14 +44,34 @@ class Report extends Component
 
 	public function filterReport(array $params)
 	{
+		$this->reset('filter_descriptions');
+
         $this->filter_term = $params['filters'] ?? null;
 
-		$this->dispatchBrowserEvent('filter-complete');
-	}
+		foreach($this->report->getFields() as $filter)
+		{
+			$term = $this->filter_term[$filter->getField()] ?? null;
+			
+			/**
+			 * DUPLICATED
+			 */
+			if(!$term || empty($term))
+			{
+				continue;
+			}
 
-	private function _loadReport()
-	{
-		$this->report = $this->resource->getReport($this->report_name);
+			$description_result = $filter->getDescriptionResult($term);
+	
+			if(!$description_result)
+			{
+				continue;
+			}
+	
+			$this->filter_descriptions[] = $filter->getTitle().': '.$description_result;
+		}
+
+		$this->dispatchBrowserEvent('filter-complete');
+
 	}
 
 	private function _getResults()
@@ -66,15 +89,44 @@ class Report extends Component
 		{
 			$model = $result->getModel() ?? $this->resource->getModel();
 
-			$values = $model::{$result->getMethod()}($this->filter_term);
+			$registers = $model::{$result->getMethod()}(collect($this->filter_term));
+
+			$columns = $result->getColumns();
+
+			$values = $this->_response($registers, $columns);
 
 			$results[] = [
 				'title' => $result->getTitle(),
-				'columns' => $result->getColumns(),
+				'columns' => $columns,
 				'values' => collect($values)
 			];
 		}
 
 		return $results;
+	}
+
+	private function _response(Collection $registers, array $columns)
+	{
+		$fields = [];
+
+		foreach($columns as $column)
+		{
+			$fields[] = $column->getField();
+		}
+
+		$registers->map(function($register) use ($fields)
+		{
+			return $register->only($fields);
+		});
+
+		$sort_by = end($fields);
+
+		if($sort_by)
+		{
+			$registers = $registers->sortByDesc(end($fields));
+		}
+
+		return $registers;
+		
 	}
 }
