@@ -19,7 +19,7 @@ final class Section
 		{
 			$slug = $this->createSlug($title);
 
-			throw_if(($slug == Navigation::MAIN_SECTION), '"'.Navigation::MAIN_SECTION.'" is reserved werd for sections');
+			throw_if(($slug == Navigation::MAIN_SECTION), '"'.Navigation::MAIN_SECTION.'" is reserved word for sections');
 		}
 	}
 

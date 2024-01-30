@@ -37,7 +37,7 @@ abstract class Navigation
 			}
 		}
 
-		return $pages;
+		return $pages ?? [];
 	}
 
 	public static function getMenu(): array

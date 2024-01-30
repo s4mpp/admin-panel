@@ -47,7 +47,7 @@ class UserResource extends Resource
         return [            
             ItemView::text('Nome', 'name'),
             
-            ItemView::email('E-mail', 'email'),
+            ItemView::text('E-mail', 'email'),
             
             ItemView::boolean('Ativo', 'is_active'),
         ];

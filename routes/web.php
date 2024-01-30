@@ -25,12 +25,12 @@ if($prefix)
  */
 $route->group(function()
 {
-	// Route::controller(AdminController::class)->group(function()
-	// {
-	// 	Routes::identifier('admin-panel')
-	// 	->authGroup(config('admin.2fa', false))
-	// 	->forgotAndRecoveryPaszzswordGroup();
-	// });
+	Route::controller(AdminController::class)->group(function()
+	{
+		Routes::identifier('admin-panel')
+		->authGroup(config('admin.2fa', false))
+		->forgotAndRecoveryPasswordGroup();
+	});
 
 	Route::redirect('/', 'entrar');
 });

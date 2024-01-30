@@ -168,6 +168,18 @@ trait CanHaveSubForm
 
 	private function _setRepeaters()
 	{
-		$this->repeaters = $this->resource->getRepeaters();
+		$all_repeaters = $this->resource->getRepeaters();
+
+		foreach($all_repeaters as $repeater)
+		{
+			if(!$repeater->canAdd() && !$repeater->canEdit())
+			{
+				continue;
+			}
+
+			$repeaters[] = $repeater;
+		}
+
+		$this->repeaters = $repeaters ?? [];
 	}
 }
