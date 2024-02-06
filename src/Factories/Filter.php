@@ -15,22 +15,22 @@ abstract class Filter
 		return (new Period($title, $field));
 	}
 
-	public static function multiple(
-		string $title,
-		string $field,
-		array | Collection | EloquentCollection $options,
-		string $value_collection = null,
-		string $key_collection = null)
-	{
-		return (new Multiple($title, $field, $options, $value_collection, $key_collection));
-	}
+	// public static function multiple(
+	// 	string $title,
+	// 	string $field,
+	// 	array | Collection | EloquentCollection $options,
+	// 	string $value_collection = null,
+	// 	string $key_collection = null)
+	// {
+	// 	return (new Multiple($title, $field, $options, $value_collection, $key_collection));
+	// }
 
-	public static function search(
-		string $title,
-		string $field,
-		string $model,
-		string $model_field = null)
-	{
-		return (new Search($title, $field, $model, $model_field));
-	}
+	// public static function search(
+	// 	string $title,
+	// 	string $field,
+	// 	string $model,
+	// 	string $model_field = null)
+	// {
+	// 	return (new Search($title, $field, $model, $model_field));
+	// }
 }

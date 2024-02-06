@@ -10,44 +10,67 @@ abstract class CustomAction
 {
 	use Titleable, Slugable;
 
-	protected $register;
+	private string $success_message = 'Ação concluída com sucesso.';
 
+	// protected $register;
+
+	// DANGEROUS
+	//----------------------------------------------------------------
 	private ?string $message_confirmation = null;
-
+	
 	private bool $has_confirmation = false;
-
+	
 	private bool $is_danger = false;
 	
-	private ?bool $is_disabled = null;
-
-	private $disabled_callback;
-
-	private ?string $disabled_message = null;
-
-	/**
-	 *
-	 * @deprecated
-	 */
-	private array $permissions = [];
+	//----------------------------------------------------------------
 	
-	private array $roles = [];
+	// DISABLED
+	private ?bool $is_disabled = null;
+	
+	private $disabled_callback;
+	
+	private ?string $disabled_message = null;
+	
+	//----------------------------------------------------------------
+
+	// /**
+	//  *
+	//  * @deprecated
+	//  */
+	// private array $permissions = [];
+	
+	// private array $roles = [];
 
 	public function __construct(private string $title)
 	{
 		$this->createSlug($title);
 	}
 
-	public function setRegister($register)
+	public function setSuccessMessage($success_message)
 	{
-		$this->register = $register;
+		$this->success_message = $success_message;
 
 		return $this;
 	}
-
-	public function getRegister()
+	
+	public function getSuccessMessage(array $result = null)
 	{
-		return $this->register;
+		$message =  Str::replaceArray('?', $result, $this->success_message);
+
+		return Str::of($message)->inlineMarkdown();
 	}
+
+	// public function setRegister($register)
+	// {
+	// 	$this->register = $register;
+
+	// 	return $this;
+	// }
+
+	// public function getRegister()
+	// {
+	// 	return $this->register;
+	// }
 
 	public function confirm(string $message_confirmation = 'Tem certeza?')
 	{
@@ -68,35 +91,35 @@ abstract class CustomAction
 		return $this->has_confirmation;
 	}
 
-	public function getNameModalConfirmation(): string
-	{
-		return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug()));
-	}
+	// public function getNameModalConfirmation(): string
+	// {
+	// 	return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug()));
+	// }
 
-	public function renderModalConfirmation()
-	{
-		return view('admin::custom-actions.modal-confirmation', ['action' => $this]);
-	}
+	// public function renderModalConfirmation()
+	// {
+	// 	return view('admin::custom-actions.modal-confirmation', ['action' => $this]);
+	// }
 
-	public function renderButtonWithConfirmation()
-	{
-		return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
-	}
+	// public function renderButtonWithConfirmation()
+	// {
+	// 	return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
+	// }
 
-	public function renderButtonDisabled()
-	{
-		return view('admin::custom-actions.buttons.disabled', ['action' => $this]);
-	}
+	// public function renderButtonDisabled()
+	// {
+	// 	return view('admin::custom-actions.buttons.disabled', ['action' => $this]);
+	// }
 
-	public function getTargetWindow(): ?string
-	{
-		if(method_exists($this, 'isNewTab'))
-		{
-			return ($this->isNewTab() ? '_blank' : null);
-		}
+	// public function getTargetWindow(): ?string
+	// {
+	// 	if(method_exists($this, 'isNewTab'))
+	// 	{
+	// 		return ($this->isNewTab() ? '_blank' : null);
+	// 	}
 
-		return null;
-	}
+	// 	return null;
+	// }
 
 	public function danger()
 	{
@@ -149,47 +172,47 @@ abstract class CustomAction
 		return $this->disabled_message ?? 'Função não disponível no momento';
 	}
 
-	public function roles(...$roles)
-	{
-		$this->roles = $roles;
+	// public function roles(...$roles)
+	// {
+	// 	$this->roles = $roles;
 
-		return $this;
-	}
+	// 	return $this;
+	// }
 
-	final public function getRolesForAccess(): array
-	{
-		$roles = $this->roles ?? [];
+	// final public function getRolesForAccess(): array
+	// {
+	// 	$roles = $this->roles ?? [];
 		
-		if(empty($roles) && config('admin.strict_permissions'))
-		{
-			throw new \Exception('Custom Action "'.$this->getName().'" has no roles (using Strict Permissions)');
-		}
+	// 	if(empty($roles) && config('admin.strict_permissions'))
+	// 	{
+	// 		throw new \Exception('Custom Action "'.$this->getName().'" has no roles (using Strict Permissions)');
+	// 	}
 
-		return $roles;
-	}
+	// 	return $roles;
+	// }
 
-	/**
-	 * @deprecated
-	 */
-	public function permissions(...$permissions)
-	{
-		$this->permissions = $permissions;
+	// /**
+	//  * @deprecated
+	//  */
+	// public function permissions(...$permissions)
+	// {
+	// 	$this->permissions = $permissions;
 
-		return $this;
-	}
+	// 	return $this;
+	// }
 
-	/**
-	 * @deprecated
-	 */
-	public function getPermissionsForAccess(): array
-	{
-		$permissions = $this->permissions;
+	// /**
+	//  * @deprecated
+	//  */
+	// public function getPermissionsForAccess(): array
+	// {
+	// 	$permissions = $this->permissions;
 
-		if(empty($permissions) && config('admin.strict_permissions'))
-		{
-			throw new \Exception('Custom action "'.$this->getTitle().'" has no permissions (using Strict Permissions)');
-		}
+	// 	if(empty($permissions) && config('admin.strict_permissions'))
+	// 	{
+	// 		throw new \Exception('Custom action "'.$this->getTitle().'" has no permissions (using Strict Permissions)');
+	// 	}
 
-		return $permissions;
-	}
+	// 	return $permissions;
+	// }
 }

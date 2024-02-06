@@ -16,8 +16,8 @@ final class Card
 		return $this->elements;
 	}
 
-	public function render($data, $register = null)
+	public function render()
 	{
-		return view('admin::elements.card', ['card' => $this, 'data' => $data, 'register' => $register]);
+		return view('admin::elements.card', ['card' => $this]);
 	}
 }

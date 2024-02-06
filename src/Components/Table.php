@@ -4,22 +4,29 @@ namespace S4mpp\AdminPanel\Components;
 
 use Closure;
 use Illuminate\View\Component;
+use S4mpp\AdminPanel\Table\Cell;
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Table extends Component
 {
-    public int $rowspan_empty;
+    public int $rowspan_empty = 0;
 
-    public array $registers;
+    public array $rows = [];
+
 
     /**
      * Create a new component instance.
      */
-    public function __construct(public array $columns, public $collection = [])
+    public function __construct(public array $labels = [], Collection | LengthAwarePaginator | array $collection = [])
     {
-        $this->registers = $this->_mountColumnsData($collection);
+        $this->rows = $this->getRows($labels, $collection);
 
-        $this->rowspan_empty = count($columns) ?? 1;
+
+        // $this->registers = $this->_mountColumnsData($collection);
+
+        // $this->rowspan_empty = count($columns) ?? 1;
     }
 
     /**
@@ -30,46 +37,74 @@ class Table extends Component
         return view('admin::components.table');
     }
 
-    private function _mountColumnsData($collection = null)
+    private function getRows(array $labels, Collection | LengthAwarePaginator | array $collection)
     {
-        if(!$collection)
+        foreach($collection as $register)
         {
-            return [];
-        }
+            $cells = [];
 
-        foreach($collection as $row)
-        {
-            $data_row = [];
-			
-			foreach($this->columns as $column)
-			{            		
-                $data_row[] = $this->_getDataRow(clone $column, $row);
-			}
-            			
-            $registers[] = ['registers' => $data_row, 'original' => $row];
-        }
-
-        return $registers ?? [];
-    }
-
-    private function _getDataRow($column, $row)
-    {
-        $path = explode('.', $column->getField());
-
-        $column->original_data = $row[$path[0]] ?? null;
-
-        if($column->original_data)
-        {
-            array_shift($path);
-
-            foreach($path as $relation)
+            foreach($labels as $label)
             {
-                $column->original_data = $column->original_data[$relation];
+                $field = $label->getField();
+
+                $cells[] = new Cell($label, $register->{$field});
             }
+
+            $rows[] = $cells ?? []; 
         }
 
-        $column->data = $column->hasCallbacks() ? $column->runCallbacks($column->original_data) : $column->original_data;
-
-        return $column;
+        return $rows ?? [];
     }
+
+    
+
+
+
+
+
+
+
+    
+    // private function _mountColumnsData($collection = null)
+    // {
+    //     if(!$collection)
+    //     {
+    //         return [];
+    //     }
+
+    //     foreach($collection as $row)
+    //     {
+    //         $data_row = [];
+			
+	// 		foreach($this->columns as $column)
+	// 		{            		
+    //             $data_row[] = $this->_getDataRow(clone $column, $row);
+	// 		}
+            			
+    //         $registers[] = ['registers' => $data_row, 'original' => $row];
+    //     }
+
+    //     return $registers ?? [];
+    // }
+
+    // private function _getDataRow($column, $row)
+    // {
+    //     $path = explode('.', $column->getField());
+
+    //     $column->original_data = $row[$path[0]] ?? null;
+
+    //     if($column->original_data)
+    //     {
+    //         array_shift($path);
+
+    //         foreach($path as $relation)
+    //         {
+    //             $column->original_data = $column->original_data[$relation];
+    //         }
+    //     }
+
+    //     $column->data = $column->hasCallbacks() ? $column->runCallbacks($column->original_data) : $column->original_data;
+
+    //     return $column;
+    // }
 }

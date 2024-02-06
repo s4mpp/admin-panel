@@ -14,6 +14,8 @@
 		
 	</div>
 	<div class="text-sm font-normal text-slate-700 md:col-span-9 lg:col-span-10 ">
-		{{ $input->renderInput($data, $register) }}
+		@if($view = $input->getView())
+			@include($view)
+		@endif
 	</div>
 </div>

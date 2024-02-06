@@ -3,14 +3,12 @@
 return [
 	'guard' => 'web',
 	
-	'2fa' => false,
+	'prefix' => 'admin-panel',
 
-	'prefix' => 'painel',
-
-	'route_redirect_after_login' => 'dashboard',
+	'route_redirect_after_login' => 'my-account',
 
 	'logo' => [
-		'light' => 'images/logo_dark.png',
+		'light' => 'images/logo_light.png',
 		'dark' => 'images/logo_dark.png'
 	]
 ];

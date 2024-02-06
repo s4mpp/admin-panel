@@ -9,8 +9,10 @@ final class Email extends Input
 {
 	use CanChangeCase;
 
-	public function renderInput(array $data)
-	{
-		return view('admin::input.email', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
-	}
+	protected $view = 'admin::input.email';
+
+	// public function render()
+	// {
+	// 	return view('admin::input.email', ['input' => $this]);
+	// }
 }

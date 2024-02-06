@@ -2,35 +2,79 @@
 
 namespace S4mpp\AdminPanel;
 
-use S4mpp\AdminPanel\Resource;
+use S4mpp\AdminPanel\Settings\Settings;
+use S4mpp\AdminPanel\Resources\Resource;
+
+use S4mpp\AdminPanel\Resources\UserResource;
+use function Orchestra\Testbench\workbench_path;
 
 abstract class AdminPanel
 {
-	public static function getResources(): array
-	{
-		$path = app_path('AdminPanel');
+	private static $resources = [];
 
-		if(!file_exists($path))
+	private static $settings = null;
+
+	public static function loadResources()
+	{
+		$path = workbench_path('app/AdminPanel');
+
+		foreach(new \FileSystemIterator($path) as $file)
 		{
-			return [];
+			$class_name = '\App\AdminPanel\\'.str_replace('.php', '', $file->getFilename());
+
+			self::addResource(new $class_name());
 		}
 
-		$resources = [];
+		self::addResource(new UserResource());
 
-		$files = new \FileSystemIterator($path);
-
-		foreach($files as $file)
-		{
-			array_push($resources, self::getResource(str_replace('.php', '', $file->getFilename())));
-		}
-
-		return $resources;
+		return self::$resources;
 	}
 
-	public static function getResource(string $resource_name): Resource
+	public static function addResource(Resource $resource)
 	{
-		$class_path = '\App\AdminPanel\\'.$resource_name;
-
-		return new $class_path($resource_name);
+		self::$resources[$resource->getSlug()] = $resource;
 	}
+
+	public static function getResource(string $slug): ?Resource
+	{
+		return self::$resources[$slug] ?? null;
+	}
+
+	public static function settings(array $fields_settings = [])
+	{
+		self::$settings = new Settings($fields_settings);
+	}
+
+	public static function getSettings(): ?Settings
+	{
+		return self::$settings;
+	}
+	
+	// public static function getResources(): array
+	// {
+	// 	$path = app_path('AdminPanel');
+
+	// 	if(!file_exists($path))
+	// 	{
+	// 		return [];
+	// 	}
+
+	// 	$resources = [];
+
+	// 	$files = new \FileSystemIterator($path);
+
+	// 	foreach($files as $file)
+	// 	{
+	// 		array_push($resources, self::getResource(str_replace('.php', '', $file->getFilename())));
+	// 	}
+
+	// 	return $resources;
+	// }
+
+	// public static function getResource(string $resource_name): Resource
+	// {
+	// 	$class_path = '\App\AdminPanel\\'.$resource_name;
+
+	// 	return new $class_path($resource_name);
+	// }
 }

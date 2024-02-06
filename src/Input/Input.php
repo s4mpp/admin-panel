@@ -9,7 +9,8 @@ use S4mpp\AdminPanel\Traits\HasDefaultText;
 
 abstract class Input
 {
-	use HasDefaultText, Titleable;
+	// use HasDefaultText, 
+	use Titleable;
 
 	private ?string $prefix = 'data';
 	
@@ -17,17 +18,17 @@ abstract class Input
 			
 	private $prepare_for_form = null;
 	
-	private $prepare_for_save = null;
+	// private $prepare_for_save = null;
 
 	private ?string $description = null;
 
 	function __construct(private string $title, private string $name)
 	{}
 
-	public function getName(): string
-	{
-		return $this->name;
-	}
+	// public function getName(): string
+	// {
+	// 	return $this->name;
+	// }
 	
 	public function getDescription(): ?string
 	{
@@ -53,19 +54,24 @@ abstract class Input
 		return $this;
 	}
 
-	public function unique()
-	{
-		$this->rules('unique');
+	// public function unique()
+	// {
+	// 	$this->rules('unique');
 		
-		return $this;
+	// 	return $this;
+	// }
+
+	public function getView(): string
+	{
+		return $this->view ?? null;
 	}
 
-	public function render(array $data, $register = null)
+	public function render()
 	{
 		return view('admin::input.field', [
 			'input' => $this,
-			'register' => $register,
-			'data' => $data,
+			// 'register' => $register,
+			// 'data' => $data,
 		]);
 	}
 
@@ -74,17 +80,17 @@ abstract class Input
 		return in_array('required', $this->rules);
 	}
 
-	public function prepareForSave(callable $callback)
-	{
-		$this->prepare_for_save = $callback;
+	// public function prepareForSave(callable $callback)
+	// {
+	// 	$this->prepare_for_save = $callback;
 
-		return $this;
-	}
+	// 	return $this;
+	// }
 
-	public function getPrepareForSave()
-	{
-		return $this->prepare_for_save;
-	}
+	// public function getPrepareForSave()
+	// {
+	// 	return $this->prepare_for_save;
+	// }
 
 	public function prepareForForm(callable $callback)
 	{
@@ -98,23 +104,23 @@ abstract class Input
 		return $this->prepare_for_form;
 	}
 
-	public function getRules(string $table, int $register_id = null): array
-	{
-		foreach($this->rules as $rule)
-		{
-			switch($rule)
-			{
-				case 'unique':
-					$rules[] = Rule::unique($table)->ignore($register_id);
-					break;
+	// public function getRules(string $table, int $register_id = null): array
+	// {
+	// 	foreach($this->rules as $rule)
+	// 	{
+	// 		switch($rule)
+	// 		{
+	// 			case 'unique':
+	// 				$rules[] = Rule::unique($table)->ignore($register_id);
+	// 				break;
 					
-				default:
-					$rules[] = $rule;	
-			}
-		}
+	// 			default:
+	// 				$rules[] = $rule;	
+	// 		}
+	// 	}
 		
-		return $rules ?? [];
-	}
+	// 	return $rules ?? [];
+	// }
 
 	public function rules(string ...$rules)
 	{
@@ -126,22 +132,22 @@ abstract class Input
 		return $this;
 	}
 
-	public function notRequired()
-	{
-		$this->_removeRule('required');
+	// public function notRequired()
+	// {
+	// 	$this->_removeRule('required');
 		
-		$this->rules('nullable');
+	// 	$this->rules('nullable');
 
-		return $this;
-	}
+	// 	return $this;
+	// }
 
-	private function _removeRule(string $rule)
-	{
-		$key = array_search($rule, $this->rules);
+	// private function _removeRule(string $rule)
+	// {
+	// 	$key = array_search($rule, $this->rules);
 		
-		if($key !== false)
-		{
-			unset($this->rules[$key]);
-		}
-	}
+	// 	if($key !== false)
+	// 	{
+	// 		unset($this->rules[$key]);
+	// 	}
+	// }
 }

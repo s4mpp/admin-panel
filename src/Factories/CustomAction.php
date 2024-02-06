@@ -18,15 +18,15 @@ abstract class CustomAction
 		return (new Link($title, $url));
 	}
 
-	public static function method(string $title, string $controller, string $method)
-	{
-		return (new Method($title, $controller, $method));
-	}
+	// public static function method(string $title, string $controller, string $method)
+	// {
+	// 	return (new Method($title, $controller, $method));
+	// }
 
-	public static function view(string $title, string $view)
-	{
-		return (new View($title, $view));
-	}
+	// public static function view(string $title, string $view)
+	// {
+	// 	return (new View($title, $view));
+	// }
 
 	public static function update(string $title, array $data)
 	{
@@ -43,14 +43,14 @@ abstract class CustomAction
 		return (new Livewire($title, $component));
 	}
 	
-	public static function prompt(string $title, string $field, string $question)
-	{
-		return (new Prompt($title, $question, $field));
-	}
+	// public static function prompt(string $title, string $question, string $field = 'answer')
+	// {
+	// 	return (new Prompt($title, $question, $field));
+	// }
 
-	public static function recoveryPassword(string $controller)
-	{
-		return (new Method('Enviar link de recuperação de senha', $controller, 'sendLinkRecoveryPassword'))
-			->confirm('Tem certeza que deseja gerar uma nova senha para este usuário?');
-	}
+	// public static function recoveryPassword(string $controller)
+	// {
+	// 	return (new Method('Enviar link de recuperação de senha', $controller, 'sendLinkRecoveryPassword'))
+	// 		->confirm('Tem certeza que deseja gerar uma nova senha para este usuário?');
+	// }
 }

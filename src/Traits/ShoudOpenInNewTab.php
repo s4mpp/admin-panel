@@ -17,4 +17,9 @@ trait ShoudOpenInNewTab
 	{
 		return $this->new_tab;
 	}
+
+	public function getTargetWindow(): ?string
+	{
+		return $this->new_tab ? '_blank' : null;
+	}
 }

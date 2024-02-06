@@ -1,6 +1,6 @@
 <form action="{{ $action->getUrl() }}" method="POST" target="{{ $action->getTargetWindow() }}">
 	@csrf
-	@method($method)
+	@method($action->getMethod())
 	
 	<button type="submit" 
 		x-on:click="dropdownCustomActions = false"

@@ -1,7 +1,18 @@
-<x-card title="{{ $card->getTitle() }}" :padding=false className="border bg-white">
+<fieldset>
+	<legend>{{ $card->getTitle() }}</legend>
+	
 	<div class="divide-y">
 		@foreach($card->getElements() as $element)
-			{{ $element->render($data, $register) }}
+			{{ $element->render() }}
 		@endforeach
 	</div>
-</x-card>
+</fieldset>
+
+
+{{-- <x-card title="{{ $card->getTitle() }}" :padding=false className="border bg-white">
+	<div class="divide-y">
+		@foreach($card->getElements() as $element)
+			{{ $element->render() }}
+		@endforeach
+	</div>
+</x-card> --}}

@@ -4,7 +4,7 @@
     "authors": [
         {
             "name": "Samuel P.",
-            "email": "S4mpp.dev@gmail.com"
+            "email": "s4mpp.dev@gmail.com"
         }
     ],
     "autoload": {
@@ -15,11 +15,9 @@
     "require": {
         "php": "^8.1",
         "laravel/framework": "^10.0",
-        "s4mpp/laraguard": "^1.0",
-        "s4mpp/element": "^1.0",
-        "s4mpp/format": "^1.0",
         "livewire/livewire": "^2.0",
-        "s4mpp/heroicons": "^1.0"
+        "s4mpp/laraguard": "v2.x-dev",
+        "s4mpp/element": "v2.x-dev"
     },
     "extra": {
         "laravel": {
@@ -30,5 +28,34 @@
                 "Setting": "S4mpp\\AdminPanel\\Facades\\Setting"
             }
         }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.15",
+        "phpunit/phpunit": "^10.5",
+        "nunomaduro/collision": "^7.8"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "S4mpp\\AdminPanel\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/",
+            "Database\\Seeders\\": "workbench/database/seeders/",
+            "App\\AdminPanel\\": "workbench/app/AdminPanel/",
+            "App\\Models\\": "workbench/app/Models/"
+        }
+    },
+    "scripts": {
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ],
+        "lint": [
+            "@php vendor/bin/phpstan analyse"
+        ]
     }
 }

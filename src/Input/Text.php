@@ -11,6 +11,8 @@ final class Text extends Input
 
 	private $mask = null;
 
+	protected $view = 'admin::input.text';
+
 	public function mask(string $mask)
 	{
 		$this->mask = $mask;
@@ -23,8 +25,8 @@ final class Text extends Input
 		return $this->mask;
 	}
 
-	public function renderInput(array $data)
-	{
-		return view('admin::input.text', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
-	}
+	// public function render()
+	// {
+	// 	return view('admin::input.text', ['input' => $this]);
+	// }
 }

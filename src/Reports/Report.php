@@ -7,12 +7,13 @@ use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Reports\ReportResult;
+use S4mpp\AdminPanel\Utils\Finder;
 
 final class Report
 {
 	use Titleable, Slugable;
 
-	private $model;
+	// private $model;
 
 	private array $possible_results = [];
 
@@ -23,10 +24,10 @@ final class Report
 		return $this;
 	}
 
-	public function setModel($model)
-	{
-		$this->model = $model;
-	}
+	// public function setModel($model)
+	// {
+	// 	$this->model = $model;
+	// }
 
 	public function result(string $title, string $model = null, string $method = null, array $columns = [])
 	{
@@ -44,7 +45,7 @@ final class Report
 
 	public function getFields(): array
 	{
-		return Utils::getOnlyOf($this->fields, Filter::class);
+		return Finder::onlyOf($this->fields, Filter::class);
 	}
 
 	public function getPossibleResults(): array
@@ -52,8 +53,8 @@ final class Report
 		return $this->possible_results;
 	}
 
-	public function getRouteName(string $resource): string
-	{
-		return 'admin.'.$resource.'.report.'.$this->slug;
-	}
+	// public function getRouteName(string $resource): string
+	// {
+	// 	return 'admin.'.$resource.'.report.'.$this->slug;
+	// }
 }

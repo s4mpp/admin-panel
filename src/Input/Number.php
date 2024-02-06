@@ -14,10 +14,12 @@ final class Number extends Input
 
 	private int | float $max = self::MAX_NUMBER;
 
-	public function renderInput(array $data)
-	{
-		return view('admin::input.number', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
-	}
+	protected $view = 'admin::input.number';
+
+	// public function render()
+	// {
+	// 	return view('admin::input.number', ['input' => $this]);
+	// }
 
 	public function step(int | float $step)
 	{

@@ -9,6 +9,8 @@ final class Textarea extends Input
 {
 	use CanChangeCase;
 
+	protected $view = 'admin::input.textarea';
+
 	function __construct(private string $title, private string $name, private int $rows = 4)
 	{
 		parent::__construct($title, $name);
@@ -19,8 +21,8 @@ final class Textarea extends Input
 		return $this->rows;
 	}
 
-	public function renderInput(array $data)
-	{
-		return view('admin::input.textarea', ['input' => $this, 'required' => $this->isRequired(), 'data' => $data]);
-	}
+	// public function render()
+	// {
+	// 	return view('admin::input.textarea', ['input' => $this]);
+	// }
 }

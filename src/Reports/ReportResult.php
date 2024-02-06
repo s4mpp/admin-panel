@@ -4,6 +4,7 @@ namespace S4mpp\AdminPanel\Reports;
 
 use S4mpp\AdminPanel\Column\Column as AdminColumn;
 use S4mpp\AdminPanel\Factories\Column;
+use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Traits\Titleable;
 
 final class ReportResult
@@ -27,9 +28,9 @@ final class ReportResult
 		return $this->model;
 	}
 
-	public function addColumn(AdminColumn $column)
+	public function addColumn(Label $label)
 	{
-		$this->columns[] = $column;
+		$this->columns[] = $label;
 
 		return $this;
 	}
@@ -37,14 +38,5 @@ final class ReportResult
 	public function getColumns(): array
 	{
 		return $this->columns;
-		
-		// if(!empty($this->columns))
-		// {
-		// }
-
-		// return [
-		// 	Column::text('Título', 'title'),
-		// 	Column::text('Valor', 'value')
-		// ];
 	}
 }

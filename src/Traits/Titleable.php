@@ -11,6 +11,6 @@ trait Titleable
 
 	public function getTitle(): string
 	{
-		return is_null($this->title) ? 'No title' : $this->title;
+		return is_null($this->title ?? null) ? 'No title' : $this->title;
 	}
 }
