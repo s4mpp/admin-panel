@@ -1,1 +1,0 @@
-{{ $value?->format($format)  }}

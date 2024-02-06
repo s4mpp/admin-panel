@@ -65,6 +65,19 @@ class ResourceController extends Controller
 		return Laraguard::layout('admin::resources.read', compact('resource', 'register', 'custom_actions'));
 	}
 
+	public function delete()
+	{
+		$path = request()->route()->action['as'];
+		
+		$path_steps = explode('.', $path);
+
+		$resource =  AdminPanel::getResource($path_steps[2]);
+
+		//----------------------------------------------------------------
+
+		// delete
+	}
+
 	public function report(string $slug)
 	{
 		$path = request()->route()->action['as'];
@@ -79,6 +92,7 @@ class ResourceController extends Controller
 
 		return Laraguard::layout('admin::resources.report', compact('resource', 'report'));
 	}
+	
 
 	public function customActionCallback()
 	{
@@ -86,6 +100,11 @@ class ResourceController extends Controller
 	}
 
     public function customActionUpdate()
+	{
+
+	}
+
+    public function customActionView()
 	{
 
 	}

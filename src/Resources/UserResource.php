@@ -33,11 +33,13 @@ class UserResource extends Resource
             
             })->setSuccessMessage('Resultado: "?" em ?. Usuário: **?**. Está correto?'),
 
-            CustomAction::link('Open a link', 'https://www.example.com'),
+            CustomAction::link('Open a link', 'https://www.example.com')->disabled(true),
             
             CustomAction::update('Change name', ['name' => rand()]),
             
             CustomAction::livewire('Livewire example', 'livewire-example'),
+            
+            CustomAction::view('View example'),
         ];
     }
 
@@ -47,6 +49,18 @@ class UserResource extends Resource
             Label::text('Nome', 'name')->strong(),
             
             Label::text('E-mail', 'email'),
+
+            Label::longText('Nome', 'name'),
+            
+            Label::markDown('Nome', 'name'),
+            
+            Label::badge('Nome', 'name'),
+            
+            Label::boolean('Nome', 'name'),
+            
+            Label::date('Created at', 'created_at'),
+            
+            Label::dateTIme('Created at', 'created_at'),
         ];
     }
 
@@ -54,8 +68,20 @@ class UserResource extends Resource
     {
         return [
 			Label::text('Nome', 'name')->strong(),
+            
+            Label::text('E-mail', 'email'),
 
-			Label::text('E-mail', 'email'),
+            Label::longText('Nome', 'name'),
+            
+            Label::markDown('Nome', 'name'),
+            
+            Label::badge('Nome', 'name'),
+            
+            Label::boolean('Nome', 'name'),
+            
+            Label::date('Created at', 'created_at'),
+            
+            Label::dateTime('Created at', 'created_at'),
         ];
     }
 

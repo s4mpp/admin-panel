@@ -18,8 +18,8 @@ final class Actions extends Label
 		return $this->actions;
 	}
 
-	public function render($content = null)
+	public function showContent($content = null)
 	{
-		return view('admin::labels.actions', ['actions' => $this->actions, 'content' => $content]);
+		return view('admin::labels.actions', ['value' => $content, 'actions' => $this->getActions()]);
 	}
 }

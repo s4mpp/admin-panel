@@ -5,7 +5,7 @@ return [
 	
 	'prefix' => 'admin-panel',
 
-	'route_redirect_after_login' => 'my-account',
+	'route_redirect_after_login' => 'dashboard',
 
 	'logo' => [
 		'light' => 'images/logo_light.png',

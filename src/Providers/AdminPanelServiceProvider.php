@@ -76,6 +76,8 @@ class AdminPanelServiceProvider extends ServiceProvider
 			$module->addPage('Create', 'create')->action('create');
 			$module->addPage('Update', 'update/{id}');
 			$module->addPage('Read', 'read/{id}')->action('read');
+			$module->addPage('Delete', 'delete/{id}')->action('delete')->method('DELETE');
+			
 			$module->addPage('Report', 'report/{slug}')->action('report');
 
 			foreach($resource->getCustomActions() as $custom_action)
@@ -87,6 +89,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 				
 				$module->addPage($custom_action->getTitle())
 					->middleware(CustomAction::class)
+					->method($custom_action->getMethod())
 					->action($action);
 			}
 		}

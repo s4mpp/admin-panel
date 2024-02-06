@@ -91,36 +91,6 @@ abstract class Input
 	// 	]));
 	// }
 
-	// public static function select(
-	// 	string $title,
-	// 	string $field,
-	// 	array | Collection | EloquentCollection $options,
-	// 	string $value_collection = null,
-	// 	string $key_collection = null)
-	// {
-	// 	return (new Select($title, $field, $options, $value_collection, $key_collection));
-	// }
-
-	// public static function checkbox(
-	// 	string $title,
-	// 	string $field,
-	// 	array | Collection | EloquentCollection $options,
-	// 	string $value_collection = null,
-	// 	string $key_collection = null)
-	// {
-	// 	return (new Checkbox($title, $field, $options, $value_collection, $key_collection))->rules('array');
-	// }
-
-	// public static function radio(
-	// 	string $title,
-	// 	string $field,
-	// 	array | Collection | EloquentCollection $options,
-	// 	string $value_collection = null,
-	// 	string $key_collection = null)
-	// {
-	// 	return (new Radio($title, $field, $options, $value_collection, $key_collection));
-	// }
-
 	// public static function search(
 	// 	string $title,
 	// 	string $field,
@@ -129,4 +99,45 @@ abstract class Input
 	// {
 	// 	return (new Search($title, $field, $relationship, $model_field));
 	// }
+
+	public static function select(
+		string $title,
+		string $field,
+		// array | Collection | EloquentCollection $options,
+		// string $value_collection = null,
+		// string $key_collection = null
+		)
+	{
+		return (new Select($title, $field
+		// , $options, $value_collection, $key_collection
+		));
+	}
+
+	public static function checkbox(
+		string $title,
+		string $field,
+		// array | Collection | EloquentCollection $options,
+		// string $value_collection = null,
+		// string $key_collection = null
+		)
+	{
+		return (new Checkbox($title, $field
+		// , $options, $value_collection, $key_collection
+		))->rules('array');
+	}
+
+	public static function radio(
+		string $title,
+		string $field,
+		// array | Collection | EloquentCollection $options,
+		// string $value_collection = null,
+		// string $key_collection = null
+		)
+	{
+		return (new Radio($title, $field
+		// , $options, $value_collection, $key_collection
+		));
+	}
+
+	
 }

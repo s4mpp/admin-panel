@@ -23,10 +23,10 @@ abstract class CustomAction
 	// 	return (new Method($title, $controller, $method));
 	// }
 
-	// public static function view(string $title, string $view)
-	// {
-	// 	return (new View($title, $view));
-	// }
+	public static function view(string $title, string $view = null)
+	{
+		return (new View($title, $view));
+	}
 
 	public static function update(string $title, array $data)
 	{

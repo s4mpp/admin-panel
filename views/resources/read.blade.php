@@ -23,7 +23,7 @@
 
 	<div class="space-y-4 mb-4">
 		@foreach($resource->getRead() ?? [] as $element)
-			{{ $element->render() }}
+			{{ $element->renderItemView($register->{$element->getField()}) }}
 		@endforeach
 	</div>
 

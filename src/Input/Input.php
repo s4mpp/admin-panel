@@ -61,7 +61,7 @@ abstract class Input
 	// 	return $this;
 	// }
 
-	public function getView(): string
+	public function getView(): ?string
 	{
 		return $this->view ?? null;
 	}

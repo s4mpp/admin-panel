@@ -8,20 +8,19 @@ trait CallRouteAction
 {
 	private ?string $action = null;
 
-	// public function getRouteName(): string
-	// {
-	// 	return 'custom_action.'.$this->getSlug();
-	// }
+	private string $method = 'GET';
 
-	// public function getUrl(): string
-	// {
-	// 	return route($this->getRouteName(), ['id' => $this->register->id]);
-	// }
+	public function getMethod(): string
+	{
+		return $this->method;
+	}
 
-	// public function getRouteMethod(): string
-	// {
-	// 	return Str::lower($this->method_action);
-	// }
+	public function setMethod(string $method)
+	{
+		$this->method = $method;
+
+		return $this;
+	}
 
 	public function getAction(): ?string
 	{

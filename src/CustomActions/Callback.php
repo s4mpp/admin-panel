@@ -14,7 +14,7 @@ final class Callback extends CustomAction
 {
 	//use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
 
-	use RenderButtonForm, ShoudOpenInNewTab, CallRouteAction;
+	use ShoudOpenInNewTab, CallRouteAction, RenderButtonForm;
 
 	public function __construct(private string $title, private $callback)
 	{

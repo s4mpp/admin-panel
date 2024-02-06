@@ -56,6 +56,13 @@
         ],
         "lint": [
             "@php vendor/bin/phpstan analyse"
+        ],
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "test": [
+            "@php vendor/bin/phpunit"
         ]
     }
 }

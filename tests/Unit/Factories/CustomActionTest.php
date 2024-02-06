@@ -2,13 +2,19 @@
 
 namespace S4mpp\AdminPanel\Tests\Factories\Unit;
 
-use S4mpp\AdminPanel\CustomActions\Callback;
+use Illuminate\Mail\Markdown;
+use S4mpp\AdminPanel\Labels\Badge;
+use S4mpp\AdminPanel\Labels\Boolean;
 use S4mpp\AdminPanel\Tests\TestCase;
-use S4mpp\AdminPanel\CustomActions\CustomAction;
+use S4mpp\AdminPanel\Labels\Datetime;
+use S4mpp\AdminPanel\Labels\LongText;
 use S4mpp\AdminPanel\CustomActions\Link;
-use S4mpp\AdminPanel\CustomActions\Livewire;
 use S4mpp\AdminPanel\CustomActions\Update;
+use S4mpp\AdminPanel\CustomActions\Callback;
+use S4mpp\AdminPanel\CustomActions\Livewire;
+use S4mpp\AdminPanel\CustomActions\CustomAction;
 use S4mpp\AdminPanel\Factories\CustomAction as CustomActionFactory;
+use S4mpp\AdminPanel\Labels\Text;
 
 class CustomActionTest extends TestCase
 {

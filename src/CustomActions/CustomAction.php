@@ -106,10 +106,10 @@ abstract class CustomAction
 	// 	return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
 	// }
 
-	// public function renderButtonDisabled()
-	// {
-	// 	return view('admin::custom-actions.buttons.disabled', ['action' => $this]);
-	// }
+	public function renderButtonDisabled()
+	{
+		return view('admin::custom-actions.buttons.disabled', ['action' => $this]);
+	}
 
 	// public function getTargetWindow(): ?string
 	// {

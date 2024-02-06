@@ -13,7 +13,7 @@ final class Update extends CustomAction
 {
 	// use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
 
-	use RenderButtonForm, ShoudOpenInNewTab, CallRouteAction;
+	use ShoudOpenInNewTab, RenderButtonForm, CallRouteAction;
 
 	public function __construct(private string $title, private array $data)
 	{

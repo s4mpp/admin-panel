@@ -24,6 +24,14 @@ class AdminServiceProvider extends ServiceProvider
                 Input::date('Date', 'date'),
                 
                 Input::email('E-mail', 'e_mail'),
+            ]),
+            
+            new Card('Inputs multiples', [
+                Input::select('Select', 'select'),
+                
+                Input::checkbox('Check', 'check'),
+                
+                Input::email('Radio', 'radio'),
             ])
         ]);
     }

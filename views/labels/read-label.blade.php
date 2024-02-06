@@ -11,5 +11,7 @@
 		@else
 			{{ $item->getValue($register) }}
 		@endif --}}
+
+		{{ $item->showContent($content) }}
 	</div>
 </div>

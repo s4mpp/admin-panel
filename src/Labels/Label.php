@@ -50,9 +50,9 @@ abstract class Label
 		return $this->alignment;
 	}
 
-	public function render()
+	public function renderItemView($content = null)
 	{
-		return view('admin::labels.read-label', ['item' => $this]);
+		return view('admin::labels.read-label', ['item' => $this, 'content' => $content]);
 	}
 
 	public function showContent($content = null)

@@ -45,14 +45,14 @@ abstract class Resource
 
 		$columns = Finder::onlyOf($this->table(), Label::class);
 
-		// foreach($this->getActions() as $action)
-        // {
-        //     $actions[$action] = '#';//$this->resource->getRouteName($action);
-        // }
-
 		if($actions = $this->getActions())
 		{
-			array_push($columns, (new Actions('Actions', 'id'))->setActions($actions));
+			foreach($actions as $action)
+			{
+				$routes_action[$action] = $this->getRouteName($action);
+			}
+
+			array_push($columns, (new Actions('Actions', 'id'))->setActions($routes_action));
 		}
 
 		return $columns;
