@@ -85,14 +85,14 @@ class UserResource extends Resource
         ];
     }
 
-    // public function form()
-    // {
-    //     return [
-	// 		Input::text('Nome', 'name')->uppercase(),
+    public function form()
+    {
+        return [
+			Input::text('Nome', 'name')->uppercase(),
 
-	// 		Input::email('E-mail', 'email')->unique()->uppercase(),
-    //     ];
-    // }
+			Input::email('E-mail', 'email')->uppercase(),
+        ];
+    }
 
     public function reports()
     {

@@ -38,4 +38,5 @@ class ReportTest extends TestCase
 
 		$this->assertCount(1, $report->getPossibleResults());
 	}
+	
 }

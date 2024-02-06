@@ -13,24 +13,4 @@ class AdminPanelTest extends TestCase
 
 		$this->assertIsArray($resources_loaded);
 	}
-
-	public function test_add_resource()
-	{
-
-	}
-
-	public function test_get_resource()
-	{
-
-	}
-
-	public function test_add_settings()
-	{
-
-	}
-
-	public function test_get_settings()
-	{
-
-	}
 }

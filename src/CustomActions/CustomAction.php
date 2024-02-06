@@ -164,7 +164,7 @@ abstract class CustomAction
 			return $this->is_disabled;
 		}
 
-		return (is_callable($this->disabled_callback)) ? call_user_func($this->disabled_callback, $this->register) : false;
+		return (is_callable($this->disabled_callback)) ? call_user_func($this->disabled_callback, $this->register ?? null) : false;
 	}
 
 	public function getDisabledMessage(): ?string

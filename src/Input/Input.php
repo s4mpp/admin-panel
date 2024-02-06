@@ -10,7 +10,7 @@ use S4mpp\AdminPanel\Traits\HasDefaultText;
 abstract class Input
 {
 	// use HasDefaultText, 
-	use Titleable;
+	use Titleable, HasDefaultText;
 
 	private ?string $prefix = 'data';
 	

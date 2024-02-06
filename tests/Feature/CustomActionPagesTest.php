@@ -9,7 +9,7 @@ use Workbench\Database\Factories\UserFactory;
 
 class CustomActionPagesTest extends TestCase
 {
-	public function customActionRoutesProvider()
+	public static function customActionRoutesProvider()
 	{
 		return [
 			'change name' => ['/admin/users/change-name', 'PUT'],

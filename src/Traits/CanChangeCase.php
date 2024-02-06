@@ -17,10 +17,10 @@ trait CanChangeCase
 	{
 		$this->uppercase = true;
 
-		$this->prepareForSave(function(string $value = null)
-		{
-			return Str::upper($value);
-		});
+		// $this->prepareForSave(function(string $value = null)
+		// {
+		// 	return Str::upper($value);
+		// });
 
 		return $this;
 	}

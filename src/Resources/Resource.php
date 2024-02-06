@@ -259,11 +259,11 @@ abstract class Resource
 		return Finder::onlyOf($this->customActions(), CustomAction::class);
 	}
 
-	final public function getReports()
+	final public function getReports(): ?array
 	{
 		if(!method_exists($this, 'reports'))
 		{
-			return [];
+			return null;
 		}
 
 		return Finder::onlyOf($this->reports(), Report::class);

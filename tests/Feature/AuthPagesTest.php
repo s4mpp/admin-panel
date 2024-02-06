@@ -8,7 +8,7 @@ use S4mpp\Laraguard\Laraguard;
 
 class AuthPagesTest extends TestCase
 {
-	public function authRoutesProvider()
+	public static function authRoutesProvider()
 	{
 		return [
 			'signin' => ['/admin/signin', 'Sign In'],
