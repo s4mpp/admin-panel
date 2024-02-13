@@ -249,6 +249,7 @@ abstract class Resource
 	// 	return $filters ?? [];
     // }
 
+
 	final public function getCustomActions()
 	{
 		if(!method_exists($this, 'customActions'))
@@ -271,7 +272,7 @@ abstract class Resource
 
 	final public function getReport(string $slug_report): ?Report
 	{
-		foreach($this->reports() as $report)
+		foreach($this->getReports() as $report)
         {
             if($report->getSlug() == $slug_report)
             {

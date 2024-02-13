@@ -79,9 +79,14 @@ class UserResource extends Resource
             
             Label::boolean('Nome', 'name'),
             
+            Label::file('File', 'email'),
+            
+            Label::file('Relation', 'name'),
+            
             Label::date('Created at', 'created_at'),
             
             Label::dateTime('Created at', 'created_at'),
+            
         ];
     }
 

@@ -1,12 +1,9 @@
 <?php
 
-namespace S4mpp\AdminPanel\ItemView;
+namespace S4mpp\AdminPanel\Labels;
 
-use S4mpp\AdminPanel\Resource;
-use Illuminate\Database\Eloquent\Model;
-use S4mpp\AdminPanel\ItemView\ItemView;
 
-final class Relation extends ItemView
+final class Relation extends Label
 {
 	// private $resource;
 

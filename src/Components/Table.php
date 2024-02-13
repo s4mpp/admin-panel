@@ -50,7 +50,7 @@ class Table extends Component
                 $cells[] = new Cell($label, $register->{$field});
             }
 
-            $rows[] = $cells ?? []; 
+            $rows[] = $cells; 
         }
 
         return $rows ?? [];

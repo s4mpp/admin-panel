@@ -13,6 +13,8 @@ class FormReport extends Component
 	//  IsFilterForm, HasModalSearchInForm;
 
 	private $report;
+
+	public string $report_slug;
 	
 	// public $filters;
 	

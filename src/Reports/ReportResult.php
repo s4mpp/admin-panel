@@ -14,9 +14,7 @@ final class ReportResult
 	private array $columns = [];
 
 	function __construct(private string $title, public ?string $model = null, public ?string $method = null)
-	{
-		return $this;
-	}
+	{}
 
 	public function getMethod(): ?string
 	{

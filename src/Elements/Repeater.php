@@ -33,8 +33,6 @@ final class Repeater
 	function __construct(private string $title, private string $relation)
 	{
 		$this->createSlug($title);
-
-		return $this;
 	}
 
 	// public function order(string $field = 'id', string $direction = 'DESC')

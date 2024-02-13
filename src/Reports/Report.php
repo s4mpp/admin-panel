@@ -20,8 +20,6 @@ final class Report
 	function __construct(private string $title, private array $fields)
 	{
 		$this->createSlug($title);
-
-		return $this;
 	}
 
 	// public function setModel($model)

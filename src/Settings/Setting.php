@@ -8,7 +8,7 @@ class Setting
 {
 	public static function get(string $key = null)
 	{
-		$field = SettingModel::where('key', $key)->first();
+		$field = SettingModel::query()->where('key', $key)->first();
 
 		return $field?->value ?? null;
 	}

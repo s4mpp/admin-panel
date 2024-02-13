@@ -3,12 +3,13 @@
 namespace S4mpp\AdminPanel\CustomActions;
 
 use Illuminate\Support\Str;
+use S4mpp\AdminPanel\Traits\CallRouteAction;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 
 abstract class CustomAction
 {
-	use Titleable, Slugable;
+	use Titleable, Slugable, CallRouteAction;
 
 	private string $success_message = 'Ação concluída com sucesso.';
 

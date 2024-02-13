@@ -3,6 +3,7 @@
 namespace S4mpp\AdminPanel\Factories;
 
 use S4mpp\Format\Facades\Format;
+use S4mpp\AdminPanel\Labels\File;
 use S4mpp\AdminPanel\Labels\Text;
 use S4mpp\AdminPanel\Labels\Badge;
 use S4mpp\AdminPanel\Labels\Boolean;
@@ -45,6 +46,11 @@ abstract class Label
 	public static function boolean(string $title, string $field)
 	{
 		return (new Boolean($title, $field));
+	}
+
+	public static function file(string $title, string $field)
+	{
+		return (new File($title, $field));
 	}
 
 	// public static function decimal(string $title, string $field, int $decimals = 2)

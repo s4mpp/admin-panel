@@ -82,7 +82,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 
 			foreach($resource->getCustomActions() as $custom_action)
 			{
-				if(!method_exists($custom_action, 'getAction') || !$action = $custom_action->getAction())
+				if(!$action = $custom_action->getAction())
 				{
 					continue;
 				}

@@ -23,6 +23,8 @@ class FormResource extends Component
 
 	public array $childs = [];
 
+	public $register;
+
 	// protected $listeners = ['setField', 'setChildField', 'setChildEmpty'];
 		
 	public function mount(string $resource_slug, $register = null)
