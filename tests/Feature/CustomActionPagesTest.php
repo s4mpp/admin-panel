@@ -15,7 +15,6 @@ class CustomActionPagesTest extends TestCase
 			'change name' => ['/admin/users/change-name', 'PUT'],
 			'run callback' => ['/admin/users/run-callback', 'PUT'],
 			'view example' => ['/admin/users/view-example', 'GET'],
-			
 		];
 	}
 
@@ -24,9 +23,11 @@ class CustomActionPagesTest extends TestCase
 	 */
 	public function test_can_access_pages(string $url, string $method)
 	{
-		$user = UserFactory::new()->create();
+		$admin = UserFactory::new()->create();
 
-		$response = $this->actingAs($user)->{$method}($url);
+		$register = UserFactory::new()->create();
+
+		$response = $this->actingAs($admin)->{$method}($url.'/'.$register->id);
 
 		$response->assertOk();
 	}
@@ -36,7 +37,9 @@ class CustomActionPagesTest extends TestCase
 	 */
 	public function test_can_access_pages_not_logged(string $url, string $method)
 	{
-		$response = $this->{$method}($url);
+		$register = UserFactory::new()->create();
+
+		$response = $this->{$method}($url.'/'.$register->id);
 
 		$response->assertStatus(302);
 		$response->assertRedirect('/admin/signin');

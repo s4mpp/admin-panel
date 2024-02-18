@@ -16,7 +16,7 @@ class CustomAction
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $params): Response
+    public function handle(Request $request, Closure $next): Response
     {
         // $params_exp = explode('.', $params);
 

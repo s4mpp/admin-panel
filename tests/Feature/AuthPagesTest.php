@@ -12,7 +12,7 @@ class AuthPagesTest extends TestCase
 	{
 		return [
 			'signin' => ['/admin/signin', 'Sign In'],
-			// 'password recovery' => ['/admin/password-recovery', 'Password Recovery']
+			'password recovery' => ['/admin/password-recovery', 'Password recovery']
 		];
 	}
 
@@ -25,5 +25,12 @@ class AuthPagesTest extends TestCase
 
 		$response->assertOk();
 		$response->assertSee($title);
+	}
+
+	public function test_do_not_can_access_page_register()
+	{
+		$response = $this->get('/admin/signup');
+
+		$response->assertNotFound();
 	}
 }

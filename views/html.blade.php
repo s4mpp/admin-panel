@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full {{ $color ?? 'bg-white' }}">
+<html class="h-full">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,15 +13,15 @@
 	@endif
 
 	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	<link rel="stylesheet" href="{{ asset('vendor/admin-panel/style.css') }}">
 	
-	@vite(['resources/css/app.css'])
+	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+	
 
 	@livewireStyles
 </head>
 <body class="h-full">
-	@yield('main-content')
-
-	@vite(['resources/js/app.js'])
+	@yield('body')
 
 	@livewireScripts
 </body>

@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Tests;
 
+use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,4 +12,9 @@ abstract class TestCase extends BaseTestCase
 {
     use WithWorkbench, InteractsWithViews;
 	use RefreshDatabase;
+
+	protected function defineEnvironment($app): void
+    {
+        Config::set('database.default', 'testing');
+    }
 }

@@ -32,13 +32,15 @@ abstract class Finder
 
 	public static function onlyOf(array $items = null, ...$classes): array
 	{
-		foreach($items ?? [] as $element)
+		$classes =  array_unique($classes);
+
+		foreach($items ?? [] as $item)
 		{
 			foreach($classes as $class)
 			{
-				if(is_subclass_of($element, $class) || is_a($element, $class))
+				if(is_subclass_of($item, $class) || is_a($item, $class))
 				{
-					$elements[] = $element;
+					$elements[] = $item;
 				}
 			}
 

@@ -1,19 +1,12 @@
-@extends(config('admin.layout_extends', 'admin::html'), ['color' => 'bg-gray-50'])
+@extends($panel->layout()->getHtmlFile())
+
+@section('title', $page_title)
 
 @php
-	$guard = config('admin.guard', 'web');
-
-	$menu = \S4mpp\AdminPanel\Navigation::getMenu();
-	
-	$route_start = config('admin.route_redirect_after_login');
-
-	$route_home = config('admin.route_home', false);
-
 	$logo_admin_light = config('admin.logo.light');
-
 @endphp
 
-@section('main-content')
+@section('body')
 
 <div x-data="{ menuOfCanvasMobile: false }" @keydown.window.escape="menuOfCanvasMobile = false">
 	<div x-cloak x-show="menuOfCanvasMobile" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
@@ -134,19 +127,25 @@
 				  <p class="truncate text-sm font-medium text-gray-900" role="none">{{ auth()->guard(config('admin.guard'))->user()->email }}</p>
 				</div>
 				<div class="py-1 " role="none">
-					@if($route_home)
+					{{-- @if($route_home)
 						<a href="{{ route($route_home) }}" target="_blank" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 							Acessar site
 						</a>
-					@endif
+					@endif --}}
 
-					@if(!empty(\S4mpp\AdminPanel\Settings::isActivated()) && \S4mpp\AdminPanel\Utils::checkRoles(\S4mpp\AdminPanel\Settings::getRolesForAccess()))
+					{{-- @if(!empty(\S4mpp\AdminPanel\Settings::isActivated()) && \S4mpp\AdminPanel\Utils::checkRoles(\S4mpp\AdminPanel\Settings::getRolesForAccess()))
 						<a href="{{ route('admin.settings.index') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 							Configurações
 						</a>
-					@endif
+					@endif --}}
 					
-					<a href="{{ route(S4mpp\Laraguard\Routes::identifier('admin-panel')->logout()) }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+					<a href="{{ $my_account_url }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+					  Minha conta
+					  
+					  
+				  </a>
+				  
+					<a href="{{ $logout_url }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 					  Sair
 					  
 					  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -164,7 +163,7 @@
 		<div class="px-0 sm:px-6 lg:px-8">
 			<div class="mb-5 px-4 sm:px-0 ">
 				<div>
-					@isset($breadcrumbs)
+					{{-- @isset($breadcrumbs)
 						@php 
 							if($section_resource = $resource->getSection())
 							{
@@ -216,7 +215,7 @@
 								</li>
 							</ol>
 						</nav>
-					@endisset
+					@endisset --}}
 				</div>
 				
 				<div class="mt-4 flex items-center justify-between">
@@ -232,7 +231,7 @@
 			@yield('content')
 		</div>
 
-		<x-notification />
+
 	  </main>
 	</div>
 </div>

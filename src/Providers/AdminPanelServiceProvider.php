@@ -63,6 +63,11 @@ class AdminPanelServiceProvider extends ServiceProvider
         $this->app->singleton('setting', fn() => new Setting);
 
 		$admin_panel = Laraguard::panel('Admin panel', 'admin');
+
+		$admin_panel->layout()
+		->setHtmlFile('admin::html')
+		->setAuthFile('admin::auth')
+		->setLayoutFile('admin::layout');
 		
 		$admin_panel->addModule('Dashboard')->addIndex();
 		$admin_panel->addModule('Settings')->addIndex('admin::settings');
@@ -87,8 +92,8 @@ class AdminPanelServiceProvider extends ServiceProvider
 					continue;
 				}
 				
-				$module->addPage($custom_action->getTitle())
-					->middleware(CustomAction::class)
+				$module->addPage($custom_action->getTitle(), $custom_action->getSlug().'/{id}')
+					->middleware([CustomAction::class])
 					->method($custom_action->getMethod())
 					->action($action);
 			}

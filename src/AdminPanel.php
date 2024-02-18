@@ -12,7 +12,7 @@ abstract class AdminPanel
 {
 	private static $resources = [];
 
-	private static $settings = null;
+	private static ?Settings $settings = null;
 
 	public static function loadResources()
 	{
@@ -49,32 +49,4 @@ abstract class AdminPanel
 	{
 		return self::$settings;
 	}
-	
-	// public static function getResources(): array
-	// {
-	// 	$path = app_path('AdminPanel');
-
-	// 	if(!file_exists($path))
-	// 	{
-	// 		return [];
-	// 	}
-
-	// 	$resources = [];
-
-	// 	$files = new \FileSystemIterator($path);
-
-	// 	foreach($files as $file)
-	// 	{
-	// 		array_push($resources, self::getResource(str_replace('.php', '', $file->getFilename())));
-	// 	}
-
-	// 	return $resources;
-	// }
-
-	// public static function getResource(string $resource_name): Resource
-	// {
-	// 	$class_path = '\App\AdminPanel\\'.$resource_name;
-
-	// 	return new $class_path($resource_name);
-	// }
 }
