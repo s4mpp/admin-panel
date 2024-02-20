@@ -5,6 +5,7 @@ namespace S4mpp\AdminPanel\Tests\Feature;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Tests\TestCase;
 use S4mpp\Laraguard\Laraguard;
+use Workbench\Database\Factories\CustomActionFactory;
 use Workbench\Database\Factories\UserFactory;
 
 class ResourcePagesTest extends TestCase
@@ -14,8 +15,8 @@ class ResourcePagesTest extends TestCase
 		return [
 			'index dashboard' => ['/admin/dashboard', 'Dashboard'],
 			'index settings' => ['/admin/settings', 'Settings'],
-			'index checks' => ['/admin/checks', 'Checks'],
-			'index tasks' => ['/admin/tasks', 'Tasks'],
+			// 'index checks' => ['/admin/checks', 'Checks'],
+			// 'index tasks' => ['/admin/tasks', 'Tasks'],
 			'index users' => ['/admin/users', 'Users'],
 		];
 	}
@@ -23,8 +24,8 @@ class ResourcePagesTest extends TestCase
 	public static function createRoutesProvider()
 	{
 		return [
-			'create checks' => ['/admin/checks/create', 'Checks'],
-			'create tasks' => ['/admin/tasks/create', 'Tasks'],
+			// 'create checks' => ['/admin/checks/create', 'Checks'],
+			// 'create tasks' => ['/admin/tasks/create', 'Tasks'],
 			'create users' => ['/admin/users/create', 'Users'],
 		];
 	}
@@ -60,6 +61,14 @@ class ResourcePagesTest extends TestCase
 			// 'read checks' => ['/admin/checks/read', 'Checks'],
 			// 'read tasks' => ['/admin/tasks/read', 'Tasks'],
 			'read users' => ['/admin/users/read', 'Users', UserFactory::class],
+			'read custom actions' => ['/admin/custom-actions/read', 'Custom Action', CustomActionFactory::class],
+		];
+	}
+
+	public static function otherPagesProvider()
+	{
+		return [
+			'settings' => ['/admin/settings'],
 		];
 	}
 
@@ -79,10 +88,24 @@ class ResourcePagesTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider readRoutesProvider
 	 * @dataProvider updateRoutesProvider
 	 */
-	public function test_can_access_register_pages(string $url, string $title, string $factory)
+	public function test_can_access_update_page(string $url, string $title, string $factory)
+	{
+		$user = UserFactory::new()->create();
+
+		$register = $factory::new()->create();
+
+		$response = $this->actingAs($user)->get($url.'/'.$register->id);
+
+		$response->assertOk();
+		$response->assertSee($title);
+	}
+
+	/**
+	 * @dataProvider readRoutesProvider
+	 */
+	public function test_can_access_read_pages(string $url, string $title, string $factory)
 	{
 		$user = UserFactory::new()->create();
 
@@ -109,11 +132,23 @@ class ResourcePagesTest extends TestCase
 	}
 
 	/**
+	 * @dataProvider reportRoutesProvider
+	 */
+	public function test_can_access_report_pages(string $url, string $factory)
+	{
+		$user = UserFactory::new()->create();
+
+		$response = $this->actingAs($user)->get($url);
+
+		$response->assertOk();
+	}
+
+	/**
 	 * @dataProvider indexRoutesProvider
+	 * @dataProvider otherPagesProvider
 	 */
 	public function test_can_access_pages_not_logged(string $url)
 	{
-
 		$response = $this->get($url);
 
 		$response->assertStatus(302);

@@ -4,6 +4,7 @@
 	@if($filter_descriptions)
 		<div class="-mt-5 -mx-3">
 			{{-- Duplicated --}}
+			
 			<div class="min-w-full px-4 sm:px-6 py-2 flex justify-between items-center bg-gray-50 ">
 				<div>
 					<span class="text-sm font-semibold text-gray-600 mr-3">Filtros: </span>

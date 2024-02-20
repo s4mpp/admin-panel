@@ -1,10 +1,10 @@
 <?php
 
-namespace App\AdminPanel;
+namespace Workbench\App\AdminPanel;
 
 use S4mpp\AdminPanel\Resources\Resource;
 
 class EmptyResource extends Resource
 {
-
+    
 }

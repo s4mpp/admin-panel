@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" bootstrap="vendor/autoload.php" executionOrder="depends,defects" beStrictAboutOutputDuringTests="true" failOnRisky="true" failOnWarning="true" cacheDirectory=".phpunit.cache">
+<phpunit 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" 
+bootstrap="vendor/autoload.php" 
+executionOrder="depends,defects" 
+beStrictAboutOutputDuringTests="true"
+ failOnRisky="true" 
+ failOnWarning="true" 
+ cacheDirectory=".phpunit.cache">
   <testsuites>
     <testsuite name="Feature">
       <directory suffix="Test.php">tests/Feature</directory>
@@ -13,6 +21,14 @@
       <directory suffix=".php">src</directory>
     </include>
   </source>
+  <coverage>
+    <report>
+      <html 
+        outputDirectory="" 
+        lowUpperBound="30" 
+        highLowerBound="60" />
+    </report>
+  </coverage>
   <php>
       <env name="DB_CONNECTION" value="testing"/>
       <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>

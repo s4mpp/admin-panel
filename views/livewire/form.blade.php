@@ -112,6 +112,6 @@
 				], key($search->getName()))
 			</x-modal>
 		@endforeach --}}
-	</div>
+	{{-- </div> --}}
 </div>
 

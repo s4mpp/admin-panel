@@ -17,6 +17,7 @@ use S4mpp\AdminPanel\Commands\CreateAdmin;
 use S4mpp\AdminPanel\Livewire\InputSearch;
 use S4mpp\AdminPanel\Livewire\FormResource;
 use S4mpp\AdminPanel\Livewire\FormSettings;
+use S4mpp\AdminPanel\Livewire\ResultReport;
 use S4mpp\AdminPanel\Livewire\SelectSearch;
 use S4mpp\AdminPanel\Livewire\TableRepeater;
 use S4mpp\AdminPanel\Livewire\TableResource;
@@ -25,6 +26,8 @@ use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
 use S4mpp\AdminPanel\Controllers\ResourceController;
 use S4mpp\AdminPanel\Controllers\SettingsController;
+use S4mpp\AdminPanel\Livewire\ReportForm;
+use S4mpp\AdminPanel\Livewire\ReportResult;
 
 class AdminPanelServiceProvider extends ServiceProvider 
 {
@@ -37,10 +40,10 @@ class AdminPanelServiceProvider extends ServiceProvider
 		Livewire::component('form-resource', FormResource::class);
 		Livewire::component('form-settings', FormSettings::class);
 		// Livewire::component('select-search', SelectSearch::class);
-		// Livewire::component('admin-report', Report::class);
+		Livewire::component('result-report', ReportForm::class);
 		// Livewire::component('input-search', InputSearch::class);
 		// Livewire::component('form-filter', FormFilter::class);
-		Livewire::component('form-report', FormReport::class);
+		Livewire::component('form-report', ReportResult::class);
 
 		Blade::componentNamespace('S4mpp\\AdminPanel\\Components', 'admin');
  			
@@ -60,8 +63,6 @@ class AdminPanelServiceProvider extends ServiceProvider
 
 	public function register()
     {
-        $this->app->singleton('setting', fn() => new Setting);
-
 		$admin_panel = Laraguard::panel('Admin panel', 'admin');
 
 		$admin_panel->layout()
@@ -79,7 +80,7 @@ class AdminPanelServiceProvider extends ServiceProvider
 				->addIndex('admin::resources.index');
 
 			$module->addPage('Create', 'create')->action('create');
-			$module->addPage('Update', 'update/{id}');
+			$module->addPage('Update', 'update/{id}')->action('update');
 			$module->addPage('Read', 'read/{id}')->action('read');
 			$module->addPage('Delete', 'delete/{id}')->action('delete')->method('DELETE');
 			

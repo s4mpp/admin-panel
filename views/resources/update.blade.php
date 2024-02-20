@@ -1,4 +1,4 @@
-@extends('admin::crud.resource')
+@extends('laraguard::layout')
 
 @section('title', 'Editar')
 
@@ -6,10 +6,10 @@
 	
 @endsection 
 
-@section('content-resource')
+@section('content')
 
 	@livewire('form-resource', [
-		'resource_name' => $resource->getName(),
+		'resource' => $resource,
 		'register' => $register
 	])
 @endsection

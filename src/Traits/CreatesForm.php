@@ -12,14 +12,18 @@ use Illuminate\Support\ValidatedInput;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use S4mpp\AdminPanel\Traits\HasModalSearchInForm;
+use S4mpp\AdminPanel\Utils\Finder;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait CreatesForm 
 {
 	// use WithFileUploads, HasModalSearchInForm;
 		
 	// public $register;
 	
-	// public array $data = [];
+	public array $data = [];
 	
 	private $form;
 
@@ -40,6 +44,16 @@ trait CreatesForm
 	// 	$this->emitSelf('$refresh');
 	// }
 
+	private function setInitialData($register, $form)
+	{
+		$inputs = Finder::findElementsRecursive($form, Input::class);
+
+		foreach($inputs as $input)
+		{
+			$this->data[$input->getName()] = $register[$input->getName()] ?? null;
+		}
+	}
+
     public function render()
     {
         return view('admin::livewire.form', [
@@ -53,13 +67,6 @@ trait CreatesForm
 		]);
     }
 
-	// private function _setInitialData()
-	// {
-	// 	foreach(Utils::findElement($this->form, Input::class) as $field)
-	// 	{
-	// 		$this->data[$field->getName()] = $this->_getValueField($field);
-	// 	}
-	// }
 
 	// private function _getValueField(Input $field)
 	// {
@@ -81,13 +88,13 @@ trait CreatesForm
 
 		try
 		{
-			// $fields = Utils::findElement($this->form, Input::class);
+			$fields = Finder::findElement($this->form, Input::class);
 
-			// $fields_validated = $this->_validate($this->data, $fields, $this->register?->id);
+			$fields_validated = $this->_validate($this->data, $fields, $this->register?->id);
 
-			// $register = $this->_fillData($fields, $fields_validated);
+			$register = $this->_fillData($fields, $fields_validated);
 			
-			// return $this->_saving($register, $fields_validated);
+			return $this->_saving($register, $fields_validated);
 		}
 		catch(\Exception $e)
 		{

@@ -5,6 +5,7 @@ namespace S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;
+use S4mpp\AdminPanel\Models\Setting;
 use S4mpp\AdminPanel\Traits\ProtectedByRoles;
 
 final class Settings
@@ -14,7 +15,16 @@ final class Settings
 
 	public function getForm(): array
 	{
-		return Finder::onlyOf($this->fields, Input::class, Card::class);
+		$form = Finder::onlyOf($this->fields, Input::class, Card::class);
+
+		return Finder::fillInCard($form);
+	}
+
+	public static function get(string $key = null)
+	{
+		$field = Setting::query()->where('key', $key)->first();
+
+		return $field?->value ?? null;
 	}
 	
 	

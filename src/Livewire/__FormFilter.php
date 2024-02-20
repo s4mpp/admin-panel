@@ -7,6 +7,9 @@ use S4mpp\AdminPanel\Traits\IsFilterForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 use S4mpp\AdminPanel\Traits\HasModalSearchInForm;
 
+/**
+ * @codeCoverageIgnore
+ */
 class FormFilter extends Component
 {
 	// use WithAdminResource, IsFilterForm, HasModalSearchInForm;

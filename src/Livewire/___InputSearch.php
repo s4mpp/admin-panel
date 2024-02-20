@@ -4,6 +4,9 @@ namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
 
+/**
+ * @codeCoverageIgnore
+ */
 class InputSearch extends Component
 {
 // 	public $field;

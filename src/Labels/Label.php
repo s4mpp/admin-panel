@@ -16,7 +16,7 @@ abstract class Label
 
 	private bool $strong = false;
 
-	private ?string $alignment = null;
+	private ?string $alignment = 'left';
 
 	function __construct(private string $title, private string $field)
 	{}
@@ -50,10 +50,10 @@ abstract class Label
 		return $this->alignment;
 	}
 
-	public function renderItemView($content = null)
-	{
-		return view('admin::labels.read-label', ['item' => $this, 'content' => $content]);
-	}
+	// public function renderItemView($content = null)
+	// {
+	// 	return view('admin::labels.read-label', ['item' => $this, 'content' => $content]);
+	// }
 
 	public function showContent($content = null)
 	{

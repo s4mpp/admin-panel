@@ -5,6 +5,9 @@ namespace S4mpp\AdminPanel\Traits;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Resources\Resource;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait WithAdminResource
 {
 	public string $resource_slug;

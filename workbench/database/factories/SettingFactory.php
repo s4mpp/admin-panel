@@ -6,7 +6,7 @@ use S4mpp\AdminPanel\Models\Setting;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @template TModel of \Workbench\App\Models\Product
+ * @template TModel of \Workbench\App\Setting
  *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<TModel>
  */

@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Unit\Elements;
+namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
 
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Filter\Period;

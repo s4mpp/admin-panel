@@ -5,6 +5,6 @@
 @section('content')
 
 	@livewire('form-resource', [
-		'resource_slug' => $resource->getSlug()
+		'resource' => $resource
 	])
 @endsection

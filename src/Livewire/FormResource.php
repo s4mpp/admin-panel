@@ -5,7 +5,9 @@ namespace S4mpp\AdminPanel\Livewire;
 use Livewire\Component;
 use S4mpp\AdminPanel\Utils;
 use S4mpp\AdminPanel\AdminPanel;
+use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Input\Search;
+use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Support\ValidatedInput;
 use S4mpp\AdminPanel\Hooks\CreateHook;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
@@ -14,6 +16,9 @@ use S4mpp\AdminPanel\Traits\CreatesForm;
 use S4mpp\AdminPanel\Traits\CanHaveSubForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 
+/**
+ * @codeCoverageIgnore
+ */
 class FormResource extends Component
 {
 	use CreatesForm, WithAdminResource;
@@ -23,13 +28,20 @@ class FormResource extends Component
 
 	public array $childs = [];
 
-	public $register;
+	public ?int $id_register = null;
 
 	// protected $listeners = ['setField', 'setChildField', 'setChildEmpty'];
 		
-	public function mount(string $resource_slug, $register = null)
+	public function mount($resource, $register = null)
 	{
-		$this->resource_slug = $resource_slug;
+		$this->resource_slug = $resource->getSlug();
+		
+		$this->resource = $resource;
+
+		$this->id_register = $register ? $register->id : null;
+
+		$this->setInitialData($register?->getAttributes(), $this->resource->getForm());
+
 
 	// 	$this->_setResource($resource_name);
 
@@ -37,8 +49,7 @@ class FormResource extends Component
 
 	// 	$this->form = $this->resource->getForm();
 		
-	// 	$this->register = $this->_getRegister($register);
-		$this->register = null;
+		// $this->register = $this->resource->getRegister($id_register);
 		
 	// 	$this->_setInitialData();
 	}
@@ -47,13 +58,13 @@ class FormResource extends Component
     {
 		$this->loadResource();
 			
-		$this->form = $this->resource->getForm();
+		$this->form = Finder::fillInCard($this->resource->getForm());
 
 		$this->repeaters = $this->resource->getRepeaters();
 
 		foreach($this->repeaters ?? [] as $repeater)
 		{
-			$this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
+			// $this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
 		}
 
     }

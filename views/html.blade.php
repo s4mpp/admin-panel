@@ -14,6 +14,7 @@
 
 	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 	<link rel="stylesheet" href="{{ asset('vendor/admin-panel/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('vendor/element/style.css') }}">
 	
 	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
 	

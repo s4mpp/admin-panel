@@ -12,8 +12,8 @@
 				<div class="clear-both"></div>
 
 				@livewire('form-report', [
-					'resource_slug' => $resource->getSlug(),
-					'report_slug' => $report->getSlug()
+					'resource' => $resource,
+					'report' => $report
 				])
 			</div>
 			<div class="flex-auto">
@@ -21,10 +21,10 @@
 					<span class="font-semibold">Resultado</span>
 				</div>
 				<div class="p-3 mt-2">
-					{{-- @livewire('admin-report', [
-						'resource_name' => $resource->getName(),
-						'report_name' => $report->getSlug()
-					]) --}}
+					@livewire('result-report', [
+						'resource' => $resource,
+						'report' => $report
+					])
 				</div>
 			</div>
 		</div>

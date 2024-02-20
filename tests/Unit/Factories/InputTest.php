@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Factories\Unit;
+namespace S4mpp\AdminPanel\Tests\Unit\Factories;
 
 use S4mpp\AdminPanel\Input\Text;
 use S4mpp\AdminPanel\Inputs\Badge;

@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Resources;
 
+use Illuminate\Support\Facades\App;
 use S4mpp\Laraguard\Base\Panel;
 use S4mpp\Laraguard\Base\Module;
 use S4mpp\AdminPanel\Input\Input;
@@ -16,6 +17,7 @@ use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Elements\Repeater;
 use S4mpp\AdminPanel\ItemView\ItemView;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
+use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 use S4mpp\Laraguard\Laraguard;
 
@@ -63,6 +65,13 @@ abstract class Resource
 		$model = $this->getModel();
 
 		return $model::paginate();
+	}
+
+	public function getRegister(int $id)
+	{
+		$model = $this->getModel();
+
+		return $model::find($id);
 	}
 	
 	// final public function getName(): string
@@ -169,7 +178,7 @@ abstract class Resource
 	
 	final public function getNameModel()
 	{
-		return '\App\Models\\'.$this->name;
+		return '\Workbench\App\Models\\'.$this->name;
 	}
 
 	final public function getModel()
@@ -184,7 +193,7 @@ abstract class Resource
 			return null;
 		}
 
-		return Finder::onlyOf($this->form(), Input::class);
+		return Finder::onlyOf($this->form(), Input::class, Card::class);
 	}
 
 	final public function getRead(): ?array
@@ -194,7 +203,7 @@ abstract class Resource
 			return null;
 		}
 
-		return Finder::onlyOf($this->read(), Label::class);
+		return Finder::fillInCard(Finder::onlyOf($this->read(), Label::class));
 	}
 
 	// final public function getTable(): ?array

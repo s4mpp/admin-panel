@@ -3,6 +3,7 @@ providers:
   - Workbench\App\Providers\AdminServiceProvider
   - S4mpp\AdminPanel\Providers\AdminPanelServiceProvider
   - S4mpp\Laraguard\Providers\LaraguardServiceProvider
+  - S4mpp\Element\Providers\ElementServiceProvider
   - Livewire\LivewireServiceProvider
 
 migrations:
@@ -20,6 +21,7 @@ workbench:
     web: true
     api: false
     commands: false
+    components: true
     views: true
   build: []
   assets: []

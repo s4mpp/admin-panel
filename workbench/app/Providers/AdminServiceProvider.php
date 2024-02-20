@@ -15,10 +15,10 @@ class AdminServiceProvider extends ServiceProvider
     public function register(): void
     {
         AdminPanel::settings([
-            Input::text('Text', 'text'),
+            Input::text('Text', 'text')->mask('99999'),
             Input::textarea('Textarea', 'textarea'),
             Input::decimal('Decimal', 'decimal'),
-            Input::integer('integer', 'integer'),
+            Input::integer('integer', 'integer')->min(0)->max(100)->step(10),
             
             new Card('Card', [
                 Input::date('Date', 'date'),
@@ -31,7 +31,7 @@ class AdminServiceProvider extends ServiceProvider
                 
                 Input::checkbox('Check', 'check'),
                 
-                Input::email('Radio', 'radio'),
+                Input::radio('Radio', 'radio'),
             ])
         ]);
     }

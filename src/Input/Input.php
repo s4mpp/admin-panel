@@ -25,10 +25,10 @@ abstract class Input
 	function __construct(private string $title, private string $name)
 	{}
 
-	// public function getName(): string
-	// {
-	// 	return $this->name;
-	// }
+	public function getName(): string
+	{
+		return $this->name;
+	}
 	
 	public function getDescription(): ?string
 	{

@@ -5,10 +5,15 @@ namespace S4mpp\AdminPanel\Controllers;
 use S4mpp\AdminPanel\Utils;
 use Illuminate\Http\Request;
 use S4mpp\AdminPanel\Resource;
-use S4mpp\AdminPanel\AdminPanel;
-use Illuminate\Routing\Controller;
 use S4mpp\Laraguard\Laraguard;
+use S4mpp\AdminPanel\AdminPanel;
+use S4mpp\AdminPanel\Input\Input;
+use Illuminate\Routing\Controller;
+use S4mpp\AdminPanel\Utils\Finder;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ResourceController extends Controller
 {
     public function __invoke()
@@ -34,6 +39,32 @@ class ResourceController extends Controller
 
 		return Laraguard::layout('admin::resources.create', compact('resource'));
 	}
+
+	public function update(int $id)
+	{
+		$path = request()->route()->action['as'];
+		
+		$path_steps = explode('.', $path);
+
+		$resource =  AdminPanel::getResource($path_steps[2]);
+
+		//----------------------------------------------------------------
+
+		$inputs = Finder::findElementsRecursive($resource->getForm(), Input::class);
+		
+		$fields = array_map(function($input) {
+
+			return $input->getName();
+
+		}, $inputs);
+
+		array_unshift($fields, 'id');
+		
+		$register = $resource->getModel()->select($fields)->findOrFail($id);
+	
+		return Laraguard::layout('admin::resources.update', compact('resource', 'register'));
+	}
+	
 
 	public function read(int $id)
 	{

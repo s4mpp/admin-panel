@@ -3,10 +3,10 @@
 namespace S4mpp\AdminPanel\Tests\Unit;
 
 use S4mpp\AdminPanel\AdminPanel;
-use App\AdminPanel\EmptyResource;
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Tests\TestCase;
 use S4mpp\AdminPanel\Resources\Resource;
+use Workbench\App\AdminPanel\EmptyResource;
 use S4mpp\AdminPanel\Resources\UserResource;
 
 class ResourceTest extends TestCase

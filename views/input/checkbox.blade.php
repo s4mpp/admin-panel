@@ -12,3 +12,6 @@
 		@endforeach
 	</div>
 </x-input> --}}
+<x-element::form.checkbox>
+	
+</x-element::form.checkbox>

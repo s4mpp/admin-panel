@@ -11,17 +11,20 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class Table extends Component
 {
-    public int $rowspan_empty = 0;
+    // public int $rowspan_empty = 0;
 
-    public array $rows = [];
+    // public array $rows = [];
 
 
     /**
      * Create a new component instance.
      */
-    public function __construct(public array $labels = [], Collection | LengthAwarePaginator | array $collection = [])
+    public function __construct(
+        // public array $labels = [], 
+        public Collection | LengthAwarePaginator | array $collection = []
+    )
     {
-        $this->rows = $this->getRows($labels, $collection);
+        // $this->rows = $this->getRows($labels, $collection);
 
 
         // $this->registers = $this->_mountColumnsData($collection);
@@ -37,24 +40,24 @@ class Table extends Component
         return view('admin::components.table');
     }
 
-    private function getRows(array $labels, Collection | LengthAwarePaginator | array $collection)
-    {
-        foreach($collection as $register)
-        {
-            $cells = [];
+    // private function getRows(array $labels, Collection | LengthAwarePaginator | array $collection)
+    // {
+    //     foreach($collection as $register)
+    //     {
+    //         $cells = [];
 
-            foreach($labels as $label)
-            {
-                $field = $label->getField();
+    //         foreach($labels as $label)
+    //         {
+    //             $field = $label->getField();
 
-                $cells[] = new Cell($label, $register->{$field});
-            }
+    //             $cells[] = new Cell($label, $register->{$field});
+    //         }
 
-            $rows[] = $cells; 
-        }
+    //         $rows[] = $cells; 
+    //     }
 
-        return $rows ?? [];
-    }
+    //     return $rows ?? [];
+    // }
 
     
 

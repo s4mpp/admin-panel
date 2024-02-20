@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Unit\Elements;
+namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
 
 use S4mpp\AdminPanel\CustomActions\Link;
 use S4mpp\AdminPanel\Elements\Card;
@@ -10,7 +10,7 @@ use S4mpp\AdminPanel\Tests\TestCase;
 
 class TextTest extends TestCase
 {
-	public function test_create_text()
+	public function test_mask()
 	{
 		$text = new Text('Title', 'field');
 

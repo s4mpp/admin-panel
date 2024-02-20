@@ -12,9 +12,9 @@ class CustomActionPagesTest extends TestCase
 	public static function customActionRoutesProvider()
 	{
 		return [
-			'change name' => ['/admin/users/change-name', 'PUT'],
-			'run callback' => ['/admin/users/run-callback', 'PUT'],
-			'view example' => ['/admin/users/view-example', 'GET'],
+			'change name' => ['/admin/custom-actions/change-name', 'PUT'],
+			'run callback' => ['/admin/custom-actions/run-callback', 'PUT'],
+			'view example' => ['/admin/custom-actions/view-example', 'GET'],
 		];
 	}
 

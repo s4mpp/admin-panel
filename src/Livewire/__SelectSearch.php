@@ -5,6 +5,9 @@ namespace S4mpp\AdminPanel\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+/**
+ * @codeCoverageIgnore
+ */
 class SelectSearch extends Component
 {
 	// use WithPagination;

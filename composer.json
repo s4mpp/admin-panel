@@ -23,10 +23,7 @@
         "laravel": {
             "providers": [
                 "S4mpp\\AdminPanel\\Providers\\AdminPanelServiceProvider"
-            ],
-            "aliases": {
-                "Setting": "S4mpp\\AdminPanel\\Facades\\Setting"
-            }
+            ]
         }
     },
     "require-dev": {
@@ -40,10 +37,7 @@
             "S4mpp\\AdminPanel\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/",
             "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/",
-            "Database\\Seeders\\": "workbench/database/seeders/",
-            "App\\AdminPanel\\": "workbench/app/AdminPanel/",
-            "App\\Models\\": "workbench/app/Models/"
+            "Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "scripts": {

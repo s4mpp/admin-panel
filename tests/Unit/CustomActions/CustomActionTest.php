@@ -1,12 +1,14 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Unit\Elements;
+namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
 
-use S4mpp\AdminPanel\CustomActions\Link;
+use Stringable;
+use Illuminate\View\View;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Filter\Period;
 use S4mpp\AdminPanel\Tests\TestCase;
-use Stringable;
+use S4mpp\AdminPanel\CustomActions\Link;
+use S4mpp\AdminPanel\CustomActions\Callback;
 
 class CustomActionTest extends TestCase
 {
@@ -56,5 +58,31 @@ class CustomActionTest extends TestCase
 
 		$this->assertTrue($custom_action->isDisabled());
 		$this->assertSame('Message disabled callback', $custom_action->getDisabledMessage());
+	}
+
+	public function test_render_button_link()
+	{
+		$action = new Link('Link Action', '#');
+
+		$this->assertInstanceOf(View::class, $action->renderButton());
+	}
+
+	public function test_render_button_form()
+	{
+		$action = new Callback('Link Action', fn() => '');
+
+		$this->assertInstanceOf(View::class, $action->renderButton());
+	}
+
+	public function test_should_open_in_new_tab()
+	{
+		$action = new Callback('Link Action', fn() => '');
+
+		$this->assertNull($action->getTargetWindow());
+
+		$action->newTab();
+
+		$this->assertTrue($action->isNewTab());
+		$this->assertSame('_blank', $action->getTargetWindow());
 	}
 }

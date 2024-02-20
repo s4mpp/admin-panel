@@ -5,3 +5,6 @@
 		@endforeach
 	</div>
 </x-input> --}}
+<x-element::form.radio>
+
+</x-element::form.radio>

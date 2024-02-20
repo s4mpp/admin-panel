@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Factories\Unit;
+namespace S4mpp\AdminPanel\Tests\Unit\Factories;
 
 use Illuminate\Mail\Markdown;
 use S4mpp\AdminPanel\Labels\Badge;

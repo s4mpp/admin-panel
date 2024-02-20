@@ -7,40 +7,52 @@ use Livewire\Component;
 use S4mpp\AdminPanel\Factories\Column;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 
-class Report extends Component
+/**
+ * @codeCoverageIgnore
+ */
+class ReportResult extends Component
 {
-	// use WithAdminResource;
+	use WithAdminResource;
 
-	// public $report_name;
+	private $report;
+
+	public string $report_slug;
 
 	// public ?array $filter_term = null;
 	
-	// private $report;
-
 	// public $filter_descriptions = [];
 
 	// protected $listeners = ['filterReport'];
+
+	public function mount($resource, $report)
+	{
+		$this->resource_slug = $resource->getSlug();
+		
+		$this->resource = $resource;
+
+		$this->report_slug = $report->getSlug();
+	}
 	
-	// public function mount(string $report_name, string $resource_name)
+	// public function mount(string $report_slug, string $resource_name)
 	// {
-	// 	$this->report_name = $report_name;
+	// 	$this->report_slug = $report_slug;
 
 	// 	$this->resource_name = $resource_name;
 	// }
 
-	// public function booted()
-    // {
-	// 	$this->_setResource($this->resource_name);
+	public function booted()
+    {
+		$this->loadResource();
 
-	// 	$this->report = $this->resource->getReport($this->report_name);
-	// }
+		$this->report = $this->resource->getReport($this->report_slug);
+	}
 
-	// public function render()
-	// {
-	// 	return view('admin::livewire.report', [
-	// 		'results' => $this->_getResults(),
-	// 	]);
-	// }
+	public function render()
+	{
+		return view('admin::livewire.report', [
+			// 'results' => $this->_getResults(),
+		]);
+	}
 
 	// public function filterReport(array $params)
 	// {

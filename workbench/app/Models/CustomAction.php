@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace Workbench\App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class CustomAction extends Model
 {
     use HasFactory;
 }

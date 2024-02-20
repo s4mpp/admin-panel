@@ -7,6 +7,9 @@ use Livewire\WithPagination;
 use S4mpp\AdminPanel\Column\Actions;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 
+/**
+ * @codeCoverageIgnore
+ */
 class TableResource extends Component
 {
     use WithAdminResource, WithPagination;

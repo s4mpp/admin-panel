@@ -9,6 +9,7 @@ use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Resources\UserResource;
 use Workbench\Database\Factories\SettingFactory;
 use S4mpp\AdminPanel\Facades\Setting as SettingFacade;
+use S4mpp\AdminPanel\Settings\Settings;
 
 class SettingTest extends TestCase
 {
@@ -16,17 +17,17 @@ class SettingTest extends TestCase
 	{
 		$setting_field = SettingFactory::new()->create();
 
-		$setting_value = Setting::get($setting_field->key);
+		$setting_value = Settings::get($setting_field->key);
 
 		$this->assertSame($setting_field->value, $setting_value);
 	}
 
-	public function test_get_facade()
+	public function test_get_form()
 	{
-		$setting_field = SettingFactory::new()->create();
+		$settings = new Settings();
 
-		$setting_value = SettingFacade::get($setting_field->key);
+		$form = $settings->getForm();
 
-		$this->assertSame($setting_field->value, $setting_value);
+		$this->assertIsArray($form);
 	}
 }

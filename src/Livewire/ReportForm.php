@@ -7,7 +7,10 @@ use S4mpp\AdminPanel\Traits\IsFilterForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 use S4mpp\AdminPanel\Traits\HasModalSearchInForm;
 
-class FormReport extends Component
+/**
+ * @codeCoverageIgnore
+ */
+class ReportForm extends Component
 {
 	use WithAdminResource;
 	//  IsFilterForm, HasModalSearchInForm;
@@ -24,11 +27,13 @@ class FormReport extends Component
 	
 	// protected $listeners = ['setField'];
 
-	public function mount(string $report_slug, string $resource_slug)
+	public function mount($resource, $report)
 	{
-		$this->report_slug = $report_slug;
+		$this->resource_slug = $resource->getSlug();
+		
+		$this->resource = $resource;
 
-		$this->resource_slug = $resource_slug;
+		$this->report_slug = $report->getSlug();
 	}
 	
 	public function booted()

@@ -2,7 +2,7 @@
 
 namespace S4mpp\AdminPanel\Resources;
 
-use App\Models\User;
+use Workbench\App\Models\User;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Factories\Input;
@@ -21,28 +21,6 @@ class UserResource extends Resource
     
     // public $search = ['name' => 'Nome', 'email' => 'E-mail'];
 
-    public function customActions()
-    {
-        return [
-            CustomAction::callback('Run callback', function() {
-                return [
-                    'result' => 'Resultado ok',
-                    'time' => time(),
-                    'name' => 'Samuel'
-                ];
-            
-            })->setSuccessMessage('Resultado: "?" em ?. Usuário: **?**. Está correto?'),
-
-            CustomAction::link('Open a link', 'https://www.example.com')->disabled(true),
-            
-            CustomAction::update('Change name', ['name' => rand()]),
-            
-            CustomAction::livewire('Livewire example', 'livewire-example'),
-            
-            CustomAction::view('View example'),
-        ];
-    }
-
     public function table()
     {
         return [
@@ -50,17 +28,7 @@ class UserResource extends Resource
             
             Label::text('E-mail', 'email'),
 
-            Label::longText('Nome', 'name'),
-            
-            Label::markDown('Nome', 'name'),
-            
-            Label::badge('Nome', 'name'),
-            
-            Label::boolean('Nome', 'name'),
-            
-            Label::date('Created at', 'created_at'),
-            
-            Label::dateTIme('Created at', 'created_at'),
+            Label::dateTime('Cadastrado em', 'created_at'),
         ];
     }
 
@@ -70,23 +38,8 @@ class UserResource extends Resource
 			Label::text('Nome', 'name')->strong(),
             
             Label::text('E-mail', 'email'),
-
-            Label::longText('Nome', 'name'),
             
-            Label::markDown('Nome', 'name'),
-            
-            Label::badge('Nome', 'name'),
-            
-            Label::boolean('Nome', 'name'),
-            
-            Label::file('File', 'email'),
-            
-            Label::file('Relation', 'name'),
-            
-            Label::date('Created at', 'created_at'),
-            
-            Label::dateTime('Created at', 'created_at'),
-            
+            Label::dateTime('Cadastrado em', 'created_at'),
         ];
     }
 
@@ -105,7 +58,7 @@ class UserResource extends Resource
             (new Report('Users registered', [
                 Filter::period('Registered at', 'created_at')
             ]))
-            ->result('Users relation', User::class, 'getUsers')
+            ->result('Usuários cadastrados', User::class, 'getUsers')
         ];
     }
 }

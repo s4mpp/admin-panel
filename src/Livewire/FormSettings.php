@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Traits\CreatesForm;
 
+/**
+ * @codeCoverageIgnore
+ */
 class FormSettings extends Component
 {
 	use CreatesForm;

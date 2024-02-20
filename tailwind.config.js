@@ -4,8 +4,6 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     "./views/**/*.blade.php",
-    "./vendor/s4mpp/element/views/**/*.blade.php",
-    "./vendor/s4mpp/laraguard/views/**/*.blade.php"
   ],
   theme: {
     extend: {

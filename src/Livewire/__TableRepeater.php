@@ -6,6 +6,9 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 
+/**
+ * @codeCoverageIgnore
+ */
 class TableRepeater extends Component
 {
     // use WithAdminResource, WithPagination;

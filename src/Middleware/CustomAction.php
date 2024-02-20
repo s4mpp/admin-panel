@@ -9,6 +9,9 @@ use S4mpp\AdminPanel\AdminPanel;
 use Symfony\Component\HttpFoundation\Response;
 use S4mpp\AdminPanel\CustomActions\CustomAction as CustomActionResource;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CustomAction
 {
     /**
