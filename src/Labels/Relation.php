@@ -2,49 +2,48 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
-
 final class Relation extends Label
 {
-	// private $resource;
+    // private $resource;
 
-	// private string $field_main;
+    // private string $field_main;
 
-	// function __construct(private string $title, private string $field, string $resource, ?string $field_main = 'id')
-	// {
-	// 	$resource_name_exp = explode('\\', $resource);
+    // function __construct(private string $title, private string $field, string $resource, ?string $field_main = 'id')
+    // {
+    // 	$resource_name_exp = explode('\\', $resource);
 
-	// 	$this->resource = new $resource(end($resource_name_exp));
-		
-	// 	$this->field_main = $this->_getMainFieldName($field_main);
+    // 	$this->resource = new $resource(end($resource_name_exp));
 
-	// 	parent::__construct($title, $field);
-	// }
+    // 	$this->field_main = $this->_getMainFieldName($field_main);
 
-	// public function getRoute(): ?string
-	// {
-	// 	return $this->resource->getDefaultRoute();
-	// }
+    // 	parent::__construct($title, $field);
+    // }
 
-	// public function renderView($value, $register)
-	// {
-	// 	$item = $this;
+    // public function getRoute(): ?string
+    // {
+    // 	return $this->resource->getDefaultRoute();
+    // }
 
-	// 	return view('admin::item-view.relation', compact('value', 'item', 'register'));
-	// }
+    // public function renderView($value, $register)
+    // {
+    // 	$item = $this;
 
-	// public function getId(Model $register)
-	// {
-	// 	return $this->undotPath($register, $this->field_main);
-	// }
+    // 	return view('admin::item-view.relation', compact('value', 'item', 'register'));
+    // }
 
-	// private function _getMainFieldName()
-	// {
-	// 	$path = explode('.', $this->field);
+    // public function getId(Model $register)
+    // {
+    // 	return $this->undotPath($register, $this->field_main);
+    // }
 
-	// 	array_pop($path);
+    // private function _getMainFieldName()
+    // {
+    // 	$path = explode('.', $this->field);
 
-	// 	array_push($path, 'id');
+    // 	array_pop($path);
 
-	// 	return join('.', $path);
-	// }
+    // 	array_push($path, 'id');
+
+    // 	return join('.', $path);
+    // }
 }

@@ -10,52 +10,52 @@ use S4mpp\AdminPanel\Traits\HasModalSearchInForm;
 /**
  * @codeCoverageIgnore
  */
-class FormFilter extends Component
+final class FormFilter extends Component
 {
-	// use WithAdminResource, IsFilterForm, HasModalSearchInForm;
+    // use WithAdminResource, IsFilterForm, HasModalSearchInForm;
 
-	// public $filters;
+    // public $filters;
 
-	// private $fields;
-	
-	// public ?int $total_filters = null;
-	
-	// protected $listeners = ['setField'];
+    // private $fields;
 
-	// public function mount(string $resource_name)
-	// {
-	// 	$this->resource_name = $resource_name;
-	// }
-	
-	// public function booted()
+    // public ?int $total_filters = null;
+
+    // protected $listeners = ['setField'];
+
+    // public function mount(string $resource_name)
     // {
-	// 	$this->_setResource($this->resource_name);
-	// }
+    // 	$this->resource_name = $resource_name;
+    // }
 
-	// public function updatedFilters()
-	// {
-	// 	$total = 0;
+    // public function booted()
+    // {
+    // 	$this->_setResource($this->resource_name);
+    // }
 
-	// 	foreach($this->filters as $filter)
-	// 	{
-	// 		$is_empty = (is_array($filter) && empty(array_filter($filter)) || is_null($filter));
- 			
-	// 		if(!$is_empty)
-	// 		{
-	// 			$total++;
-	// 		}
-	// 	}
+    // public function updatedFilters()
+    // {
+    // 	$total = 0;
 
-	// 	$this->total_filters = ($total > 0) ? $total : null;
-	// }
+    // 	foreach($this->filters as $filter)
+    // 	{
+    // 		$is_empty = (is_array($filter) && empty(array_filter($filter)) || is_null($filter));
 
-	// public function render()
-	// {
-	// 	return view('admin::livewire.form-filter', [
-	// 		'fields' => $this->resource->getFilters(),
-	// 		'search_fields' => $this->search_fields,
-	// 		'data_modals' => $this->_getDataModalsAttribute(),
-	// 		'close_modals' => $this->_getCloseModalsAttribute()
-	// 	]);
-	// }
+    // 		if(!$is_empty)
+    // 		{
+    // 			$total++;
+    // 		}
+    // 	}
+
+    // 	$this->total_filters = ($total > 0) ? $total : null;
+    // }
+
+    // public function render()
+    // {
+    // 	return view('admin::livewire.form-filter', [
+    // 		'fields' => $this->resource->getFilters(),
+    // 		'search_fields' => $this->search_fields,
+    // 		'data_modals' => $this->_getDataModalsAttribute(),
+    // 		'close_modals' => $this->_getCloseModalsAttribute()
+    // 	]);
+    // }
 }

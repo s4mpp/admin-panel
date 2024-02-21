@@ -2,184 +2,184 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
-trait CanHaveSubForm 
+trait CanHaveSubForm
 {
-	// public array $current_child_id = [];
-	
-	// public array $current_child_data = [];
-	
-	// public array $childs = [];
+    // public array $current_child_id = [];
 
-	// public $error_child = null;
+    // public array $current_child_data = [];
 
-	// public function mountCanHaveSubForm()
-	// {				
-	// 	$this->_loadChilds();
-	// }
+    // public array $childs = [];
 
-	// public function bootedCanHaveSubForm()
-	// {				
-	// 	$this->_reloadChilds();
-	// }
+    // public $error_child = null;
 
-	// public function setCurrentChild(string $repeater, int $i)
-	// {
-	// 	$this->current_child_id[$repeater] = $i;
+    // public function mountCanHaveSubForm()
+    // {
+    // 	$this->_loadChilds();
+    // }
 
-	// 	$this->current_child_data[$repeater] = $this->childs[$repeater][$i];
-	// }
+    // public function bootedCanHaveSubForm()
+    // {
+    // 	$this->_reloadChilds();
+    // }
 
-	// public function setChildEmpty(string $repeater)
-	// {
-	// 	$this->current_child_id[$repeater] = null;
+    // public function setCurrentChild(string $repeater, int $i)
+    // {
+    // 	$this->current_child_id[$repeater] = $i;
 
-	// 	foreach($this->repeaters[$repeater]->getFields() as $field)
-	// 	{
-	// 		$fields[$field->getName()] = null;
-	// 	}
+    // 	$this->current_child_data[$repeater] = $this->childs[$repeater][$i];
+    // }
 
-	// 	$this->current_child_data[$repeater] = $fields ?? [];
-	// }
+    // public function setChildEmpty(string $repeater)
+    // {
+    // 	$this->current_child_id[$repeater] = null;
 
-	// public function saveChild(string $relation)
-	// {
-	// 	$this->reset('error_child');
-		
-	// 	try
-	// 	{
-	// 		$repeater = $this->repeaters[$relation] ?? null;
+    // 	foreach($this->repeaters[$repeater]->getFields() as $field)
+    // 	{
+    // 		$fields[$field->getName()] = null;
+    // 	}
 
-	// 		throw_if(!$repeater, 'Repeater '.$relation.' not found');
+    // 	$this->current_child_data[$repeater] = $fields ?? [];
+    // }
 
-	// 		$data_id = $this->current_child_data[$relation]['id'] ?? null;
+    // public function saveChild(string $relation)
+    // {
+    // 	$this->reset('error_child');
 
-	// 		throw_if($data_id && !$repeater->canEdit(), 'Edição não permitida');
-			
-	// 		throw_if(!$data_id && !$repeater->canAdd(), 'Cadastro não permitido');
-			
-	// 		$model = $repeater->getModelRelation();
+    // 	try
+    // 	{
+    // 		$repeater = $this->repeaters[$relation] ?? null;
 
-	// 		if($data_id)
-	// 		{
-	// 			$register = $model::find($data_id);
-	// 		}
-	// 		else
-	// 		{
-	// 			$register = new $model;
-	// 		}
+    // 		throw_if(!$repeater, 'Repeater '.$relation.' not found');
 
-	// 		foreach($repeater->getFields() as $field)
-	// 		{
-	// 			$register->{$field->getName()} = $this->current_child_data[$relation][$field->getName()];
-	// 		}
+    // 		$data_id = $this->current_child_data[$relation]['id'] ?? null;
 
-	// 		$child_id_relation = $this->current_child_id[$relation] ?? null;
+    // 		throw_if($data_id && !$repeater->canEdit(), 'Edição não permitida');
 
-	// 		if(is_numeric($child_id_relation))
-	// 		{
-	// 			$this->childs[$relation][$child_id_relation] = $register;
-	// 		}
-	// 		else
-	// 		{
-	// 			$this->childs[$relation] = collect($this->childs[$relation])->push($register);
-	// 		}
-			
-	// 		$this->reset('current_child_data', 'current_child_id');
-	// 		$this->dispatchBrowserEvent('close-slide');
-	// 	}
-	// 	catch (\Exception $e)
-	// 	{
-	// 		$this->error_child = $e->getMessage();
-	// 	}
-	// 	finally
-	// 	{
-	// 		$this->dispatchBrowserEvent('reset-form-child');
-	// 	}
-	// }
+    // 		throw_if(!$data_id && !$repeater->canAdd(), 'Cadastro não permitido');
 
-	// private function _saveChilds($register)
-	// {
-	// 	foreach($this->repeaters ?? [] as $repeater)
-	// 	{
-	// 		$relation = $repeater->getRelation();
+    // 		$model = $repeater->getModelRelation();
 
-	// 		$childs_to_save = [];
-			
-	// 		foreach($this->childs[$relation] ?? [] as $child)
-	// 		{
-	// 			$childs_to_save[] = $child;
-	// 		}
+    // 		if($data_id)
+    // 		{
+    // 			$register = $model::find($data_id);
+    // 		}
+    // 		else
+    // 		{
+    // 			$register = new $model;
+    // 		}
 
-	// 		$register->{$relation}()->saveMany($childs_to_save);
-	// 	}
-	// }
+    // 		foreach($repeater->getFields() as $field)
+    // 		{
+    // 			$register->{$field->getName()} = $this->current_child_data[$relation][$field->getName()];
+    // 		}
 
-	// private function _getDataSlidesAttribute(): array
-	// {
-	// 	foreach($this->repeaters ?? [] as $repeater)
-	// 	{
-	// 		$data_slides[] = 'slide'.$repeater->getRelation().': false';
-	// 	}
+    // 		$child_id_relation = $this->current_child_id[$relation] ?? null;
 
-	// 	return $data_slides ?? [];
-	// }
+    // 		if(is_numeric($child_id_relation))
+    // 		{
+    // 			$this->childs[$relation][$child_id_relation] = $register;
+    // 		}
+    // 		else
+    // 		{
+    // 			$this->childs[$relation] = collect($this->childs[$relation])->push($register);
+    // 		}
 
-	// private function _getCloseSlidesAttribute(): array
-	// {
-	// 	foreach($this->repeaters ?? [] as $repeater)
-	// 	{
-	// 		$close_slides[] = 'slide'.$repeater->getRelation().' = false';
-	// 	}
+    // 		$this->reset('current_child_data', 'current_child_id');
+    // 		$this->dispatchBrowserEvent('close-slide');
+    // 	}
+    // 	catch (\Exception $e)
+    // 	{
+    // 		$this->error_child = $e->getMessage();
+    // 	}
+    // 	finally
+    // 	{
+    // 		$this->dispatchBrowserEvent('reset-form-child');
+    // 	}
+    // }
 
-	// 	return $close_slides ?? [];
-	// }
+    // private function _saveChilds($register)
+    // {
+    // 	foreach($this->repeaters ?? [] as $repeater)
+    // 	{
+    // 		$relation = $repeater->getRelation();
 
-	// private function _loadChilds()
-	// {
-	// 	foreach($this->repeaters ?? [] as $repeater)
-	// 	{
-	// 		$this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
-	// 	}
-	// }
+    // 		$childs_to_save = [];
 
-	// private function _reloadChilds()
-	// {
-	// 	foreach($this->repeaters ?? [] as $repeater)
-	// 	{
-	// 		$model = $repeater->getModelRelation();
+    // 		foreach($this->childs[$relation] ?? [] as $child)
+    // 		{
+    // 			$childs_to_save[] = $child;
+    // 		}
 
-	// 		$registers_saved = $this->childs[$repeater->getRelation()];
+    // 		$register->{$relation}()->saveMany($childs_to_save);
+    // 	}
+    // }
 
-	// 		foreach($registers_saved as &$register_saved)
-	// 		{
-	// 			$register_on_db = (isset($register_saved['id'])) ? $this->register->{$repeater->getRelation()}()->find($register_saved['id']) : new $model;
-				
-	// 			foreach($repeater->getFields() as $field)
-	// 			{
-	// 				$register_on_db->{$field->getName()} = $register_saved[$field->getName()] ?? null;
-	// 			}
+    // private function _getDataSlidesAttribute(): array
+    // {
+    // 	foreach($this->repeaters ?? [] as $repeater)
+    // 	{
+    // 		$data_slides[] = 'slide'.$repeater->getRelation().': false';
+    // 	}
 
-	// 			$register_saved = $register_on_db;
-	// 		}
+    // 	return $data_slides ?? [];
+    // }
 
-	// 		$this->childs[$repeater->getRelation()] = $registers_saved;
-	// 	}
-	// }
+    // private function _getCloseSlidesAttribute(): array
+    // {
+    // 	foreach($this->repeaters ?? [] as $repeater)
+    // 	{
+    // 		$close_slides[] = 'slide'.$repeater->getRelation().' = false';
+    // 	}
 
-	// private function _setRepeaters()
-	// {
-	// 	$all_repeaters = $this->resource->getRepeaters();
+    // 	return $close_slides ?? [];
+    // }
 
-	// 	foreach($all_repeaters as $repeater)
-	// 	{
-	// 		if(!$repeater->canAdd() && !$repeater->canEdit())
-	// 		{
-	// 			continue;
-	// 		}
+    // private function _loadChilds()
+    // {
+    // 	foreach($this->repeaters ?? [] as $repeater)
+    // 	{
+    // 		$this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
+    // 	}
+    // }
 
-	// 		$repeaters[] = $repeater;
-	// 	}
+    // private function _reloadChilds()
+    // {
+    // 	foreach($this->repeaters ?? [] as $repeater)
+    // 	{
+    // 		$model = $repeater->getModelRelation();
 
-	// 	$this->repeaters = $repeaters ?? [];
-	// }
+    // 		$registers_saved = $this->childs[$repeater->getRelation()];
+
+    // 		foreach($registers_saved as &$register_saved)
+    // 		{
+    // 			$register_on_db = (isset($register_saved['id'])) ? $this->register->{$repeater->getRelation()}()->find($register_saved['id']) : new $model;
+
+    // 			foreach($repeater->getFields() as $field)
+    // 			{
+    // 				$register_on_db->{$field->getName()} = $register_saved[$field->getName()] ?? null;
+    // 			}
+
+    // 			$register_saved = $register_on_db;
+    // 		}
+
+    // 		$this->childs[$repeater->getRelation()] = $registers_saved;
+    // 	}
+    // }
+
+    // private function _setRepeaters()
+    // {
+    // 	$all_repeaters = $this->resource->getRepeaters();
+
+    // 	foreach($all_repeaters as $repeater)
+    // 	{
+    // 		if(!$repeater->canAdd() && !$repeater->canEdit())
+    // 		{
+    // 			continue;
+    // 		}
+
+    // 		$repeaters[] = $repeater;
+    // 	}
+
+    // 	$this->repeaters = $repeaters ?? [];
+    // }
 }

@@ -2,143 +2,148 @@
 
 namespace S4mpp\AdminPanel\Livewire;
 
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
-use S4mpp\AdminPanel\Factories\Column;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Contracts\View\View as View;
+use S4mpp\AdminPanel\Reports\Report;
+use S4mpp\AdminPanel\Resources\Resource;
+use Illuminate\Database\Eloquent\Collection;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 
 /**
  * @codeCoverageIgnore
  */
-class ReportResult extends Component
+final class ReportResult extends Component
 {
-	use WithAdminResource;
+    use WithAdminResource;
 
-	private $report;
+    private Report $report;
 
-	public string $report_slug;
+    public string $report_slug;
 
-	// public ?array $filter_term = null;
-	
-	// public $filter_descriptions = [];
+    /**
+     * @var array<string>
+     */
+    public ?array $filter_term = null;
 
-	// protected $listeners = ['filterReport'];
+    /**
+     * @var array<string>
+     */
+    public array $filter_descriptions = [];
 
-	public function mount($resource, $report)
-	{
-		$this->resource_slug = $resource->getSlug();
-		
-		$this->resource = $resource;
+    // protected $listeners = ['filterReport'];
 
-		$this->report_slug = $report->getSlug();
-	}
-	
-	// public function mount(string $report_slug, string $resource_name)
-	// {
-	// 	$this->report_slug = $report_slug;
-
-	// 	$this->resource_name = $resource_name;
-	// }
-
-	public function booted()
+    public function mount(Resource $resource, Report $report): void
     {
-		$this->loadResource();
+        $this->resource_slug = $resource->getSlug();
 
-		$this->report = $this->resource->getReport($this->report_slug);
-	}
+        $this->resource = $resource;
 
-	public function render()
-	{
-		return view('admin::livewire.report', [
-			// 'results' => $this->_getResults(),
-		]);
-	}
+        $this->report_slug = $report->getSlug();
+    }
 
-	// public function filterReport(array $params)
-	// {
-	// 	$this->reset('filter_descriptions');
+    // public function mount(string $report_slug, string $resource_name)
+    // {
+    // 	$this->report_slug = $report_slug;
 
-    //     $this->filter_term = $params['filters'] ?? null;
+    // 	$this->resource_name = $resource_name;
+    // }
 
-	// 	foreach($this->report->getFields() as $filter)
-	// 	{
-	// 		$term = $this->filter_term[$filter->getField()] ?? null;
-			
-	// 		/**
-	// 		 * DUPLICATED
-	// 		 */
-	// 		if(!$term || empty($term))
-	// 		{
-	// 			continue;
-	// 		}
+    public function booted(): void
+    {
+        $this->loadResource();
 
-	// 		$description_result = $filter->getDescriptionResult($term);
-	
-	// 		if(!$description_result)
-	// 		{
-	// 			continue;
-	// 		}
-	
-	// 		$this->filter_descriptions[] = $filter->getTitle().': '.$description_result;
-	// 	}
+        $this->report = $this->resource->getReport($this->report_slug);
+    }
 
-	// 	$this->dispatchBrowserEvent('filter-complete');
+    public function render(): View|ViewFactory
+    {
+        return view('admin::livewire.report', [
+            // 'results' => $this->_getResults(),
+        ]);
+    }
 
-	// }
+    /**
+     * @param array<string|int|null>
+     */
+    public function filter(array $params): void
+    {
+        $this->reset('filter_descriptions');
 
-	// private function _getResults()
-	// {
-	// 	if(empty($this->filter_term))
-	// 	{
-	// 		return null;
-	// 	}
+        $this->filter_term = $params['filters'] ?? null;
 
-	// 	$results = [];
+        foreach ($this->report->getFields() as $filter) {
+            $term = $this->filter_term[$filter->getField()] ?? null;
 
-	// 	$possible_results = $this->report->getPossibleResults();
+            if (! $term) {
+                continue;
+            }
 
-	// 	foreach($possible_results as $result)
-	// 	{
-	// 		$model = $result->getModel() ?? $this->resource->getModel();
+            $description_result = $filter->getDescriptionResult($term);
 
-	// 		$registers = $model::{$result->getMethod()}(collect($this->filter_term));
+            if (! $description_result) {
+                continue;
+            }
 
-	// 		$columns = $result->getColumns();
+            $this->filter_descriptions[] = $filter->getTitle().': '.$description_result;
+        }
 
-	// 		$values = $this->_response($registers, $columns);
+        $this->dispatchBrowserEvent('filter-complete');
+    }
 
-	// 		$results[] = [
-	// 			'title' => $result->getTitle(),
-	// 			'columns' => $columns,
-	// 			'values' => collect($values)
-	// 		];
-	// 	}
+    // private function _getResults()
+    // {
+    // 	if(empty($this->filter_term))
+    // 	{
+    // 		return null;
+    // 	}
 
-	// 	return $results;
-	// }
+    // 	$results = [];
 
-	// private function _response(Collection $registers, array $columns)
-	// {
-	// 	$fields = [];
+    // 	$possible_results = $this->report->getPossibleResults();
 
-	// 	foreach($columns as $column)
-	// 	{
-	// 		$fields[] = $column->getField();
-	// 	}
+    // 	foreach($possible_results as $result)
+    // 	{
+    // 		$model = $result->getModel() ?? $this->resource->getModel();
 
-	// 	$registers->map(function($register) use ($fields)
-	// 	{
-	// 		return $register->only($fields);
-	// 	});
+    // 		$registers = $model::{$result->getMethod()}(collect($this->filter_term));
 
-	// 	$sort_by = end($fields);
+    // 		$columns = $result->getColumns();
 
-	// 	if($sort_by)
-	// 	{
-	// 		$registers = $registers->sortByDesc(end($fields));
-	// 	}
+    // 		$values = $this->_response($registers, $columns);
 
-	// 	return $registers;
-		
-	// }
+    // 		$results[] = [
+    // 			'title' => $result->getTitle(),
+    // 			'columns' => $columns,
+    // 			'values' => collect($values)
+    // 		];
+    // 	}
+
+    // 	return $results;
+    // }
+
+    // private function _response(Collection $registers, array $columns)
+    // {
+    // 	$fields = [];
+
+    // 	foreach($columns as $column)
+    // 	{
+    // 		$fields[] = $column->getField();
+    // 	}
+
+    // 	$registers->map(function($register) use ($fields)
+    // 	{
+    // 		return $register->only($fields);
+    // 	});
+
+    // 	$sort_by = end($fields);
+
+    // 	if($sort_by)
+    // 	{
+    // 		$registers = $registers->sortByDesc(end($fields));
+    // 	}
+
+    // 	return $registers;
+
+    // }
 }

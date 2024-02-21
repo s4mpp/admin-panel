@@ -2,131 +2,128 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
-use S4mpp\AdminPanel\Utils;
 use S4mpp\AdminPanel\Resource;
-use S4mpp\AdminPanel\Column\Column;
+use S4mpp\AdminPanel\Labels\Label;
+use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Column\RepeaterActions;
-use S4mpp\AdminPanel\Labels\Label;
-use S4mpp\AdminPanel\Utils\Finder;
 
 final class Repeater
 {
-	use Titleable, Slugable;
+    use Slugable, Titleable;
 
-	// private $model = null;
+    // private $model = null;
 
-	// private string $order_field = 'id';
+    // private string $order_field = 'id';
 
-	// private string $order_direction = 'DESC';
+    // private string $order_direction = 'DESC';
 
-	private bool $can_edit = false;
+    private bool $can_edit = false;
 
-	private bool $can_add = false;
+    private bool $can_add = false;
 
-	// , private array $fields = [], 
-	
-	private array $columns = [];
+    // , private array $fields = [],
 
-	function __construct(private string $title, private string $relation)
-	{
-		$this->createSlug($title);
-	}
+    private array $columns = [];
 
-	// public function order(string $field = 'id', string $direction = 'DESC')
-	// {
-	// 	$this->order_field = $field;
+    public function __construct(private string $title, private string $relation)
+    {
+        $this->createSlug($title);
+    }
 
-	// 	$this->order_direction = $direction;
+    // public function order(string $field = 'id', string $direction = 'DESC')
+    // {
+    // 	$this->order_field = $field;
 
-	// 	return $this;
-	// }
+    // 	$this->order_direction = $direction;
 
-	public function allowEdit()
-	{
-		$this->can_edit = true;
-		
-		return $this;
-	}
+    // 	return $this;
+    // }
 
-	public function allowAdd()
-	{
-		$this->can_add = true;
-		
-		return $this;
-	}
+    public function allowEdit()
+    {
+        $this->can_edit = true;
 
-	public function canEdit(): bool
-	{
-		return $this->can_edit;
-	}
+        return $this;
+    }
 
-	public function canAdd(): bool
-	{
-		return $this->can_add;
-	}
+    public function allowAdd()
+    {
+        $this->can_add = true;
 
-	// public function getFieldOrderBy()
-	// {
-	// 	return $this->order_field;
-	// } 
-	
-	// public function getDirectionOrderBy()
-	// {
-	// 	return $this->order_direction;
-	// }
+        return $this;
+    }
 
-	// public function setRelationShipMethod($model)
-	// {
-	// 	$this->model = $model;
+    public function canEdit(): bool
+    {
+        return $this->can_edit;
+    }
 
-	// 	return $this;
-	// }
+    public function canAdd(): bool
+    {
+        return $this->can_add;
+    }
 
-	public function getRelation(): string
-	{
-		return $this->relation;
-	}
+    // public function getFieldOrderBy()
+    // {
+    // 	return $this->order_field;
+    // }
 
-	// public function getModelRelation()
-	// {
-	// 	return $this->model->getRelated();
-	// }
+    // public function getDirectionOrderBy()
+    // {
+    // 	return $this->order_direction;
+    // }
 
-	// public function getNameModelRelation(): string
-	// {
-	// 	return get_class($this->model->getRelated());
-	// }
+    // public function setRelationShipMethod($model)
+    // {
+    // 	$this->model = $model;
 
-	// public function getFields(): array
-	// {
-	// 	return $this->fields;
-	// }
+    // 	return $this;
+    // }
 
-	// public function getTotalRegisters(Resource $resource, Model $register): int
-	// {
-	// 	return $resource->getModel()->select('id')
-	// 		->find($register->id)
-	// 		->{$this->getRelation()}()
-	// 		->count();
-	// }
+    public function getRelation(): string
+    {
+        return $this->relation;
+    }
 
-	public function getColumns(): array
-	{
-		return Finder::onlyOf($this->columns, Label::class);
-	}
+    // public function getModelRelation()
+    // {
+    // 	return $this->model->getRelated();
+    // }
 
-	public function getColumnsWithActions(): array
-	{
-		$columns = $this->getColumns();
+    // public function getNameModelRelation(): string
+    // {
+    // 	return get_class($this->model->getRelated());
+    // }
 
-		if($this->can_edit)
-		{
-			// array_push($columns, (new RepeaterActions($this->relation))->align('right'));
-		}
+    // public function getFields(): array
+    // {
+    // 	return $this->fields;
+    // }
 
-		return $columns;
-	}
+    // public function getTotalRegisters(Resource $resource, Model $register): int
+    // {
+    // 	return $resource->getModel()->select('id')
+    // 		->find($register->id)
+    // 		->{$this->getRelation()}()
+    // 		->count();
+    // }
+
+    public function getColumns(): array
+    {
+        return Finder::onlyOf($this->columns, Label::class);
+    }
+
+    public function getColumnsWithActions(): array
+    {
+        $columns = $this->getColumns();
+
+        if ($this->can_edit) {
+            // array_push($columns, (new RepeaterActions($this->relation))->align('right'));
+        }
+
+        return $columns;
+    }
 }

@@ -4,22 +4,22 @@ namespace S4mpp\AdminPanel\Traits;
 
 trait ShoudOpenInNewTab
 {
-	private bool $new_tab = false;
+    private bool $new_tab = false;
 
-	public function newTab()
-	{
-		$this->new_tab = true;
+    public function newTab(): self
+    {
+        $this->new_tab = true;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function isNewTab(): bool
-	{
-		return $this->new_tab;
-	}
+    public function isNewTab(): bool
+    {
+        return $this->new_tab;
+    }
 
-	public function getTargetWindow(): ?string
-	{
-		return $this->new_tab ? '_blank' : null;
-	}
+    public function getTargetWindow(): ?string
+    {
+        return $this->new_tab ? '_blank' : null;
+    }
 }

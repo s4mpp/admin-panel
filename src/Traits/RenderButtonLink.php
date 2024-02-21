@@ -2,15 +2,18 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
-trait RenderButtonLink
-{	
-	public function renderButton()
-	{
-		return view('admin::custom-actions.buttons.link', ['action' => $this]);
-	}
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Contracts\View\View as View;
 
-	// public function renderContentModalConfirmation()
-	// {
-	// 	return view('admin::custom-actions.modal-confirmation.link', ['action' => $this]);
-	// }
+trait RenderButtonLink
+{
+    public function renderButton(): View|ViewFactory
+    {
+        return view('admin::custom-actions.buttons.link', ['action' => $this]);
+    }
+
+    // public function renderContentModalConfirmation()
+    // {
+    // 	return view('admin::custom-actions.modal-confirmation.link', ['action' => $this]);
+    // }
 }

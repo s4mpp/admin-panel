@@ -2,50 +2,55 @@
 
 namespace S4mpp\AdminPanel\CustomActions;
 
+use Closure;
 use S4mpp\AdminPanel\Traits\SendForm;
+use S4mpp\AdminPanel\Traits\CallRouteAction;
 use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\RenderButtonForm;
 use S4mpp\AdminPanel\Traits\HasSuccessMessage;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
-use S4mpp\AdminPanel\CustomActions\CustomAction;
-use S4mpp\AdminPanel\Traits\CallRouteAction;
 
 final class Callback extends CustomAction
 {
-	//use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
+    //use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
 
-	use ShoudOpenInNewTab, CallRouteAction, RenderButtonForm;
+    use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab;
 
-	public function __construct(private string $title, private $callback)
-	{
-		parent::__construct($title);
+    public function __construct(string $title, private ?Closure $callback)
+    {
+        parent::__construct($title);
 
-		$this->setMethod('PUT');
+        $this->setMethod('PUT');
 
-		$this->setAction('customActionCallback');
-	}
+        $this->setAction('customActionCallback');
+    }
 
-	public function getUrl()
-	{
-		return '#';
-	}
+    public function getUrl(): string
+    {
+        return '#';
+    }
 
-	// public function getCallbackRoute($resource)
-	// {
-	// 	return function($id) use ($resource)
-	// 	{
-	// 		try
-	// 		{
-	// 			$register = $resource->getModel()::findOrFail($id);
-	
-	// 			$result = call_user_func($this->callback, $register);
-	
-	// 			return redirect()->back()->with('message', $this->getSuccessMessage($result));
-	// 		}
-	// 		catch(\Exception $e)
-	// 		{
-	// 			return redirect()->back()->withErrors($e->getMessage());
-	// 		}
-	// 	};
-	// }
+    public function getCallback(): ?Closure
+    {
+        return $this->callback;
+    }
+
+    // public function getCallbackRoute($resource)
+    // {
+    // 	return function($id) use ($resource)
+    // 	{
+    // 		try
+    // 		{
+    // 			$register = $resource->getModel()::findOrFail($id);
+
+    // 			$result = call_user_func($this->callback, $register);
+
+    // 			return redirect()->back()->with('message', $this->getSuccessMessage($result));
+    // 		}
+    // 		catch(\Exception $e)
+    // 		{
+    // 			return redirect()->back()->withErrors($e->getMessage());
+    // 		}
+    // 	};
+    // }
 }

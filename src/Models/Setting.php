@@ -4,5 +4,6 @@ namespace S4mpp\AdminPanel\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Setting extends Model
-{}
+final class Setting extends Model
+{
+}

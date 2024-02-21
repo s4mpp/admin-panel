@@ -2,35 +2,33 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
-use Illuminate\Support\Str;
-
 trait CallRouteAction
 {
-	private ?string $action = null;
+    private ?string $action = null;
 
-	private string $method = 'GET';
+    private string $method = 'GET';
 
-	public function getMethod(): string
-	{
-		return $this->method;
-	}
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
 
-	public function setMethod(string $method)
-	{
-		$this->method = $method;
+    public function setMethod(string $method): self
+    {
+        $this->method = $method;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getAction(): ?string
-	{
-		return $this->action;
-	}
+    public function getAction(): ?string
+    {
+        return $this->action;
+    }
 
-	public function setAction(string $action)
-	{
-		$this->action = $action;
+    public function setAction(string $action): self
+    {
+        $this->action = $action;
 
-		return $this;
-	}
+        return $this;
+    }
 }

@@ -6,23 +6,23 @@ use Illuminate\Support\Str;
 
 trait HasLabel
 {
-	// private bool $strong = false;
+    // private bool $strong = false;
 
-	// private array $callbacks = [];
+    // private array $callbacks = [];
 
-	// public function callback(callable $callback)
-	// {
-	// 	$this->callbacks[] = $callback;
+    // public function callback(callable $callback)
+    // {
+    // 	$this->callbacks[] = $callback;
 
-	// 	return $this;
-	// }
+    // 	return $this;
+    // }
 
-	// public function hasCallbacks(): bool
-	// {
-	// 	return count($this->callbacks) > 0;
-	// }
+    // public function hasCallbacks(): bool
+    // {
+    // 	return count($this->callbacks) > 0;
+    // }
 
-	// public function runCallbacks($data = null)
+    // public function runCallbacks($data = null)
     // {
     //     foreach($this->getCallbacks() as $callback)
     //     {
@@ -32,72 +32,72 @@ trait HasLabel
     //     return $data;
     // }
 
-	// public function getCallbacks(): array
-	// {
-	// 	return $this->callbacks ?? [];
-	// }
+    // public function getCallbacks(): array
+    // {
+    // 	return $this->callbacks ?? [];
+    // }
 
-	// public function limit(int $size = 100, $end = '...')
-	// {
-	// 	$this->callback(function($item) use ($size, $end)
-	// 	{
-	// 		return $item ? Str::limit($item, $size, $end) : null;
-	// 	});
-		
-	// 	return $this;
-	// }
+    // public function limit(int $size = 100, $end = '...')
+    // {
+    // 	$this->callback(function($item) use ($size, $end)
+    // 	{
+    // 		return $item ? Str::limit($item, $size, $end) : null;
+    // 	});
 
-	// public function uppercase()
-	// {
-	// 	$this->callback(function($str){return Str::upper($str);});
-		
-	// 	return $this;
-	// }
+    // 	return $this;
+    // }
 
-	// public function currency(bool $convert_cents = true, string $prefix = 'R$')
-	// {
-	// 	$this->callback(function($value) use ($prefix, $convert_cents)
-	// 	{
-	// 		if(!is_numeric($value))
-	// 		{
-	// 			return null;
-	// 		}
+    // public function uppercase()
+    // {
+    // 	$this->callback(function($str){return Str::upper($str);});
 
-	// 		if($convert_cents)
-	// 		{
-	// 			$value /= 100;
-	// 		}
+    // 	return $this;
+    // }
 
-	// 		return $prefix.' '.number_format($value, 2, ',', '.');
-	// 	});
+    // public function currency(bool $convert_cents = true, string $prefix = 'R$')
+    // {
+    // 	$this->callback(function($value) use ($prefix, $convert_cents)
+    // 	{
+    // 		if(!is_numeric($value))
+    // 		{
+    // 			return null;
+    // 		}
 
-	// 	return $this;
-	// }
+    // 		if($convert_cents)
+    // 		{
+    // 			$value /= 100;
+    // 		}
 
-	// public function enum()
-	// {
-	// 	$this->callback(function($register): ?string
-	// 	{
-	// 		if(method_exists($register, 'label'))
-	// 		{
-	// 			return $register->label();
-	// 		}
+    // 		return $prefix.' '.number_format($value, 2, ',', '.');
+    // 	});
 
-	// 		return $register->name ?? null;
-	// 	});
+    // 	return $this;
+    // }
 
-	// 	return $this;
-	// }
+    // public function enum()
+    // {
+    // 	$this->callback(function($register): ?string
+    // 	{
+    // 		if(method_exists($register, 'label'))
+    // 		{
+    // 			return $register->label();
+    // 		}
 
-	// // public function strong()
-	// // {
-	// // 	$this->strong = true;
+    // 		return $register->name ?? null;
+    // 	});
 
-	// // 	return $this;
-	// // }
+    // 	return $this;
+    // }
 
-	// // public function getIsStrong(): bool
-	// // {
-	// // 	return $this->strong;
-	// // }
+    // // public function strong()
+    // // {
+    // // 	$this->strong = true;
+
+    // // 	return $this;
+    // // }
+
+    // // public function getIsStrong(): bool
+    // // {
+    // // 	return $this->strong;
+    // // }
 }

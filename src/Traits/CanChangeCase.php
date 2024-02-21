@@ -6,22 +6,22 @@ use Illuminate\Support\Str;
 
 trait CanChangeCase
 {
-	private bool $uppercase = false;
+    private bool $uppercase = false;
 
-	public function getIsUppercase(): bool
-	{
-		return $this->uppercase;
-	}
+    public function getIsUppercase(): bool
+    {
+        return $this->uppercase;
+    }
 
-	public function uppercase()
-	{
-		$this->uppercase = true;
+    public function uppercase(): self
+    {
+        $this->uppercase = true;
 
-		// $this->prepareForSave(function(string $value = null)
-		// {
-		// 	return Str::upper($value);
-		// });
+        // $this->prepareForSave(function(string $value = null)
+        // {
+        // 	return Str::upper($value);
+        // });
 
-		return $this;
-	}
+        return $this;
+    }
 }

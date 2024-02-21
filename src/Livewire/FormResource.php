@@ -4,14 +4,14 @@ namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
 use S4mpp\AdminPanel\Utils;
-use S4mpp\AdminPanel\AdminPanel;
-use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Support\ValidatedInput;
 use S4mpp\AdminPanel\Hooks\CreateHook;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
 use Illuminate\Database\Eloquent\Model;
+use S4mpp\AdminPanel\Elements\Repeater;
+use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Traits\CreatesForm;
 use S4mpp\AdminPanel\Traits\CanHaveSubForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
@@ -21,112 +21,116 @@ use S4mpp\AdminPanel\Traits\WithAdminResource;
  */
 class FormResource extends Component
 {
-	use CreatesForm, WithAdminResource;
-	// use WithAdminResource, CreatesForm, CanHaveSubForm;
+    use CreatesForm, WithAdminResource;
+    // use WithAdminResource, CreatesForm, CanHaveSubForm;
 
-	private $repeaters = [];
+    /**
+     * @var array<Repeater>
+     */
+    private $repeaters = [];
 
-	public array $childs = [];
+    /**
+     * @var array<array>
+     */
+    public array $childs = [];
 
-	public ?int $id_register = null;
+    public ?int $id_register = null;
 
-	// protected $listeners = ['setField', 'setChildField', 'setChildEmpty'];
-		
-	public function mount($resource, $register = null)
-	{
-		$this->resource_slug = $resource->getSlug();
-		
-		$this->resource = $resource;
+    // protected $listeners = ['setField', 'setChildField', 'setChildEmpty'];
 
-		$this->id_register = $register ? $register->id : null;
-
-		$this->setInitialData($register?->getAttributes(), $this->resource->getForm());
-
-
-	// 	$this->_setResource($resource_name);
-
-	// 	$this->_setRepeaters();
-
-	// 	$this->form = $this->resource->getForm();
-		
-		// $this->register = $this->resource->getRegister($id_register);
-		
-	// 	$this->_setInitialData();
-	}
-
-	public function booted()
+    public function mount(Resource $resource, Model $register = null): void
     {
-		$this->loadResource();
-			
-		$this->form = Finder::fillInCard($this->resource->getForm());
+        $this->resource_slug = $resource->getSlug();
 
-		$this->repeaters = $this->resource->getRepeaters();
+        $this->resource = $resource;
 
-		foreach($this->repeaters ?? [] as $repeater)
-		{
-			// $this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
-		}
+        $this->id_register = $register ? $register->id : null;
+
+        $this->setInitialData($register?->getAttributes(), $this->resource->getForm());
+
+        // 	$this->_setResource($resource_name);
+
+        // 	$this->_setRepeaters();
+
+        // 	$this->form = $this->resource->getForm();
+
+        // $this->register = $this->resource->getRegister($id_register);
+
+        // 	$this->_setInitialData();
+    }
+
+    public function booted(): void
+    {
+        $this->loadResource();
+
+        $this->form = Finder::fillInCard($this->resource->getForm());
+
+        $this->repeaters = $this->resource->getRepeaters();
+
+        foreach ($this->repeaters as $repeater) {
+            // $this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
+        }
 
     }
-	
+
     // public function booted()
     // {
-	// 	$this->_setResource($this->resource_name);
-		
-	// 	$this->_setRepeaters();
-		
-	// 	$this->form = $this->resource->getForm();
-		
-	// 	// $this->_setSearchFields();
+    // 	$this->_setResource($this->resource_name);
+
+    // 	$this->_setRepeaters();
+
+    // 	$this->form = $this->resource->getForm();
+
+    // 	// $this->_setSearchFields();
     // }
-	
-	// // private function _setSearchFields()
-	// // {
-	// // 	$repeaters_searchs = [];
 
-	// // 	foreach($this->repeaters as $repeater)
-	// // 	{
-	// // 		$repeaters_search = Utils::findElement($repeater->getFields(), Search::class);
+    // // private function _setSearchFields()
+    // // {
+    // // 	$repeaters_searchs = [];
 
-	// // 		foreach($repeaters_search as $search)
-	// // 		{
-	// // 			$search->setModel(get_class(app($repeater->getNameModelRelation())->customer()->getRelated()));
+    // // 	foreach($this->repeaters as $repeater)
+    // // 	{
+    // // 		$repeaters_search = Utils::findElement($repeater->getFields(), Search::class);
 
-	// // 			$search->setRepeater($repeater->getRelation());
-	// // 		}
-			
-	// // 		$repeaters_searchs = array_merge($repeaters_searchs, $repeaters_search);
-	// // 	}
-				
-	// // 	$this->search_fields = array_merge($this->_getSearchFieldsForm(), $repeaters_searchs);
-	// // }
+    // // 		foreach($repeaters_search as $search)
+    // // 		{
+    // // 			$search->setModel(get_class(app($repeater->getNameModelRelation())->customer()->getRelated()));
 
-	// private function _getModel()
-	// {
-	// 	return $this->resource->getModel();
-	// }
+    // // 			$search->setRepeater($repeater->getRelation());
+    // // 		}
 
-	// private function _getRegister($register = null)
-	// {
-	// 	$model = $this->_getModel();
+    // // 		$repeaters_searchs = array_merge($repeaters_searchs, $repeaters_search);
+    // // 	}
 
-	// 	return $register ?? new $model;
-	// }
+    // // 	$this->search_fields = array_merge($this->_getSearchFieldsForm(), $repeaters_searchs);
+    // // }
 
-	// private function _saving(Model $register, ValidatedInput $fields_validated)
-	// {
-	// 	$hook = (!$this->register) ? CreateHook::class : Updatehook::class;
-	
-	// 	$hook::before($this->resource, $register, $fields_validated);
-		
-	// 	$register->save();
-		
-	// 	$hook::after($this->resource, $register, $fields_validated);
+    // private function _getModel()
+    // {
+    // 	return $this->resource->getModel();
+    // }
 
-	// 	$this->_saveChilds($register);
+    // private function _getRegister($register = null)
+    // {
+    // 	$model = $this->_getModel();
 
-	// 	session()->flash('message', 'Registro salvo com sucesso!');
+    // 	return $register ?? new $model;
+    // }
 
-	// 	return redirect()->route($this->resource->getRouteName('index'));
-	// }
+    // private function _saving(Model $register, ValidatedInput $fields_validated)
+    // {
+    // 	$hook = (!$this->register) ? CreateHook::class : Updatehook::class;
+
+    // 	$hook::before($this->resource, $register, $fields_validated);
+
+    // 	$register->save();
+
+    // 	$hook::after($this->resource, $register, $fields_validated);
+
+    // 	$this->_saveChilds($register);
+
+    // 	session()->flash('message', 'Registro salvo com sucesso!');
+
+    // 	return redirect()->route($this->resource->getRouteName('index'));
+    // }
 }

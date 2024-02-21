@@ -10,17 +10,16 @@ use S4mpp\AdminPanel\Resources\Resource;
  */
 trait WithAdminResource
 {
-	public string $resource_slug;
+    public string $resource_slug;
 
-	private ?Resource $resource = null;
+    private ?Resource $resource = null;
 
-	private function loadResource()
-	{ 
-		if($this->resource)
-		{
-			return;
-		}
+    private function loadResource(): void
+    {
+        if ($this->resource) {
+            return;
+        }
 
-		$this->resource = AdminPanel::getResource($this->resource_slug);
-	}
+        $this->resource = AdminPanel::getResource($this->resource_slug);
+    }
 }

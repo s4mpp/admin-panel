@@ -12,7 +12,7 @@ use S4mpp\AdminPanel\CustomActions\CustomAction as CustomActionResource;
 /**
  * @codeCoverageIgnore
  */
-class CustomAction
+final class CustomAction
 {
     /**
      * Handle an incoming request.
@@ -23,8 +23,8 @@ class CustomAction
     {
         // $params_exp = explode('.', $params);
 
-		// $resource_slug = $params_exp[0] ?? null;
-		// $action_slug = $params_exp[1] ?? null;
+        // $resource_slug = $params_exp[0] ?? null;
+        // $action_slug = $params_exp[1] ?? null;
 
         // $resource = AdminPanel::getResource($resource_slug.'Resource');
 
@@ -48,7 +48,7 @@ class CustomAction
         //     'resource' => $resource,
         //     'register' => $register
         // ]);
-        
+
         return $next($request);
     }
 

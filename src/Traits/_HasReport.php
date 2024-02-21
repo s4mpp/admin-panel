@@ -7,8 +7,8 @@ use Illuminate\Support\Collection as SupportCollection;
 
 trait HasReport
 {
-	// public static function reportResponse(Collection | array $registers, ...$fields): SupportCollection
-	// {
+    // public static function reportResponse(Collection | array $registers, ...$fields): SupportCollection
+    // {
     //     foreach($registers as $register)
     //     {
     //         $item = [];
@@ -17,10 +17,10 @@ trait HasReport
     //         {
     //             $item[$field] = $register[$field] ?? null;
     //         }
-            
+
     //         $items[] = $item;
     //     }
 
     //     return collect($items ?? []);
-	// }
+    // }
 }

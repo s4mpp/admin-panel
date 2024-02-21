@@ -7,196 +7,201 @@ use Livewire\WithFileUploads;
 use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Input\Search;
+use S4mpp\AdminPanel\Utils\Finder;
 use Livewire\TemporaryUploadedFile;
 use Illuminate\Support\ValidatedInput;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use S4mpp\AdminPanel\Traits\HasModalSearchInForm;
-use S4mpp\AdminPanel\Utils\Finder;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Contracts\View\View as View;
 
 /**
  * @codeCoverageIgnore
  */
-trait CreatesForm 
+trait CreatesForm
 {
-	// use WithFileUploads, HasModalSearchInForm;
-		
-	// public $register;
-	
-	public array $data = [];
-	
-	private $form;
+    // use WithFileUploads, HasModalSearchInForm;
 
-	// public function setField(string $repeater = null, string $field, $value = null)
-	// {
-	// 	if($repeater && (array_key_exists($field, $this->current_child_data[$repeater] ?? [])))
-	// 	{
-	// 		$this->current_child_data[$repeater][$field] = $value;		
-	// 	}
-	// 	else if(array_key_exists($field, $this->data))
-	// 	{
-	// 		$this->data[$field] = $value;
-	// 	}
-		
-	// 	$this->dispatchBrowserEvent('close-modal');
-	// 	$this->dispatchBrowserEvent('reset-loading');
-		
-	// 	$this->emitSelf('$refresh');
-	// }
+    // public $register;
 
-	private function setInitialData($register, $form)
-	{
-		$inputs = Finder::findElementsRecursive($form, Input::class);
+    /**
+    * @var array<mixed>
+    */
+    public array $data = [];
 
-		foreach($inputs as $input)
-		{
-			$this->data[$input->getName()] = $register[$input->getName()] ?? null;
-		}
-	}
+    /**
+    * @var array<Input|Card>
+    */
+    private $form;
 
-    public function render()
+    // public function setField(string $repeater = null, string $field, $value = null)
+    // {
+    // 	if($repeater && (array_key_exists($field, $this->current_child_data[$repeater] ?? [])))
+    // 	{
+    // 		$this->current_child_data[$repeater][$field] = $value;
+    // 	}
+    // 	else if(array_key_exists($field, $this->data))
+    // 	{
+    // 		$this->data[$field] = $value;
+    // 	}
+
+    // 	$this->dispatchBrowserEvent('close-modal');
+    // 	$this->dispatchBrowserEvent('reset-loading');
+
+    // 	$this->emitSelf('$refresh');
+    // }
+
+    /**
+    * @param array<Input|Card>
+    */
+    private function setInitialData(Model $register, array $form): void
     {
-        return view('admin::livewire.form', [
-			// 'model' => $this->_getModel(),
-			// 'search_fields' => $this->search_fields ?? [],
-			'repeaters' => $this->repeaters ?? [],
-			// 'data_slides' => method_exists($this, '_getDataSlidesAttribute') ? $this->_getDataSlidesAttribute() : null,
-			// 'close_slides' => method_exists($this, '_getCloseSlidesAttribute') ? $this->_getCloseSlidesAttribute() : null,
-			// 'data_modals' => $this->_getDataModalsAttribute(),
-			// 'close_modals' => $this->_getCloseModalsAttribute()
-		]);
+        $inputs = Finder::findElementsRecursive($form, Input::class);
+
+        foreach ($inputs as $input) {
+            $this->data[$input->getName()] = $register[$input->getName()] ?? null;
+        }
     }
 
+    public function render(): View|ViewFactory
+    {
+        return view('admin::livewire.form', [
+            // 'model' => $this->_getModel(),
+            // 'search_fields' => $this->search_fields ?? [],
+            'repeaters' => $this->repeaters ?? [],
+            // 'data_slides' => method_exists($this, '_getDataSlidesAttribute') ? $this->_getDataSlidesAttribute() : null,
+            // 'close_slides' => method_exists($this, '_getCloseSlidesAttribute') ? $this->_getCloseSlidesAttribute() : null,
+            // 'data_modals' => $this->_getDataModalsAttribute(),
+            // 'close_modals' => $this->_getCloseModalsAttribute()
+        ]);
+    }
 
-	// private function _getValueField(Input $field)
-	// {
-	// 	$value = $this->register?->{$field->getName()} ?? null;
+    // private function _getValueField(Input $field)
+    // {
+    // 	$value = $this->register?->{$field->getName()} ?? null;
 
-	// 	$default_value = (!is_null($field) && is_null($value) ? $field->getDefaultText() : null);
+    // 	$default_value = (!is_null($field) && is_null($value) ? $field->getDefaultText() : null);
 
-	// 	if($field->getPrepareForForm())
-	// 	{
-	// 		return $value ? call_user_func($field->getPrepareForForm(), $value) : $default_value;
-	// 	}
-		
-	// 	return $value ?? $default_value;
-	// }
+    // 	if($field->getPrepareForForm())
+    // 	{
+    // 		return $value ? call_user_func($field->getPrepareForForm(), $value) : $default_value;
+    // 	}
 
-	public function save()
-	{
-		$this->resetValidation();
+    // 	return $value ?? $default_value;
+    // }
 
-		try
-		{
-			$fields = Finder::findElement($this->form, Input::class);
+    public function save(): void
+    {
+        $this->resetValidation();
 
-			$fields_validated = $this->_validate($this->data, $fields, $this->register?->id);
+        try {
+            $fields = Finder::onlyOf($this->form, Input::class);
 
-			$register = $this->_fillData($fields, $fields_validated);
-			
-			return $this->_saving($register, $fields_validated);
-		}
-		catch(\Exception $e)
-		{
-			$this->addError('exception', $e->getMessage());
-			
-			$this->dispatchBrowserEvent('reset-loading');
-		}
-	}
+            // $fields_validated = $this->_validate($this->data, $fields, $this->register?->id);
 
-	// private function _fillData(array $fields, ValidatedInput $fields_validated): Model
-	// {
-	// 	$model = $this->_getModel();
+            // $register = $this->_fillData($fields, $fields_validated);
 
-	// 	$register = ($this->register) ? $this->register : new $model();
+            // return $this->_saving($register, $fields_validated);
+        } catch (\Exception $e) {
+            $this->addError('exception', $e->getMessage());
 
-	// 	foreach($fields as $field)
-	// 	{
-	// 		$data = $fields_validated[$field->getName()] ?? null;
+            $this->dispatchBrowserEvent('reset-loading');
+        }
+    }
 
-	// 		if(is_a($field, File::class))
-	// 		{
-	// 			if(!is_a($data, TemporaryUploadedFile::class))
-	// 			{
-	// 				continue;
-	// 			}
+    // private function _fillData(array $fields, ValidatedInput $fields_validated): Model
+    // {
+    // 	$model = $this->_getModel();
 
-	// 			$value = $this->_uploadFile($field, $data);
-	// 		}
-	// 		else
-	// 		{
-	// 			$value = $data ?? null;
-	// 		}
+    // 	$register = ($this->register) ? $this->register : new $model();
 
-	// 		$register->{$field->getName()} = $value;
-	// 	}
+    // 	foreach($fields as $field)
+    // 	{
+    // 		$data = $fields_validated[$field->getName()] ?? null;
 
-	// 	return $register;
-	// }
+    // 		if(is_a($field, File::class))
+    // 		{
+    // 			if(!is_a($data, TemporaryUploadedFile::class))
+    // 			{
+    // 				continue;
+    // 			}
 
-	// private function _uploadFile(File $input, $data)
-	// {
-	// 	if($input->isPublic())
-	// 	{
-	// 		return $data->storePublicly($input->getFolder(), env('FILESYSTEM_DISK', 'public'));
-	// 	}
-		
-	// 	return $data->store($input->getFolder());
-	// }
+    // 			$value = $this->_uploadFile($field, $data);
+    // 		}
+    // 		else
+    // 		{
+    // 			$value = $data ?? null;
+    // 		}
 
-	// private function _validate($data, array $fields, int $register_id = null)
-	// {
-	// 	$validation_rules = $attributes = [];
+    // 		$register->{$field->getName()} = $value;
+    // 	}
 
-	// 	foreach($fields as $field)
-	// 	{
-	// 		if($field->getPrepareForSave())
-	// 		{
-	// 			$data[$field->getName()] = call_user_func($field->getPrepareForSave(), $data[$field->getName()]);
-	// 		}
+    // 	return $register;
+    // }
 
-	// 		if(is_a($field, File::class) && is_string($data[$field->getName()] ?? null))
-	// 		{
-	// 			continue;
-	// 		}
-			
-	// 		$validation_rules[$field->getName()] = $field->getRules($this->_getModel()->getTable(), $register_id);
-			
-	// 		$attributes[$field->getName()] = $field->getTitle();
-	// 	}
+    // private function _uploadFile(File $input, $data)
+    // {
+    // 	if($input->isPublic())
+    // 	{
+    // 		return $data->storePublicly($input->getFolder(), env('FILESYSTEM_DISK', 'public'));
+    // 	}
 
-	// 	$validator = Validator::make($data, $validation_rules, [], $attributes);
+    // 	return $data->store($input->getFolder());
+    // }
 
-	// 	$validator->validate();
+    // private function _validate($data, array $fields, int $register_id = null)
+    // {
+    // 	$validation_rules = $attributes = [];
 
-	// 	return $validator->safe();
-	// }
+    // 	foreach($fields as $field)
+    // 	{
+    // 		if($field->getPrepareForSave())
+    // 		{
+    // 			$data[$field->getName()] = call_user_func($field->getPrepareForSave(), $data[$field->getName()]);
+    // 		}
 
-	// private function _getSearchFieldsForm(): array
-	// {
-	// 	$searchs = Utils::findElement($this->form, Search::class);
+    // 		if(is_a($field, File::class) && is_string($data[$field->getName()] ?? null))
+    // 		{
+    // 			continue;
+    // 		}
 
-	// 	foreach($searchs as $search)
-	// 	{
-	// 		$model = ($this->register) ? get_class($this->register->{$search->getRelationShip()}()->getRelated()) : null;
-	
-	// 		$search->setModel($model);
-	// 	}
-		
-	// 	foreach($this->repeaters as $repeater)
-	// 	{
-	// 		$searchs_found = Utils::findElement($repeater->getFields(), Search::class);
+    // 		$validation_rules[$field->getName()] = $field->getRules($this->_getModel()->getTable(), $register_id);
 
-	// 		foreach($searchs_found as $search)
-	// 		{
-	// 			$search->setModel(get_class(app($repeater->getNameModelRelation())->customer()->getRelated()));
+    // 		$attributes[$field->getName()] = $field->getTitle();
+    // 	}
 
-	// 			$search->setRepeater($repeater->getRelation());
-	// 		}
+    // 	$validator = Validator::make($data, $validation_rules, [], $attributes);
 
-	// 		$searchs = array_merge($searchs, $searchs_found);
-	// 	}
+    // 	$validator->validate();
 
-	// 	return $searchs;
-	// }
+    // 	return $validator->safe();
+    // }
+
+    // private function _getSearchFieldsForm(): array
+    // {
+    // 	$searchs = Utils::findElement($this->form, Search::class);
+
+    // 	foreach($searchs as $search)
+    // 	{
+    // 		$model = ($this->register) ? get_class($this->register->{$search->getRelationShip()}()->getRelated()) : null;
+
+    // 		$search->setModel($model);
+    // 	}
+
+    // 	foreach($this->repeaters as $repeater)
+    // 	{
+    // 		$searchs_found = Utils::findElement($repeater->getFields(), Search::class);
+
+    // 		foreach($searchs_found as $search)
+    // 		{
+    // 			$search->setModel(get_class(app($repeater->getNameModelRelation())->customer()->getRelated()));
+
+    // 			$search->setRepeater($repeater->getRelation());
+    // 		}
+
+    // 		$searchs = array_merge($searchs, $searchs_found);
+    // 	}
+
+    // 	return $searchs;
+    // }
 }

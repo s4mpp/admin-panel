@@ -9,23 +9,20 @@ use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class Table extends Component
+final class Table extends Component
 {
     // public int $rowspan_empty = 0;
 
     // public array $rows = [];
 
-
     /**
      * Create a new component instance.
      */
     public function __construct(
-        // public array $labels = [], 
-        public Collection | LengthAwarePaginator | array $collection = []
-    )
-    {
+        // public array $labels = [],
+        public Collection|LengthAwarePaginator|array $collection = []
+    ) {
         // $this->rows = $this->getRows($labels, $collection);
-
 
         // $this->registers = $this->_mountColumnsData($collection);
 
@@ -53,21 +50,12 @@ class Table extends Component
     //             $cells[] = new Cell($label, $register->{$field});
     //         }
 
-    //         $rows[] = $cells; 
+    //         $rows[] = $cells;
     //     }
 
     //     return $rows ?? [];
     // }
 
-    
-
-
-
-
-
-
-
-    
     // private function _mountColumnsData($collection = null)
     // {
     //     if(!$collection)
@@ -78,12 +66,12 @@ class Table extends Component
     //     foreach($collection as $row)
     //     {
     //         $data_row = [];
-			
-	// 		foreach($this->columns as $column)
-	// 		{            		
+
+    // 		foreach($this->columns as $column)
+    // 		{
     //             $data_row[] = $this->_getDataRow(clone $column, $row);
-	// 		}
-            			
+    // 		}
+
     //         $registers[] = ['registers' => $data_row, 'original' => $row];
     //     }
 

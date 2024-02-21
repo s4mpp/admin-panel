@@ -2,152 +2,157 @@
 
 namespace S4mpp\AdminPanel\Input;
 
-use Illuminate\Support\Str;
+use Closure;
 use Illuminate\Validation\Rule;
 use S4mpp\AdminPanel\Traits\Titleable;
+use Illuminate\Contracts\View\View as View;
 use S4mpp\AdminPanel\Traits\HasDefaultText;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 abstract class Input
 {
-	// use HasDefaultText, 
-	use Titleable, HasDefaultText;
+    // use HasDefaultText,
+    use HasDefaultText, Titleable;
 
-	private ?string $prefix = 'data';
-	
-	private array $rules = ['required'];
-			
-	private $prepare_for_form = null;
-	
-	// private $prepare_for_save = null;
+    private ?string $prefix = 'data';
 
-	private ?string $description = null;
+    /**
+     * @var array<string|Rule>
+     */
+    private array $rules = ['required'];
 
-	function __construct(private string $title, private string $name)
-	{}
+    private ?Closure $prepare_for_form = null;
 
-	public function getName(): string
-	{
-		return $this->name;
-	}
-	
-	public function getDescription(): ?string
-	{
-		return $this->description;
-	}
+    // private $prepare_for_save = null;
 
-	public function getNameWithPrefix(): string
-	{
-		return join('.', array_filter([$this->prefix, $this->name]));
-	}
+    private ?string $description = null;
 
-	public function description(string $description)
-	{
-		$this->description = $description;
+    public function __construct(private string $title, private string $name)
+    {
+    }
 
-		return $this;
-	}
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-	public function prefix(string $prefix)
-	{
-		$this->prefix = $prefix;
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
-		return $this;
-	}
+    public function getNameWithPrefix(): string
+    {
+        return implode('.', array_filter([$this->prefix, $this->name]));
+    }
 
-	// public function unique()
-	// {
-	// 	$this->rules('unique');
-		
-	// 	return $this;
-	// }
+    public function description(string $description): self
+    {
+        $this->description = $description;
 
-	public function getView(): ?string
-	{
-		return $this->view ?? null;
-	}
+        return $this;
+    }
 
-	public function render()
-	{
-		return view('admin::input.field', [
-			'input' => $this,
-			// 'register' => $register,
-			// 'data' => $data,
-		]);
-	}
+    public function prefix(string $prefix): self
+    {
+        $this->prefix = $prefix;
 
-	public function isRequired(): bool
-	{
-		return in_array('required', $this->rules);
-	}
+        return $this;
+    }
 
-	// public function prepareForSave(callable $callback)
-	// {
-	// 	$this->prepare_for_save = $callback;
+    // public function unique()
+    // {
+    // 	$this->rules('unique');
 
-	// 	return $this;
-	// }
+    // 	return $this;
+    // }
 
-	// public function getPrepareForSave()
-	// {
-	// 	return $this->prepare_for_save;
-	// }
+    public function getView(): ?string
+    {
+        return $this->view ?? null;
+    }
 
-	public function prepareForForm(callable $callback)
-	{
-		$this->prepare_for_form = $callback;
+    public function render(): View|ViewFactory
+    {
+        return view('admin::input.field', [
+            'input' => $this,
+            // 'register' => $register,
+            // 'data' => $data,
+        ]);
+    }
 
-		return $this;
-	}
+    public function isRequired(): bool
+    {
+        return in_array('required', $this->rules);
+    }
 
-	public function getPrepareForForm()
-	{
-		return $this->prepare_for_form;
-	}
+    // public function prepareForSave(callable $callback)
+    // {
+    // 	$this->prepare_for_save = $callback;
 
-	// public function getRules(string $table, int $register_id = null): array
-	// {
-	// 	foreach($this->rules as $rule)
-	// 	{
-	// 		switch($rule)
-	// 		{
-	// 			case 'unique':
-	// 				$rules[] = Rule::unique($table)->ignore($register_id);
-	// 				break;
-					
-	// 			default:
-	// 				$rules[] = $rule;	
-	// 		}
-	// 	}
-		
-	// 	return $rules ?? [];
-	// }
+    // 	return $this;
+    // }
 
-	public function rules(string ...$rules)
-	{
-		foreach($rules as $rule)
-		{
-			$this->rules[] = $rule;
-		}
+    // public function getPrepareForSave()
+    // {
+    // 	return $this->prepare_for_save;
+    // }
 
-		return $this;
-	}
+    public function prepareForForm(callable $callback): self
+    {
+        $this->prepare_for_form = $callback;
 
-	// public function notRequired()
-	// {
-	// 	$this->_removeRule('required');
-		
-	// 	$this->rules('nullable');
+        return $this;
+    }
 
-	// 	return $this;
-	// }
+    public function getPrepareForForm(): callable
+    {
+        return $this->prepare_for_form;
+    }
 
-	// private function _removeRule(string $rule)
-	// {
-	// 	$key = array_search($rule, $this->rules);
-		
-	// 	if($key !== false)
-	// 	{
-	// 		unset($this->rules[$key]);
-	// 	}
-	// }
+    // public function getRules(string $table, int $register_id = null): array
+    // {
+    // 	foreach($this->rules as $rule)
+    // 	{
+    // 		switch($rule)
+    // 		{
+    // 			case 'unique':
+    // 				$rules[] = Rule::unique($table)->ignore($register_id);
+    // 				break;
+
+    // 			default:
+    // 				$rules[] = $rule;
+    // 		}
+    // 	}
+
+    // 	return $rules ?? [];
+    // }
+
+    public function rules(string ...$rules): self
+    {
+        foreach ($rules as $rule) {
+            $this->rules[] = $rule;
+        }
+
+        return $this;
+    }
+
+    // public function notRequired()
+    // {
+    // 	$this->_removeRule('required');
+
+    // 	$this->rules('nullable');
+
+    // 	return $this;
+    // }
+
+    // private function _removeRule(string $rule)
+    // {
+    // 	$key = array_search($rule, $this->rules);
+
+    // 	if($key !== false)
+    // 	{
+    // 		unset($this->rules[$key]);
+    // 	}
+    // }
 }

@@ -2,41 +2,45 @@
 
 namespace S4mpp\AdminPanel\CustomActions;
 
+use Illuminate\View\View as ViewView;
 use S4mpp\AdminPanel\Traits\CallRouteAction;
 use S4mpp\AdminPanel\Traits\RenderButtonLink;
-use S4mpp\AdminPanel\Traits\CallRouteMethod;
-use S4mpp\AdminPanel\Traits\RenderButtonForm;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class View extends CustomAction
 {
-	use ShoudOpenInNewTab, RenderButtonLink, CallRouteAction;
+    use CallRouteAction, RenderButtonLink, ShoudOpenInNewTab;
 
-	public function __construct(public string $title, private ?string $view = null)
-	{
-		parent::__construct($title);
+    public function __construct(string $title, private ?string $view = null)
+    {
+        parent::__construct($title);
 
-		$this->setAction('customActionView');
-	}
+        $this->setAction('customActionView');
+    }
 
-	public function getUrl()
-	{
-		return '#';
-	}
+    public function getUrl(): string
+    {
+        return '#';
+    }
 
-	// public function getCallbackRoute($resource)
-	// {
-	// 	return function($id) use ($resource)
-	// 	{			
-	// 		$register = $resource->getModel()::findOrFail($id);
+    public function getView(): string
+    {
+        return $this->view;
+    }
 
-	// 		return view('admin::custom-actions.content.view-action', [
-	// 			'title' => $resource->title,
-	// 			'action_title'=> $this->getTitle(),
-	// 			'register'=> $register,
-	// 			'resource'=> $resource,
-	// 			'view' => $this->view
-	// 		]);
-	// 	};
-	// }
+    // public function getCallbackRoute($resource)
+    // {
+    // 	return function($id) use ($resource)
+    // 	{
+    // 		$register = $resource->getModel()::findOrFail($id);
+
+    // 		return view('admin::custom-actions.content.view-action', [
+    // 			'title' => $resource->title,
+    // 			'action_title'=> $this->getTitle(),
+    // 			'register'=> $register,
+    // 			'resource'=> $resource,
+    // 			'view' => $this->view
+    // 		]);
+    // 	};
+    // }
 }

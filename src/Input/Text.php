@@ -2,31 +2,30 @@
 
 namespace S4mpp\AdminPanel\Input;
 
-use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Traits\CanChangeCase;
 
 final class Text extends Input
 {
-	use CanChangeCase;
+    use CanChangeCase;
 
-	private $mask = null;
+    private ?string $mask = null;
 
-	protected $view = 'admin::input.text';
+    protected string $view = 'admin::input.text';
 
-	public function mask(string $mask)
-	{
-		$this->mask = $mask;
+    public function mask(string $mask): self
+    {
+        $this->mask = $mask;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getMask()
-	{
-		return $this->mask;
-	}
+    public function getMask(): string
+    {
+        return $this->mask;
+    }
 
-	// public function render()
-	// {
-	// 	return view('admin::input.text', ['input' => $this]);
-	// }
+    // public function render()
+    // {
+    // 	return view('admin::input.text', ['input' => $this]);
+    // }
 }

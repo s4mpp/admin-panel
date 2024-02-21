@@ -3,62 +3,72 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Workbench\App\Models\User;
-use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Factories\Input;
 use S4mpp\AdminPanel\Factories\Label;
-use S4mpp\AdminPanel\Factories\Column;
 use S4mpp\AdminPanel\Factories\Filter;
-use S4mpp\AdminPanel\Factories\ItemView;
-use S4mpp\AdminPanel\Resources\Resource;
-use S4mpp\AdminPanel\Factories\CustomAction;
 
-class UserResource extends Resource
+final class UserResource extends Resource
 {
-    public $title = 'Users';
+    public string $title = 'Users';
 
-    public $actions = ['create', 'update', 'read', 'delete'];
-    
+    /**
+    * @var array<string> $actions
+    */
+    public array $actions = ['create', 'update', 'read', 'delete'];
+
     // public $search = ['name' => 'Nome', 'email' => 'E-mail'];
 
-    public function table()
+    /**
+    * @return array<?Label|?Card>
+    */
+    public function table(): array
     {
         return [
             Label::text('Nome', 'name')->strong(),
-            
+
             Label::text('E-mail', 'email'),
 
             Label::dateTime('Cadastrado em', 'created_at'),
         ];
     }
 
-	public function read()
+    /**
+    * @return array<?Label|?Card>
+    */
+    public function read(): array
     {
         return [
-			Label::text('Nome', 'name')->strong(),
-            
+            Label::text('Nome', 'name')->strong(),
+
             Label::text('E-mail', 'email'),
-            
+
             Label::dateTime('Cadastrado em', 'created_at'),
         ];
     }
 
-    public function form()
+    /**
+    * @return array<?Input|?Card>
+    */
+    public function form(): array
     {
         return [
-			Input::text('Nome', 'name')->uppercase(),
+            Input::text('Nome', 'name')->uppercase(),
 
-			Input::email('E-mail', 'email')->uppercase(),
+            Input::email('E-mail', 'email')->uppercase(),
         ];
     }
 
-    public function reports()
+    /**
+    * @return array<Report>
+    */
+    public function reports(): array
     {
         return [
             (new Report('Users registered', [
-                Filter::period('Registered at', 'created_at')
+                Filter::period('Registered at', 'created_at'),
             ]))
-            ->result('Usuários cadastrados', User::class, 'getUsers')
+                ->result('Usuários cadastrados', User::class, 'getUsers'),
         ];
     }
 }

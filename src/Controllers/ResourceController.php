@@ -9,222 +9,211 @@ use S4mpp\Laraguard\Laraguard;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use S4mpp\AdminPanel\Utils\Finder;
+use \Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
  * @codeCoverageIgnore
  */
-class ResourceController extends Controller
+final class ResourceController extends Controller
 {
-    public function __invoke()
-	{
-		$path = request()->route()->action['as'];
-		
-		$path_steps = explode('.', $path);
+    public function __invoke(): View|ViewFactory
+    {
+        $path = request()->route()->action['as'];
 
-		$resource =  AdminPanel::getResource($path_steps[2]);
+        $path_steps = explode('.', $path);
 
-		return Laraguard::layout('admin::resources.index', compact('resource'));
-	}
+        $resource = AdminPanel::getResource($path_steps[2]);
 
-	public function create()
-	{
-		$path = request()->route()->action['as'];
-		
-		$path_steps = explode('.', $path);
+        return Laraguard::layout('admin::resources.index', compact('resource'));
+    }
 
-		$resource =  AdminPanel::getResource($path_steps[2]);
+    public function create(): View|ViewFactory
+    {
+        $path = request()->route()->action['as'];
 
-		//----------------------------------------------------------------
+        $path_steps = explode('.', $path);
 
-		return Laraguard::layout('admin::resources.create', compact('resource'));
-	}
+        $resource = AdminPanel::getResource($path_steps[2]);
 
-	public function update(int $id)
-	{
-		$path = request()->route()->action['as'];
-		
-		$path_steps = explode('.', $path);
+        //----------------------------------------------------------------
 
-		$resource =  AdminPanel::getResource($path_steps[2]);
+        return Laraguard::layout('admin::resources.create', compact('resource'));
+    }
 
-		//----------------------------------------------------------------
+    public function update(int $id): View|ViewFactory
+    {
+        $path = request()->route()->action['as'];
 
-		$inputs = Finder::findElementsRecursive($resource->getForm(), Input::class);
-		
-		$fields = array_map(function($input) {
+        $path_steps = explode('.', $path);
 
-			return $input->getName();
+        $resource = AdminPanel::getResource($path_steps[2]);
 
-		}, $inputs);
+        //----------------------------------------------------------------
 
-		array_unshift($fields, 'id');
-		
-		$register = $resource->getModel()->select($fields)->findOrFail($id);
-	
-		return Laraguard::layout('admin::resources.update', compact('resource', 'register'));
-	}
-	
+        $inputs = Finder::findElementsRecursive($resource->getForm(), Input::class);
 
-	public function read(int $id)
-	{
-		$path = request()->route()->action['as'];
-		
-		$path_steps = explode('.', $path);
+        $fields = array_map(fn ($input) => $input->getName(), $inputs);
 
-		$resource =  AdminPanel::getResource($path_steps[2]);
+        array_unshift($fields, 'id');
 
-		//----------------------------------------------------------------
+        $register = $resource->getModel()->select($fields)->findOrFail($id);
 
-		$register = $resource->getModel()->findOrFail($id);
+        return Laraguard::layout('admin::resources.update', compact('resource', 'register'));
+    }
 
-		$custom_actions = [];
+    public function read(int $id): View|ViewFactory
+    {
+        $path = request()->route()->action['as'];
 
-		foreach($resource->getCustomActions() as $custom_action)
-		{
-			// if(!Utils::checkRoles($custom_action->getRolesForAccess()))
-			// {
-			// 	continue;
-			// }
+        $path_steps = explode('.', $path);
 
-			// $custom_action->setRegister($register);
+        $resource = AdminPanel::getResource($path_steps[2]);
 
-			$custom_actions[$custom_action->getSlug()] = $custom_action;
-		}
+        //----------------------------------------------------------------
 
+        $register = $resource->getModel()->findOrFail($id);
 
-		return Laraguard::layout('admin::resources.read', compact('resource', 'register', 'custom_actions'));
-	}
+        $custom_actions = [];
 
-	public function delete()
-	{
-		$path = request()->route()->action['as'];
-		
-		$path_steps = explode('.', $path);
+        foreach ($resource->getCustomActions() as $custom_action) {
+            // if(!Utils::checkRoles($custom_action->getRolesForAccess()))
+            // {
+            // 	continue;
+            // }
 
-		$resource =  AdminPanel::getResource($path_steps[2]);
+            // $custom_action->setRegister($register);
 
-		//----------------------------------------------------------------
+            $custom_actions[$custom_action->getSlug()] = $custom_action;
+        }
 
-		// delete
-	}
+        return Laraguard::layout('admin::resources.read', compact('resource', 'register', 'custom_actions'));
+    }
 
-	public function report(string $slug)
-	{
-		$path = request()->route()->action['as'];
-		
-		$path_steps = explode('.', $path);
+    public function delete(): void
+    {
+        $path = request()->route()->action['as'];
 
-		$resource =  AdminPanel::getResource($path_steps[2]);
+        $path_steps = explode('.', $path);
 
-		//----------------------------------------------------------------
+        $resource = AdminPanel::getResource($path_steps[2]);
 
-		$report = $resource->getReport($slug);
+        //----------------------------------------------------------------
 
-		return Laraguard::layout('admin::resources.report', compact('resource', 'report'));
-	}
-	
+        // delete
+    }
 
-	public function customActionCallback()
-	{
-		
-	}
+    public function report(string $slug): View|ViewFactory
+    {
+        $path = request()->route()->action['as'];
 
-    public function customActionUpdate()
-	{
+        $path_steps = explode('.', $path);
 
-	}
+        $resource = AdminPanel::getResource($path_steps[2]);
 
-    public function customActionView()
-	{
+        //----------------------------------------------------------------
 
-	}
+        $report = $resource->getReport($slug);
 
+        return Laraguard::layout('admin::resources.report', compact('resource', 'report'));
+    }
 
+    public function customActionCallback(): void
+    {
+    }
 
-	// public function report()
-	// {
-	// 	$report = null;
+    public function customActionUpdate(): void
+    {
+    }
 
-	// 	$resource = $this->_getResource();
+    public function customActionView(): void
+    {
+    }
 
-	// 	$path = explode('/', request()->route()->uri);
+    // public function report()
+    // {
+    // 	$report = null;
 
-	// 	$slug_report = end($path);
+    // 	$resource = $this->_getResource();
 
-	// 	$report = $resource->getReport($slug_report);
+    // 	$path = explode('/', request()->route()->uri);
 
-	// 	if(!$report)
-	// 	{
-	// 		abort(404);
-	// 	}
+    // 	$slug_report = end($path);
 
-	// 	$report->setModel($resource->getModel());
+    // 	$report = $resource->getReport($slug_report);
 
-	// 	return $resource->getView('report', [
-	// 		'resource' => $resource,
-	// 		'report' => $report
-	// 	]);
-	// }
+    // 	if(!$report)
+    // 	{
+    // 		abort(404);
+    // 	}
+
+    // 	$report->setModel($resource->getModel());
+
+    // 	return $resource->getView('report', [
+    // 		'resource' => $resource,
+    // 		'report' => $report
+    // 	]);
+    // }
 
     // public function create()
-	// {
-	// 	$resource = $this->_getResource();
+    // {
+    // 	$resource = $this->_getResource();
 
-	// 	return $resource->getView('create', compact('resource'));
-	// }
+    // 	return $resource->getView('create', compact('resource'));
+    // }
 
     // public function update(int $id)
-	// {
-	// 	$resource = $this->_getResource();
+    // {
+    // 	$resource = $this->_getResource();
 
-	// 	$register = $resource->getModel()->findOrFail($id);
+    // 	$register = $resource->getModel()->findOrFail($id);
 
-	// 	return $resource->getView('update', compact('resource', 'register'));
-	// }
+    // 	return $resource->getView('update', compact('resource', 'register'));
+    // }
 
     // public function read(int $id)
-	// {
-	// 	$resource = $this->_getResource();
+    // {
+    // 	$resource = $this->_getResource();
 
-	// 	$register = $resource->getModel()->findOrFail($id);
+    // 	$register = $resource->getModel()->findOrFail($id);
 
-	// 	$custom_actions = null;
+    // 	$custom_actions = null;
 
-	// 	foreach($resource->getCustomActions() as $custom_action)
-	// 	{
-	// 		if(!Utils::checkRoles($custom_action->getRolesForAccess()))
-	// 		{
-	// 			continue;
-	// 		}
+    // 	foreach($resource->getCustomActions() as $custom_action)
+    // 	{
+    // 		if(!Utils::checkRoles($custom_action->getRolesForAccess()))
+    // 		{
+    // 			continue;
+    // 		}
 
-	// 		$custom_action->setRegister($register);
+    // 		$custom_action->setRegister($register);
 
-	// 		$custom_actions[$custom_action->getSlug()] = $custom_action;
-	// 	}
+    // 		$custom_actions[$custom_action->getSlug()] = $custom_action;
+    // 	}
 
-	// 	return $resource->getView('read', compact('resource', 'register', 'custom_actions'));
-	// }
+    // 	return $resource->getView('read', compact('resource', 'register', 'custom_actions'));
+    // }
 
     // public function delete(Request $request, int $id)
-	// {
-	// 	$resource = $this->_getResource();
+    // {
+    // 	$resource = $this->_getResource();
 
-	// 	$register = $resource->getModel()->findOrFail($id);
+    // 	$register = $resource->getModel()->findOrFail($id);
 
-	// 	$register->delete();
+    // 	$register->delete();
 
-	// 	$request->session()->flash('message', 'Exclusão realizada com sucesso!');
+    // 	$request->session()->flash('message', 'Exclusão realizada com sucesso!');
 
-	// 	return redirect()->route($resource->getRouteName('index'));
-	// }
+    // 	return redirect()->route($resource->getRouteName('index'));
+    // }
 
-	// private function _getResource(): Resource
-	// {
-	// 	$path = request()->route()->action['as'];
+    // private function _getResource(): Resource
+    // {
+    // 	$path = request()->route()->action['as'];
 
-	// 	$path_steps = explode('.', $path);
+    // 	$path_steps = explode('.', $path);
 
-	// 	return AdminPanel::getResource($path_steps[1].'Resource');
-	// }
+    // 	return AdminPanel::getResource($path_steps[1].'Resource');
+    // }
 }

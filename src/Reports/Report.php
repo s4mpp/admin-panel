@@ -2,57 +2,64 @@
 
 namespace S4mpp\AdminPanel\Reports;
 
-use S4mpp\AdminPanel\Utils;
+use S4mpp\AdminPanel\Labels\Label;
+use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
-use S4mpp\AdminPanel\Reports\ReportResult;
-use S4mpp\AdminPanel\Utils\Finder;
 
 final class Report
 {
-	use Titleable, Slugable;
+    use Slugable, Titleable;
 
-	// private $model;
+    // private $model;
 
-	private array $possible_results = [];
+    /**
+     * @var array<ReportResult>
+     */
+    private array $possible_results = [];
 
-	function __construct(private string $title, private array $fields)
-	{
-		$this->createSlug($title);
-	}
+    public function __construct(private string $title, private array $fields)
+    {
+        $this->createSlug($title);
+    }
 
-	// public function setModel($model)
-	// {
-	// 	$this->model = $model;
-	// }
+    // public function setModel($model)
+    // {
+    // 	$this->model = $model;
+    // }
 
-	public function result(string $title, string $model = null, string $method = null, array $columns = [])
-	{
-		$report_result = new ReportResult($title, $model, $method);
-		
-		foreach($columns as $column)
-		{
-			$report_result->addColumn($column);
-		}
+    /**
+     * @param array<Label> $columns
+     */
+    public function result(string $title, ?string $model = null, ?string $method = null, array $columns = []): self
+    {
+        $report_result = new ReportResult($title, $model, $method);
 
-		$this->possible_results[] = $report_result;
-		
-		return $this;
-	}
+        foreach ($columns as $column) {
+            $report_result->addColumn($column);
+        }
 
-	public function getFields(): array
-	{
-		return Finder::onlyOf($this->fields, Filter::class);
-	}
+        $this->possible_results[] = $report_result;
 
-	public function getPossibleResults(): array
-	{
-		return $this->possible_results;
-	}
+        return $this;
+    }
 
-	// public function getRouteName(string $resource): string
-	// {
-	// 	return 'admin.'.$resource.'.report.'.$this->slug;
-	// }
+    public function getFields(): array
+    {
+        return Finder::onlyOf($this->fields, Filter::class);
+    }
+
+    /**
+     * @return array<ReportResult>
+     */
+    public function getPossibleResults(): array
+    {
+        return $this->possible_results;
+    }
+
+    // public function getRouteName(string $resource): string
+    // {
+    // 	return 'admin.'.$resource.'.report.'.$this->slug;
+    // }
 }

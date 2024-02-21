@@ -2,17 +2,18 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
-use S4mpp\AdminPanel\Column\Column;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Contracts\View\View as View;
 
 final class LongText extends Label
 {
-	// public function render($value, $sequence)
-	// {
-	// 	return view('admin::label.longtext', compact('value'));
-	// }
+    // public function render($value, $sequence)
+    // {
+    // 	return view('admin::label.longtext', compact('value'));
+    // }
 
-	public function showContent($content = null)
-	{
-		return view('admin::labels.longtext', compact('content'));
-	}
+    public function showContent(string $content = null): string|View|ViewFactory
+    {
+        return view('admin::labels.longtext', compact('content'));
+    }
 }

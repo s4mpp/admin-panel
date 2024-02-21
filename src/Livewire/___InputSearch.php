@@ -7,22 +7,22 @@ use Livewire\Component;
 /**
  * @codeCoverageIgnore
  */
-class InputSearch extends Component
+final class InputSearch extends Component
 {
-// 	public $field;
+    // 	public $field;
 
-// 	public $title;
+    // 	public $title;
 
-// 	public function mount(string $field, string $title)
-// 	{
-// 		$this->field = $field;
-// 		$this->title = $title;
-// 	}
+    // 	public function mount(string $field, string $title)
+    // 	{
+    // 		$this->field = $field;
+    // 		$this->title = $title;
+    // 	}
 
-// 	public function render()
-// 	{
-// 		return view('admin::livewire.input-search', [
-			
-// 		]);
-// 	}
+    // 	public function render()
+    // 	{
+    // 		return view('admin::livewire.input-search', [
+
+    // 		]);
+    // 	}
 }

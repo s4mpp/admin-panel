@@ -2,218 +2,220 @@
 
 namespace S4mpp\AdminPanel\CustomActions;
 
+use Closure;
 use Illuminate\Support\Str;
-use S4mpp\AdminPanel\Traits\CallRouteAction;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
+use S4mpp\AdminPanel\Traits\CallRouteAction;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Contracts\View\View as View;
 
 abstract class CustomAction
 {
-	use Titleable, Slugable, CallRouteAction;
+    use CallRouteAction, Slugable, Titleable;
 
-	private string $success_message = 'Ação concluída com sucesso.';
+    private string $success_message = 'Ação concluída com sucesso.';
 
-	// protected $register;
+    // protected $register;
 
-	// DANGEROUS
-	//----------------------------------------------------------------
-	private ?string $message_confirmation = null;
-	
-	private bool $has_confirmation = false;
-	
-	private bool $is_danger = false;
-	
-	//----------------------------------------------------------------
-	
-	// DISABLED
-	private ?bool $is_disabled = null;
-	
-	private $disabled_callback;
-	
-	private ?string $disabled_message = null;
-	
-	//----------------------------------------------------------------
+    // DANGEROUS
+    //----------------------------------------------------------------
+    private ?string $message_confirmation = null;
 
-	// /**
-	//  *
-	//  * @deprecated
-	//  */
-	// private array $permissions = [];
-	
-	// private array $roles = [];
+    private bool $has_confirmation = false;
 
-	public function __construct(private string $title)
-	{
-		$this->createSlug($title);
-	}
+    private bool $is_danger = false;
 
-	public function setSuccessMessage($success_message)
-	{
-		$this->success_message = $success_message;
+    //----------------------------------------------------------------
 
-		return $this;
-	}
-	
-	public function getSuccessMessage(array $result = null)
-	{
-		$message =  Str::replaceArray('?', $result, $this->success_message);
+    // DISABLED
+    private ?bool $is_disabled = null;
 
-		return Str::of($message)->inlineMarkdown();
-	}
+    private ?Closure $disabled_callback = null;
 
-	// public function setRegister($register)
-	// {
-	// 	$this->register = $register;
+    private ?string $disabled_message = null;
 
-	// 	return $this;
-	// }
+    //----------------------------------------------------------------
 
-	// public function getRegister()
-	// {
-	// 	return $this->register;
-	// }
+    // /**
+    //  *
+    //  * @deprecated
+    //  */
+    // private array $permissions = [];
 
-	public function confirm(string $message_confirmation = 'Tem certeza?')
-	{
-		$this->message_confirmation = $message_confirmation;
+    // private array $roles = [];
 
-		$this->has_confirmation = true;
+    public function __construct(private string $title)
+    {
+        $this->createSlug($title);
+    }
 
-		return $this;
-	}
+    public function setSuccessMessage(string $success_message): self
+    {
+        $this->success_message = $success_message;
 
-	public function getMessageConfirmation(): string
-	{
-		return $this->message_confirmation;
-	}
+        return $this;
+    }
 
-	public function hasConfirmation(): bool
-	{
-		return $this->has_confirmation;
-	}
+    /**
+     * Undocumented function
+     *
+     * @param array<string>|null $result
+     */
+    public function getSuccessMessage(?array $result = null): ?string
+    {
+        $message = Str::replaceArray('?', $result, $this->success_message);
 
-	// public function getNameModalConfirmation(): string
-	// {
-	// 	return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug()));
-	// }
+        return Str::of($message)->inlineMarkdown();
+    }
 
-	// public function renderModalConfirmation()
-	// {
-	// 	return view('admin::custom-actions.modal-confirmation', ['action' => $this]);
-	// }
+    // public function setRegister($register)
+    // {
+    // 	$this->register = $register;
 
-	// public function renderButtonWithConfirmation()
-	// {
-	// 	return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
-	// }
+    // 	return $this;
+    // }
 
-	public function renderButtonDisabled()
-	{
-		return view('admin::custom-actions.buttons.disabled', ['action' => $this]);
-	}
+    // public function getRegister()
+    // {
+    // 	return $this->register;
+    // }
 
-	// public function getTargetWindow(): ?string
-	// {
-	// 	if(method_exists($this, 'isNewTab'))
-	// 	{
-	// 		return ($this->isNewTab() ? '_blank' : null);
-	// 	}
+    public function confirm(string $message_confirmation = 'Tem certeza?'): self
+    {
+        $this->message_confirmation = $message_confirmation;
 
-	// 	return null;
-	// }
+        $this->has_confirmation = true;
 
-	public function danger()
-	{
-		$this->is_danger = true;
+        return $this;
+    }
 
-		if(!$this->has_confirmation)
-		{
-			$this->confirm();
-		}
+    public function getMessageConfirmation(): string
+    {
+        return $this->message_confirmation;
+    }
 
-		return $this;
-	}
+    public function hasConfirmation(): bool
+    {
+        return $this->has_confirmation;
+    }
 
-	public function isDangerous(): bool
-	{
-		return $this->is_danger;
-	}
+    // public function getNameModalConfirmation(): string
+    // {
+    // 	return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug()));
+    // }
 
-	public function disabled(bool | callable $disabled_callback = true, ?string $disabled_message = null)
-	{
-		if(is_bool($disabled_callback))
-		{
-			$this->is_disabled = $disabled_callback;
-		}
-		else if(is_callable($disabled_callback))
-		{
-			$this->disabled_callback = $disabled_callback;
-		}
+    // public function renderModalConfirmation()
+    // {
+    // 	return view('admin::custom-actions.modal-confirmation', ['action' => $this]);
+    // }
 
-		if($disabled_message)
-		{
-			$this->disabled_message = $disabled_message;
-		}
+    // public function renderButtonWithConfirmation()
+    // {
+    // 	return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
+    // }
 
-		return $this;
-	}
+    public function renderButtonDisabled(): View|ViewFactory
+    {
+        return view('admin::custom-actions.buttons.disabled', ['action' => $this]);
+    }
 
-	public function isDisabled(): bool
-	{
-		if(is_bool($this->is_disabled))
-		{		 
-			return $this->is_disabled;
-		}
+    // public function getTargetWindow(): ?string
+    // {
+    // 	if(method_exists($this, 'isNewTab'))
+    // 	{
+    // 		return ($this->isNewTab() ? '_blank' : null);
+    // 	}
 
-		return (is_callable($this->disabled_callback)) ? call_user_func($this->disabled_callback, $this->register ?? null) : false;
-	}
+    // 	return null;
+    // }
 
-	public function getDisabledMessage(): ?string
-	{
-		return $this->disabled_message ?? 'Função não disponível no momento';
-	}
+    public function danger(): self
+    {
+        $this->is_danger = true;
 
-	// public function roles(...$roles)
-	// {
-	// 	$this->roles = $roles;
+        if (! $this->has_confirmation) {
+            $this->confirm();
+        }
 
-	// 	return $this;
-	// }
+        return $this;
+    }
 
-	// final public function getRolesForAccess(): array
-	// {
-	// 	$roles = $this->roles ?? [];
-		
-	// 	if(empty($roles) && config('admin.strict_permissions'))
-	// 	{
-	// 		throw new \Exception('Custom Action "'.$this->getName().'" has no roles (using Strict Permissions)');
-	// 	}
+    public function isDangerous(): bool
+    {
+        return $this->is_danger;
+    }
 
-	// 	return $roles;
-	// }
+    public function disabled(bool|callable $disabled_callback = true, ?string $disabled_message = null): self
+    {
+        if (is_bool($disabled_callback)) {
+            $this->is_disabled = $disabled_callback;
+        } elseif (is_callable($disabled_callback)) {
+            $this->disabled_callback = $disabled_callback;
+        }
 
-	// /**
-	//  * @deprecated
-	//  */
-	// public function permissions(...$permissions)
-	// {
-	// 	$this->permissions = $permissions;
+        if ($disabled_message) {
+            $this->disabled_message = $disabled_message;
+        }
 
-	// 	return $this;
-	// }
+        return $this;
+    }
 
-	// /**
-	//  * @deprecated
-	//  */
-	// public function getPermissionsForAccess(): array
-	// {
-	// 	$permissions = $this->permissions;
+    public function isDisabled(): bool
+    {
+        if (is_bool($this->is_disabled)) {
+            return $this->is_disabled;
+        }
 
-	// 	if(empty($permissions) && config('admin.strict_permissions'))
-	// 	{
-	// 		throw new \Exception('Custom action "'.$this->getTitle().'" has no permissions (using Strict Permissions)');
-	// 	}
+        return (!is_null($this->disabled_callback)) ? call_user_func($this->disabled_callback, $this->register ?? null) : false;
+    }
 
-	// 	return $permissions;
-	// }
+    public function getDisabledMessage(): ?string
+    {
+        return $this->disabled_message ?? 'Função não disponível no momento';
+    }
+
+    // public function roles(...$roles)
+    // {
+    // 	$this->roles = $roles;
+
+    // 	return $this;
+    // }
+
+    // final public function getRolesForAccess(): array
+    // {
+    // 	$roles = $this->roles ?? [];
+
+    // 	if(empty($roles) && config('admin.strict_permissions'))
+    // 	{
+    // 		throw new \Exception('Custom Action "'.$this->getName().'" has no roles (using Strict Permissions)');
+    // 	}
+
+    // 	return $roles;
+    // }
+
+    // /**
+    //  * @deprecated
+    //  */
+    // public function permissions(...$permissions)
+    // {
+    // 	$this->permissions = $permissions;
+
+    // 	return $this;
+    // }
+
+    // /**
+    //  * @deprecated
+    //  */
+    // public function getPermissionsForAccess(): array
+    // {
+    // 	$permissions = $this->permissions;
+
+    // 	if(empty($permissions) && config('admin.strict_permissions'))
+    // 	{
+    // 		throw new \Exception('Custom action "'.$this->getTitle().'" has no permissions (using Strict Permissions)');
+    // 	}
+
+    // 	return $permissions;
+    // }
 }

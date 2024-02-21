@@ -11,45 +11,50 @@ use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class Update extends CustomAction
 {
-	// use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
+    // use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
 
-	use ShoudOpenInNewTab, RenderButtonForm, CallRouteAction;
+    use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab;
 
-	public function __construct(private string $title, private array $data)
-	{
-		parent::__construct($title);
+    public function __construct(string $title, private array $data)
+    {
+        parent::__construct($title);
 
-		$this->setMethod('PUT');
+        $this->setMethod('PUT');
 
-		$this->setAction('customActionUpdate');
-	}
+        $this->setAction('customActionUpdate');
+    }
 
-	public function getUrl()
-	{
-		return '#';
-	}
+    public function getUrl(): string
+    {
+        return '#';
+    }
 
-	// public function getCallbackRoute($resource)
-	// {
-	// 	return function($id) use ($resource)
-	// 	{
-	// 		try
-	// 		{
-	// 			$register = $resource->getModel()::findOrFail($id);
-	
-	// 			foreach($this->data as $key => $new_value)
-	// 			{
-	// 				$register->{$key} = $new_value;
-	// 			}
-	
-	// 			$register->save();
-	
-	// 			return redirect()->back()->with('message', $this->getSuccessMessage());
-	// 		}
-	// 		catch(\Exception $e)
-	// 		{
-	// 			return redirect()->back()->withErrors($e->getMessage());
-	// 		}
-	// 	};
-	// }
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    // public function getCallbackRoute($resource)
+    // {
+    // 	return function($id) use ($resource)
+    // 	{
+    // 		try
+    // 		{
+    // 			$register = $resource->getModel()::findOrFail($id);
+
+    // 			foreach($this->data as $key => $new_value)
+    // 			{
+    // 				$register->{$key} = $new_value;
+    // 			}
+
+    // 			$register->save();
+
+    // 			return redirect()->back()->with('message', $this->getSuccessMessage());
+    // 		}
+    // 		catch(\Exception $e)
+    // 		{
+    // 			return redirect()->back()->withErrors($e->getMessage());
+    // 		}
+    // 	};
+    // }
 }

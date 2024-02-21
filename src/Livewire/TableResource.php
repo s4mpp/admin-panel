@@ -2,6 +2,8 @@
 
 namespace S4mpp\AdminPanel\Livewire;
 
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Contracts\View\View as View;
 use Livewire\Component;
 use Livewire\WithPagination;
 use S4mpp\AdminPanel\Column\Actions;
@@ -10,43 +12,43 @@ use S4mpp\AdminPanel\Traits\WithAdminResource;
 /**
  * @codeCoverageIgnore
  */
-class TableResource extends Component
+final class TableResource extends Component
 {
     use WithAdminResource, WithPagination;
 
     // private $collection;
-    
+
     // private array $columns = [];
-    
+
     // private ?string $search_term = null;
-    
+
     // public ?array $filter_term = null;
 
     // protected $listeners = ['searchTable', 'filterTable'];
 
     // public $filter_descriptions = [];
 
-    public function mount(string $resource_slug)
-	{
-		$this->resource_slug = $resource_slug;
+    public function mount(string $resource_slug): void
+    {
+        $this->resource_slug = $resource_slug;
     }
 
-    public function booted()
+    public function booted(): void
     {
         $this->loadResource();
 
-    //     $this->columns = $this->resource->getTable();
+        //     $this->columns = $this->resource->getTable();
 
-    //     $actions = [];
-        
-    //     foreach($this->resource->getActions() as $action)
-    //     {
-    //         $actions[$action] = $this->resource->getRouteName($action);
-    //     }
+        //     $actions = [];
 
-    //     array_push($this->columns, ((new Actions($actions))->align('right')));
+        //     foreach($this->resource->getActions() as $action)
+        //     {
+        //         $actions[$action] = $this->resource->getRouteName($action);
+        //     }
+
+        //     array_push($this->columns, ((new Actions($actions))->align('right')));
     }
-    
+
     // public function searchTable(array $params)
     // {
     //     $this->search_term = $params['q'] ?? null;
@@ -59,30 +61,30 @@ class TableResource extends Component
     // public function filterTable(array $params)
     // {
     //     $this->reset('filter_descriptions');
-        
+
     //     $this->filter_term = $params['filters'] ?? null;
 
     //     $this->dispatchBrowserEvent('filter-complete');
-        
+
     //     $this->resetPage();
     // }
-    
+
     // public function filterRemove()
     // {
     //     $this->reset('filter_descriptions', 'filter_term');
-        
+
     //     $this->dispatchBrowserEvent('reset-filter');
 
     //     $this->resetPage();
     // }
-    
-    public function render()
-    {    
+
+    public function render(): View|ViewFactory
+    {
         return view('admin::livewire.table-resource', [
             // 'collection' => $this->_getRegisters(),
             // 'default_route' => $this->resource->getDefaultRoute(),
             'columns' => $this->resource->getColumns(),
-            'registers' => $this->resource->getRegisters()
+            'registers' => $this->resource->getRegisters(),
         ]);
     }
 
@@ -91,22 +93,22 @@ class TableResource extends Component
     //     $model = $this->resource->getModel();
 
     //     $query = $model->orderBy($this->resource->getOrdenationField(), $this->resource->getOrdenationDirection());
-                
+
     //     $this->_select($query);
-        
+
     //     $this->_search($query);
-        
+
     //     $this->_filter($query);
-    
+
     //     return $query->paginate();
     // }
 
     // private function _select($query)
     // {
-    //     $select_fields = $this->_getSelectFields(); 
+    //     $select_fields = $this->_getSelectFields();
 
-    //     $with_eager_loading = $this->_getWithEagerLoading($select_fields); 
-            
+    //     $with_eager_loading = $this->_getWithEagerLoading($select_fields);
+
     //     $query->select(array_unique($select_fields));
 
     //     if(!empty($with_eager_loading))
@@ -124,7 +126,7 @@ class TableResource extends Component
     //     $select_fields = ['id'];
 
     //     foreach(array_filter($this->columns, function($c) { return !$c->isRelation();}) as $column)
-	// 	{
+    // 	{
     //         $field = $column->getField();
 
     //         if(!$field)
@@ -141,22 +143,22 @@ class TableResource extends Component
     // private function _getWithEagerLoading(&$select_fields)
     // {
     //     foreach(array_filter($this->columns, function($c) { return $c->isRelation();}) as $column)
-	// 	{
+    // 	{
     //         $path = explode('.', $column->getField());
 
     //         $select_fields[] = $path[0].'_id';
-            
+
     //         $field = array_pop($path);
-            
+
     //         $relation_path = join('.', $path);
 
     //         if(empty($relation_path))
-    //         {                
+    //         {
     //             continue;
     //         }
 
     //         $with_eager_loading[$relation_path][] = $field;
-                        
+
     //         $field_relation = array_pop($path).'_id';
 
     //         if(!empty($previous_relation = join('.', $path)))
@@ -178,9 +180,9 @@ class TableResource extends Component
     //     {
     //         return;
     //     }
-        
+
     //     $search_fields = $this->resource->getSearchFields();
-        
+
     //     $query->where(function($builder) use ($search_fields)
     //     {
     //         foreach($search_fields as $key => $value)
@@ -198,7 +200,7 @@ class TableResource extends Component
     //     {
     //         return;
     //     }
-        
+
     //     $filters = $this->resource->getFilters();
 
     //     foreach($this->filter_term as $f => $term)
@@ -208,17 +210,17 @@ class TableResource extends Component
     //         if(!$filter || !$term || empty($term))
     //         {
     //             continue;
-    //         } 
+    //         }
 
-    //         $filter->filter($term, $query);  
+    //         $filter->filter($term, $query);
 
     //         /**
-	// 		 * DUPLICATED
-	// 		 */
+    // 		 * DUPLICATED
+    // 		 */
     //         if(!$term || empty($term))
-	// 		{
-	// 			continue;
-	// 		}
+    // 		{
+    // 			continue;
+    // 		}
 
     //         $description_result = $filter->getDescriptionResult($term);
 
