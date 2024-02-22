@@ -8,12 +8,13 @@ use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Utils\Finder;
+use Illuminate\Contracts\View\View;
 use Livewire\TemporaryUploadedFile;
+use S4mpp\AdminPanel\Elements\Card;
 use Illuminate\Support\ValidatedInput;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 
 /**
  * @codeCoverageIgnore
@@ -25,14 +26,14 @@ trait CreatesForm
     // public $register;
 
     /**
-    * @var array<mixed>
-    */
+     * @var array<mixed>
+     */
     public array $data = [];
 
     /**
-    * @var array<Input|Card>
-    */
-    private $form;
+     * @var array<Input|Card>
+     */
+    private array $form;
 
     // public function setField(string $repeater = null, string $field, $value = null)
     // {
@@ -52,9 +53,10 @@ trait CreatesForm
     // }
 
     /**
-    * @param array<Input|Card>
-    */
-    private function setInitialData(Model $register, array $form): void
+     * @param  array<mixed>  $register
+     * @param  array<Input|Card>  $form
+     */
+    private function setInitialData(array $register, array $form): void
     {
         $inputs = Finder::findElementsRecursive($form, Input::class);
 

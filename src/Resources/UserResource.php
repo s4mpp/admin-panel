@@ -3,6 +3,7 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Workbench\App\Models\User;
+use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Factories\Input;
 use S4mpp\AdminPanel\Factories\Label;
@@ -13,15 +14,15 @@ final class UserResource extends Resource
     public string $title = 'Users';
 
     /**
-    * @var array<string> $actions
-    */
+     * @var array<string>
+     */
     public array $actions = ['create', 'update', 'read', 'delete'];
 
     // public $search = ['name' => 'Nome', 'email' => 'E-mail'];
 
     /**
-    * @return array<?Label|?Card>
-    */
+     * @return array<Label|Card>
+     */
     public function table(): array
     {
         return [
@@ -34,8 +35,8 @@ final class UserResource extends Resource
     }
 
     /**
-    * @return array<?Label|?Card>
-    */
+     * @return array<Label|Card>
+     */
     public function read(): array
     {
         return [
@@ -48,8 +49,8 @@ final class UserResource extends Resource
     }
 
     /**
-    * @return array<?Input|?Card>
-    */
+     * @return array<Input|Card>
+     */
     public function form(): array
     {
         return [
@@ -60,8 +61,8 @@ final class UserResource extends Resource
     }
 
     /**
-    * @return array<Report>
-    */
+     * @return array<Report>
+     */
     public function reports(): array
     {
         return [

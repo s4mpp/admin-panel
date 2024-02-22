@@ -1,8 +1,9 @@
 <?php
 
 namespace S4mpp\AdminPanel\Filter;
+
+use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 
 final class Period extends Filter
 {

@@ -11,54 +11,54 @@ use S4mpp\AdminPanel\Labels\Datetime;
 use S4mpp\AdminPanel\Labels\LongText;
 use S4mpp\AdminPanel\Labels\MarkDown;
 
-class LabelTest extends TestCase
+final class LabelTest extends TestCase
 {
-	public function test_factory_text()
-	{
-		$custom_action = Label::text('title', 'field');
+    public function test_factory_text(): void
+    {
+        $custom_action = Label::text('title', 'field');
 
-		$this->assertInstanceOf(Text::class, $custom_action);
-	}
+        $this->assertInstanceOf(Text::class, $custom_action);
+    }
 
-	public function test_factory_longtext()
-	{
-		$custom_action = Label::longText('title', 'field');
+    public function test_factory_longtext(): void
+    {
+        $custom_action = Label::longText('title', 'field');
 
-		$this->assertInstanceOf(LongText::class, $custom_action);
-	}
+        $this->assertInstanceOf(LongText::class, $custom_action);
+    }
 
-	public function test_factory_markdown()
-	{
-		$custom_action = Label::markDown('title', 'field');
+    public function test_factory_markdown(): void
+    {
+        $custom_action = Label::markDown('title', 'field');
 
-		$this->assertInstanceOf(MarkDown::class, $custom_action);
-	}
+        $this->assertInstanceOf(MarkDown::class, $custom_action);
+    }
 
-	public function test_factory_boolean()
-	{
-		$custom_action = Label::boolean('title', 'field');
+    public function test_factory_boolean(): void
+    {
+        $custom_action = Label::boolean('title', 'field');
 
-		$this->assertInstanceOf(Boolean::class, $custom_action);
-	}
+        $this->assertInstanceOf(Boolean::class, $custom_action);
+    }
 
-	public function test_factory_badge()
-	{
-		$custom_action = Label::badge('title', 'field');
+    public function test_factory_badge(): void
+    {
+        $custom_action = Label::badge('title', 'field');
 
-		$this->assertInstanceOf(Badge::class, $custom_action);
-	}
+        $this->assertInstanceOf(Badge::class, $custom_action);
+    }
 
-	public function test_factory_datetime()
-	{
-		$custom_action = Label::datetime('title', 'field');
+    public function test_factory_datetime(): void
+    {
+        $custom_action = Label::datetime('title', 'field');
 
-		$this->assertInstanceOf(Datetime::class, $custom_action);
-	}
+        $this->assertInstanceOf(Datetime::class, $custom_action);
+    }
 
-	public function test_factory_date()
-	{
-		$custom_action = Label::date('title', 'field');
+    public function test_factory_date(): void
+    {
+        $custom_action = Label::date('title', 'field');
 
-		$this->assertInstanceOf(Datetime::class, $custom_action);
-	}
+        $this->assertInstanceOf(Datetime::class, $custom_action);
+    }
 }

@@ -4,7 +4,6 @@ namespace Workbench\App\AdminPanel;
 
 use S4mpp\AdminPanel\Resources\Resource;
 
-class EmptyResource extends Resource
+final class EmptyResource extends Resource
 {
-    
 }

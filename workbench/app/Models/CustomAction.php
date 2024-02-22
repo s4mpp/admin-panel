@@ -2,10 +2,10 @@
 
 namespace Workbench\App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CustomAction extends Model
+final class CustomAction extends Model
 {
     use HasFactory;
 }

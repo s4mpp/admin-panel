@@ -3,13 +3,13 @@
 namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
+use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Traits\IsFilterForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 use S4mpp\AdminPanel\Traits\HasModalSearchInForm;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 
 /**
  * @codeCoverageIgnore

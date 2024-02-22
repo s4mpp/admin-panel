@@ -2,8 +2,7 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
+use Illuminate\Contracts\View\View;
 
 final class Badge extends Label
 {
@@ -12,7 +11,7 @@ final class Badge extends Label
     // 	return view('admin::label.badge', compact('value', 'sequence'));
     // }
 
-    public function showContent(string $content = null): string|View|ViewFactory
+    public function showContent(mixed $content = null): mixed
     {
         return view('admin::labels.badge', compact('content'));
     }

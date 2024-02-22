@@ -5,14 +5,14 @@ namespace S4mpp\AdminPanel\Tests\Unit\Labels;
 use S4mpp\AdminPanel\Labels\Text;
 use S4mpp\AdminPanel\Tests\TestCase;
 
-class LabelTest extends TestCase
+final class LabelTest extends TestCase
 {
-	public function test_align()
-	{
-		$label = new Text('Title', 'field');
+    public function test_align(): void
+    {
+        $label = new Text('Title', 'field');
 
-		$label->align('left');
+        $label->align('left');
 
-		$this->assertSame('left', $label->getAlignment());
-	}
+        $this->assertSame('left', $label->getAlignment());
+    }
 }

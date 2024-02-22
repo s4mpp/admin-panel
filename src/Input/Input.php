@@ -4,8 +4,8 @@ namespace S4mpp\AdminPanel\Input;
 
 use Closure;
 use Illuminate\Validation\Rule;
+use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
-use Illuminate\Contracts\View\View as View;
 use S4mpp\AdminPanel\Traits\HasDefaultText;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 

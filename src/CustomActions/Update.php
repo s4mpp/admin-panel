@@ -15,6 +15,9 @@ final class Update extends CustomAction
 
     use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab;
 
+    /**
+     * @param  array<mixed>  $data
+     */
     public function __construct(string $title, private array $data)
     {
         parent::__construct($title);
@@ -29,6 +32,9 @@ final class Update extends CustomAction
         return '#';
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getData(): array
     {
         return $this->data;

@@ -2,8 +2,8 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 
 trait RenderButtonLink
 {

@@ -6,13 +6,12 @@ use Illuminate\View\View;
 use S4mpp\AdminPanel\Tests\TestCase;
 use S4mpp\AdminPanel\Labels\LongText;
 
-class LongTextTest extends TestCase
+final class LongTextTest extends TestCase
 {
-	public function test_show_content()
-	{
-		$long_Text = new LongText('Title', 'field');
+    public function test_show_content(): void
+    {
+        $long_Text = new LongText('Title', 'field');
 
-		$this->assertInstanceOf(View::class, $long_Text->showContent('x'));
-
-	}
+        $this->assertInstanceOf(View::class, $long_Text->showContent('x'));
+    }
 }

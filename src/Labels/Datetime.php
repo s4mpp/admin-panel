@@ -2,8 +2,7 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
+use Illuminate\Contracts\View\View;
 
 final class Datetime extends Label
 {
@@ -19,7 +18,7 @@ final class Datetime extends Label
     // 	return view('admin::label.datetime', compact('value', 'sequence', 'format'));
     // }
 
-    public function showContent(string $content = null): string|View|ViewFactory
+    public function showContent(mixed $content = null): mixed
     {
         $format = $this->format;
 

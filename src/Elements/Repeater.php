@@ -26,6 +26,9 @@ final class Repeater
 
     // , private array $fields = [],
 
+    /**
+     * @var array<Label>
+     */
     private array $columns = [];
 
     public function __construct(private string $title, private string $relation)
@@ -42,14 +45,14 @@ final class Repeater
     // 	return $this;
     // }
 
-    public function allowEdit()
+    public function allowEdit(): self
     {
         $this->can_edit = true;
 
         return $this;
     }
 
-    public function allowAdd()
+    public function allowAdd(): self
     {
         $this->can_add = true;
 
@@ -111,19 +114,22 @@ final class Repeater
     // 		->count();
     // }
 
+    /**
+     * @return array<Label>
+     */
     public function getColumns(): array
     {
         return Finder::onlyOf($this->columns, Label::class);
     }
 
-    public function getColumnsWithActions(): array
-    {
-        $columns = $this->getColumns();
+    // public function getColumnsWithActions(): array
+    // {
+    //     $columns = $this->getColumns();
 
-        if ($this->can_edit) {
-            // array_push($columns, (new RepeaterActions($this->relation))->align('right'));
-        }
+    //     if ($this->can_edit) {
+    //         // array_push($columns, (new RepeaterActions($this->relation))->align('right'));
+    //     }
 
-        return $columns;
-    }
+    //     return $columns;
+    // }
 }

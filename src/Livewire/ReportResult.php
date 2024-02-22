@@ -3,12 +3,12 @@
 namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
+use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Resources\Resource;
 use Illuminate\Database\Eloquent\Collection;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
  * @codeCoverageIgnore
@@ -21,10 +21,7 @@ final class ReportResult extends Component
 
     public string $report_slug;
 
-    /**
-     * @var array<string>
-     */
-    public ?array $filter_term = null;
+    public int|string|null $filter_term = null;
 
     /**
      * @var array<string>
@@ -64,7 +61,7 @@ final class ReportResult extends Component
     }
 
     /**
-     * @param array<string|int|null>
+     * @param  array<string|int|null>  $params
      */
     public function filter(array $params): void
     {
@@ -72,20 +69,20 @@ final class ReportResult extends Component
 
         $this->filter_term = $params['filters'] ?? null;
 
-        foreach ($this->report->getFields() as $filter) {
-            $term = $this->filter_term[$filter->getField()] ?? null;
+        foreach ($this->report->getFields() as $field) {
+            $term = $this->filter_term[$field->getField()] ?? null;
 
             if (! $term) {
                 continue;
             }
 
-            $description_result = $filter->getDescriptionResult($term);
+            $description_result = $field->getDescriptionResult($term);
 
             if (! $description_result) {
                 continue;
             }
 
-            $this->filter_descriptions[] = $filter->getTitle().': '.$description_result;
+            $this->filter_descriptions[] = $field->getTitle().': '.$description_result;
         }
 
         $this->dispatchBrowserEvent('filter-complete');

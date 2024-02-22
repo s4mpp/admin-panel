@@ -16,4 +16,9 @@ abstract class Filter
     {
         return $this->field;
     }
+
+    public function getDescriptionResult(string $term): string
+    {
+        return $term;
+    }
 }

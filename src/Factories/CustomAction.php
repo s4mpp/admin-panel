@@ -28,7 +28,7 @@ abstract class CustomAction
     }
 
     /**
-     * @param array<string|int|null> $data
+     * @param  array<string|int|null>  $data
      */
     public static function update(string $title, array $data): Update
     {

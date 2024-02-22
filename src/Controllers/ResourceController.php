@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Controllers;
 
+use Illuminate\View\View;
 use S4mpp\AdminPanel\Utils;
 use Illuminate\Http\Request;
 use S4mpp\AdminPanel\Resource;
@@ -9,9 +10,8 @@ use S4mpp\Laraguard\Laraguard;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Routing\Controller;
-use Illuminate\View\View;
 use S4mpp\AdminPanel\Utils\Finder;
-use \Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
  * @codeCoverageIgnore

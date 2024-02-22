@@ -2,25 +2,23 @@
 
 namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
 
-use S4mpp\AdminPanel\CustomActions\Link;
-use S4mpp\AdminPanel\Elements\Card;
-use S4mpp\AdminPanel\Filter\Period;
 use S4mpp\AdminPanel\Input\Text;
 use S4mpp\AdminPanel\Tests\TestCase;
 
-class InputTest extends TestCase
+final class InputTest extends TestCase
 {
-	public function test_create_instance()
-	{
-		$text = new Text('Title', 'field');
-		
-		$text->prefix('register');
-		$text->description('Description of input');
-		$text->prepareForForm(function() {});
+    public function test_create_instance(): void
+    {
+        $text = new Text('Title', 'field');
 
-		$this->assertSame('Title', $text->getTitle());
-		$this->assertSame('register.field', $text->getNameWithPrefix());
-		$this->assertSame('Description of input', $text->getDescription());
-		$this->assertIsCallable($text->getPrepareForForm());
-	}
+        $text->prefix('register');
+        $text->description('Description of input');
+        $text->prepareForForm(function (): void {
+        });
+
+        $this->assertSame('Title', $text->getTitle());
+        $this->assertSame('register.field', $text->getNameWithPrefix());
+        $this->assertSame('Description of input', $text->getDescription());
+        $this->assertIsCallable($text->getPrepareForForm());
+    }
 }

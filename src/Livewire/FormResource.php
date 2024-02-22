@@ -19,7 +19,7 @@ use S4mpp\AdminPanel\Traits\WithAdminResource;
 /**
  * @codeCoverageIgnore
  */
-class FormResource extends Component
+final class FormResource extends Component
 {
     use CreatesForm, WithAdminResource;
     // use WithAdminResource, CreatesForm, CanHaveSubForm;
@@ -27,18 +27,18 @@ class FormResource extends Component
     /**
      * @var array<Repeater>
      */
-    private $repeaters = [];
+    private array $repeaters = [];
 
-    /**
-     * @var array<array>
-     */
-    public array $childs = [];
+    // /**
+    //  * @var array<array>
+    //  */
+    // public array $childs = [];
 
     public ?int $id_register = null;
 
     // protected $listeners = ['setField', 'setChildField', 'setChildEmpty'];
 
-    public function mount(Resource $resource, Model $register = null): void
+    public function mount(Resource $resource, ?Model $register = null): void
     {
         $this->resource_slug = $resource->getSlug();
 
@@ -70,7 +70,6 @@ class FormResource extends Component
         foreach ($this->repeaters as $repeater) {
             // $this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
         }
-
     }
 
     // public function booted()

@@ -2,12 +2,11 @@
 
 namespace Workbench\App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as AuthUser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class User extends AuthUser
+final class User extends AuthUser
 {
     use HasFactory, Notifiable;
 }

@@ -2,3 +2,6 @@ parameters:
 	level: 6
 	paths:
 		- src
+	ignoreErrors:
+		- '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$[a-zA-z]#'
+		- '#Call to an undefined |static| method Illuminate\\Database\\Eloquent\\Model::\$[a-zA-Z]#'

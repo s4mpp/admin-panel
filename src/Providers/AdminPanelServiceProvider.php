@@ -77,7 +77,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
 
             $module->addPage('Report', 'report/{slug}')->action('report');
 
-            foreach ($resource->getCustomActions() as $custom_action) {
+            foreach ($resource->getCustomActions() ?? [] as $custom_action) {
                 if (! $action = $custom_action->getAction()) {
                     continue;
                 }

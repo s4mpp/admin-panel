@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel;
 
+use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Filesystem\Filesystem;
 use S4mpp\AdminPanel\Settings\Settings;
 use S4mpp\AdminPanel\Resources\Resource;
@@ -12,16 +13,14 @@ use function Orchestra\Testbench\workbench_path;
 abstract class AdminPanel
 {
     /**
-     *
-     * @var array<Resource>
+     * @var array<resource>
      */
     private static $resources = [];
 
     private static ?Settings $settings = null;
 
     /**
-     *
-     * @return array<Resource>
+     * @return array<resource>
      */
     public static function loadResources(): array
     {
@@ -53,8 +52,7 @@ abstract class AdminPanel
     }
 
     /**
-     *
-     * @var array<Input>
+     * @param  array<Input>  $fields_settings
      */
     public static function settings(array $fields_settings = []): void
     {

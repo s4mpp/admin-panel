@@ -17,7 +17,6 @@ use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Elements\Repeater;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
@@ -61,9 +60,6 @@ abstract class Resource
         return $columns;
     }
 
-    /**
-     * @return LengthAwarePaginator<TModel>
-     */
     public function getRegisters(): LengthAwarePaginator
     {
         $model = $this->getModel();
@@ -194,8 +190,8 @@ abstract class Resource
     }
 
     /**
-    * @return array<Input|Card>|null
-    */
+     * @return array<Input|Card>|null
+     */
     final public function getForm(): ?array
     {
         if (! method_exists($this, 'form')) {
@@ -206,15 +202,15 @@ abstract class Resource
     }
 
     /**
-    * @return array<Label>|null
-    */
+     * @return array<Label|Card>|null
+     */
     final public function getRead(): ?array
     {
         if (! method_exists($this, 'read')) {
             return null;
         }
 
-        return Finder::fillInCard(Finder::onlyOf($this->read(), Label::class, Card::class));
+        return Finder::onlyOf($this->read(), Label::class, Card::class);
     }
 
     // final public function getTable(): ?array
@@ -228,12 +224,12 @@ abstract class Resource
     // }
 
     /**
-    * @return array<Repeater>
-    */
-    final public function getRepeaters(): array
+     * @return array<Repeater>|null
+     */
+    final public function getRepeaters(): ?array
     {
         if (! method_exists($this, 'repeaters')) {
-            return [];
+            return null;
         }
 
         return Finder::onlyOf($this->repeaters(), Repeater::class);
@@ -272,20 +268,20 @@ abstract class Resource
     // }
 
     /**
-    * @return array<CustomAction>|null
-    */
+     * @return array<CustomAction>|null
+     */
     final public function getCustomActions()
     {
         if (! method_exists($this, 'customActions')) {
-            return [];
+            return;
         }
 
         return Finder::onlyOf($this->customActions(), CustomAction::class);
     }
 
     /**
-    * @return array<Report>|null
-    */
+     * @return array<Report>|null
+     */
     final public function getReports(): ?array
     {
         if (! method_exists($this, 'reports')) {

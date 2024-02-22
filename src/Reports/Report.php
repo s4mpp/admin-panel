@@ -19,6 +19,9 @@ final class Report
      */
     private array $possible_results = [];
 
+    /**
+     * @param  array<Label>  $fields
+     */
     public function __construct(private string $title, private array $fields)
     {
         $this->createSlug($title);
@@ -30,7 +33,7 @@ final class Report
     // }
 
     /**
-     * @param array<Label> $columns
+     * @param  array<Label>  $columns
      */
     public function result(string $title, ?string $model = null, ?string $method = null, array $columns = []): self
     {
@@ -45,6 +48,9 @@ final class Report
         return $this;
     }
 
+    /**
+     * @return array<Filter>
+     */
     public function getFields(): array
     {
         return Finder::onlyOf($this->fields, Filter::class);

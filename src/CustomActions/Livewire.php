@@ -3,8 +3,8 @@
 namespace S4mpp\AdminPanel\CustomActions;
 
 use Illuminate\Support\Str;
+use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 
 final class Livewire extends CustomAction
 {

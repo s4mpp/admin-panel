@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<TModel>
  */
-class SettingFactory extends Factory
+final class SettingFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -28,7 +28,7 @@ class SettingFactory extends Factory
     {
         return [
             'key' => fake()->word(),
-            'value' => fake()->sentence()
+            'value' => fake()->sentence(),
         ];
     }
 }

@@ -2,69 +2,64 @@
 
 namespace S4mpp\AdminPanel\Tests\Unit\Factories;
 
-use S4mpp\AdminPanel\Input\Text;
-use S4mpp\AdminPanel\Inputs\Badge;
-use S4mpp\AdminPanel\Inputs\Boolean;
-use S4mpp\AdminPanel\Tests\TestCase;
-use S4mpp\AdminPanel\Factories\Input;
-use S4mpp\AdminPanel\Input\Checkbox;
 use S4mpp\AdminPanel\Input\Date;
+use S4mpp\AdminPanel\Input\Text;
 use S4mpp\AdminPanel\Input\Email;
 use S4mpp\AdminPanel\Input\Radio;
 use S4mpp\AdminPanel\Input\Select;
+use S4mpp\AdminPanel\Input\Checkbox;
 use S4mpp\AdminPanel\Input\Textarea;
-use S4mpp\AdminPanel\Inputs\Datetime;
-use S4mpp\AdminPanel\Inputs\LongText;
-use S4mpp\AdminPanel\Inputs\MarkDown;
+use S4mpp\AdminPanel\Tests\TestCase;
+use S4mpp\AdminPanel\Factories\Input;
 
-class InputTest extends TestCase
+final class InputTest extends TestCase
 {
-	public function test_factory_text()
-	{
-		$input = Input::text('title', 'field');
+    public function test_factory_text(): void
+    {
+        $input = Input::text('title', 'field');
 
-		$this->assertInstanceOf(Text::class, $input);
-	}
+        $this->assertInstanceOf(Text::class, $input);
+    }
 
-	public function test_factory_date()
-	{
-		$input = Input::date('title', 'field');
+    public function test_factory_date(): void
+    {
+        $input = Input::date('title', 'field');
 
-		$this->assertInstanceOf(Date::class, $input);
-	}
+        $this->assertInstanceOf(Date::class, $input);
+    }
 
-	public function test_factory_email()
-	{
-		$input = Input::email('title', 'field');
+    public function test_factory_email(): void
+    {
+        $input = Input::email('title', 'field');
 
-		$this->assertInstanceOf(Email::class, $input);
-	}
+        $this->assertInstanceOf(Email::class, $input);
+    }
 
-	public function test_factory_textarea()
-	{
-		$input = Input::textarea('title', 'field');
+    public function test_factory_textarea(): void
+    {
+        $input = Input::textarea('title', 'field');
 
-		$this->assertInstanceOf(Textarea::class, $input);
-	}
+        $this->assertInstanceOf(Textarea::class, $input);
+    }
 
-	public function test_factory_checkbox()
-	{
-		$input = Input::checkbox('title', 'field');
+    public function test_factory_checkbox(): void
+    {
+        $input = Input::checkbox('title', 'field');
 
-		$this->assertInstanceOf(Checkbox::class, $input);
-	}
+        $this->assertInstanceOf(Checkbox::class, $input);
+    }
 
-	public function test_factory_radio()
-	{
-		$input = Input::radio('title', 'field');
+    public function test_factory_radio(): void
+    {
+        $input = Input::radio('title', 'field');
 
-		$this->assertInstanceOf(Radio::class, $input);
-	}
+        $this->assertInstanceOf(Radio::class, $input);
+    }
 
-	public function test_factory_select()
-	{
-		$input = Input::select('title', 'field');
+    public function test_factory_select(): void
+    {
+        $input = Input::select('title', 'field');
 
-		$this->assertInstanceOf(Select::class, $input);
-	}
+        $this->assertInstanceOf(Select::class, $input);
+    }
 }

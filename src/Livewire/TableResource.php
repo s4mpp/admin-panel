@@ -2,12 +2,12 @@
 
 namespace S4mpp\AdminPanel\Livewire;
 
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Column\Actions;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
  * @codeCoverageIgnore

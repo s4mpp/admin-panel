@@ -10,10 +10,10 @@ use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 
 abstract class TestCase extends BaseTestCase
 {
-    use WithWorkbench, InteractsWithViews;
-	use RefreshDatabase;
+    use InteractsWithViews, WithWorkbench;
+    use RefreshDatabase;
 
-	protected function defineEnvironment($app): void
+    protected function defineEnvironment($app): void
     {
         Config::set('database.default', 'testing');
     }

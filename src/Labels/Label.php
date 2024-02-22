@@ -2,9 +2,8 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
+use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 
 abstract class Label
 {
@@ -52,7 +51,7 @@ abstract class Label
     // 	return view('admin::labels.read-label', ['item' => $this, 'content' => $content]);
     // }
 
-    public function showContent(string $content = null): string|View|ViewFactory
+    public function showContent(mixed $content = null): mixed
     {
         return $content;
     }

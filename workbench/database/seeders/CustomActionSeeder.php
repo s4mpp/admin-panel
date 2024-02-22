@@ -2,10 +2,9 @@
 
 namespace Workbench\Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CustomActionSeeder extends Seeder
+final class CustomActionSeeder extends Seeder
 {
     /**
      * Run the database seeds.

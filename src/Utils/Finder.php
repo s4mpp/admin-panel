@@ -31,9 +31,9 @@ abstract class Finder
     // }
 
     /**
-     * @param array<mixed> $arr_input
+     * @param  array<mixed>  $arr_input
      * @return array<Card>
-    */
+     */
     public static function fillInCard(array $arr_input): array
     {
         $items_filled_in_card = [];
@@ -58,10 +58,10 @@ abstract class Finder
     }
 
     /**
-     * @param array<mixed> $items
-     * @param string $classes
+     * @param  array<mixed>  $items
+     * @param  string  $classes
      * @return array<mixed>
-    */
+     */
     public static function onlyOf(?array $items = null, ...$classes): array
     {
         $classes = array_unique($classes);
@@ -104,10 +104,10 @@ abstract class Finder
     // }
 
     /**
-     * @param array<mixed> $elements
-     * @param array<mixed> $fields_found
+     * @param  array<mixed>  $elements
+     * @param  array<mixed>  $fields_found
      * @return array<mixed>
-    */
+     */
     public static function findElementsRecursive(array $elements, string $element_to_search, array $fields_found = []): array
     {
         foreach ($elements as $element) {

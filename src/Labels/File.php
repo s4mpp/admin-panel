@@ -2,8 +2,7 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
+use Illuminate\Contracts\View\View;
 
 final class File extends Label
 {
@@ -14,7 +13,7 @@ final class File extends Label
     // 	return view('admin::label.file', compact('value', 'item'));
     // }
 
-    public function showContent(string $content = null): string|View|ViewFactory
+    public function showContent(mixed $content = null): mixed
     {
         return view('admin::labels.file', compact('content'));
     }

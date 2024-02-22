@@ -4,16 +4,16 @@ namespace S4mpp\AdminPanel\Elements;
 
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Labels\Label;
+use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 
 final class Card
 {
     use Titleable;
 
     /**
-     * @param array<Input|Label> $elements
+     * @param  array<Input|Label>  $elements
      */
     public function __construct(private string $title, private array $elements = [])
     {

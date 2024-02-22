@@ -2,20 +2,17 @@
 
 namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
 
-use S4mpp\AdminPanel\CustomActions\Link;
-use S4mpp\AdminPanel\Elements\Card;
-use S4mpp\AdminPanel\Filter\Period;
 use S4mpp\AdminPanel\Input\Text;
 use S4mpp\AdminPanel\Tests\TestCase;
 
-class TextTest extends TestCase
+final class TextTest extends TestCase
 {
-	public function test_mask()
-	{
-		$text = new Text('Title', 'field');
+    public function test_mask(): void
+    {
+        $text = new Text('Title', 'field');
 
-		$text->mask('9999');
+        $text->mask('9999');
 
-		$this->assertSame('9999', $text->getMask());
-	}
+        $this->assertSame('9999', $text->getMask());
+    }
 }

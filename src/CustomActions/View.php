@@ -2,7 +2,6 @@
 
 namespace S4mpp\AdminPanel\CustomActions;
 
-use Illuminate\View\View as ViewView;
 use S4mpp\AdminPanel\Traits\CallRouteAction;
 use S4mpp\AdminPanel\Traits\RenderButtonLink;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;

@@ -2,15 +2,15 @@
 
 namespace Workbench\Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Workbench\App\Models\CustomAction;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @template TModel of \Workbench\App\Models\CustomAction
  *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<TModel>
  */
-class CustomActionFactory extends Factory
+final class CustomActionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -28,7 +28,7 @@ class CustomActionFactory extends Factory
     {
         return [
             'title' => fake()->word(),
-            'description' => fake()->paragraph()
+            'description' => fake()->paragraph(),
         ];
     }
 }

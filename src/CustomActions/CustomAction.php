@@ -4,11 +4,11 @@ namespace S4mpp\AdminPanel\CustomActions;
 
 use Closure;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Traits\CallRouteAction;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View as View;
 
 abstract class CustomAction
 {
@@ -60,7 +60,7 @@ abstract class CustomAction
     /**
      * Undocumented function
      *
-     * @param array<string>|null $result
+     * @param  array<string>|null  $result
      */
     public function getSuccessMessage(?array $result = null): ?string
     {
@@ -167,7 +167,7 @@ abstract class CustomAction
             return $this->is_disabled;
         }
 
-        return (!is_null($this->disabled_callback)) ? call_user_func($this->disabled_callback, $this->register ?? null) : false;
+        return (! is_null($this->disabled_callback)) ? call_user_func($this->disabled_callback, $this->register ?? null) : false;
     }
 
     public function getDisabledMessage(): ?string

@@ -21,8 +21,8 @@ beStrictAboutOutputDuringTests="true"
       <directory suffix=".php">src</directory>
     </include>
   </source>
-  <coverage>
-    <report>
+  <coverage disableCodeCoverageIgnore="false">
+    <report >
       <html 
         outputDirectory="" 
         lowUpperBound="30" 

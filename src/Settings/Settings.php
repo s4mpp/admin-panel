@@ -10,15 +10,15 @@ use S4mpp\AdminPanel\Models\Setting;
 final class Settings
 {
     /**
-    * @param array<Input> $fields
-    */
+     * @param  array<Input>  $fields
+     */
     public function __construct(private array $fields = [])
     {
     }
 
     /**
-    * @return array<Input|Card>
-    */
+     * @return array<Input|Card>
+     */
     public function getForm(): array
     {
         return Finder::onlyOf($this->fields, Input::class, Card::class);

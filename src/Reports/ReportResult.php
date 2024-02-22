@@ -28,9 +28,6 @@ final class ReportResult
         return $this->model;
     }
 
-    /**
-     * @return array<Label>
-     */
     public function addColumn(Label $label): self
     {
         $this->columns[] = $label;
@@ -38,6 +35,9 @@ final class ReportResult
         return $this;
     }
 
+    /**
+     * @return array<Label>
+     */
     public function getColumns(): array
     {
         return $this->columns;
