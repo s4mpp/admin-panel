@@ -4,10 +4,11 @@ namespace S4mpp\AdminPanel;
 
 use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Config;
 use S4mpp\AdminPanel\Settings\Settings;
 use S4mpp\AdminPanel\Resources\Resource;
-use S4mpp\AdminPanel\Resources\UserResource;
 
+use S4mpp\AdminPanel\Resources\UserResource;
 use function Orchestra\Testbench\workbench_path;
 
 abstract class AdminPanel
@@ -24,13 +25,15 @@ abstract class AdminPanel
      */
     public static function loadResources(): array
     {
-        $path = workbench_path('app/AdminPanel');
+        $path = Config::get('admin.path', app_path('AdminPanel'));
+
+        $namespace = Config::get('admin.namespace', 'App\\AdminPanel');
 
         $filesystem = new Filesystem();
 
         if ($filesystem->exists($path)) {
             foreach (new \FileSystemIterator($path) as $file) {
-                $class_name = '\Workbench\\App\\AdminPanel\\'.str_replace('.php', '', $file->getFilename());
+                $class_name = $namespace.'\\'.str_replace('.php', '', $file->getFilename());
 
                 self::addResource(new $class_name());
             }

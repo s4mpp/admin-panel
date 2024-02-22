@@ -1,5 +1,7 @@
 <?php
 
+use function Orchestra\Testbench\workbench_path;
+
 return [
 	'guard' => 'web',
 	
@@ -11,4 +13,8 @@ return [
 		'light' => 'images/logo_light.png',
 		'dark' => 'images/logo_dark.png'
 	],
+
+	'path' => workbench_path('app/AdminPanel'),
+
+	'namespace' => 'Workbench\\App\\AdminPanel',
 ];

@@ -59,6 +59,9 @@
         ],
         "test": [
             "@php vendor/bin/phpunit"
+        ],
+        "create-config": [
+            "cp workbench/config/admin.php vendor/orchestra/testbench-core/laravel/config"
         ]
     }
 }

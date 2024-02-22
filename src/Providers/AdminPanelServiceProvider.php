@@ -24,35 +24,6 @@ use S4mpp\AdminPanel\Controllers\ResourceController;
 
 final class AdminPanelServiceProvider extends ServiceProvider
 {
-    public function boot(): void
-    {
-        $this->loadViewsFrom(__DIR__.'/../../views', 'admin');
-
-        // Livewire::component('table-repeater', TableRepeater::class);
-        Livewire::component('table-resource', TableResource::class);
-        Livewire::component('form-resource', FormResource::class);
-        Livewire::component('form-settings', FormSettings::class);
-        // Livewire::component('select-search', SelectSearch::class);
-        Livewire::component('result-report', ReportForm::class);
-        // Livewire::component('input-search', InputSearch::class);
-        // Livewire::component('form-filter', FormFilter::class);
-        Livewire::component('form-report', ReportResult::class);
-
-        Blade::componentNamespace('S4mpp\\AdminPanel\\Components', 'admin');
-
-        // Paginator::defaultView('admin::pagination');
-
-        if ($this->app->runningInConsole()) {
-            AboutCommand::add('Admin Panel', fn () => [
-                'Guard' => config('admin.guard', 'web'),
-            ]);
-
-            $this->publishes([
-                __DIR__.'/../../stubs/config.stub' => config_path('admin.php'),
-            ], 'admin-config');
-        }
-    }
-
     public function register(): void
     {
         $admin_panel = Laraguard::panel('Admin panel', 'admin');
@@ -87,6 +58,35 @@ final class AdminPanelServiceProvider extends ServiceProvider
                     ->method($custom_action->getMethod())
                     ->action($action);
             }
+        }
+    }
+
+    public function boot(): void
+    {
+        $this->loadViewsFrom(__DIR__.'/../../views', 'admin');
+
+        // Livewire::component('table-repeater', TableRepeater::class);
+        Livewire::component('table-resource', TableResource::class);
+        Livewire::component('form-resource', FormResource::class);
+        Livewire::component('form-settings', FormSettings::class);
+        // Livewire::component('select-search', SelectSearch::class);
+        Livewire::component('result-report', ReportForm::class);
+        // Livewire::component('input-search', InputSearch::class);
+        // Livewire::component('form-filter', FormFilter::class);
+        Livewire::component('form-report', ReportResult::class);
+
+        Blade::componentNamespace('S4mpp\\AdminPanel\\Components', 'admin');
+
+        // Paginator::defaultView('admin::pagination');
+
+        if ($this->app->runningInConsole()) {
+            AboutCommand::add('Admin Panel', fn () => [
+                'Guard' => config('admin.guard', 'web'),
+            ]);
+
+            $this->publishes([
+                __DIR__.'/../../stubs/config.stub' => config_path('admin.php'),
+            ], 'admin-config');
         }
     }
 }
