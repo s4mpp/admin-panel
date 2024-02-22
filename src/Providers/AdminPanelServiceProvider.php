@@ -87,6 +87,10 @@ final class AdminPanelServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../../stubs/config.stub' => config_path('admin.php'),
             ], 'admin-config');
+
+            $this->publishes([
+				__DIR__.'/../../style/dist.css' => public_path('vendor/admin-panel/style.css'), 
+			], 'admin-assets');
         }
     }
 }

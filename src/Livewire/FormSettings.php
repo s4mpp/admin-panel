@@ -21,7 +21,7 @@ final class FormSettings extends Component
 
     public function booted(): void
     {
-        $form = AdminPanel::getSettings()->getForm();
+        $form = AdminPanel::getSettings()?->getForm() ?? [];
 
         $this->form = Finder::fillInCard($form);
 
