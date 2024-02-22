@@ -3,9 +3,12 @@
 namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Contracts\View\View;
+use S4mpp\AdminPanel\Traits\Strongable;
 
 final class LongText extends Label
 {
+    use Strongable;
+
     // public function render($value, $sequence)
     // {
     // 	return view('admin::label.longtext', compact('value'));

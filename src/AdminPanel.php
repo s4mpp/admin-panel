@@ -20,7 +20,7 @@ abstract class AdminPanel
     private static ?Settings $settings = null;
 
     /**
-     * @return array<resource>
+     * @return array<Resource>
      */
     public static function loadResources(): array
     {

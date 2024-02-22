@@ -3,10 +3,12 @@
 namespace S4mpp\AdminPanel\Input;
 
 use S4mpp\AdminPanel\Traits\CanChangeCase;
+use S4mpp\AdminPanel\Traits\CanModifyFormInput;
+use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Text extends Input
 {
-    use CanChangeCase;
+    use CanChangeCase, HasValidationRules, CanModifyFormInput;
 
     private ?string $mask = null;
 
@@ -19,7 +21,7 @@ final class Text extends Input
         return $this;
     }
 
-    public function getMask(): string
+    public function getMask(): ?string
     {
         return $this->mask;
     }

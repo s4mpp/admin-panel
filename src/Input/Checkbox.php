@@ -3,10 +3,11 @@
 namespace S4mpp\AdminPanel\Input;
 
 use S4mpp\AdminPanel\Traits\HasMultipleOptions;
+use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Checkbox extends Input
 {
-    use HasMultipleOptions;
+    use HasMultipleOptions, HasValidationRules;
 
     protected string $view = 'admin::input.checkbox';
 

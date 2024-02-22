@@ -2,8 +2,12 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
+use S4mpp\AdminPanel\Traits\Strongable;
+
 final class Relation extends Label
 {
+    use Strongable;
+
     // private $resource;
 
     // private string $field_main;

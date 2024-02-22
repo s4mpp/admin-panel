@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
+namespace S4mpp\AdminPanel\Tests\Unit\Input;
 
 use S4mpp\AdminPanel\Input\Text;
 use S4mpp\AdminPanel\Tests\TestCase;

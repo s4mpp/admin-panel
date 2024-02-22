@@ -2,11 +2,12 @@
 
 namespace S4mpp\AdminPanel\Livewire;
 
-use App\Models\Setting;
 use Livewire\Component;
-use S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\AdminPanel;
+use S4mpp\AdminPanel\Input\Input;
+use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Database\Eloquent\Model;
+use S4mpp\AdminPanel\Settings\Settings;
 use S4mpp\AdminPanel\Traits\CreatesForm;
 
 /**
@@ -20,9 +21,19 @@ final class FormSettings extends Component
 
     public function booted(): void
     {
-        $this->form = AdminPanel::getSettings()->getForm();
+        $form = AdminPanel::getSettings()->getForm();
 
-        // 	$this->_setSearchFields();
+        $this->form = Finder::fillInCard($form);
+
+        $fields = Finder::findElementsRecursive($form, Input::class);
+
+        $name_fields = collect($fields)->map(function ($field) {return Settings::get($field->getName());});
+
+        
+
+
+
+        // $this->setInitialData($this->resource->getForm(), $register);
     }
 
     // private function _getModel()

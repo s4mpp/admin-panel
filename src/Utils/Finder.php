@@ -66,11 +66,19 @@ abstract class Finder
     {
         $classes = array_unique($classes);
 
-        foreach ($items ?? [] as $item) {
+        foreach ($items as $item) {
+            $class_found = false;
+
             foreach ($classes as $class) {
                 if (is_subclass_of($item, $class) || is_a($item, $class)) {
-                    $elements[] = $item;
+                    $class_found = true;
+
+                    break;
                 }
+            }
+
+            if ($class_found) {
+                $elements[] = $item;
             }
         }
 
@@ -113,7 +121,7 @@ abstract class Finder
         foreach ($elements as $element) {
             if (is_subclass_of($element, $element_to_search) || is_a($element, $element_to_search)) {
                 $fields_found[] = $element;
-            } elseif (method_exists($element, 'getElements')) {
+            } elseif (is_a($element, Card::class)) {
                 $fields_found = self::findElementsRecursive($element->getElements(), $element_to_search, $fields_found);
             }
         }

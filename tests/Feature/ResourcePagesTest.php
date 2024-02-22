@@ -152,4 +152,13 @@ final class ResourcePagesTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/admin/signin');
     }
+
+    public function test_can_access_page_not_found(): void
+    {
+        $user = UserFactory::new()->create();
+
+        $response = $this->actingAs($user)->get('admin/users/report/users-registeredd');
+
+        $response->assertStatus(404);
+    }
 }

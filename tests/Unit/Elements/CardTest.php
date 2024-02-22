@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
+namespace S4mpp\AdminPanel\Tests\Unit\Elements;
 
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Tests\TestCase;

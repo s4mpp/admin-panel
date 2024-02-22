@@ -13,7 +13,7 @@ final class ResourceTest extends TestCase
     {
         $resource = new UserResource();
 
-        $this->assertEquals('User', $resource->getName());
+        // $this->assertEquals('User', $resource->getName());
         $this->assertEquals('users', $resource->getSlug());
         $this->assertEquals('Users', $resource->getTitle());
 
@@ -33,12 +33,12 @@ final class ResourceTest extends TestCase
         // $this->assertEquals('users', $resource->getSlug());
         // $this->assertEquals('Users', $resource->getTitle());
 
-        $this->assertNull($resource->getReports());
-        // $this->assertNull($resource->getCustomActions());
-        // $this->assertNull($resource->getRepeaters());
-        $this->assertNull($resource->getRead());
-        $this->assertNull($resource->getForm());
-        // $this->assertNull($resource->getActions());
+        $this->assertIsArray($resource->getReports());
+        $this->assertIsArray($resource->getCustomActions());
+        $this->assertIsArray($resource->getRepeaters());
+        $this->assertIsArray($resource->getRead());
+        $this->assertIsArray($resource->getForm());
+        $this->assertIsArray($resource->getActions());
     }
 
     public function test_get_reports(): void

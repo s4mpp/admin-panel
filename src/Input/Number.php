@@ -2,6 +2,8 @@
 
 namespace S4mpp\AdminPanel\Input;
 
+use S4mpp\AdminPanel\Traits\HasValidationRules;
+
 final class Number extends Input
 {
     private const MAX_NUMBER = 99999999999;
@@ -13,6 +15,8 @@ final class Number extends Input
     private int|float $max = self::MAX_NUMBER;
 
     protected string $view = 'admin::input.number';
+
+    use HasValidationRules;
 
     // public function render()
     // {

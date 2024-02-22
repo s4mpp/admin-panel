@@ -60,6 +60,8 @@ final class ResourceController extends Controller
 
         $register = $resource->getModel()->select($fields)->findOrFail($id);
 
+        $register = $register->getAttributes();
+
         return Laraguard::layout('admin::resources.update', compact('resource', 'register'));
     }
 
@@ -88,7 +90,9 @@ final class ResourceController extends Controller
             $custom_actions[$custom_action->getSlug()] = $custom_action;
         }
 
-        return Laraguard::layout('admin::resources.read', compact('resource', 'register', 'custom_actions'));
+        $read = Finder::fillInCard($resource->getRead());
+
+        return Laraguard::layout('admin::resources.read', compact('resource', 'read', 'register', 'custom_actions'));
     }
 
     public function delete(): void
@@ -115,6 +119,11 @@ final class ResourceController extends Controller
         //----------------------------------------------------------------
 
         $report = $resource->getReport($slug);
+
+        if(!$report)
+        {
+            abort(404);
+        }
 
         return Laraguard::layout('admin::resources.report', compact('resource', 'report'));
     }

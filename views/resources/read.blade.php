@@ -25,7 +25,7 @@
 	{{-- <x-alert/> --}}
 
 	<div class="space-y-4 mb-4">
-		@foreach($resource->getRead() ?? [] as $card)
+		@foreach($read as $card)
 			<x-element::card title="{{ $card->getTitle() }}" :padding=false className="bg-white">
 				<div class="divide-y">
 					@foreach($card->getElements() as $item)
@@ -33,7 +33,7 @@
 							<div class="text-sm font-medium text-slate-900 xl:col-span-2">{{ $item->getTitle() }}</div>
 							<div @class([
 								'text-sm font-normal text-slate-700 xl:col-span-10',
-								'font-semibold' => $item->getIsStrong()
+								'font-semibold' => method_exists($item, 'getIsStrong') && $item->getIsStrong()
 							])>
 								{{-- @if($item->getDefaultText() && is_null($item->getValue($register)))
 									<span class="opacity-60">{{ $item->getDefaultText() }}</span>

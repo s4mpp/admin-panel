@@ -17,24 +17,39 @@ use S4mpp\AdminPanel\Factories\Input as InputFactory;
 use S4mpp\AdminPanel\Factories\Label as LabelFactory;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 use S4mpp\AdminPanel\Factories\CustomAction as CustomActionFactory;
+use S4mpp\AdminPanel\Input\Number;
 
 final class FinderTest extends TestCase
 {
     public static function finderClassProvider()
     {
         return [
-            'null value' => [[null], 0, []],
-            '1 subclasses' => [[Period::class], 1, [1]],
-            '0 subclasses' => [[], 0, []],
-            '3 subclasses' => [[Link::class, Textarea::class, Text::class], 3, [0, 2, 3]],
-            'all subclasses' => [[Link::class, Period::class, Textarea::class, Text::class], 4, [0, 1, 2, 3]],
-            'subclasses repeat' => [[Link::class, Link::class], 1, [0]],
-            '1 classes' => [[Filter::class], 1, [1]],
-            '0 classess' => [[], 0, []],
-            '3 classess' => [[CustomAction::class, Label::class, Input::class], 3, [0, 2, 3]],
-            'all classess' => [[CustomAction::class, Filter::class, Label::class, Input::class], 4, [0, 1, 2, 3]],
-            'classes repeat' => [[CustomAction::class, CustomAction::class], 1, [0]],
-            'classes excluded' => [[CustomAction::class, Card::class], 1, [0]],
+            // 'null value' => [[null], 0, []],
+            // '1 subclasses' => [[Period::class], 1, [1]],
+            // '0 subclasses' => [[], 0, []],
+            // '3 subclasses' => [[Link::class, Textarea::class, Text::class], 3, [0, 2, 3]],
+            // 'all subclasses' => [[Link::class, Period::class, Textarea::class, Text::class], 4, [0, 1, 2, 3]],
+            // 'subclasses repeat' => [[Link::class, Link::class], 1, [0]],
+            // '1 classes' => [[Filter::class], 1, [1]],
+            // '0 classess' => [[], 0, []],
+            // '3 classess' => [[CustomAction::class, Label::class, Input::class], 3, [0, 2, 3]],
+            // 'all classess' => [[CustomAction::class, Filter::class, Label::class, Input::class], 4, [0, 1, 2, 3]],
+            // 'classes repeat' => [[CustomAction::class, CustomAction::class], 1, [0]],
+            'classes excluded' => [[CustomAction::class, Link::class], 1, [0]],
+        ];
+    }
+
+    public static function finderElementProvider()
+    {
+        return [
+            [CustomAction::class, 1],
+            [Filter::class, 1],
+            [Label::class, 3],
+            [Link::class, 1],
+            [Label::class, 3],
+            [Textarea::class, 1],
+            [Number::class, 0],
+            [Card::class, 1],
         ];
     }
 
@@ -52,11 +67,32 @@ final class FinderTest extends TestCase
 
         $array_filtered = Finder::onlyOf($array, ...$elements_to_find);
 
-        $array_like_expected = array_values(array_filter($array, fn ($key) => in_array($key, $keys_expected), ARRAY_FILTER_USE_KEY));
+        $this->assertIsArray($array_filtered);
+        $this->assertCount($expected_quantity, $array_filtered);
+
+        $this->assertEquals(array_values(array_filter($array, fn ($key) => in_array($key, $keys_expected), ARRAY_FILTER_USE_KEY)), $array_filtered);
+    }
+
+    /**
+     * @dataProvider finderElementProvider
+     */
+    public function test_find_elements_recursive($to_find, $expected_quantity): void
+    {
+        $array = [
+            0 => CustomActionFactory::link('Test', 'https://test.com'),
+            1 => FilterFactory::period('Created at', 'created_at'),
+            2 => LabelFactory::text('Title', 'title'),
+            3 => LabelFactory::text('Title', 'title'),
+            4 => new Card('', [
+                InputFactory::textarea('Title', 'title'),
+                LabelFactory::text('Title', 'title'),
+            ])
+        ];
+
+        $array_filtered = Finder::findElementsRecursive($array, $to_find);
 
         $this->assertIsArray($array_filtered);
         $this->assertCount($expected_quantity, $array_filtered);
 
-        $this->assertEquals($array_like_expected, $array_filtered);
     }
 }

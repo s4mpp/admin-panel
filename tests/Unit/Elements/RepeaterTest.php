@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
+namespace S4mpp\AdminPanel\Tests\Unit\Elements;
 
 use S4mpp\AdminPanel\Tests\TestCase;
 use S4mpp\AdminPanel\Elements\Repeater;
@@ -20,9 +20,6 @@ final class RepeaterTest extends TestCase
 
         $this->assertIsArray($repeater->getColumns());
         $this->assertEmpty($repeater->getColumns());
-
-        $this->assertIsArray($repeater->getColumnsWithActions());
-        $this->assertEmpty($repeater->getColumnsWithActions());
     }
 
     public function test_allow_edit(): void

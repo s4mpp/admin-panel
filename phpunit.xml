@@ -24,9 +24,9 @@ beStrictAboutOutputDuringTests="true"
   <coverage disableCodeCoverageIgnore="false">
     <report >
       <html 
-        outputDirectory="" 
-        lowUpperBound="30" 
-        highLowerBound="60" />
+        outputDirectory="coverage-result" 
+        lowUpperBound="35" 
+        highLowerBound="70" />
     </report>
   </coverage>
   <php>

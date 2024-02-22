@@ -3,7 +3,6 @@
 		"no_unused_imports": true,
 		"fully_qualified_strict_types": true,
 		"no_blank_lines_after_class_opening": true,
-		"simplified_null_return": true,
 		"elseif": true,
 		"final_class": true,
 		"no_break_comment": true,

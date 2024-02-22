@@ -38,15 +38,18 @@ final class FormResource extends Component
 
     // protected $listeners = ['setField', 'setChildField', 'setChildEmpty'];
 
-    public function mount(Resource $resource, ?Model $register = null): void
+    /**
+     * @param  array<mixed>|null  $register
+     */
+    public function mount(Resource $resource, array $register = null): void
     {
         $this->resource_slug = $resource->getSlug();
 
         $this->resource = $resource;
 
-        $this->id_register = $register ? $register->id : null;
+        $this->id_register = $register ? $register['id'] : null;
 
-        $this->setInitialData($register?->getAttributes(), $this->resource->getForm());
+        $this->setInitialData($this->resource->getForm(), $register);
 
         // 	$this->_setResource($resource_name);
 

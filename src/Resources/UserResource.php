@@ -8,6 +8,8 @@ use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Factories\Input;
 use S4mpp\AdminPanel\Factories\Label;
 use S4mpp\AdminPanel\Factories\Filter;
+use S4mpp\AdminPanel\Input\Input as InputElement;
+use S4mpp\AdminPanel\Labels\Label as LabelElement;
 
 final class UserResource extends Resource
 {
@@ -21,21 +23,21 @@ final class UserResource extends Resource
     // public $search = ['name' => 'Nome', 'email' => 'E-mail'];
 
     /**
-     * @return array<Label|Card>
+     * @return array<LabelElement|Card>
      */
     public function table(): array
     {
         return [
             Label::text('Nome', 'name')->strong(),
 
-            Label::text('E-mail', 'email'),
+            Label::text('E-mail', 'email')->align('left'),
 
             Label::dateTime('Cadastrado em', 'created_at'),
         ];
     }
 
     /**
-     * @return array<Label|Card>
+     * @return array<LabelElement|Card>
      */
     public function read(): array
     {
@@ -45,18 +47,24 @@ final class UserResource extends Resource
             Label::text('E-mail', 'email'),
 
             Label::dateTime('Cadastrado em', 'created_at'),
+            Label::markDown('Cadastrado em', 'created_at'),
+            Label::badge('Cadastrado em', 'created_at'),
+            Label::boolean('Cadastrado em', 'created_at'),
+            Label::file('Cadastrado em', 'created_at'),
         ];
     }
 
     /**
-     * @return array<Input|Card>
+     * @return array<InputElement|Card>
      */
     public function form(): array
     {
         return [
-            Input::text('Nome', 'name')->uppercase(),
+            Input::text('Nome', 'name')->uppercase()->default('SAM'),
 
-            Input::email('E-mail', 'email')->uppercase(),
+            new Card('', [
+                Input::email('E-mail', 'email')->uppercase(),
+            ])
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace S4mpp\AdminPanel\Tests\Unit\CustomActions;
+namespace S4mpp\AdminPanel\Tests\Unit\Input;
 
 use S4mpp\AdminPanel\Input\Text;
 use S4mpp\AdminPanel\Tests\TestCase;
@@ -11,14 +11,11 @@ final class InputTest extends TestCase
     {
         $text = new Text('Title', 'field');
 
-        $text->prefix('register');
+        // $text->prefix('register');
         $text->description('Description of input');
-        $text->prepareForForm(function (): void {
-        });
 
         $this->assertSame('Title', $text->getTitle());
-        $this->assertSame('register.field', $text->getNameWithPrefix());
+        $this->assertSame('data.field', $text->getNameWithPrefix());
         $this->assertSame('Description of input', $text->getDescription());
-        $this->assertIsCallable($text->getPrepareForForm());
     }
 }

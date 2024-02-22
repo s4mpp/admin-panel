@@ -3,10 +3,11 @@
 namespace S4mpp\AdminPanel\Input;
 
 use S4mpp\AdminPanel\Traits\CanChangeCase;
+use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Email extends Input
 {
-    use CanChangeCase;
+    use CanChangeCase, HasValidationRules;
 
     protected string $view = 'admin::input.email';
 

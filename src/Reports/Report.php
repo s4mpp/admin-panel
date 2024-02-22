@@ -20,7 +20,7 @@ final class Report
     private array $possible_results = [];
 
     /**
-     * @param  array<Label>  $fields
+     * @param array<Filter> $fields
      */
     public function __construct(private string $title, private array $fields)
     {

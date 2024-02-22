@@ -15,7 +15,7 @@ final class CustomActionResource extends Resource
 
     // public $search = ['name' => 'Nome', 'email' => 'E-mail'];
 
-    public function customActions()
+    public function customActions(): array
     {
         return [
             CustomAction::callback('Run callback', function () {
@@ -32,30 +32,30 @@ final class CustomActionResource extends Resource
 
             CustomAction::livewire('Livewire example', 'livewire-example'),
 
-            CustomAction::view('View example'),
+            CustomAction::view('View example')->newTab(),
         ];
     }
 
-    public function table()
+    public function table(): array
     {
         return [
             Label::text('Título', 'title')->strong(),
 
             Label::longText('Descrição', 'description'),
-
+            
         ];
     }
-
-    public function read()
+    
+    public function read(): array
     {
         return [
             Label::text('Título', 'title')->strong(),
-
+            
             Label::longText('Descrição', 'description'),
         ];
     }
 
-    public function form()
+    public function form(): array
     {
         return [
             Input::text('Título', 'title'),

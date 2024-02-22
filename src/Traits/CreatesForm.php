@@ -53,15 +53,15 @@ trait CreatesForm
     // }
 
     /**
-     * @param  array<mixed>  $register
      * @param  array<Input|Card>  $form
+     * @param  array<mixed>|null  $register
      */
-    private function setInitialData(array $register, array $form): void
+    private function setInitialData(array $form, array $register = null): void
     {
         $inputs = Finder::findElementsRecursive($form, Input::class);
 
         foreach ($inputs as $input) {
-            $this->data[$input->getName()] = $register[$input->getName()] ?? null;
+            $this->data[$input->getName()] = $this->_getValueField($input, $register);
         }
     }
 
@@ -78,19 +78,25 @@ trait CreatesForm
         ]);
     }
 
-    // private function _getValueField(Input $field)
-    // {
-    // 	$value = $this->register?->{$field->getName()} ?? null;
+    /**
+     * @param  array<mixed>|null  $register
+     */
+    private function _getValueField(Input $input, array $register = null): mixed
+    {
+        $value = $register[$input->getName()] ?? null;
 
-    // 	$default_value = (!is_null($field) && is_null($value) ? $field->getDefaultText() : null);
+        if(is_null($register))
+        {
+            $value = $input->getDefaultText();
+        }
 
-    // 	if($field->getPrepareForForm())
-    // 	{
-    // 		return $value ? call_user_func($field->getPrepareForForm(), $value) : $default_value;
-    // 	}
+        if(method_exists($input, 'getPrepareForForm') && is_callable($input->getPrepareForForm()))
+        {
+            $value = call_user_func($input->getPrepareForForm(), $value);
+        }
 
-    // 	return $value ?? $default_value;
-    // }
+        return $value;
+    }
 
     public function save(): void
     {

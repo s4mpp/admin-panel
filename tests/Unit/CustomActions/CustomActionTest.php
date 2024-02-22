@@ -16,7 +16,7 @@ final class CustomActionTest extends TestCase
 
         $custom_action->setSuccessMessage('Message of success');
 
-        $this->assertInstanceOf(Stringable::class, $custom_action->getSuccessMessage());
+        $this->assertSame('Message of success', trim($custom_action->getSuccessMessage()));
     }
 
     public function test_confirm(): void

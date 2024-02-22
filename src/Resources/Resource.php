@@ -39,25 +39,51 @@ abstract class Resource
     }
 
     /**
-     * @return array<Label>
+     * @return array<Label|Card>
      */
-    final public function getColumns(): array
+    public function table(): array
     {
-        if (! method_exists($this, 'table')) {
-            return [];
-        }
+        return [];
+    }
 
-        $columns = Finder::onlyOf($this->table(), Label::class);
+    /**
+     * @return array<Input|Card>
+     */
+    public function form(): array
+    {
+        return [];
+    }
 
-        if ($actions = $this->getActions()) {
-            foreach ($actions as $action) {
-                $routes_action[$action] = $this->getRouteName($action);
-            }
+    /**
+     * @return array<Label|Card>
+     */
+    public function read(): array
+    {
+        return [];
+    }
 
-            // array_push($columns, (new Actions('Actions', 'id'))->setActions($routes_action));
-        }
+    /**
+     * @return array<Repeater>
+     */
+    public function repeaters(): array
+    {
+        return [];
+    }
 
-        return $columns;
+    /**
+     * @return array<CustomAction>
+     */
+    public function customActions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<Report>
+     */
+    public function reports(): array
+    {
+        return [];
     }
 
     public function getRegisters(): LengthAwarePaginator
@@ -67,12 +93,12 @@ abstract class Resource
         return $model::paginate();
     }
 
-    public function getRegister(int $id): ?Model
-    {
-        $model = $this->getModel();
+    // public function getRegister(int $id): ?Model
+    // {
+    //     $model = $this->getModel();
 
-        return $model::find($id);
-    }
+    //     return $model::find($id);
+    // }
 
     // final public function getName(): string
     // {
@@ -174,10 +200,10 @@ abstract class Resource
     // 	return null;
     // }
 
-    final public function getName(): string
-    {
-        return $this->name;
-    }
+    // final public function getName(): string
+    // {
+    //     return $this->name;
+    // }
 
     final public function getNameModel(): string
     {
@@ -190,48 +216,42 @@ abstract class Resource
     }
 
     /**
-     * @return array<Input|Card>|null
+     * @return array<Label>
      */
-    final public function getForm(): ?array
+    final public function getColumns(): array
     {
-        if (! method_exists($this, 'form')) {
-            return null;
+        $columns = Finder::onlyOf($this->table(), Label::class);
+
+        if ($actions = $this->getActions()) {
+            foreach ($actions as $action) {
+                $routes_action[$action] = $this->getRouteName($action);
+            }
         }
 
+        return $columns;
+    }
+
+    /**
+     * @return array<Input|Card>
+     */
+    final public function getForm(): array
+    {
         return Finder::onlyOf($this->form(), Input::class, Card::class);
     }
 
     /**
-     * @return array<Label|Card>|null
+     * @return array<Label|Card>
      */
-    final public function getRead(): ?array
+    final public function getRead(): array
     {
-        if (! method_exists($this, 'read')) {
-            return null;
-        }
-
         return Finder::onlyOf($this->read(), Label::class, Card::class);
     }
 
-    // final public function getTable(): ?array
-    // {
-    // 	if(!method_exists($this, 'table'))
-    // 	{
-    // 		return null;
-    // 	}
-
-    // 	return Utils::getOnlyOf($this->table(), Column::class);
-    // }
-
     /**
-     * @return array<Repeater>|null
+     * @return array<Repeater>
      */
-    final public function getRepeaters(): ?array
+    final public function getRepeaters(): array
     {
-        if (! method_exists($this, 'repeaters')) {
-            return null;
-        }
-
         return Finder::onlyOf($this->repeaters(), Repeater::class);
 
         // foreach(Finder::onlyOf($this->repeaters(), Repeater::class) as $repeater)
@@ -268,26 +288,18 @@ abstract class Resource
     // }
 
     /**
-     * @return array<CustomAction>|null
+     * @return array<CustomAction>
      */
-    final public function getCustomActions()
+    final public function getCustomActions(): array
     {
-        if (! method_exists($this, 'customActions')) {
-            return;
-        }
-
         return Finder::onlyOf($this->customActions(), CustomAction::class);
     }
 
     /**
-     * @return array<Report>|null
+     * @return array<Report>
      */
-    final public function getReports(): ?array
+    final public function getReports(): array
     {
-        if (! method_exists($this, 'reports')) {
-            return null;
-        }
-
         return Finder::onlyOf($this->reports(), Report::class);
     }
 

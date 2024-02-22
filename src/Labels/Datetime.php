@@ -3,9 +3,12 @@
 namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Contracts\View\View;
+use S4mpp\AdminPanel\Traits\Strongable;
 
 final class Datetime extends Label
 {
+    use Strongable;
+
     public function __construct(?string $title, ?string $field, private string $format)
     {
         parent::__construct($title, $field);

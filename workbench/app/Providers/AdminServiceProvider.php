@@ -15,7 +15,7 @@ final class AdminServiceProvider extends ServiceProvider
     public function register(): void
     {
         AdminPanel::settings([
-            Input::text('Text', 'text')->mask('99999'),
+            Input::text('Text', 'text')->mask('99999')->description('Description of input'),
             Input::textarea('Textarea', 'textarea'),
             Input::decimal('Decimal', 'decimal'),
             Input::integer('integer', 'integer')->min(0)->max(100)->step(10),
