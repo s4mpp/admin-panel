@@ -21,39 +21,45 @@ use S4mpp\AdminPanel\Livewire\TableResource;
 use S4mpp\AdminPanel\Middleware\CustomAction;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Controllers\ResourceController;
+use S4mpp\AdminPanel\Livewire\Counter;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class AdminPanelServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $admin_panel = Laraguard::panel('Admin panel', 'admin');
+ 
+        $LaraguardPanel = Laraguard::panel('Admin panel', 'admin');
 
-        $admin_panel->layout()
+        $LaraguardPanel->layout()
             ->setHtmlFile('admin::html')
             ->setAuthFile('admin::auth')
             ->setLayoutFile('admin::layout');
 
-        $admin_panel->addModule('Dashboard')->addIndex();
-        $admin_panel->addModule('Settings')->addIndex('admin::settings');
+        $LaraguardPanel->addModule('Dashboard')->starter()->addIndex();
+        $LaraguardPanel->addModule('Settings')->hideInMenu()->addIndex('admin::settings');
 
         foreach (AdminPanel::loadResources() as $resource) {
-            $module = $admin_panel->addModule($resource->getTitle(), $resource->getSlug())
+            
+            $LaraguardModule = $LaraguardPanel->addModule($resource->getTitle() ?? 'No title', $resource->getSlug() ?? 'no-title')
                 ->controller(ResourceController::class)
                 ->addIndex('admin::resources.index');
 
-            $module->addPage('Create', 'create')->action('create');
-            $module->addPage('Update', 'update/{id}')->action('update');
-            $module->addPage('Read', 'read/{id}')->action('read');
-            $module->addPage('Delete', 'delete/{id}')->action('delete')->method('DELETE');
+            $LaraguardModule->addPage('Cadastrar', 'cadastrar', 'create')->action('create');
+            $LaraguardModule->addPage('Editar', 'editar/{id}', 'update')->action('update');
+            $LaraguardModule->addPage('Visualizar', 'visualizar/{id}', 'read')->action('read');
+            $LaraguardModule->addPage('Excluir', 'excluir/{id}', 'delete')->action('delete')->method('DELETE');
 
-            $module->addPage('Report', 'report/{slug}')->action('report');
+            $LaraguardModule->addPage('Relatório', 'relatorio/{slug}')->action('report');
 
             foreach ($resource->getCustomActions() as $custom_action) {
                 if (! $action = $custom_action->getAction()) {
                     continue;
                 }
 
-                $module->addPage($custom_action->getTitle(), $custom_action->getSlug().'/{id}')
+                $LaraguardModule->addPage($custom_action->getTitle() ?? 'No title', $custom_action->getSlug().'/{id}')
                     ->middleware([CustomAction::class])
                     ->method($custom_action->getMethod())
                     ->action($action);
@@ -74,7 +80,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
         // Livewire::component('input-search', InputSearch::class);
         // Livewire::component('form-filter', FormFilter::class);
         Livewire::component('form-report', ReportResult::class);
-
+        
         Blade::componentNamespace('S4mpp\\AdminPanel\\Components', 'admin');
 
         // Paginator::defaultView('admin::pagination');
@@ -89,8 +95,9 @@ final class AdminPanelServiceProvider extends ServiceProvider
             ], 'admin-config');
 
             $this->publishes([
-				__DIR__.'/../../style/dist.css' => public_path('vendor/admin-panel/style.css'), 
-			], 'admin-assets');
+                __DIR__.'/../../assets/css/style.min.css' => public_path('vendor/admin-panel/style.min.css'),
+                __DIR__.'/../../assets/js/script.min.js' => public_path('vendor/admin-panel/script.min.js'),
+            ], 'admin-assets');
         }
     }
 }

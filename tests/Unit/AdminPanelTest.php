@@ -6,15 +6,36 @@ use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Tests\TestCase;
 use S4mpp\AdminPanel\Settings\Settings;
 use S4mpp\AdminPanel\Resources\Resource;
+use S4mpp\AdminPanel\Resources\UserResource;
+use Workbench\App\AdminPanel\EmptyResource;
 
 final class AdminPanelTest extends TestCase
 {
+
     public function test_load_resources(): void
     {
         $resources_loaded = AdminPanel::loadResources();
 
         $this->assertIsArray($resources_loaded);
         $this->assertContainsOnly(Resource::class, $resources_loaded);
+    }
+
+    public function test_add_resource()
+    {
+        $instance = new UserResource();
+
+        AdminPanel::addResource($instance);
+
+        $this->assertInstanceOf(UserResource::class, AdminPanel::getResource($instance->getSlug()));
+    }
+
+    public function test_add_nullable_resource()
+    {
+        $instance = new EmptyResource();
+
+        AdminPanel::addResource($instance);
+
+        $this->assertNull(AdminPanel::getResource($instance->getSlug()));
     }
 
     public function test_get_resource(): void

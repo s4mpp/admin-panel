@@ -2,21 +2,38 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
+use Closure;
 use Illuminate\Validation\Rule;
+use S4mpp\AdminPanel\Input\Input;
+
 
 trait HasValidationRules
 {
     /**
-     * @var array<string|Rule>
+     * @var array<string|Rule|Closure>
      */
     private array $rules = ['required'];
 
-	public function isRequired(): bool
+    
+    /**
+     * @return array<string|Rule>
+     */
+    public function getValidationRules(Input $input, string $table, int $id = null): array
     {
-        return in_array('required', $this->rules);
+    	foreach($this->rules as $rule)
+    	{
+    		if(is_a($rule, Closure::class))
+            {
+                $rule = call_user_func($rule, $input, $table, $id);
+            }
+
+            $rules[] = $rule;
+    	}
+
+    	return $rules ?? [];
     }
 
-	public function rules(string ...$rules): self
+    public function addRule(string|Closure ...$rules): self
     {
         foreach ($rules as $rule) {
             $this->rules[] = $rule;
@@ -25,48 +42,36 @@ trait HasValidationRules
         return $this;
     }
 
-	// public function unique()
-    // {
-    // 	$this->rules('unique');
+    public function removeRule(string $rule)
+    {
+    	$key = array_search($rule, $this->rules);
 
-    // 	return $this;
-    // }
+    	if($key !== false)
+    	{
+    		unset($this->rules[$key]);
+    	}
+    }
 
-	// public function getRules(string $table, int $register_id = null): array
-    // {
-    // 	foreach($this->rules as $rule)
-    // 	{
-    // 		switch($rule)
-    // 		{
-    // 			case 'unique':
-    // 				$rules[] = Rule::unique($table)->ignore($register_id);
-    // 				break;
+    public function isRequired(): bool
+    {
+        return in_array('required', $this->rules);
+    }
 
-    // 			default:
-    // 				$rules[] = $rule;
-    // 		}
-    // 	}
+    public function notRequired()
+    {
+    	$this->removeRule('required');
 
-    // 	return $rules ?? [];
-    // }
+    	$this->addRule('nullable');
 
+    	return $this;
+    }
 
-	// public function notRequired()
-    // {
-    // 	$this->_removeRule('required');
+    public function unique()
+    {
+    	$this->addRule(function(Input $input, string $table, int $id = null) {
+            return Rule::unique($table, $input->getName())->ignore($id);
+        });
 
-    // 	$this->rules('nullable');
-
-    // 	return $this;
-    // }
-
-    // private function _removeRule(string $rule)
-    // {
-    // 	$key = array_search($rule, $this->rules);
-
-    // 	if($key !== false)
-    // 	{
-    // 		unset($this->rules[$key]);
-    // 	}
-    // }
+    	return $this;
+    }
 }

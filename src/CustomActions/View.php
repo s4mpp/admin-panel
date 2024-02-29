@@ -22,7 +22,7 @@ final class View extends CustomAction
         return '#';
     }
 
-    public function getView(): string
+    public function getView(): ?string
     {
         return $this->view;
     }

@@ -9,7 +9,7 @@ final class Datetime extends Label
 {
     use Strongable;
 
-    public function __construct(?string $title, ?string $field, private string $format)
+    public function __construct(string $title, string $field, private string $format)
     {
         parent::__construct($title, $field);
     }

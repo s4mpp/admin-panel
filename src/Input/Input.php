@@ -2,22 +2,17 @@
 
 namespace S4mpp\AdminPanel\Input;
 
-use Closure;
-use Illuminate\Validation\Rule;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Traits\HasDefaultText;
-use Illuminate\Contracts\View\Factory as ViewFactory;
 use S4mpp\AdminPanel\Traits\HasValidationRules;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 abstract class Input
 {
-    // use HasDefaultText,
-    use HasDefaultText, Titleable, HasValidationRules;
+    use HasDefaultText, Titleable;
 
     private ?string $prefix = 'data';
-
-    
 
     // private $prepare_for_save = null;
 
@@ -56,8 +51,6 @@ abstract class Input
     //     return $this;
     // }
 
-    
-
     public function getView(): ?string
     {
         return $this->view ?? null;
@@ -71,11 +64,4 @@ abstract class Input
             // 'data' => $data,
         ]);
     }
-
-    
-
-    
-    
-
-    
 }

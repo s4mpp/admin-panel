@@ -66,7 +66,7 @@ abstract class Finder
     {
         $classes = array_unique($classes);
 
-        foreach ($items as $item) {
+        foreach ($items ?? [] as $item) {
             $class_found = false;
 
             foreach ($classes as $class) {

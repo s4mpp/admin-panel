@@ -7,7 +7,7 @@ use Closure;
 trait CanModifyFormInput
 {
     private ?Closure $prepare_for_form = null;
-    
+
     // public function prepareForSave(callable $callback)
     // {
     // 	$this->prepare_for_save = $callback;
@@ -20,7 +20,7 @@ trait CanModifyFormInput
     // 	return $this->prepare_for_save;
     // }
 
-    public function prepareForForm(callable $callback): self
+    public function prepareForForm(Closure $callback): self
     {
         $this->prepare_for_form = $callback;
 
@@ -31,5 +31,4 @@ trait CanModifyFormInput
     {
         return $this->prepare_for_form;
     }
-
 }

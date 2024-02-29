@@ -83,6 +83,7 @@ final class TableResource extends Component
         return view('admin::livewire.table-resource', [
             // 'collection' => $this->_getRegisters(),
             // 'default_route' => $this->resource->getDefaultRoute(),
+            'actions' => $this->resource->getRouteActions(),
             'columns' => $this->resource->getColumns(),
             'registers' => $this->resource->getRegisters(),
         ]);

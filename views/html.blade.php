@@ -12,18 +12,18 @@
 		<title>{{ env('APP_NAME') }}</title>
 	@endif
 
-	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-	<link rel="stylesheet" href="{{ asset('vendor/admin-panel/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('vendor/laraguard/style.css') }}">
+	{{-- <link rel="stylesheet" href="https://rsms.me/inter/inter.css"> --}}
+	<link rel="stylesheet" href="{{ asset('vendor/admin-panel/style.min.css') }}">
+	
 	<link rel="stylesheet" href="{{ asset('vendor/element/style.css') }}">
-	
-	<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
-	
-
+		
 	@livewireStyles
 </head>
 <body class="h-full">
 	@yield('body')
 
+	<script  src="{{ asset('vendor/admin-panel/script.min.js') }}"></script>
 	@livewireScripts
 </body>
 </html>

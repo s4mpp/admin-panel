@@ -25,14 +25,19 @@ final class FormSettings extends Component
 
         $this->form = Finder::fillInCard($form);
 
-        $fields = Finder::findElementsRecursive($form, Input::class);
+        /** @var array<Input> $fields  */
+        $fields = Finder::findElementsRecursive($form, Input::class); dump($fields);
 
-        $name_fields = collect($fields)->map(function ($field) {return Settings::get($field->getName());});
+        $name_fields = [];
 
+        $name_fields = array_map(function(Input $field)  {
+            return Settings::get($field->getName());
+        }, $fields);
+
+        dump($name_fields);
         
-
-
-
+        // dump($fields);
+        
         // $this->setInitialData($this->resource->getForm(), $register);
     }
 

@@ -41,9 +41,14 @@
 		</a>
 	@endif
 
-	@livewire('table-resource', [
-		'resource_slug' => $resource->getSlug()
-	])
+	<div class="space-y-4">
+		<x-element::message.flash all />
+
+		@livewire('table-resource', [
+			'resource_slug' => $resource->getSlug()
+		])
+	</div>
+
 
 	{{-- <x-alert/> --}}
 

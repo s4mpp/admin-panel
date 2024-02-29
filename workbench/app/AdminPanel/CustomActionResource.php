@@ -39,9 +39,7 @@ final class CustomActionResource extends Resource
     public function table(): array
     {
         return [
-            Label::text('Título', 'title')->strong(),
-
-            Label::longText('Descrição', 'description'),
+            Label::text('Título', 'title'),
             
         ];
     }
@@ -49,9 +47,7 @@ final class CustomActionResource extends Resource
     public function read(): array
     {
         return [
-            Label::text('Título', 'title')->strong(),
-            
-            Label::longText('Descrição', 'description'),
+            Label::text('Título', 'title'),
         ];
     }
 
@@ -59,8 +55,6 @@ final class CustomActionResource extends Resource
     {
         return [
             Input::text('Título', 'title'),
-
-            Input::textarea('Descrição', 'description'),
         ];
     }
 }

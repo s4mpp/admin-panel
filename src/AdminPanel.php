@@ -7,9 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Config;
 use S4mpp\AdminPanel\Settings\Settings;
 use S4mpp\AdminPanel\Resources\Resource;
-
 use S4mpp\AdminPanel\Resources\UserResource;
-use function Orchestra\Testbench\workbench_path;
 
 abstract class AdminPanel
 {
@@ -21,7 +19,7 @@ abstract class AdminPanel
     private static ?Settings $settings = null;
 
     /**
-     * @return array<Resource>
+     * @return array<resource>
      */
     public static function loadResources(): array
     {
@@ -33,6 +31,7 @@ abstract class AdminPanel
 
         if ($filesystem->exists($path)) {
             foreach (new \FileSystemIterator($path) as $file) {
+                
                 $class_name = $namespace.'\\'.str_replace('.php', '', $file->getFilename());
 
                 self::addResource(new $class_name());
@@ -46,6 +45,12 @@ abstract class AdminPanel
 
     public static function addResource(Resource $resource): void
     {
+        $title = $resource->getTitle();
+
+        if (! $title) {
+            return;
+        }
+
         self::$resources[$resource->getSlug()] = $resource;
     }
 
@@ -55,7 +60,7 @@ abstract class AdminPanel
     }
 
     /**
-     * @param  array<Input>  $fields_settings
+     * @param  array<Input> $fields_settings
      */
     public static function settings(array $fields_settings = []): void
     {

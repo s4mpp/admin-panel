@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Factories;
 
+use Closure;
 use S4mpp\AdminPanel\CustomActions\Link;
 use S4mpp\AdminPanel\CustomActions\View;
 use S4mpp\AdminPanel\CustomActions\Method;
@@ -35,7 +36,7 @@ abstract class CustomAction
         return new Update($title, $data);
     }
 
-    public static function callback(string $title, callable $callback): Callback
+    public static function callback(string $title, Closure $callback): Callback
     {
         return new Callback($title, $callback);
     }

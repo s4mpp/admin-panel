@@ -7,7 +7,7 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Date extends Input
 {
-    use HasValidationRules, CanModifyFormInput;
+    use CanModifyFormInput, HasValidationRules;
 
     protected string $view = 'admin::input.date';
 

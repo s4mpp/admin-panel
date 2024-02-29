@@ -90,7 +90,7 @@ abstract class CustomAction
         return $this;
     }
 
-    public function getMessageConfirmation(): string
+    public function getMessageConfirmation(): ?string
     {
         return $this->message_confirmation;
     }
@@ -146,7 +146,7 @@ abstract class CustomAction
         return $this->is_danger;
     }
 
-    public function disabled(bool|callable $disabled_callback = true, ?string $disabled_message = null): self
+    public function disabled(bool|Closure $disabled_callback = true, ?string $disabled_message = null): self
     {
         if (is_bool($disabled_callback)) {
             $this->is_disabled = $disabled_callback;

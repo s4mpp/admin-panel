@@ -20,46 +20,51 @@ abstract class Input
 {
     public static function text(string $title, string $field): Text
     {
-        return (new Text($title, $field))->rules('string');
+        return (new Text($title, $field))->addRule('string');
     }
 
     public static function date(string $title, string $field): Date
     {
-        return (new Date($title, $field))->prepareForForm(fn ($value): string => $value->format('Y-m-d'));
+        return (new Date($title, $field))->prepareForForm(function ($value): ?string {
+
+            dump($value);
+
+            return $value; //$value?->format('Y-m-d');
+        });
     }
 
     public static function email(string $title, string $field): Email
     {
-        return (new Email($title, $field))->rules('email');
+        return (new Email($title, $field))->addRule('email');
     }
 
     public static function textarea(string $title, string $field, int $rows = 4): Textarea
     {
-        return (new Textarea($title, $field, $rows))->rules('string');
+        return (new Textarea($title, $field, $rows))->addRule('string');
     }
 
     // public static function file(string $title, string $field, string $folder)
     // {
-    // 	return (new File($title, $field, $folder))->rules('file');
+    // 	return (new File($title, $field, $folder))->addRule('file');
     // }
 
     public static function decimal(string $title, string $field, float $step = 0.01): Number
     {
-        return (new Number($title, $field))->step($step)->rules('numeric');
+        return (new Number($title, $field))->step($step)->addRule('numeric');
     }
 
     public static function integer(string $title, string $field, int $step = 1): Number
     {
-        return (new Number($title, $field))->step($step)->rules('integer');
+        return (new Number($title, $field))->step($step)->addRule('integer');
     }
 
     // public static function currency(string $title, string $field, bool $has_cents = true)
     // {
-    // 	$rules = ($has_cents)
+    // 	$addRule = ($has_cents)
     // 	? ['integer', 'min:1', 'max:21000000000']
     // 	: ['numeric', 'min:0.01', 'max:21000000.00'];
 
-    // 	extract($rules);
+    // 	extract($addRule);
 
     // 	return (new Text($title, $field))
     // 	->mask('$money($input, \',\', \'.\')')
@@ -80,7 +85,7 @@ abstract class Input
 
     // 		return $nb_float;
     // 	})
-    // 	->rules(...$rules);
+    // 	->addRule(...$addRule);
     // }
 
     // public static function boolean(string $title, string $field)
@@ -121,7 +126,7 @@ abstract class Input
     ): Checkbox {
         return (new Checkbox($title, $field
             // , $options, $value_collection, $key_collection
-        ))->rules('array');
+        ))->addRule('array');
     }
 
     public static function radio(

@@ -133,18 +133,16 @@
 						</a>
 					@endif --}}
 
-					{{-- @if(!empty(\S4mpp\AdminPanel\Settings::isActivated()) && \S4mpp\AdminPanel\Utils::checkRoles(\S4mpp\AdminPanel\Settings::getRolesForAccess()))
-						<a href="{{ route('admin.settings.index') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
-							Configurações
-						</a>
-					@endif --}}
+					
+					<a href="{{ route('lg.'.env('admin.guard', 'web').'.settings.index') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+						Configurações
+					</a>
+					
 					
 					<a href="{{ $my_account_url }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 					  Minha conta
 					  
-					  
 				  </a>
-				  
 					<a href="{{ $logout_url }}" class="text-red-700 w-full flex justify-between items-center  font-semibold transition-colors px-4 py-2 text-sm bg-red-50 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 					  Sair
 					  
@@ -218,7 +216,7 @@
 					@endisset --}}
 				</div>
 				
-				<div class="mt-4 flex items-center justify-between">
+				<div class="mt-4 mb-5 flex items-center justify-between">
 					<div class="min-w-0 flex-1">
 						<h2 class="text-2xl font-bold leading-7 text-gray-900 truncate sm:text-3xl sm:tracking-tight">@yield('title')</h2>
 					</div>
@@ -226,9 +224,10 @@
 						@yield('title-page')
 					</div>
 				</div>
+
+				@yield('content')
 			</div>
 			  
-			@yield('content')
 		</div>
 
 

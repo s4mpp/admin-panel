@@ -115,7 +115,7 @@ final class Repeater
     // }
 
     /**
-     * @return array<Label>
+     * @return array<mixed>
      */
     public function getColumns(): array
     {

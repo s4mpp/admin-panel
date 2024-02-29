@@ -17,7 +17,7 @@ final class Settings
     }
 
     /**
-     * @return array<Input|Card>
+     * @return array<mixed>
      */
     public function getForm(): array
     {

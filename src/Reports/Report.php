@@ -20,7 +20,7 @@ final class Report
     private array $possible_results = [];
 
     /**
-     * @param array<Filter> $fields
+     * @param  array<Filter>  $fields
      */
     public function __construct(private string $title, private array $fields)
     {
@@ -49,7 +49,7 @@ final class Report
     }
 
     /**
-     * @return array<Filter>
+     * @return array<mixed>
      */
     public function getFields(): array
     {

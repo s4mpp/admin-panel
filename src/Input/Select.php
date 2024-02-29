@@ -8,7 +8,7 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Select extends Input
 {
-    use HasMultipleOptions, CanChangeCase, HasValidationRules;
+    use CanChangeCase, HasMultipleOptions, HasValidationRules;
 
     protected string $view = 'admin::input.select';
 

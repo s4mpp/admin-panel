@@ -56,8 +56,9 @@ trait CreatesForm
      * @param  array<Input|Card>  $form
      * @param  array<mixed>|null  $register
      */
-    private function setInitialData(array $form, array $register = null): void
+    private function setInitialData(array $form, ?array $register = null): void
     {
+        /** @var array<Input> $inputs  */
         $inputs = Finder::findElementsRecursive($form, Input::class);
 
         foreach ($inputs as $input) {
@@ -81,35 +82,34 @@ trait CreatesForm
     /**
      * @param  array<mixed>|null  $register
      */
-    private function _getValueField(Input $input, array $register = null): mixed
+    private function _getValueField(Input $input, ?array $register = null): mixed
     {
         $value = $register[$input->getName()] ?? null;
 
-        if(is_null($register))
-        {
+        if (is_null($register)) {
             $value = $input->getDefaultText();
         }
 
-        if(method_exists($input, 'getPrepareForForm') && is_callable($input->getPrepareForForm()))
-        {
+        if (method_exists($input, 'getPrepareForForm') && is_callable($input->getPrepareForForm())) {
             $value = call_user_func($input->getPrepareForForm(), $value);
         }
 
         return $value;
     }
 
-    public function save(): void
+    public function save()
     {
         $this->resetValidation();
 
+        $fields = Finder::findElementsRecursive($this->form, Input::class);
+        
+        $fields_validated = $this->_validate($fields);
+        
         try {
-            $fields = Finder::onlyOf($this->form, Input::class);
 
-            // $fields_validated = $this->_validate($this->data, $fields, $this->register?->id);
+            $register = $this->_prepareData($fields, $fields_validated);
 
-            // $register = $this->_fillData($fields, $fields_validated);
-
-            // return $this->_saving($register, $fields_validated);
+            return $this->_saveData($register, $fields_validated);
         } catch (\Exception $e) {
             $this->addError('exception', $e->getMessage());
 
@@ -117,35 +117,6 @@ trait CreatesForm
         }
     }
 
-    // private function _fillData(array $fields, ValidatedInput $fields_validated): Model
-    // {
-    // 	$model = $this->_getModel();
-
-    // 	$register = ($this->register) ? $this->register : new $model();
-
-    // 	foreach($fields as $field)
-    // 	{
-    // 		$data = $fields_validated[$field->getName()] ?? null;
-
-    // 		if(is_a($field, File::class))
-    // 		{
-    // 			if(!is_a($data, TemporaryUploadedFile::class))
-    // 			{
-    // 				continue;
-    // 			}
-
-    // 			$value = $this->_uploadFile($field, $data);
-    // 		}
-    // 		else
-    // 		{
-    // 			$value = $data ?? null;
-    // 		}
-
-    // 		$register->{$field->getName()} = $value;
-    // 	}
-
-    // 	return $register;
-    // }
 
     // private function _uploadFile(File $input, $data)
     // {
@@ -157,33 +128,35 @@ trait CreatesForm
     // 	return $data->store($input->getFolder());
     // }
 
-    // private function _validate($data, array $fields, int $register_id = null)
-    // {
-    // 	$validation_rules = $attributes = [];
+    private function _validate(array $fields)
+    {
+    	$validation_rules = $attributes = [];
 
-    // 	foreach($fields as $field)
-    // 	{
-    // 		if($field->getPrepareForSave())
-    // 		{
-    // 			$data[$field->getName()] = call_user_func($field->getPrepareForSave(), $data[$field->getName()]);
-    // 		}
+    	foreach($fields as $field)
+    	{
+    	// 	if($field->getPrepareForSave())
+    	// 	{
+    	// 		$data[$field->getName()] = call_user_func($field->getPrepareForSave(), $data[$field->getName()]);
+    	// 	}
 
-    // 		if(is_a($field, File::class) && is_string($data[$field->getName()] ?? null))
-    // 		{
-    // 			continue;
-    // 		}
+    	// 	if(is_a($field, File::class) && is_string($data[$field->getName()] ?? null))
+    	// 	{
+    	// 		continue;
+    	// 	}
 
-    // 		$validation_rules[$field->getName()] = $field->getRules($this->_getModel()->getTable(), $register_id);
+    		$validation_rules[$field->getName()] = $field->getValidationRules($field, $this->resource->getModel()->getTable(), $this->id_register);
 
-    // 		$attributes[$field->getName()] = $field->getTitle();
-    // 	}
+            //  $field->getRules($this->_getModel()->getTable(), $register_id);
 
-    // 	$validator = Validator::make($data, $validation_rules, [], $attributes);
+    		$attributes[$field->getName()] = $field->getTitle();
+    	}
 
-    // 	$validator->validate();
+        $validator = Validator::make($this->data, $validation_rules, [], $attributes);
 
-    // 	return $validator->safe();
-    // }
+    	$validator->validate();
+
+    	return $validator->safe();
+    }
 
     // private function _getSearchFieldsForm(): array
     // {

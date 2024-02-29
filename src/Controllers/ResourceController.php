@@ -12,13 +12,13 @@ use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Routing\Controller;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-
+use Illuminate\Contracts\View\View as ViewContract;
 /**
  * @codeCoverageIgnore
  */
 final class ResourceController extends Controller
 {
-    public function __invoke(): View|ViewFactory
+    public function __invoke(): ViewFactory|ViewContract|null
     {
         $path = request()->route()->action['as'];
 
@@ -29,7 +29,7 @@ final class ResourceController extends Controller
         return Laraguard::layout('admin::resources.index', compact('resource'));
     }
 
-    public function create(): View|ViewFactory
+    public function create(): ViewFactory|ViewContract|null
     {
         $path = request()->route()->action['as'];
 
@@ -42,7 +42,7 @@ final class ResourceController extends Controller
         return Laraguard::layout('admin::resources.create', compact('resource'));
     }
 
-    public function update(int $id): View|ViewFactory
+    public function update(int $id): ViewFactory|ViewContract|null
     {
         $path = request()->route()->action['as'];
 
@@ -65,7 +65,7 @@ final class ResourceController extends Controller
         return Laraguard::layout('admin::resources.update', compact('resource', 'register'));
     }
 
-    public function read(int $id): View|ViewFactory
+    public function read(int $id): ViewFactory|ViewContract|null
     {
         $path = request()->route()->action['as'];
 
@@ -108,7 +108,7 @@ final class ResourceController extends Controller
         // delete
     }
 
-    public function report(string $slug): View|ViewFactory
+    public function report(string $slug): ViewFactory|ViewContract|null
     {
         $path = request()->route()->action['as'];
 
@@ -120,8 +120,7 @@ final class ResourceController extends Controller
 
         $report = $resource->getReport($slug);
 
-        if(!$report)
-        {
+        if (! $report) {
             abort(404);
         }
 

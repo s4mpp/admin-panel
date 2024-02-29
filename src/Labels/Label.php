@@ -4,17 +4,16 @@ namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
-use S4mpp\AdminPanel\Traits\Strongable;
 
 abstract class Label
 {
-    use Titleable;    
+    use Titleable;
 
     private ?string $alignment = 'left';
 
     public function __construct(private string $title, private string $field)
     {
-    }    
+    }
 
     public function getField(): ?string
     {

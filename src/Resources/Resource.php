@@ -8,10 +8,8 @@ use S4mpp\Laraguard\Base\Module;
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
-use S4mpp\AdminPanel\Column\Column;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Filter\Filter;
-use S4mpp\AdminPanel\Labels\Actions;
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
@@ -29,7 +27,7 @@ abstract class Resource
 
     final public function __construct()
     {
-        $this->createSlug($this->getTitle());
+        $this->createSlug($this->getTitle() ?? 'Untitled');
 
         $name = static::class;
 
@@ -161,9 +159,30 @@ abstract class Resource
     // 	return join(', ', $fields).' ou '.$last_item;
     // }
 
-    final public function getRouteName(string $crud_action): string
+    final public function getRouteName(string $crud_action): ?string
     {
-        return Laraguard::panel(Panel::current())->getRouteName(Module::current(), $crud_action);
+        $current_module = Module::current();
+
+        return ($current_module) ? Laraguard::panel(Panel::current())->getRouteName($current_module, $crud_action) : null;
+    }
+
+    /**
+     * @return array<string>
+     */
+    final public function getRouteActions(): array
+    {
+        foreach ($this->getActions() as $action) {
+            $route_name = $this->getRouteName($action);
+            
+            if(!$route_name)
+            {
+                continue;
+            }
+
+            $actions[$action] = $route_name;
+        }
+
+        return $actions ?? [];
     }
 
     // final public function getView(string $view, array $data = [])
@@ -212,7 +231,13 @@ abstract class Resource
 
     final public function getModel(): Model
     {
-        return app($this->getNameModel());
+        $model = $this->getNameModel();
+
+        if (! class_exists($model)) {
+            throw new \Exception('Model "'.$model.'" not found');
+        }
+
+        return app($model);
     }
 
     /**

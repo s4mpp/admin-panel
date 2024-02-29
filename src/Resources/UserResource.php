@@ -3,6 +3,7 @@
 namespace S4mpp\AdminPanel\Resources;
 
 use Workbench\App\Models\User;
+use Illuminate\Validation\Rule;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Factories\Input;
@@ -13,12 +14,12 @@ use S4mpp\AdminPanel\Labels\Label as LabelElement;
 
 final class UserResource extends Resource
 {
-    public string $title = 'Users';
+    public string $title = 'Usuários';
 
     /**
      * @var array<string>
      */
-    public array $actions = ['create', 'update', 'read', 'delete'];
+    public array $actions = ['create', 'update'];
 
     // public $search = ['name' => 'Nome', 'email' => 'E-mail'];
 
@@ -37,34 +38,14 @@ final class UserResource extends Resource
     }
 
     /**
-     * @return array<LabelElement|Card>
-     */
-    public function read(): array
-    {
-        return [
-            Label::text('Nome', 'name')->strong(),
-
-            Label::text('E-mail', 'email'),
-
-            Label::dateTime('Cadastrado em', 'created_at'),
-            Label::markDown('Cadastrado em', 'created_at'),
-            Label::badge('Cadastrado em', 'created_at'),
-            Label::boolean('Cadastrado em', 'created_at'),
-            Label::file('Cadastrado em', 'created_at'),
-        ];
-    }
-
-    /**
      * @return array<InputElement|Card>
      */
     public function form(): array
     {
         return [
-            Input::text('Nome', 'name')->uppercase()->default('SAM'),
+            Input::text('Nome', 'name')->uppercase(),
 
-            new Card('', [
-                Input::email('E-mail', 'email')->uppercase(),
-            ])
+            Input::email('E-mail', 'email')->unique()
         ];
     }
 
@@ -77,7 +58,7 @@ final class UserResource extends Resource
             (new Report('Users registered', [
                 Filter::period('Registered at', 'created_at'),
             ]))
-                ->result('Usuários cadastrados', User::class, 'getUsers'),
+            ->result('Usuários cadastrados', User::class, 'getUsers'),
         ];
     }
 }

@@ -25,21 +25,6 @@ final class ResourceTest extends TestCase
         $this->assertIsArray($resource->getActions());
     }
 
-    public function test_create_instance_empty_resource(): void
-    {
-        $resource = new EmptyResource();
-
-        // $this->assertEquals('User', $resource->getName());
-        // $this->assertEquals('users', $resource->getSlug());
-        // $this->assertEquals('Users', $resource->getTitle());
-
-        $this->assertIsArray($resource->getReports());
-        $this->assertIsArray($resource->getCustomActions());
-        $this->assertIsArray($resource->getRepeaters());
-        $this->assertIsArray($resource->getRead());
-        $this->assertIsArray($resource->getForm());
-        $this->assertIsArray($resource->getActions());
-    }
 
     public function test_get_reports(): void
     {

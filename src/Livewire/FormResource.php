@@ -29,6 +29,8 @@ final class FormResource extends Component
      */
     private array $repeaters = [];
 
+    public string $route_index;
+
     // /**
     //  * @var array<array>
     //  */
@@ -41,11 +43,13 @@ final class FormResource extends Component
     /**
      * @param  array<mixed>|null  $register
      */
-    public function mount(Resource $resource, array $register = null): void
+    public function mount(Resource $resource, ?array $register = null): void
     {
         $this->resource_slug = $resource->getSlug();
 
         $this->resource = $resource;
+
+        $this->route_index = $resource->getRouteName('index');
 
         $this->id_register = $register ? $register['id'] : null;
 
@@ -73,6 +77,36 @@ final class FormResource extends Component
         foreach ($this->repeaters as $repeater) {
             // $this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);
         }
+    }
+
+    private function _prepareData(array $fields, ValidatedInput $fields_validated): Model
+    {
+    	$model = $this->resource->getModel();
+
+    	$register = ($this->id_register) ? $model::find($this->id_register) : new $model();
+
+    	foreach($fields as $field)
+    	{
+    		$data = $fields_validated[$field->getName()] ?? null;
+
+    		// if(is_a($field, File::class))
+    		// {
+    		// 	if(!is_a($data, TemporaryUploadedFile::class))
+    		// 	{
+    		// 		continue;
+    		// 	}
+
+    		// 	$value = $this->_uploadFile($field, $data);
+    		// }
+    		// else
+    		// {
+    			$value = $data ?? null;
+    		// }
+
+    		$register->{$field->getName()} = $value;
+    	}
+
+    	return $register;
     }
 
     // public function booted()
@@ -119,20 +153,20 @@ final class FormResource extends Component
     // 	return $register ?? new $model;
     // }
 
-    // private function _saving(Model $register, ValidatedInput $fields_validated)
-    // {
-    // 	$hook = (!$this->register) ? CreateHook::class : Updatehook::class;
+    private function _saveData(Model $register, ValidatedInput $fields_validated)
+    {
+    	// $hook = (!$this->register) ? CreateHook::class : Updatehook::class;
 
-    // 	$hook::before($this->resource, $register, $fields_validated);
+    	// $hook::before($this->resource, $register, $fields_validated);
 
-    // 	$register->save();
+    	$register->save();
 
-    // 	$hook::after($this->resource, $register, $fields_validated);
+    	// $hook::after($this->resource, $register, $fields_validated);
 
-    // 	$this->_saveChilds($register);
+    	// $this->_saveChilds($register);
 
-    // 	session()->flash('message', 'Registro salvo com sucesso!');
+    	session()->flash('message', 'Registro salvo com sucesso!');
 
-    // 	return redirect()->route($this->resource->getRouteName('index'));
-    // }
+    	return redirect()->route($this->route_index);
+    }
 }

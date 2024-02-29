@@ -1,4 +1,4 @@
-<x-element::form.input className="{{ ($input->getIsUppercase() ? 'uppercase' : null) }}" wire:model.defer="{{ $input->getNameWithPrefix() }}" x-mask:dynamic="{{ $input->getMask() }}" />
+<x-element::form.input className="{{ ($input->getIsUppercase() ? 'uppercase' : null) }}" wire:loading.attr="disabled" wire:model="{{ $input->getNameWithPrefix() }}"  />
 
 
 

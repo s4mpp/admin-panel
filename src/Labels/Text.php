@@ -6,5 +6,5 @@ use S4mpp\AdminPanel\Traits\Strongable;
 
 final class Text extends Label
 {
-	use Strongable;
+    use Strongable;
 }

@@ -6,11 +6,11 @@ trait Titleable
 {
     public function __toString()
     {
-        return $this->getTitle();
+        return $this->getTitle() ?? 'Untitled';
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
-        return is_null($this->title ?? null) ? 'No title' : $this->title;
+        return isset($this->title) ? $this->title : null;
     }
 }

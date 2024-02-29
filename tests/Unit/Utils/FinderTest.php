@@ -24,17 +24,17 @@ final class FinderTest extends TestCase
     public static function finderClassProvider()
     {
         return [
-            // 'null value' => [[null], 0, []],
-            // '1 subclasses' => [[Period::class], 1, [1]],
-            // '0 subclasses' => [[], 0, []],
-            // '3 subclasses' => [[Link::class, Textarea::class, Text::class], 3, [0, 2, 3]],
-            // 'all subclasses' => [[Link::class, Period::class, Textarea::class, Text::class], 4, [0, 1, 2, 3]],
-            // 'subclasses repeat' => [[Link::class, Link::class], 1, [0]],
-            // '1 classes' => [[Filter::class], 1, [1]],
-            // '0 classess' => [[], 0, []],
-            // '3 classess' => [[CustomAction::class, Label::class, Input::class], 3, [0, 2, 3]],
-            // 'all classess' => [[CustomAction::class, Filter::class, Label::class, Input::class], 4, [0, 1, 2, 3]],
-            // 'classes repeat' => [[CustomAction::class, CustomAction::class], 1, [0]],
+            'null value' => [[null], 0, []],
+            '1 subclasses' => [[Period::class], 1, [1]],
+            '0 subclasses' => [[], 0, []],
+            '3 subclasses' => [[Link::class, Textarea::class, Text::class], 3, [0, 2, 3]],
+            'all subclasses' => [[Link::class, Period::class, Textarea::class, Text::class], 4, [0, 1, 2, 3]],
+            'subclasses repeat' => [[Link::class, Link::class], 1, [0]],
+            '1 classes' => [[Filter::class], 1, [1]],
+            '0 classess' => [[], 0, []],
+            '3 classess' => [[CustomAction::class, Label::class, Input::class], 3, [0, 2, 3]],
+            'all classess' => [[CustomAction::class, Filter::class, Label::class, Input::class], 4, [0, 1, 2, 3]],
+            'classes repeat' => [[CustomAction::class, CustomAction::class], 1, [0]],
             'classes excluded' => [[CustomAction::class, Link::class], 1, [0]],
         ];
     }
@@ -93,6 +93,20 @@ final class FinderTest extends TestCase
 
         $this->assertIsArray($array_filtered);
         $this->assertCount($expected_quantity, $array_filtered);
+    }
 
+    public function test_fill_in_card()
+    {
+        $test = Finder::fillInCard([
+            InputFactory::textarea('Title', 'title'),
+            InputFactory::text('Title', 'title'),
+            new Card('', [
+                InputFactory::textarea('Title', 'title'),
+                LabelFactory::text('Title', 'title'),
+            ])
+        ]);
+
+        $this->assertContainsOnly(Card::class, $test);
+        $this->assertCount(2, $test);
     }
 }
