@@ -85,6 +85,17 @@ abstract class Finder
         return $elements ?? [];
     }
 
+    public static function findBySlug(array $items = null, string $slug_to_find): mixed
+    {
+        foreach ($items as $item) {
+            if ($item->getSlug() == $slug_to_find) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
     // public static function getOnlyOfThisOrCard(array $items, $class): array
     // {
     // 	$elements = [];
@@ -121,6 +132,8 @@ abstract class Finder
         foreach ($elements as $element) {
             if (is_subclass_of($element, $element_to_search) || is_a($element, $element_to_search)) {
                 $fields_found[] = $element;
+            } elseif (is_array($element)) {
+                $fields_found = self::findElementsRecursive($element, $element_to_search, $fields_found);
             } elseif (is_a($element, Card::class)) {
                 $fields_found = self::findElementsRecursive($element->getElements(), $element_to_search, $fields_found);
             }

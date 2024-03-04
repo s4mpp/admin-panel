@@ -4,6 +4,8 @@ namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use S4mpp\AdminPanel\Labels\Label;
+use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Column\Actions;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
@@ -84,7 +86,7 @@ final class TableResource extends Component
             // 'collection' => $this->_getRegisters(),
             // 'default_route' => $this->resource->getDefaultRoute(),
             'actions' => $this->resource->getRouteActions(),
-            'columns' => $this->resource->getColumns(),
+            'columns' => Finder::onlyOf($this->resource->table(), Label::class),
             'registers' => $this->resource->getRegisters(),
         ]);
     }

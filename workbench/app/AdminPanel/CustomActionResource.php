@@ -13,26 +13,41 @@ final class CustomActionResource extends Resource
 
     public $actions = ['create', 'update', 'read', 'delete'];
 
-    // public $search = ['name' => 'Nome', 'email' => 'E-mail'];
-
     public function customActions(): array
     {
         return [
-            CustomAction::callback('Run callback', function () {
-                return [
-                    'result' => 'Resultado ok',
-                    'time' => time(),
-                    'name' => 'Samuel',
-                ];
-            })->setSuccessMessage('Resultado: "?" em ?. Usuário: **?**. Está correto?'),
+            // CALLBACK
+            [
+                CustomAction::callback('Run callback', function () {
+                    return true;
+                }),
 
-            CustomAction::link('Open a link', 'https://www.example.com')->disabled(true),
+                CustomAction::callback('Run callback with message', function () {
+                    return [ 'result' => 'Resultado ok', 'time' => time(),'name' => 'S4ampp'];
+                })->setSuccessMessage(fn($result) => 'Resultado: **'.$result['result'].'** - Tempo: '.$result['time'].' - Nome: '.$result['name']),
 
-            CustomAction::update('Change name', ['name' => rand()]),
-
-            CustomAction::livewire('Livewire example', 'livewire-example'),
-
-            CustomAction::view('View example')->newTab(),
+                CustomAction::callback('Run callback with error', function () {
+                    throw_if(true, 'fail'); return true;
+                })->setSuccessMessage('Ok'),
+            ],
+            // UPDATE
+            [
+                CustomAction::update('Update', ['title' => rand()]),
+                
+                CustomAction::update('Update with message', ['title' => 'Title'.rand()])->setSuccessMessage(fn($result) => 'Novo nome: '.$result['title']),
+            ],
+            // LINK
+            [
+                CustomAction::link('Open a link', 'https://www.example.com'),
+            ],
+            // SLIDE
+            [
+                CustomAction::slide('Slide example', 'slide-example'),
+            ],
+            // VIEW
+            [
+                CustomAction::view('View example')->newTab(),
+            ]
         ];
     }
 
@@ -40,7 +55,6 @@ final class CustomActionResource extends Resource
     {
         return [
             Label::text('Título', 'title'),
-            
         ];
     }
     

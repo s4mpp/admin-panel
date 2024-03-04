@@ -7,33 +7,26 @@ use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
-use S4mpp\AdminPanel\Traits\CallRouteAction;
+use Illuminate\Database\Eloquent\Model;
+use S4mpp\AdminPanel\Resources\Resource;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 abstract class CustomAction
 {
-    use CallRouteAction, Slugable, Titleable;
+    use Slugable, Titleable;
 
-    private string $success_message = 'Ação concluída com sucesso.';
+    
 
     // protected $register;
 
     // DANGEROUS
     //----------------------------------------------------------------
-    private ?string $message_confirmation = null;
-
-    private bool $has_confirmation = false;
-
-    private bool $is_danger = false;
+    
 
     //----------------------------------------------------------------
 
     // DISABLED
-    private ?bool $is_disabled = null;
-
-    private ?Closure $disabled_callback = null;
-
-    private ?string $disabled_message = null;
+    
 
     //----------------------------------------------------------------
 
@@ -45,60 +38,23 @@ abstract class CustomAction
 
     // private array $roles = [];
 
+    private Model $register;
+    
+    private Resource $resource;
+
     public function __construct(private string $title)
     {
         $this->createSlug($title);
     }
 
-    public function setSuccessMessage(string $success_message): self
-    {
-        $this->success_message = $success_message;
+    
+    
+    
+    
 
-        return $this;
-    }
+    
 
-    /**
-     * Undocumented function
-     *
-     * @param  array<string>|null  $result
-     */
-    public function getSuccessMessage(?array $result = null): ?string
-    {
-        $message = Str::replaceArray('?', $result, $this->success_message);
-
-        return Str::of($message)->inlineMarkdown();
-    }
-
-    // public function setRegister($register)
-    // {
-    // 	$this->register = $register;
-
-    // 	return $this;
-    // }
-
-    // public function getRegister()
-    // {
-    // 	return $this->register;
-    // }
-
-    public function confirm(string $message_confirmation = 'Tem certeza?'): self
-    {
-        $this->message_confirmation = $message_confirmation;
-
-        $this->has_confirmation = true;
-
-        return $this;
-    }
-
-    public function getMessageConfirmation(): ?string
-    {
-        return $this->message_confirmation;
-    }
-
-    public function hasConfirmation(): bool
-    {
-        return $this->has_confirmation;
-    }
+    
 
     // public function getNameModalConfirmation(): string
     // {
@@ -130,50 +86,29 @@ abstract class CustomAction
     // 	return null;
     // }
 
-    public function danger(): self
+    public function setResource(Resource $resource)
     {
-        $this->is_danger = true;
-
-        if (! $this->has_confirmation) {
-            $this->confirm();
-        }
-
-        return $this;
+        $this->resource = $resource;
     }
 
-    public function isDangerous(): bool
+    public function getResource()
     {
-        return $this->is_danger;
+    	return $this->resource;
     }
 
-    public function disabled(bool|Closure $disabled_callback = true, ?string $disabled_message = null): self
+    public function setRegister(Model $register)
     {
-        if (is_bool($disabled_callback)) {
-            $this->is_disabled = $disabled_callback;
-        } elseif (is_callable($disabled_callback)) {
-            $this->disabled_callback = $disabled_callback;
-        }
-
-        if ($disabled_message) {
-            $this->disabled_message = $disabled_message;
-        }
-
-        return $this;
+    	$this->register = $register;
     }
 
-    public function isDisabled(): bool
+    public function getRegister()
     {
-        if (is_bool($this->is_disabled)) {
-            return $this->is_disabled;
-        }
-
-        return (! is_null($this->disabled_callback)) ? call_user_func($this->disabled_callback, $this->register ?? null) : false;
+    	return $this->register;
     }
 
-    public function getDisabledMessage(): ?string
-    {
-        return $this->disabled_message ?? 'Função não disponível no momento';
-    }
+    
+
+    
 
     // public function roles(...$roles)
     // {

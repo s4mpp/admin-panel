@@ -36,6 +36,11 @@ abstract class Resource
         $this->name = str_replace('Resource', '', end($path));
     }
 
+    final public function getName(): string
+    {
+        return $this->name;
+    }
+
     /**
      * @return array<Label|Card>
      */
@@ -240,54 +245,54 @@ abstract class Resource
         return app($model);
     }
 
-    /**
-     * @return array<Label>
-     */
-    final public function getColumns(): array
-    {
-        $columns = Finder::onlyOf($this->table(), Label::class);
+    // /**
+    //  * @return array<Label>
+    //  */
+    // final public function getColumns(): array
+    // {
+    //     $columns = Finder::onlyOf($this->table(), Label::class);
 
-        if ($actions = $this->getActions()) {
-            foreach ($actions as $action) {
-                $routes_action[$action] = $this->getRouteName($action);
-            }
-        }
+    //     if ($actions = $this->getActions()) {
+    //         foreach ($actions as $action) {
+    //             $routes_action[$action] = $this->getRouteName($action);
+    //         }
+    //     }
 
-        return $columns;
-    }
+    //     return $columns;
+    // }
 
-    /**
-     * @return array<Input|Card>
-     */
-    final public function getForm(): array
-    {
-        return Finder::onlyOf($this->form(), Input::class, Card::class);
-    }
+    // /**
+    //  * @return array<Input|Card>
+    //  */
+    // final public function getForm(): array
+    // {
+    //     return Finder::onlyOf($this->form(), Input::class, Card::class);
+    // }
 
-    /**
-     * @return array<Label|Card>
-     */
-    final public function getRead(): array
-    {
-        return Finder::onlyOf($this->read(), Label::class, Card::class);
-    }
+    // /**
+    //  * @return array<Label|Card>
+    //  */
+    // final public function getRead(): array
+    // {
+    //     return Finder::onlyOf($this->read(), Label::class, Card::class);
+    // }
 
-    /**
-     * @return array<Repeater>
-     */
-    final public function getRepeaters(): array
-    {
-        return Finder::onlyOf($this->repeaters(), Repeater::class);
+    // /**
+    //  * @return array<Repeater>
+    //  */
+    // final public function getRepeaters(): array
+    // {
+    //     return Finder::onlyOf($this->repeaters(), Repeater::class);
 
-        // foreach(Finder::onlyOf($this->repeaters(), Repeater::class) as $repeater)
-        // {
-        // 	$repeater->setRelationShipMethod($this->getModel()->{$repeater->getRelation()}());
+    //     // foreach(Finder::onlyOf($this->repeaters(), Repeater::class) as $repeater)
+    //     // {
+    //     // 	$repeater->setRelationShipMethod($this->getModel()->{$repeater->getRelation()}());
 
-        // 	$repeaters[$repeater->getRelation()] = $repeater;
-        // }
+    //     // 	$repeaters[$repeater->getRelation()] = $repeater;
+    //     // }
 
-        // return $repeaters ?? [];
-    }
+    //     // return $repeaters ?? [];
+    // }
 
     // final public function getFilters(): array
     // {
@@ -312,30 +317,41 @@ abstract class Resource
     // 	return $filters ?? [];
     // }
 
-    /**
-     * @return array<CustomAction>
-     */
-    final public function getCustomActions(): array
-    {
-        return Finder::onlyOf($this->customActions(), CustomAction::class);
-    }
+    // /**
+    //  * @return array<CustomAction>
+    //  */
+    // final public function getCustomActions(): array
+    // {
+    //     return Finder::onlyOf($this->customActions(), CustomAction::class);
+    // }
 
-    /**
-     * @return array<Report>
-     */
-    final public function getReports(): array
-    {
-        return Finder::onlyOf($this->reports(), Report::class);
-    }
+    // /**
+    //  * @return array<Report>
+    //  */
+    // final public function getReports(): array
+    // {
+    //     return Finder::onlyOf($this->reports(), Report::class);
+    // }
 
-    final public function getReport(string $slug_report): ?Report
-    {
-        foreach ($this->getReports() as $report) {
-            if ($report->getSlug() == $slug_report) {
-                return $report;
-            }
-        }
+    // final public function getReport(string $slug_report): ?Report
+    // {
+    //     foreach ($this->getReports() as $report) {
+    //         if ($report->getSlug() == $slug_report) {
+    //             return $report;
+    //         }
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
+
+    // final public function getCustomAction(string $slug_custom_action): ?Report
+    // {
+    //     foreach ($this->customActions() as $cusom_action) {
+    //         if ($cusom_action->getSlug() == $slug_custom_action) {
+    //             return $cusom_action;
+    //         }
+    //     }
+
+    //     return null;
+    // }
 }

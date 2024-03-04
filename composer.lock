@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78964795be8a1c251315416b9c712cbc",
+    "content-hash": "da9c18ed8c9cade8e019368bf1e92c17",
     "packages": [
         {
             "name": "brick/math",
@@ -2631,6 +2631,88 @@
                 "source": "https://github.com/s4mpp/laraguard/tree/v2"
             },
             "time": "2024-02-28T06:31:58+00:00"
+        },
+        {
+            "name": "spatie/laravel-permission",
+            "version": "6.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "05cce017fe3ac78f60a3fce78c07fe6e8e6e6e52"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/05cce017fe3ac78f60a3fce78c07fe6e8e6e6e52",
+                "reference": "05cce017fe3ac78f60a3fce78c07fe6e8e6e6e52",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^8.12|^9.0|^10.0|^11.0",
+                "illuminate/container": "^8.12|^9.0|^10.0|^11.0",
+                "illuminate/contracts": "^8.12|^9.0|^10.0|^11.0",
+                "illuminate/database": "^8.12|^9.0|^10.0|^11.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "laravel/passport": "^11.0|^12.0",
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^9.4|^10.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "6.x-dev",
+                    "dev-master": "6.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Permission\\PermissionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Permission\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Permission handling for Laravel 8.0 and up",
+            "homepage": "https://github.com/spatie/laravel-permission",
+            "keywords": [
+                "acl",
+                "laravel",
+                "permission",
+                "permissions",
+                "rbac",
+                "roles",
+                "security",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/6.4.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-28T08:11:20+00:00"
         },
         {
             "name": "symfony/console",
@@ -5517,16 +5599,16 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v2.9.1",
+            "version": "v2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "467113c58d110ad617cf9e07ff49b0948d1c03cc"
+                "reference": "a79b46b96060504b400890674b83f66aa7f5db6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/467113c58d110ad617cf9e07ff49b0948d1c03cc",
-                "reference": "467113c58d110ad617cf9e07ff49b0948d1c03cc",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/a79b46b96060504b400890674b83f66aa7f5db6d",
+                "reference": "a79b46b96060504b400890674b83f66aa7f5db6d",
                 "shasum": ""
             },
             "require": {
@@ -5543,6 +5625,7 @@
                 "phpstan/phpstan": "^1.10.50"
             },
             "require-dev": {
+                "doctrine/coding-standard": "^12.0",
                 "nikic/php-parser": "^4.17.1",
                 "orchestra/canvas": "^7.11.1 || ^8.11.0 || ^9.0.0",
                 "orchestra/testbench": "^7.33.0 || ^8.13.0 || ^9.0.0",
@@ -5594,7 +5677,7 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v2.9.1"
+                "source": "https://github.com/larastan/larastan/tree/v2.9.2"
             },
             "funding": [
                 {
@@ -5614,7 +5697,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-02-26T14:10:20+00:00"
+            "time": "2024-02-27T03:16:03+00:00"
         },
         {
             "name": "laravel/tinker",

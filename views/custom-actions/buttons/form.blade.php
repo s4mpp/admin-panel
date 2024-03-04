@@ -1,4 +1,4 @@
-<form action="{{ $action->getUrl() }}" method="POST" target="{{ $action->getTargetWindow() }}">
+<form action="{{ $action->getUrl() }}" method="POST" class="mb-0" target="{{ $action->getTargetWindow() }}">
 	@csrf
 	@method($action->getMethod())
 	

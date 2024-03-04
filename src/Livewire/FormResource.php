@@ -4,8 +4,10 @@ namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
 use S4mpp\AdminPanel\Utils;
+use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Utils\Finder;
+use S4mpp\AdminPanel\Elements\Card;
 use Illuminate\Support\ValidatedInput;
 use S4mpp\AdminPanel\Hooks\CreateHook;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
@@ -53,7 +55,7 @@ final class FormResource extends Component
 
         $this->id_register = $register ? $register['id'] : null;
 
-        $this->setInitialData($this->resource->getForm(), $register);
+        $this->setInitialData(Finder::onlyOf($resource->form(), Input::class, Card::class), $register);
 
         // 	$this->_setResource($resource_name);
 
@@ -70,9 +72,9 @@ final class FormResource extends Component
     {
         $this->loadResource();
 
-        $this->form = Finder::fillInCard($this->resource->getForm());
+        $this->form = Finder::fillInCard($this->resource->form());
 
-        $this->repeaters = $this->resource->getRepeaters();
+        $this->repeaters = Finder::onlyOf($this->resource->repeaters(), Repeater::class);
 
         foreach ($this->repeaters as $repeater) {
             // $this->childs[$repeater->getRelation()] = $this->register ? $this->register->{$repeater->getRelation()} : collect([]);

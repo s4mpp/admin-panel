@@ -4,6 +4,9 @@
 
 @section('content')
 
+	<x-element::message.flash />
+	<x-element::message.error />
+
 	@if($custom_actions)
 		@include('admin::custom-actions.action-buttons', ['custom_actions' => $custom_actions])
 	@endif
@@ -22,7 +25,7 @@
 	</div>
 
 
-	{{-- <x-alert/> --}}
+	
 
 	<div class="space-y-4 mb-4">
 		@foreach($read as $card)

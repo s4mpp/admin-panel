@@ -5,6 +5,7 @@ namespace S4mpp\AdminPanel\Factories;
 use Closure;
 use S4mpp\AdminPanel\CustomActions\Link;
 use S4mpp\AdminPanel\CustomActions\View;
+use S4mpp\AdminPanel\CustomActions\Slide;
 use S4mpp\AdminPanel\CustomActions\Method;
 use S4mpp\AdminPanel\CustomActions\Prompt;
 use S4mpp\AdminPanel\CustomActions\Update;
@@ -41,9 +42,9 @@ abstract class CustomAction
         return new Callback($title, $callback);
     }
 
-    public static function livewire(string $title, string $component): Livewire
+    public static function slide(string $title, string $view): Slide
     {
-        return new Livewire($title, $component);
+        return new Slide($title, $view);
     }
 
     // public static function prompt(string $title, string $question, string $field = 'answer')

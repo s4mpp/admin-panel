@@ -18,7 +18,8 @@
         "livewire/livewire": "^2.0",
         "s4mpp/laraguard": "v2.x-dev",
         "s4mpp/element": "v2.x-dev",
-        "laravel/pint": "^1.14"
+        "laravel/pint": "^1.14",
+        "spatie/laravel-permission": "^6.4"
     },
     "extra": {
         "laravel": {
@@ -38,7 +39,8 @@
             "S4mpp\\AdminPanel\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/",
             "Workbench\\Database\\Factories\\": "workbench/database/factories/",
-            "Database\\Seeders\\": "workbench/database/seeders/"
+            "Database\\Seeders\\": "workbench/database/seeders/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "scripts": {
@@ -48,7 +50,6 @@
         "serve": [
             "Composer\\Config::disableProcessTimeout",
             "@build",
-            "composer create-config",
             "@php vendor/bin/testbench serve"
         ],
         "lint": [
@@ -63,6 +64,9 @@
         ],
         "create-config": [
             "cp workbench/config/admin.php vendor/orchestra/testbench-core/laravel/config"
+        ],
+        "post-install-cmd": [
+            "@php vendor/bin/testbench vendor:publish --provider=\"Spatie\\Permission\\PermissionServiceProvider\""
         ],
         "post-update-cmd": [
             "@php vendor/bin/testbench vendor:publish --tag=element-assets --force",

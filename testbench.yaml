@@ -4,6 +4,7 @@ providers:
   - S4mpp\AdminPanel\Providers\AdminPanelServiceProvider
   - S4mpp\Laraguard\Providers\LaraguardServiceProvider
   - S4mpp\Element\Providers\ElementServiceProvider
+  - Spatie\Permission\PermissionServiceProvider
   - Livewire\LivewireServiceProvider
 
 migrations:

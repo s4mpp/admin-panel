@@ -16,6 +16,11 @@ return new class extends Migration
 
             $table->string('title');
 
+            $table->string('array_select');
+            $table->string('enum_select');
+            $table->string('collection_select');
+            $table->string('eloquent_collection_select');
+
             $table->timestamps();
         });
     }

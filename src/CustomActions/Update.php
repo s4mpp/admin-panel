@@ -3,6 +3,8 @@
 namespace S4mpp\AdminPanel\CustomActions;
 
 use S4mpp\AdminPanel\Traits\SendForm;
+use S4mpp\AdminPanel\Traits\CanBeDisabled;
+use S4mpp\AdminPanel\Traits\CanBeDangerous;
 use S4mpp\AdminPanel\Traits\CallRouteAction;
 use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\RenderButtonForm;
@@ -11,9 +13,7 @@ use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class Update extends CustomAction
 {
-    // use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
-
-    use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab;
+    use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab, CanBeDisabled, CanBeDangerous;
 
     /**
      * @param  array<mixed>  $data
@@ -27,15 +27,10 @@ final class Update extends CustomAction
         $this->setAction('customActionUpdate');
     }
 
-    public function getUrl(): string
-    {
-        return '#';
-    }
-
     /**
      * @return array<mixed>
      */
-    public function getData(): array
+    public function getDataToChange(): array
     {
         return $this->data;
     }

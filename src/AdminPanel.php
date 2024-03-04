@@ -59,6 +59,11 @@ abstract class AdminPanel
         return self::$resources[$slug] ?? null;
     }
 
+    public static function getResources(): array
+    {
+        return self::$resources;
+    }
+
     /**
      * @param  array<Input> $fields_settings
      */

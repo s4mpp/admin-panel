@@ -9,12 +9,16 @@ use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\RenderButtonForm;
 use S4mpp\AdminPanel\Traits\HasSuccessMessage;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
+use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use S4mpp\AdminPanel\Traits\CanBeDangerous;
+use S4mpp\AdminPanel\Traits\CanBeDisabled;
 
 final class Callback extends CustomAction
 {
     //use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
 
-    use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab;
+    use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab, CanBeDisabled, CanBeDangerous;
 
     public function __construct(string $title, private ?Closure $callback)
     {
@@ -25,15 +29,12 @@ final class Callback extends CustomAction
         $this->setAction('customActionCallback');
     }
 
-    public function getUrl(): string
-    {
-        return '#';
-    }
-
     public function getCallback(): ?Closure
     {
         return $this->callback;
     }
+
+    
 
     // public function getCallbackRoute($resource)
     // {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html> --}}
 <html class="h-full">
 <head>
 	<meta charset="UTF-8">
@@ -13,7 +13,8 @@
 	@endif
 
 	<link rel="stylesheet" href="{{ asset('vendor/laraguard/style.css') }}">
-	{{-- <link rel="stylesheet" href="https://rsms.me/inter/inter.css"> --}}
+	
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 	<link rel="stylesheet" href="{{ asset('vendor/admin-panel/style.min.css') }}">
 	
 	<link rel="stylesheet" href="{{ asset('vendor/element/style.css') }}">

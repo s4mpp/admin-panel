@@ -2,24 +2,21 @@
 
 namespace S4mpp\AdminPanel\CustomActions;
 
+use S4mpp\AdminPanel\Traits\CanBeDisabled;
+use S4mpp\AdminPanel\Traits\CanBeDangerous;
 use S4mpp\AdminPanel\Traits\CallRouteAction;
 use S4mpp\AdminPanel\Traits\RenderButtonLink;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class View extends CustomAction
 {
-    use CallRouteAction, RenderButtonLink, ShoudOpenInNewTab;
+    use CallRouteAction, RenderButtonLink, ShoudOpenInNewTab, CanBeDisabled, CanBeDangerous;
 
     public function __construct(string $title, private ?string $view = null)
     {
         parent::__construct($title);
 
         $this->setAction('customActionView');
-    }
-
-    public function getUrl(): string
-    {
-        return '#';
     }
 
     public function getView(): ?string

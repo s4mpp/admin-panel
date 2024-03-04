@@ -9,7 +9,7 @@ trait RenderButtonForm
 {
     public function renderButton(): View|ViewFactory
     {
-        return view('admin::custom-actions.buttons.link', ['action' => $this]);
+        return view('admin::custom-actions.buttons.form', ['action' => $this]);
     }
 
     // public function renderContentModalConfirmation()

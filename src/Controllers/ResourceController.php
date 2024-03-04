@@ -10,9 +10,15 @@ use S4mpp\Laraguard\Laraguard;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Routing\Controller;
+use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
-use Illuminate\Contracts\View\Factory as ViewFactory;
+use S4mpp\AdminPanel\Elements\Card;
+use S4mpp\AdminPanel\CustomActions\CustomAction;
 use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use S4mpp\AdminPanel\CustomActions\Callback;
+use S4mpp\AdminPanel\CustomActions\Update;
+
 /**
  * @codeCoverageIgnore
  */
@@ -52,7 +58,7 @@ final class ResourceController extends Controller
 
         //----------------------------------------------------------------
 
-        $inputs = Finder::findElementsRecursive($resource->getForm(), Input::class);
+        $inputs = Finder::findElementsRecursive($resource->form(), Input::class);
 
         $fields = array_map(fn ($input) => $input->getName(), $inputs);
 
@@ -77,20 +83,21 @@ final class ResourceController extends Controller
 
         $register = $resource->getModel()->findOrFail($id);
 
-        $custom_actions = [];
+        $custom_actions = $resource->customActions();
 
-        foreach ($resource->getCustomActions() as $custom_action) {
+        foreach (Finder::findElementsRecursive($custom_actions, CustomAction::class) as $custom_action) {
             // if(!Utils::checkRoles($custom_action->getRolesForAccess()))
             // {
             // 	continue;
             // }
 
-            // $custom_action->setRegister($register);
-
-            $custom_actions[$custom_action->getSlug()] = $custom_action;
+        
+            $custom_action->setResource($resource);
+            
+            $custom_action->setRegister($register);
         }
 
-        $read = Finder::fillInCard($resource->getRead());
+        $read = Finder::fillInCard(Finder::onlyOf($resource->read(), Label::class, Card::class));
 
         return Laraguard::layout('admin::resources.read', compact('resource', 'read', 'register', 'custom_actions'));
     }
@@ -127,16 +134,85 @@ final class ResourceController extends Controller
         return Laraguard::layout('admin::resources.report', compact('resource', 'report'));
     }
 
-    public function customActionCallback(): void
+    public function customActionCallback(int $id)
     {
+        $path = request()->route()->action['as'];
+
+        $path_steps = explode('.', $path);
+
+        $resource = AdminPanel::getResource($path_steps[2]);
+
+        //----------------------------------------------------------------
+
+        $register = $resource->getModel()->findOrFail($id);
+
+        $path_steps = explode('.', $path);
+
+        
+        try
+        {
+            $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), Callback::class), $path_steps[3]);
+    
+            $result = call_user_func($custom_action->getCallback(), $register);
+                
+            return back()->withMessage($custom_action->getSuccessMessage($result));
+        }
+        catch(\Exception $e)
+        {
+            return back()->withErrors($e->getMessage());
+        }
     }
 
-    public function customActionUpdate(): void
+    public function customActionUpdate(int $id)
     {
+        $path = request()->route()->action['as'];
+
+        $path_steps = explode('.', $path);
+
+        $resource = AdminPanel::getResource($path_steps[2]);
+
+        //----------------------------------------------------------------
+
+        $register = $resource->getModel()->findOrFail($id);
+
+        $path_steps = explode('.', $path);
+
+        try
+        {
+            $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), Update::class), $path_steps[3]);
+    
+            foreach($custom_action->getDataToChange() as $key => $new_value)
+            {
+                $register->{$key} = $new_value;
+            }
+
+            $register->save();            
+                
+            return back()->withMessage($custom_action->getSuccessMessage($register));
+        }
+        catch(\Exception $e)
+        {
+            return back()->withErrors($e->getMessage());
+        }
     }
 
-    public function customActionView(): void
+    public function customActionView(int $id)
     {
+        $path = request()->route()->action['as'];
+
+        $path_steps = explode('.', $path);
+
+        $resource = AdminPanel::getResource($path_steps[2]);
+
+        //----------------------------------------------------------------
+
+        $register = $resource->getModel()->findOrFail($id);
+
+        $path_steps = explode('.', $path);
+
+        $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), Update::class), $path_steps[3]);
+
+        return Laraguard::layout('admin::resources.custom-action-view', compact('resource', 'register', 'custom_action'));
     }
 
     // public function report()

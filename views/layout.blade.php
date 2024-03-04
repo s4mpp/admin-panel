@@ -134,7 +134,7 @@
 					@endif --}}
 
 					
-					<a href="{{ route('lg.'.env('admin.guard', 'web').'.settings.index') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+					<a href="{{ route('lg.'.env('admin.guard', 'web').'.configuracoes.index') }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
 						Configurações
 					</a>
 					
