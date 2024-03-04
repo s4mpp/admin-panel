@@ -12,8 +12,6 @@ final class Text extends Input
 
     private ?string $mask = null;
 
-    protected string $view = 'admin::input.text';
-
     public function mask(string $mask): self
     {
         $this->mask = $mask;
@@ -24,6 +22,17 @@ final class Text extends Input
     public function getMask(): ?string
     {
         return $this->mask;
+    }
+
+     /**
+     * @return array<string>
+     */
+    public function getAttributes(): array
+    {
+        return [
+            'x-mask' => $this->getMask(),
+            'type' => 'text'
+        ];
     }
 
     // public function render()

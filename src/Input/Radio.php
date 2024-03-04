@@ -9,7 +9,7 @@ final class Radio extends Input
 {
     use HasMultipleOptions, HasValidationRules;
 
-    protected string $view = 'admin::input.radio';
+    protected string $component = 'admin::input.radio';
 
     // public function renderInput(array $data)
     // {

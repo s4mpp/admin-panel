@@ -9,7 +9,15 @@ final class Date extends Input
 {
     use CanModifyFormInput, HasValidationRules;
 
-    protected string $view = 'admin::input.date';
+     /**
+     * @return array<string>
+     */
+    public function getAttributes(): array
+    {
+        return [
+            'type' => 'date'
+        ];
+    }
 
     // public function render()
     // {

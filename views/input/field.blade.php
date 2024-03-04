@@ -14,8 +14,8 @@
 		
 	</div>
 	<div class="text-sm font-normal text-slate-700  md:col-span-9 lg:col-span-10 ">
-		@if($view = $input->getView())
-			@include($view)
+		@if($component_name = $input->getComponentName())
+			<x-dynamic-component :component="$component_name" :input=$input />
 		@endif
 	</div>
 </div>

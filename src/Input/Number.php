@@ -14,8 +14,6 @@ final class Number extends Input
 
     private int|float $max = self::MAX_NUMBER;
 
-    protected string $view = 'admin::input.number';
-
     use HasValidationRules;
 
     // public function render()
@@ -57,5 +55,18 @@ final class Number extends Input
     public function getMax(): int|float
     {
         return $this->max;
+    }
+
+     /**
+     * @return array<string>
+     */
+    public function getAttributes(): array
+    {
+        return [
+            'type' => 'number',
+            'min' => $this->getMin(),
+            'max' => $this->getMax(),
+            'step' => $this->getStep()
+        ];
     }
 }

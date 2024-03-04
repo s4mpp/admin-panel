@@ -18,6 +18,8 @@ abstract class Input
 
     private ?string $description = null;
 
+    protected string $component = 'admin::input.default';
+
     public function __construct(private string $title, private string $name)
     {
     }
@@ -51,13 +53,21 @@ abstract class Input
     //     return $this;
     // }
 
-    public function getView(): ?string
+    public function getComponentName(): ?string
     {
-        return $this->view ?? null;
+        return $this->component ?? null;
     }
 
     public function render(): View|ViewFactory
     {
+        // $input_attributes = [
+        //     'wire:model' => $this->getNameWithPrefix(),
+        //     'wire:loading.attr' => 'disabled' 
+        // ];
+
+        // dump($this->getAttributes());
+        // $input_attributes =  array_merge($input_attributes, $this->getAttributes());
+        
         return view('admin::input.field', [
             'input' => $this,
             // 'register' => $register,

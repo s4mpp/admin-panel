@@ -25,6 +25,8 @@ abstract class Resource
 
     private string $name;
 
+    // protected $actions = [];
+
     final public function __construct()
     {
         $this->createSlug($this->getTitle() ?? 'Untitled');
@@ -34,6 +36,14 @@ abstract class Resource
         $path = explode('\\', $name);
 
         $this->name = str_replace('Resource', '', end($path));
+    }
+
+     /**
+     * @return array<Filter>
+     */
+    public function filters(): array
+    {
+        return [];
     }
 
     /**
