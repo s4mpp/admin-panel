@@ -11,6 +11,11 @@ trait RenderButtonForm
     {
         return view('admin::custom-actions.buttons.form', ['action' => $this]);
     }
+    
+    public function renderContentModalConfirmation(): View|ViewFactory
+    {
+    	return view('admin::custom-actions.modal-confirmation.form', ['action' => $this]);
+    }
 
     // public function renderContentModalConfirmation()
     // {

@@ -11,7 +11,7 @@ trait CallRouteAction
 
     private string $method = 'GET';
 
-    private string|Closure|null $success_message = null;
+    private mixed $success_message = null;
 
     public function getMethod(): string
     {

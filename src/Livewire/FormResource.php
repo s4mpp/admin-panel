@@ -12,6 +12,7 @@ use Illuminate\Support\ValidatedInput;
 use S4mpp\AdminPanel\Hooks\CreateHook;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use S4mpp\AdminPanel\Elements\Repeater;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Traits\CreatesForm;
@@ -81,7 +82,16 @@ final class FormResource extends Component
         }
     }
 
-    private function _prepareData(array $fields, ValidatedInput $fields_validated): Model
+    private function _getTable(): string
+    {
+        return $this->resource->getTable();
+    }
+
+    /**
+     * @param array<Input> $fields
+     * @param ValidatedInput|array<string> $fields_validated
+     */
+    private function _prepareData(array $fields, ValidatedInput|array $fields_validated): Model
     {
     	$model = $this->resource->getModel();
 
@@ -155,7 +165,10 @@ final class FormResource extends Component
     // 	return $register ?? new $model;
     // }
 
-    private function _saveData(Model $register, ValidatedInput $fields_validated)
+    /**
+     * @param ValidatedInput|array<string> $fields_validated
+     */
+    private function _saveData(Model $register, ValidatedInput|array $fields_validated): RedirectResponse
     {
     	// $hook = (!$this->register) ? CreateHook::class : Updatehook::class;
 

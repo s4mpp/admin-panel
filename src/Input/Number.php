@@ -58,7 +58,7 @@ final class Number extends Input
     }
 
      /**
-     * @return array<string>
+     * @return array<string|int|float>
      */
     public function getAttributes(): array
     {

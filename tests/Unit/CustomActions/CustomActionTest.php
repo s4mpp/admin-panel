@@ -7,12 +7,13 @@ use Illuminate\View\View;
 use S4mpp\AdminPanel\Tests\TestCase;
 use S4mpp\AdminPanel\CustomActions\Link;
 use S4mpp\AdminPanel\CustomActions\Callback;
+use S4mpp\AdminPanel\CustomActions\Update;
 
 final class CustomActionTest extends TestCase
 {
     public function test_success_message(): void
     {
-        $custom_action = new Link('Link', 'https://www.example.com');
+        $custom_action = new Update('Link', []);
 
         $custom_action->setSuccessMessage('Message of success');
 
@@ -64,12 +65,26 @@ final class CustomActionTest extends TestCase
 
         $this->assertInstanceOf(View::class, $action->renderButton());
     }
+    
+    public function test_render_button_disabled(): void
+    {
+        $action = new Link('Link Action', '#');
+
+        $this->assertInstanceOf(View::class, $action->renderButtonDisabled());
+    }
 
     public function test_render_button_form(): void
     {
         $action = new Callback('Link Action', fn () => '');
 
         $this->assertInstanceOf(View::class, $action->renderButton());
+    }
+
+    public function test_render_modal_confirmation(): void
+    {
+        $action = new Callback('Link Action', fn () => '');
+
+        $this->assertInstanceOf(View::class, $action->renderContentModalConfirmation());
     }
 
     public function test_should_open_in_new_tab(): void

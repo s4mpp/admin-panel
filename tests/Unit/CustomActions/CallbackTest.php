@@ -9,11 +9,15 @@ final class CallbackTest extends TestCase
 {
     public function test_create_callback(): void
     {
-        $link = new Callback('Callback Action', function (): void {
-        });
+        $callback = new Callback('Callback Action', function (): void {});
 
-        $this->assertSame('Callback Action', $link->getTitle());
+        $this->assertSame('Callback Action', $callback->getTitle());
+    }
 
-        $this->assertSame('#', $link->getUrl());
+    public function test_get_callback(): void
+    {
+        $callback = new Callback('Callback Action', function (): void {});
+
+        $this->assertIsCallable($callback->getCallback());
     }
 }

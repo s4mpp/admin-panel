@@ -25,7 +25,7 @@ final class Text extends Input
     }
 
      /**
-     * @return array<string>
+     * @return array<string|null>
      */
     public function getAttributes(): array
     {

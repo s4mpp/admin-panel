@@ -13,6 +13,14 @@ abstract class TestCase extends BaseTestCase
     use InteractsWithViews, WithWorkbench;
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    }
+
+
     protected function defineEnvironment($app): void
     {
         Config::set('database.default', 'testing');

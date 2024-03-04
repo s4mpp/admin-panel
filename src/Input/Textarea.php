@@ -22,7 +22,7 @@ final class Textarea extends Input
     }
 
     /**
-     * @return array<string>
+     * @return array<int>
      */
     public function getAttributes(): array
     {

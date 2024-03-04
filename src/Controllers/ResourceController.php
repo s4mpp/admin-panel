@@ -16,8 +16,10 @@ use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Http\RedirectResponse;
 use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\CustomActions\Update;
+use S4mpp\AdminPanel\Reports\Report;
 
 /**
  * @codeCoverageIgnore
@@ -138,7 +140,7 @@ final class ResourceController extends Controller
         return Laraguard::layout('admin::resources.report', compact('resource', 'report'));
     }
 
-    public function customActionCallback(int $id)
+    public function customActionCallback(int $id): RedirectResponse
     {
         $path = request()->route()->action['as'];
 
@@ -167,7 +169,7 @@ final class ResourceController extends Controller
         }
     }
 
-    public function customActionUpdate(int $id)
+    public function customActionUpdate(int $id): RedirectResponse
     {
         $path = request()->route()->action['as'];
 
@@ -200,7 +202,7 @@ final class ResourceController extends Controller
         }
     }
 
-    public function customActionView(int $id)
+    public function customActionView(int $id): ViewFactory|ViewContract|null
     {
         $path = request()->route()->action['as'];
 
@@ -214,9 +216,11 @@ final class ResourceController extends Controller
 
         $path_steps = explode('.', $path);
 
-        $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), Update::class), $path_steps[3]);
+        $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), CustomAction::class), $path_steps[3]);
 
-        return Laraguard::layout('admin::resources.custom-action-view', compact('resource', 'register', 'custom_action'));
+        $view = $custom_action->getView();
+
+        return Laraguard::layout('admin::resources.custom-action-view', compact('resource', 'register', 'custom_action', 'view'));
     }
 
     // public function report()

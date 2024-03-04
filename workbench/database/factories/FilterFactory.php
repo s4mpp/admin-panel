@@ -2,22 +2,22 @@
 
 namespace Workbench\Database\Factories;
 
-use Workbench\App\Models\CustomAction;
+use Workbench\App\Models\Filter;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @template TModel of \Workbench\App\Models\CustomAction
+ * @template TModel of \Workbench\App\Filter
  *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<TModel>
  */
-final class CustomActionFactory extends Factory
+class FilterFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var class-string<TModel>
      */
-    protected $model = CustomAction::class;
+    protected $model = Filter::class;
 
     /**
      * Define the model's default state.

@@ -12,7 +12,12 @@ final class ViewTest extends TestCase
         $view = new View('View Action', 'view');
 
         $this->assertSame('View Action', $view->getTitle());
+    }
 
-        $this->assertSame('#', $view->getUrl());
+    public function test_get_view(): void
+    {
+        $slide = new View('View Action', 'view-name');
+
+        $this->assertSame('view-name', $slide->getView());
     }
 }

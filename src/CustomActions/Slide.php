@@ -32,12 +32,12 @@ final class Slide extends CustomAction
         return view('admin::custom-actions.buttons.slide', ['action' => $this]);
     }
 
-    public function renderContent()
+    public function renderContent(): View|ViewFactory
     {
     	return view('admin::custom-actions.content.slide', ['action' => $this]);
     }
 
-    public function renderContentModalConfirmation()
+    public function renderContentModalConfirmation(): View|ViewFactory
     {
     	return view('admin::custom-actions.modal-confirmation.slide', ['action' => $this]);
     }

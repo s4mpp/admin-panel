@@ -56,20 +56,7 @@ abstract class CustomAction
 
     
 
-    // public function getNameModalConfirmation(): string
-    // {
-    // 	return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug()));
-    // }
-
-    // public function renderModalConfirmation()
-    // {
-    // 	return view('admin::custom-actions.modal-confirmation', ['action' => $this]);
-    // }
-
-    // public function renderButtonWithConfirmation()
-    // {
-    // 	return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
-    // }
+    
 
     public function renderButtonDisabled(): View|ViewFactory
     {
@@ -86,22 +73,22 @@ abstract class CustomAction
     // 	return null;
     // }
 
-    public function setResource(Resource $resource)
+    public function setResource(Resource $resource): void
     {
         $this->resource = $resource;
     }
 
-    public function getResource()
+    public function getResource(): Resource
     {
     	return $this->resource;
     }
 
-    public function setRegister(Model $register)
+    public function setRegister(Model $register): void
     {
     	$this->register = $register;
     }
 
-    public function getRegister()
+    public function getRegister(): Model
     {
     	return $this->register;
     }

@@ -7,16 +7,40 @@ use S4mpp\AdminPanel\Tests\TestCase;
 
 final class NumberTest extends TestCase
 {
-    public function test_create_number(): void
+    public function test_step()
     {
         $number = new Number('Title', 'field');
 
         $number->step(20);
-        $number->min(10);
-        $number->max(40);
 
         $this->assertSame(20, $number->getStep());
-        $this->assertSame(10, $number->getMin());
-        $this->assertSame(40, $number->getMax());
     }
+
+    public function test_min()
+    {
+        $number = new Number('Title', 'field');
+
+        $number->min(20);
+
+        $this->assertSame(20, $number->getMin());
+    }
+
+    public function test_max()
+    {
+        $number = new Number('Title', 'field');
+
+        $number->max(20);
+
+        $this->assertSame(20, $number->getMax());
+    }
+
+    public function test_attributes(): void
+    {
+		$number = new Number('Title', 'field');
+
+		$attributes = $number->getAttributes();
+
+		$this->assertIsArray($attributes);
+		// $this->assertSame(['type' => 'number', 'min' => 0, 'max' => Number::MAX_NUMBER, 'step' => null], $attributes);
+	}
 }

@@ -7,6 +7,7 @@ use S4mpp\AdminPanel\CustomActions\Link;
 use S4mpp\AdminPanel\CustomActions\Update;
 use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\CustomActions\Livewire;
+use S4mpp\AdminPanel\CustomActions\Slide;
 use S4mpp\AdminPanel\Factories\CustomAction as CustomActionFactory;
 
 final class CustomActionTest extends TestCase
@@ -33,10 +34,10 @@ final class CustomActionTest extends TestCase
         $this->assertInstanceOf(Callback::class, $custom_action);
     }
 
-    public function test_factory_livewire(): void
+    public function test_factory_slide(): void
     {
-        $custom_action = CustomActionFactory::livewire('title', 'component');
+        $custom_action = CustomActionFactory::slide('title', 'component');
 
-        $this->assertInstanceOf(Livewire::class, $custom_action);
+        $this->assertInstanceOf(Slide::class, $custom_action);
     }
 }

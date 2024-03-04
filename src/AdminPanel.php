@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel;
 
+use SplFileInfo;
 use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Config;
@@ -30,7 +31,13 @@ abstract class AdminPanel
         $filesystem = new Filesystem();
 
         if ($filesystem->exists($path)) {
-            foreach (new \FileSystemIterator($path) as $file) {
+
+            /**
+             * @var array<SplFileInfo> $files
+             */
+            $files = new \FileSystemIterator($path);
+
+            foreach ($files as $file) {
                 
                 $class_name = $namespace.'\\'.str_replace('.php', '', $file->getFilename());
 
@@ -59,6 +66,9 @@ abstract class AdminPanel
         return self::$resources[$slug] ?? null;
     }
 
+    /**
+     * @return array<Resource>
+     */
     public static function getResources(): array
     {
         return self::$resources;

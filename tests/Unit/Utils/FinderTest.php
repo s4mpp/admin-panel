@@ -4,6 +4,7 @@ namespace S4mpp\AdminPanel\Tests\Unit;
 
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Labels\Text;
+use S4mpp\AdminPanel\Input\Number;
 use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;
@@ -11,13 +12,15 @@ use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Filter\Period;
 use S4mpp\AdminPanel\Input\Textarea;
 use S4mpp\AdminPanel\Tests\TestCase;
+use S4mpp\AdminPanel\Elements\Repeater;
 use S4mpp\AdminPanel\CustomActions\Link;
+use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 use S4mpp\AdminPanel\Factories\Input as InputFactory;
 use S4mpp\AdminPanel\Factories\Label as LabelFactory;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 use S4mpp\AdminPanel\Factories\CustomAction as CustomActionFactory;
-use S4mpp\AdminPanel\Input\Number;
+use S4mpp\AdminPanel\Reports\Report;
 
 final class FinderTest extends TestCase
 {
@@ -51,6 +54,29 @@ final class FinderTest extends TestCase
             [Number::class, 0],
             [Card::class, 1],
         ];
+    }
+
+    public static function slugElementProvider()
+    {
+        return [
+            'normal' => [[new Repeater('Test slug name', 'xxx'), new Report('Other slug name', [])], 'test-slug-name',  Repeater::class, 'test-slug-name'],
+            'not found' => [[new Repeater('Test slug name', 'xxx'), new Report('Other slug name', [])], 'xxxxxxxx', null, null],
+        ];
+    }
+
+    /**
+     * @dataProvider slugElementProvider
+     */
+    public function test_find_by_slug(array $array_of_sluggables, string $slug_to_find, mixed $instance_expected = null, string $slug_expected = null)
+    {
+        $test = Finder::findBySlug($array_of_sluggables, $slug_to_find);
+        
+        $this->assertSame($slug_expected, $test?->getSlug());
+        
+        if(!is_null($instance_expected))
+        {
+            $this->assertInstanceOf($instance_expected, $test);
+        }
     }
 
     /**
@@ -109,4 +135,6 @@ final class FinderTest extends TestCase
         $this->assertContainsOnly(Card::class, $test);
         $this->assertCount(2, $test);
     }
+
+    
 }

@@ -63,8 +63,8 @@ final class UserResource extends Resource
     public function reports(): array
     {
         return [
-            (new Report('Users registered', [
-                Filter::period('Registered at', 'created_at'),
+            (new Report('Usuários cadastrados', [
+                Filter::period('Data de cadastro', 'created_at'),
             ]))
             ->result('Usuários cadastrados', User::class, 'getUsers'),
         ];

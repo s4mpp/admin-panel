@@ -85,9 +85,15 @@ abstract class Finder
         return $elements ?? [];
     }
 
+    /**
+     *
+     * @param array<mixed>|null $items
+     * @param string $slug_to_find
+     * @return mixed
+     */
     public static function findBySlug(array $items = null, string $slug_to_find): mixed
     {
-        foreach ($items as $item) {
+        foreach ($items ?? [] as $item) {
             if ($item->getSlug() == $slug_to_find) {
                 return $item;
             }

@@ -69,21 +69,18 @@ final class AdminPanelServiceProvider extends ServiceProvider
 
             $LaraguardModule->addPage('Relatório', 'relatorio/{slug}')->action('report');
 
-            $custom_actions = Finder::onlyOf(Finder::findElementsRecursive($resource->customActions(), CustomAction::class), 
+            $custom_actions_with_route = Finder::onlyOf(Finder::findElementsRecursive($resource->customActions(), CustomAction::class), 
                 Callback::class,
                 Update::class,
                 View::class
             );
 
-            foreach ($custom_actions as $custom_action) {
-                if (! $action = $custom_action->getAction()) {
-                    continue;
-                }
+            foreach ($custom_actions_with_route as $custom_action) {
 
                 $LaraguardModule->addPage($custom_action->getTitle() ?? 'No title', 'acao/'.$custom_action->getSlug().'/{id}', $custom_action->getSlug())
                     ->middleware([CustomActionMiddleware::class])
                     ->method($custom_action->getMethod())
-                    ->action($action);
+                    ->action($custom_action->getAction());
             }
         }
     }

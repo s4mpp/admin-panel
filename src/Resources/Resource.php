@@ -343,16 +343,10 @@ abstract class Resource
     //     return Finder::onlyOf($this->reports(), Report::class);
     // }
 
-    // final public function getReport(string $slug_report): ?Report
-    // {
-    //     foreach ($this->getReports() as $report) {
-    //         if ($report->getSlug() == $slug_report) {
-    //             return $report;
-    //         }
-    //     }
-
-    //     return null;
-    // }
+    final public function getReport(string $slug_report): ?Report
+    {
+        return Finder::findBySlug(Finder::findElementsRecursive($this->reports(), Report::class), $slug_report);
+    }
 
     // final public function getCustomAction(string $slug_custom_action): ?Report
     // {

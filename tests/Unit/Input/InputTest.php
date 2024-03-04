@@ -18,4 +18,13 @@ final class InputTest extends TestCase
         $this->assertSame('data.field', $text->getNameWithPrefix());
         $this->assertSame('Description of input', $text->getDescription());
     }
+
+    public function test_prepare_for_form(): void
+    {
+        $text = new Text('Title', 'field');
+
+        $text->prepareForForm(fn() => null);
+
+        $this->assertIsCallable($text->getPrepareForForm());
+    }
 }

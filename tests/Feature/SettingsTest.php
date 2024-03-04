@@ -11,9 +11,9 @@ final class SettingsTest extends TestCase
     {
         $user = UserFactory::new()->create();
 
-        $response = $this->actingAs($user)->get('admin/settings');
+        $response = $this->actingAs($user)->get('admin/configuracoes');
 
         $response->assertOk();
-        $response->assertSee('Settings');
+        $response->assertSee('Configurações');
     }
 }

@@ -18,19 +18,31 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
  */
 final class UserPermissions extends Component
 {
-	public $roles;
+	/**
+	 * @var Collection<int,Role>
+	 */
+	public Collection $roles;
 
-	public $resources_with_permissions;
+	/**
+	 * @var array<string|mixed>
+	 */
+	public array $resources_with_permissions;
 
+	/**
+	 * @var array<int>
+	 */
 	public array $roles_selected = [];
 
+	/**
+	 * @var array<int>
+	 */
 	public array $permissions_selected = [];
 
-	public $user;
+	public Model $user;
 
 	public int $total_permissions_selected = 0;
 
-    public function mount(Model $user)
+    public function mount(Model $user): void
 	{
 		$this->user = $user;
 
@@ -83,7 +95,7 @@ final class UserPermissions extends Component
         return view('admin::livewire.user-permissions');
 	}
 
-	public function save()
+	public function save(): void
 	{
 		$this->validate([
 			'roles_selected' => ['array'],
@@ -95,7 +107,7 @@ final class UserPermissions extends Component
 		{
 			$role = Role::findById($role_id, config('admin.guard', 'web'));
 
-			if(!$role)
+			if(!$role->exists)
 			{
 				continue;
 			}
@@ -107,7 +119,7 @@ final class UserPermissions extends Component
 		{
 			$permission = Permission::findById($permission_id, config('admin.guard', 'web'));
 
-			if(!$permission)
+			if(!$permission->exists)
 			{
 				continue;
 			}
@@ -125,7 +137,7 @@ final class UserPermissions extends Component
 		$this->dispatchBrowserEvent('close-slide');
 	}
 
-	private function setRolesAndPermissionsSelected()
+	private function setRolesAndPermissionsSelected(): void
 	{
 		$this->roles_selected = $this->user->roles->pluck('id')->toArray();
 		$this->permissions_selected = $this->user->permissions->pluck('id')->toArray();

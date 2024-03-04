@@ -3,6 +3,8 @@
 namespace S4mpp\AdminPanel\Traits;
 
 use Illuminate\Support\Str;
+use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 trait CanBeDangerous
 {
@@ -45,5 +47,15 @@ trait CanBeDangerous
     public function isDangerous(): bool
     {
         return $this->is_danger;
+    }
+
+    public function getNameModalConfirmation(): string
+    {
+    	return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug()));
+    }
+
+    public function renderButtonWithConfirmation(): View|ViewFactory
+    {
+    	return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
     }
 }

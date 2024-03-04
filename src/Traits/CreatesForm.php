@@ -15,6 +15,7 @@ use Illuminate\Support\ValidatedInput;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * @codeCoverageIgnore
@@ -97,7 +98,7 @@ trait CreatesForm
         return $value;
     }
 
-    public function save()
+    public function save(): ?RedirectResponse
     {
         $this->resetValidation();
 
@@ -114,6 +115,8 @@ trait CreatesForm
             $this->addError('exception', $e->getMessage());
 
             $this->dispatchBrowserEvent('reset-loading');
+            
+            return null;
         }
     }
 
@@ -128,7 +131,11 @@ trait CreatesForm
     // 	return $data->store($input->getFolder());
     // }
 
-    private function _validate(array $fields)
+    /**
+     * @param array<Input> $fields
+     * @return array<string>
+     */
+    private function _validate(array $fields): ValidatedInput|array
     {
     	$validation_rules = $attributes = [];
 
@@ -144,7 +151,7 @@ trait CreatesForm
     	// 		continue;
     	// 	}
 
-    		$validation_rules[$field->getName()] = $field->getValidationRules($field, $this->resource->getModel()->getTable(), $this->id_register);
+    		$validation_rules[$field->getName()] = $field->getValidationRules($field, $this->_getTable(), $this->id_register ?? null);
 
             //  $field->getRules($this->_getModel()->getTable(), $register_id);
 

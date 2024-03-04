@@ -4,6 +4,7 @@ namespace S4mpp\AdminPanel\Tests\Unit;
 
 use S4mpp\AdminPanel\Reports\Report;
 use S4mpp\AdminPanel\Tests\TestCase;
+use Illuminate\Database\Eloquent\Model;
 use Workbench\App\AdminPanel\EmptyResource;
 use S4mpp\AdminPanel\Resources\UserResource;
 
@@ -13,25 +14,22 @@ final class ResourceTest extends TestCase
     {
         $resource = new UserResource();
 
-        // $this->assertEquals('User', $resource->getName());
-        $this->assertEquals('users', $resource->getSlug());
-        $this->assertEquals('Users', $resource->getTitle());
+        $this->assertEquals('User', $resource->getName());
+        $this->assertEquals('usuarios', $resource->getSlug());
+        $this->assertEquals('Usuários', $resource->getTitle());
 
-        $this->assertIsArray($resource->getReports());
-        $this->assertIsArray($resource->getCustomActions());
-        $this->assertIsArray($resource->getRepeaters());
-        $this->assertIsArray($resource->getRead());
-        $this->assertIsArray($resource->getForm());
+        $this->assertIsArray($resource->reports());
+        $this->assertIsArray($resource->customActions());
+        $this->assertIsArray($resource->repeaters());
+        $this->assertIsArray($resource->read());
+        $this->assertIsArray($resource->form());
+        $this->assertIsArray($resource->table());
+        $this->assertIsArray($resource->filters());
         $this->assertIsArray($resource->getActions());
-    }
-
-
-    public function test_get_reports(): void
-    {
-        $resource = new UserResource();
-
-        $this->assertInstanceOf(Report::class, $resource->getReport('users-registered'));
-
-        $this->assertNull($resource->getReport('inexistent-report'));
+        
+        $this->assertIsString($resource->getNameModel());
+        $this->assertInstanceOf(Model::class, $resource->getModel());
+        
+        $this->assertIsBool($resource->hasAction('create'));
     }
 }

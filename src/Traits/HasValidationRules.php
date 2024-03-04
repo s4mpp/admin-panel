@@ -10,7 +10,7 @@ use S4mpp\AdminPanel\Input\Input;
 trait HasValidationRules
 {
     /**
-     * @var array<string|Rule|Closure>
+     * @var array<mixed>
      */
     private array $rules = ['required'];
 
@@ -22,6 +22,7 @@ trait HasValidationRules
     {
     	foreach($this->rules as $rule)
     	{
+            /** @var object $rule */
     		if(is_a($rule, Closure::class))
             {
                 $rule = call_user_func($rule, $input, $table, $id);
@@ -42,7 +43,7 @@ trait HasValidationRules
         return $this;
     }
 
-    public function removeRule(string $rule)
+    public function removeRule(string $rule): void
     {
     	$key = array_search($rule, $this->rules);
 
@@ -57,7 +58,7 @@ trait HasValidationRules
         return in_array('required', $this->rules);
     }
 
-    public function notRequired()
+    public function notRequired(): self
     {
     	$this->removeRule('required');
 
@@ -66,7 +67,7 @@ trait HasValidationRules
     	return $this;
     }
 
-    public function unique()
+    public function unique(): self
     {
     	$this->addRule(function(Input $input, string $table, int $id = null) {
             return Rule::unique($table, $input->getName())->ignore($id);

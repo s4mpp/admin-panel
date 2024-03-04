@@ -38,9 +38,16 @@ final class AdminPanelTest extends TestCase
         $this->assertNull(AdminPanel::getResource($instance->getSlug()));
     }
 
+    public function test_get_resources(): void
+    {
+        $resources = AdminPanel::getResources();
+
+        $this->assertIsArray($resources);
+    }
+
     public function test_get_resource(): void
     {
-        $user_resource = AdminPanel::getResource('users');
+        $user_resource = AdminPanel::getResource('usuarios');
 
         $this->assertInstanceOf(Resource::class, $user_resource);
     }

@@ -53,6 +53,10 @@ final class BasicItemResource extends Resource
     {
         return [
             Input::text('Título', 'title'),
+            
+            Input::text('Título upper', 'title_uppercase')->uppercase(),
+            
+            Input::text('Título texto default', 'title_with_default_text')->default('Default text'),
 
             Input::text('Texto básico', 'basic_text'),
             

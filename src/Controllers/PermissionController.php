@@ -18,6 +18,7 @@ use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Utils\Finder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 use Illuminate\Contracts\View\View as ViewContract;
@@ -127,7 +128,7 @@ final class PermissionController extends Controller
         return Laraguard::layout('admin::roles-and-permissions.index', compact('resources_with_permissions', 'other_permissions', 'roles'));
     }
 
-    public function generatePermissionsAdmin()
+    public function generatePermissionsAdmin(): RedirectResponse
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -140,7 +141,7 @@ final class PermissionController extends Controller
         return back()->withMessage('Permissões atualizadas com sucesso!');
     }
 
-    public function createPermission(Request $request)
+    public function createPermission(Request $request): RedirectResponse
     {
         /**
          * @duplicated_code 2
@@ -158,7 +159,7 @@ final class PermissionController extends Controller
         return back()->withMessage('Permissão criada com sucesso!');
     }
 
-    public function updatePermission(int $id, Request $request)
+    public function updatePermission(int $id, Request $request): RedirectResponse
     {
         /**
          * @duplicated_code 2
@@ -176,7 +177,7 @@ final class PermissionController extends Controller
         return back()->withMessage('Permissão atualizada com sucesso!');
     }
 
-    public function deletePermission(int $id)
+    public function deletePermission(int $id): RedirectResponse
     {
         $permission = Permission::findById($id, config('admin.guard', 'web'));
 
@@ -185,7 +186,7 @@ final class PermissionController extends Controller
         return back()->withMessage('Permissão removida com sucesso!');
     }
 
-    public function createRole(Request $request)
+    public function createRole(Request $request): RedirectResponse
     {
         /**
          * @duplicated_code 3
@@ -203,13 +204,13 @@ final class PermissionController extends Controller
         {
             $permission = Permission::findByName($permission_name, config('admin.guard', 'web'));
 
-            $permission?->assignRole($role);
+            $permission->assignRole($role);
         }
 
         return back()->withMessage('Grupo criado com sucesso!');
     }
 	
-	public function updateRole(int $id, Request $request)
+	public function updateRole(int $id, Request $request): RedirectResponse
     {
         /**
          * @duplicated_code 3
@@ -239,7 +240,7 @@ final class PermissionController extends Controller
         return back()->withMessage('Grupo atualizado com sucesso!');
     }
 	
-	public function deleteRole(int $id)
+	public function deleteRole(int $id): RedirectResponse
     {
         $role = Role::findById($id, config('admin.guard', 'web'));
 
@@ -248,6 +249,9 @@ final class PermissionController extends Controller
         return back()->withMessage('Grupo removido com sucesso!');
     }
 
+    /**
+     * @return array<string>
+     */
     private function getPermissionsToCreate(): array
     {
         $resources = AdminPanel::getResources();
@@ -267,6 +271,10 @@ final class PermissionController extends Controller
         ]);
     }
 
+    /**
+     * @param array<string> $permissions_to_create
+     * @return array<string>
+     */
     private function createPermissions(array $permissions_to_create): array
     {
         foreach($permissions_to_create as $name_permission)
@@ -282,7 +290,11 @@ final class PermissionController extends Controller
         return $permissions_created ?? [];
     }
 
-    private function removePermissionsNotUsed(array $permissions_to_create)
+    /**
+     * @param array<string> $permissions_to_create
+     * @return array<string>
+     */
+    private function removePermissionsNotUsed(array $permissions_to_create): array
     {
         $all_permissions = Permission::where('guard_name', config('admin.guard', 'web'))->get();
 
