@@ -1,0 +1,1 @@
+<x-element::form.textarea  wire:model.defer="{{ $input->getNameWithPrefix() }}" {{ $attributes->merge($input->getAttributes()) }}></x-element::form.textarea>

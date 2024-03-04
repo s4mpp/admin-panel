@@ -25,6 +25,8 @@ abstract class Resource
 
     private string $name;
 
+    // protected $actions = [];
+
     final public function __construct()
     {
         $this->createSlug($this->getTitle() ?? 'Untitled');
@@ -39,6 +41,14 @@ abstract class Resource
     final public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return array<Filter|Card>
+     */
+    public function filters(): array
+    {
+        return [];
     }
 
     /**

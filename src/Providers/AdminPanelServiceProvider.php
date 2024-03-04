@@ -103,7 +103,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
         Livewire::component('form-report', ReportResult::class);
         Livewire::component('user-permissions', UserPermissions::class);
         
-        Blade::componentNamespace('S4mpp\\AdminPanel\\Components', 'admin');
+        Blade::componentNamespace('S4mpp\\AdminPanel\\Components', 'admin-panel');
 
         // Paginator::defaultView('admin::pagination');
 

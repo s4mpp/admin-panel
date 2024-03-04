@@ -1,4 +1,4 @@
-<x-element::form.input type="date"  wire:model.defer="{{ $input->getNameWithPrefix() }}" />
+<x-element::form.input wire:model.defer="{{ $input->getNameWithPrefix() }}" {{ $attributes->merge($input->getAttributes()) }}  />
 
 
 {{-- <div class="w-[150px]">

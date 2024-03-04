@@ -9,7 +9,15 @@ final class Email extends Input
 {
     use CanChangeCase, HasValidationRules;
 
-    protected string $view = 'admin::input.email';
+     /**
+     * @return array<string>
+     */
+    public function getAttributes(): array
+    {
+        return [
+            'type' => 'email'
+        ];
+    }
 
     // public function render()
     // {

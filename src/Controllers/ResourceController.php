@@ -32,7 +32,11 @@ final class ResourceController extends Controller
 
         $resource = AdminPanel::getResource($path_steps[2]);
 
-        return Laraguard::layout('admin::resources.index', compact('resource'));
+        //----------------------------------------------------------------
+
+        $filters = $resource->filters();
+
+        return Laraguard::layout('admin::resources.index', compact('resource', 'filters'));
     }
 
     public function create(): ViewFactory|ViewContract|null
