@@ -3,6 +3,7 @@
 namespace Workbench\App\Providers;
 
 use Workbench\App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;

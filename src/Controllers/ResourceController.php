@@ -13,13 +13,14 @@ use Illuminate\Routing\Controller;
 use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;
+use S4mpp\AdminPanel\Reports\Report;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Route;
+use S4mpp\AdminPanel\CustomActions\Update;
+use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Http\RedirectResponse;
-use S4mpp\AdminPanel\CustomActions\Callback;
-use S4mpp\AdminPanel\CustomActions\Update;
-use S4mpp\AdminPanel\Reports\Report;
 
 /**
  * @codeCoverageIgnore

@@ -38,14 +38,15 @@ abstract class AdminPanel
             $files = new \FileSystemIterator($path);
 
             foreach ($files as $file) {
-                
+
                 $class_name = $namespace.'\\'.str_replace('.php', '', $file->getFilename());
 
                 self::addResource(new $class_name());
             }
 
-            self::addResource(new UserResource());
         }
+
+        self::addResource(new UserResource());
 
         return self::$resources;
     }

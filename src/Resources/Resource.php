@@ -178,7 +178,9 @@ abstract class Resource
     {
         $current_module = Module::current();
 
-        return ($current_module) ? Laraguard::panel(Panel::current())->getRouteName($current_module, $crud_action) : null;
+        $current_panel = Panel::current();
+
+        return ($current_module) ? Laraguard::getPanel($current_panel)->getRouteName($current_module, $crud_action) : null;
     }
 
     /**
@@ -188,7 +190,7 @@ abstract class Resource
     {
         foreach ($this->getActions() as $action) {
             $route_name = $this->getRouteName($action);
-            
+
             if(!$route_name)
             {
                 continue;
@@ -241,7 +243,7 @@ abstract class Resource
 
     final public function getNameModel(): string
     {
-        return '\Workbench\App\Models\\'.$this->name;
+        return config('admin.models_namespace', '\App\\Models').'\\'.$this->name;
     }
 
     final public function getModel(): Model

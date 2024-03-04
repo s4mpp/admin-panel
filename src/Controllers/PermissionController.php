@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Controllers;
 
+use ReflectionClass;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use S4mpp\AdminPanel\Utils;
@@ -19,6 +20,7 @@ use S4mpp\AdminPanel\Utils\Finder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 use Illuminate\Contracts\View\View as ViewContract;
@@ -31,6 +33,8 @@ final class PermissionController extends Controller
 {
     public function __invoke(): ViewFactory|ViewContract|null
     {
+
+
         $roles = Role::get();
 
         $permissions = Permission::get();
@@ -43,7 +47,7 @@ final class PermissionController extends Controller
         $permissions_admin = $permissions->filter(function ($permission) {
             return Str::contains($permission->name, 'Admin');
         });
-        
+
         $resources_with_permissions = [
             [
                 /**
@@ -51,23 +55,30 @@ final class PermissionController extends Controller
                  */
                 'name' => 'Admin',
                 'permissions' => $permissions_admin->map(function ($permission) {
-                    
+
                     /**
                      * @duplicated_code 1
                      */
-                    $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission) {
-                        $query->where('permissions.id', $permission->id);
-                    })->count();
-                    
+
+                    $trait = HasRoles::class;
+
+                    $reflection = new ReflectionClass(Auth::guard($permission->guard)->getProvider()->getModel());
+
+                    if (isset($reflection->getTraits()[$trait])) {
+                        $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission) {
+                            $query->where('permissions.id', $permission->id);
+                        })->count();
+                    }
+
                     $total_direct_permissions = $permission->users()->count();
 
-                    $permission->total_users = ($total_direct_permissions + $total_permission_via_roles);
+                    $permission->total_users = ($total_direct_permissions + ($total_permission_via_roles ?? 0));
 
                     return $permission;
                 }),
             ]
         ];
-        
+
         foreach (AdminPanel::getResources() as $key => $resource) {
 
             /**
@@ -88,17 +99,23 @@ final class PermissionController extends Controller
                  */
                 'name' => $resource->getTitle(),
                 'permissions' => $permissions_resource->map(function ($permission) {
-                    
+
                     /**
                      * @duplicated_code 1
                      */
-                    $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission) {
-                        $query->where('permissions.id', $permission->id);
-                    })->count();
-                    
+                    $trait = HasRoles::class;
+
+                    $reflection = new ReflectionClass(Auth::guard($permission->guard)->getProvider()->getModel());
+
+                    if (isset($reflection->getTraits()[$trait])) {
+                        $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission) {
+                            $query->where('permissions.id', $permission->id);
+                        })->count();
+                    }
+
                     $total_direct_permissions = $permission->users()->count();
 
-                    $permission->total_users = ($total_direct_permissions + $total_permission_via_roles);
+                    $permission->total_users = ($total_direct_permissions + ($total_permission_via_roles ?? 0));
 
                     return $permission;
                 }),
@@ -113,11 +130,11 @@ final class PermissionController extends Controller
          * @duplicated_code 1
          */
         $other_permissions = $other_permissions->map(function ($permission) {
-                    
+
             $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission) {
                 $query->where('permissions.id', $permission->id);
             })->count();
-            
+
             $total_direct_permissions = $permission->users()->count();
 
             $permission->total_users = ($total_direct_permissions + $total_permission_via_roles);
@@ -135,7 +152,7 @@ final class PermissionController extends Controller
         $permissions_to_create = $this->getPermissionsToCreate();
 
         $created = $this->createPermissions($permissions_to_create);
-        
+
         $removed = $this->removePermissionsNotUsed($permissions_to_create);
 
         return back()->withMessage('Permissões atualizadas com sucesso!');
@@ -209,7 +226,7 @@ final class PermissionController extends Controller
 
         return back()->withMessage('Grupo criado com sucesso!');
     }
-	
+
 	public function updateRole(int $id, Request $request): RedirectResponse
     {
         /**
@@ -239,7 +256,7 @@ final class PermissionController extends Controller
 
         return back()->withMessage('Grupo atualizado com sucesso!');
     }
-	
+
 	public function deleteRole(int $id): RedirectResponse
     {
         $role = Role::findById($id, config('admin.guard', 'web'));

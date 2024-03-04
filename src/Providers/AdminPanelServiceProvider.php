@@ -37,7 +37,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $LaraguardPanel = Laraguard::panel('Admin panel', 'admin');
+        $LaraguardPanel = Laraguard::panel('Admin panel', 'admin', config('admin.guard', 'web'));
 
         $LaraguardPanel->layout()
             ->setHtmlFile('admin::html')

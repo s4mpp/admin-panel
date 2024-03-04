@@ -15,6 +15,8 @@ return [
 	],
 
 	'path' => workbench_path('app/AdminPanel'),
+	
+	'models_namespace' => '\Workbench\App\Models',
 
 	'namespace' => 'Workbench\\App\\AdminPanel',
 ];
