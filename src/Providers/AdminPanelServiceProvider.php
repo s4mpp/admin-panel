@@ -10,6 +10,7 @@ use S4mpp\AdminPanel\Livewire\Report;
 use S4mpp\AdminPanel\Components\Table;
 use Illuminate\Support\ServiceProvider;
 use S4mpp\AdminPanel\Livewire\FormFilter;
+use S4mpp\AdminPanel\Livewire\FormReport;
 use S4mpp\AdminPanel\Commands\CreateAdmin;
 use S4mpp\AdminPanel\Livewire\InputSearch;
 use S4mpp\AdminPanel\Livewire\FormResource;
@@ -18,14 +19,14 @@ use S4mpp\AdminPanel\Livewire\SelectSearch;
 use S4mpp\AdminPanel\Livewire\TableRepeater;
 use S4mpp\AdminPanel\Livewire\TableResource;
 use S4mpp\AdminPanel\Middleware\CustomAction;
+use S4mpp\AdminPanel\Middleware\RestrictedArea;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\Commands\ResetPasswordAdmin;
-use S4mpp\AdminPanel\Livewire\FormReport;
 
-class AdminPanelServiceProvider extends ServiceProvider 
+class AdminPanelServiceProvider extends ServiceProvider
 {
     public function boot()
-    {		
+    {
 		$this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
 
 		$this->loadViewsFrom(__DIR__.'/../../views', 'admin');
@@ -41,12 +42,14 @@ class AdminPanelServiceProvider extends ServiceProvider
 		Livewire::component('input-search', InputSearch::class);
 		Livewire::component('form-filter', FormFilter::class);
 		Livewire::component('form-report', FormReport::class);
- 
+
 		Blade::component('table', Table::class);
-			
+
 		Paginator::defaultView('admin::pagination');
 
 		app('router')->aliasMiddleware('custom-action', CustomAction::class);
+
+        app('router')->aliasMiddleware('restricted-area', RestrictedArea::class);
 
 		if($this->app->runningInConsole())
 		{
@@ -60,20 +63,20 @@ class AdminPanelServiceProvider extends ServiceProvider
 			]);
 
 			$this->publishes([
-				__DIR__.'/../../config/config.stub' => config_path('admin.php'), 
+				__DIR__.'/../../config/config.stub' => config_path('admin.php'),
 			], 'admin-config');
 
 			$this->publishes([
-				__DIR__.'/../../stubs/AdminServiceProvider.stub' => app_path('Providers/AdminServiceProvider.php'), 
+				__DIR__.'/../../stubs/AdminServiceProvider.stub' => app_path('Providers/AdminServiceProvider.php'),
 			], 'admin-provider');
 
 			$this->publishes([
-				__DIR__.'/../../stubs/UserResource.stub' => app_path('AdminPanel/UserResource.php'), 
+				__DIR__.'/../../stubs/UserResource.stub' => app_path('AdminPanel/UserResource.php'),
 			], 'admin-user-resource');
 
 			$this->publishes([
-				__DIR__.'/../../stubs/migration_create_settings_table.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_settings_table.php'), 
-				__DIR__.'/../../stubs/ModelSetting.stub' => app_path('Models/Setting.php'), 
+				__DIR__.'/../../stubs/migration_create_settings_table.stub' => database_path('migrations/'.date('Y_m_d_His').'_create_settings_table.php'),
+				__DIR__.'/../../stubs/ModelSetting.stub' => app_path('Models/Setting.php'),
 			], 'admin-settings');
 		}
     }

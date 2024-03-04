@@ -39,7 +39,7 @@ $route->group(function()
 /**
  * Private
  */
-$route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function()
+$route->middleware('web', 'restricted-area:'.config('admin.guard', 'web'))->group(function()
 {
 	/**
 	 * Pages
@@ -48,38 +48,38 @@ $route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function(
 	{
 		Route::get($page->getSlug(), $page->getTarget())->name($page->getRoute());
 	}
-	
+
 	/**
 	 * Resources
-	 */ 
+	 */
 	foreach(AdminPanel::getResources() as $resource)
 	{
 		$routes_resource = Route::prefix($resource->getSlug());
-		
+
 		if($roles = $resource->getRolesForAccess())
 		{
 			$routes_resource->middleware('role:'.join('|', $roles));
 		}
-		
+
 		$routes_resource->group(function() use ($resource)
 		{
 			Route::get('/', [CrudController::class, 'index'])->name($resource->getRouteName('index'));
-	
+
 			if($resource->hasAction('create'))
 			{
 				Route::get('/cadastrar', [CrudController::class, 'create'])->name($resource->getRouteName('create'));
 			}
-			
+
 			if($resource->hasAction('read'))
 			{
 				Route::get('/visualizar/{id}', [CrudController::class, 'read'])->name($resource->getRouteName('read'));
 			}
-			
+
 			if($resource->hasAction('update'))
 			{
 				Route::get('/editar/{id}', [CrudController::class, 'update'])->name($resource->getRouteName('update'));
 			}
-			
+
 			if($resource->hasAction('delete'))
 			{
 				Route::delete('/excluir/{id}', [CrudController::class, 'delete'])->name($resource->getRouteName('delete'));
@@ -87,14 +87,14 @@ $route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function(
 
 			/**
 			 * Custom actions
-			 */ 
+			 */
 			foreach($resource->getCustomActions() as $custom_action)
 			{
 				if(!method_exists($custom_action, 'getCallbackRoute'))
 				{
 					continue;
 				}
-				
+
 				$route_custom_action = Route::middleware('web');
 
 				if($permissions_custom_action = $custom_action->getRolesForAccess())
@@ -103,17 +103,17 @@ $route->middleware('web', 'auth:'.config('admin.guard', 'web'))->group(function(
 				}
 
 				$route_custom_action->middleware('custom-action:'.$resource->getName().'.'.$custom_action->getSlug());
-				
+
 				$route_custom_action->{$custom_action->getRouteMethod()}($custom_action->getSlug().'/{id}', $custom_action->getCallbackRoute($resource))->name($custom_action->getRouteName());
 			}
 
 			/**
 			 * Reports
-			 */ 
+			 */
 			foreach($resource->getReports() as $report)
 			{
 				$route_report = Route::middleware('web');
-				
+
 				$route_report->get('relatorio/'.$report->getSlug(), [CrudController::class, 'report'])->name($report->getRouteName($resource->getName()));
 			}
 		});
