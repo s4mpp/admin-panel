@@ -50,51 +50,33 @@
 					</svg>
 				</button>
 			</div>
-
-			<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
-				<div class="flex h-16 shrink-0 items-center">
-					@if($logo_admin_light && file_exists($logo_admin_light))
-						<img class="h-8 w-auto mx-auto" src="{{ asset($logo_admin_light) }}" alt="{{ env('APP_NAME') }}">
-					@else
-						<h1 class="font-bold text-lg text-center text-gray-900 truncate">{{ env('APP_NAME')  }}</h1>
-					@endif
-				</div>
-
-				@include('admin::navigation')
-			</div>
+			@include('admin::navigation')
 		</div>
 	  </div>
 	</div>
 
 	<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-	  <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white  border-r border-gray-200 px-6">
-		<div class="flex h-14 shrink-0 items-center">
-			@if($logo_admin_light && file_exists($logo_admin_light))
-				<img class="h-8 w-auto mx-auto" src="{{ asset($logo_admin_light) }}" alt="{{ env('APP_NAME') }}">
-			@else
-				<h1 class="font-bold text-lg text-center text-gray-900 truncate">{{ env('APP_NAME')  }}</h1>
-			@endif
-		</div>
-
 		@include('admin::navigation')
-	  </div>
 	</div>
 
 	<div class="lg:pl-72">
 
-		<div class=" bg-primary shadow-sm sticky top-0 z-40 ">
-			<div class="bg-white/0 lg:bg-white/100 flex items-center lg:justify-end  gap-x-6  px-4 py-4  sm:px-6 ">
-			<button x-on:click="menuOfCanvasMobile = !menuOfCanvasMobile"  type="button" class="-m-2.5 p-2.5 text-white/90 lg:hidden ">
-			  <span class="sr-only">Open sidebar</span>
-			  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-			  </svg>
-			</button>
- 				<div class="flex-1 text-sm font-semibold leading-6 text-white lg:hidden">@yield('title')</div>
+		<div class="bg-white shadow-sm sticky top-0 z-40 ">
+			<div class="flex items-center justify-between lg:justify-end  gap-x-6  px-4 sm:px-6 ">
+			
+			<div>
+				<button x-on:click="menuOfCanvasMobile = !menuOfCanvasMobile"  type="button" class="-ml-4 py-4 px-4 text-gray-800 lg:hidden ">
+				  <span class="sr-only">Open sidebar</span>
+				  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+				  </svg>
+				</button>
+			</div>
+ 				
 
 			<!-- Profile dropdown -->
 			<div class="relative" x-data="{ dropdownUserMenu: false }">
-				<button  x-on:click="dropdownUserMenu = !dropdownUserMenu" type="button" class="-m-1.5 flex items-center p-1.5" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+				<button  x-on:click="dropdownUserMenu = !dropdownUserMenu" type="button" class="-mx-1.5 py-4 bg-red-500 flex items-center px-1.5" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
 				  <span class="sr-only">Open user menu</span>
 
 				  <span class="inline-block h-6 w-6 overflow-hidden rounded-full bg-gray-100">
@@ -121,7 +103,7 @@
 				  x-transition:leave-start="transform opacity-100 scale-100"
 				  x-transition:leave-end="transform opacity-0 scale-95"
 
-				class="absolute divide-y divide-gray-100 right-0 z-10 mt-2.5   origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+				class="absolute divide-y divide-gray-100 right-0 z-10  min-w-[200px]  origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
 
 				<div class="px-4 py-3" role="none">
 				  <p class="text-sm" role="none">{{ auth()->guard($panel->getGuardName())->user()->name }}</p>
@@ -158,11 +140,9 @@
 		</div>
 		</div>
 
-	  <main class="pb-10 pt-6">
-		<div class="px-0 sm:px-6 lg:px-8">
-			<div class="mb-5 px-4 sm:px-0 ">
-				<div>
-					{{-- @isset($breadcrumbs)
+	  <main class="pb-10 pt-6 px-4 sm:px-6 ">
+				{{-- <div>
+					@isset($breadcrumbs)
 						@php
 							if($section_resource = $resource->getSection())
 							{
@@ -214,24 +194,44 @@
 								</li>
 							</ol>
 						</nav>
-					@endisset --}}
+					@endisset
+				</div> --}}
+
+				<div>
+					<div class="flex" aria-label="Breadcrumb">
+						<div class="flex items-center space-x-2">
+							<div class="text-gray-400 ">
+								{{-- <a href="#" class="text-gray-400 hover:text-gray-500"> --}}
+									<svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+										<path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
+									</svg>
+									<span class="sr-only">Home</span>
+								{{-- </a> --}}
+							</div>
+
+							@foreach($breadcrumbs as $breadcrumb)
+								<div class="flex items-center">
+									<svg class="h-5 w-5 mt-1 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+										<path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+									</svg>
+									
+									<span class="ml-2  text-sm font-medium text-gray-500">{{ $breadcrumb->getTitle() }}</span>
+								</div>
+							@endforeach
+						</div>
+					</div>
 				</div>
 
-				<div class="mt-4 mb-5 flex items-center justify-between">
-					<div class="min-w-0 flex-1">
-						<h2 class="text-2xl font-bold leading-7 text-gray-900 truncate sm:text-3xl sm:tracking-tight">@yield('title')</h2>
+				<div class="mt-1 mb-5 flex gap-3 flex-nowrap items-center justify-between">
+					<div class="flex-grow min-w-0">
+						<h2 class="flex-1 text-2xl font-bold leading-7 truncate block text-gray-900 sm:text-3xl">@yield('title')</h2>
 					</div>
-					<div class="flex flex-shrink-0 gap-4 ml-4">
-						@yield('title-page')
+					<div class=" shrink sm:order-2 flex-nowrap inline-flex items-center gap-4  justify-end ">
+						@yield('buttons-title-page')
 					</div>
 				</div>
 
 				@yield('content')
-			</div>
-
-		</div>
-
-
 	  </main>
 	</div>
 </div>

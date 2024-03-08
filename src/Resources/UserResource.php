@@ -22,7 +22,7 @@ final class UserResource extends Resource
      */
     public array $actions = ['create', 'read', 'update'];
 
-    // public $search = ['name' => 'Nome', 'email' => 'E-mail'];
+    public $search = ['name' => 'Nome', 'email' => 'E-mail'];
 
     public function customActions(): array
     {

@@ -155,24 +155,24 @@ abstract class Resource
     // 	return $this->ordenation[1] ?? 'DESC';
     // }
 
-    // final public function getMessagePlaceholderSearch(): ?string
-    // {
-    //     if(!isset($this->search) || empty($this->search))
-    //     {
-    //         return null;
-    //     }
+    final public function getMessagePlaceholderSearch(): ?string
+    {
+        if(!isset($this->search) || empty($this->search))
+        {
+            return null;
+        }
 
-    // 	$fields = array_values($this->search);
+    	$fields = array_values($this->search);
 
-    //     if(count($fields) == 1)
-    //     {
-    //         return $fields[0];
-    //     }
+        if(count($fields) == 1)
+        {
+            return $fields[0];
+        }
 
-    // 	$last_item = array_pop($fields);
+    	$last_item = array_pop($fields);
 
-    // 	return join(', ', $fields).' ou '.$last_item;
-    // }
+    	return 'Pesquisar por '.join(', ', $fields).' ou '.$last_item;
+    }
 
     final public function getRouteName(string $crud_action): ?string
     {

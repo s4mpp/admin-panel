@@ -5,7 +5,7 @@ use function Orchestra\Testbench\workbench_path;
 return [
 	'guard' => 'web',
 	
-	'prefix' => 'admin-panel',
+	'prefix' => 'painel',
 
 	'route_redirect_after_login' => 'dashboard',
 

@@ -17,10 +17,11 @@
 		</div>
 
 		<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px] ">
-		<div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12 sm:w-full">
-						
-			<div class="max-w-[400px] mx-auto">
-				@yield('content')
+			<div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12 sm:w-full">
+							
+				<div class="max-w-[400px] mx-auto">
+					@yield('content')
+				</div>
 			</div>
 		</div>
 	</div>

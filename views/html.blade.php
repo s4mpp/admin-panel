@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html> --}}
+<!DOCTYPE html>
 <html class="h-full">
 <head>
 	<meta charset="UTF-8">
@@ -21,10 +21,10 @@
 		
 	@livewireStyles
 </head>
-<body class="h-full">
+<body class="h-full bg-gray-100">
 	@yield('body')
 
-	<script  src="{{ asset('vendor/admin-panel/script.min.js') }}"></script>
+	<script src="{{ asset('vendor/admin-panel/script.min.js') }}"></script>
 	@livewireScripts
 </body>
 </html>

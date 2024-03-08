@@ -39,7 +39,11 @@ final class ResourceController extends Controller
 
         $filters = $resource->filters();
 
-        return Laraguard::layout('admin::resources.index', compact('resource', 'filters'));
+        $reports = Finder::onlyOf($resource->reports(), Report::class);
+
+        $placeholder_search = $resource->getMessagePlaceholderSearch();
+
+        return Laraguard::layout('admin::resources.index', compact('resource', 'filters', 'reports', 'placeholder_search'));
     }
 
     public function create(): ViewFactory|ViewContract|null

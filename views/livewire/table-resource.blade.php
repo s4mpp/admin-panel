@@ -1,4 +1,4 @@
-<x-element::card :padding=false className="bg-white"
+<div
 	{{-- x-on:reset-filter.window="$wire.set('filter_term', null), $wire.set('filter_descriptions', [])"
 	x-on:search.window="$wire.emit('searchTable', {q: $event.detail.q})"
 	x-on:filter.window="$wire.emit('filterTable', {filters: $event.detail.filters})" --}}
@@ -135,5 +135,5 @@
 			</nav>
 		@endif
 	@endif
-</x-element::card>
+</div>
 

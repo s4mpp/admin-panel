@@ -37,7 +37,12 @@ final class AdminPanelServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $LaraguardPanel = Laraguard::panel('Admin panel', 'admin', config('admin.guard', 'web'));
+        $LaraguardPanel = Laraguard::panel('Admin panel', config('admin.prefix', 'painel'), config('admin.guard', 'web'));
+
+        if($subdomain = config('admin.subdomain')){
+
+            $LaraguardPanel->subdomain($subdomain);
+        }
 
         $LaraguardPanel->layout()
             ->setHtmlFile('admin::html')
@@ -62,10 +67,10 @@ final class AdminPanelServiceProvider extends ServiceProvider
                 ->controller(ResourceController::class)
                 ->addIndex('admin::resources.index');
 
-            $LaraguardModule->addPage('Cadastrar', 'cadastrar', 'create')->action('create')->middleware(['can:'.$resource->getName().':create']);
-            $LaraguardModule->addPage('Editar', 'editar/{id}', 'update')->action('update')->middleware(['can:'.$resource->getName().':update']);
-            $LaraguardModule->addPage('Visualizar', 'visualizar/{id}', 'read')->action('read')->middleware(['can:'.$resource->getName().':read']);
-            $LaraguardModule->addPage('Excluir', 'excluir/{id}', 'delete')->action('delete')->method('DELETE')->middleware(['can:'.$resource->getName().':delete']);
+            $LaraguardModule->addPage('Cadastrar', 'cadastrar', 'create')->action('create')->middleware('can:'.$resource->getName().':create');
+            $LaraguardModule->addPage('Editar', 'editar/{id}', 'update')->action('update')->middleware('can:'.$resource->getName().':update');
+            $LaraguardModule->addPage('Visualizar', 'visualizar/{id}', 'read')->action('read')->middleware('can:'.$resource->getName().':read');
+            $LaraguardModule->addPage('Excluir', 'excluir/{id}', 'delete')->action('delete')->method('DELETE')->middleware('can:'.$resource->getName().':delete');
 
             $LaraguardModule->addPage('Relatório', 'relatorio/{slug}')->action('report');
 
@@ -78,7 +83,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
             foreach ($custom_actions_with_route as $custom_action) {
 
                 $LaraguardModule->addPage($custom_action->getTitle() ?? 'No title', 'acao/'.$custom_action->getSlug().'/{id}', $custom_action->getSlug())
-                    ->middleware([CustomActionMiddleware::class])
+                    ->middleware(CustomActionMiddleware::class)
                     ->method($custom_action->getMethod())
                     ->action($custom_action->getAction());
             }
