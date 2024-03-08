@@ -2532,12 +2532,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/s4mpp/element.git",
-                "reference": "d9deb5046b89e07a725dd109cf5804acb20b4636"
+                "reference": "3acd13bf3840e676e2071fd2957de9415ee31e9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/s4mpp/element/zipball/d9deb5046b89e07a725dd109cf5804acb20b4636",
-                "reference": "d9deb5046b89e07a725dd109cf5804acb20b4636",
+                "url": "https://api.github.com/repos/s4mpp/element/zipball/3acd13bf3840e676e2071fd2957de9415ee31e9e",
+                "reference": "3acd13bf3840e676e2071fd2957de9415ee31e9e",
                 "shasum": ""
             },
             "require": {
@@ -2575,7 +2575,7 @@
                 "issues": "https://github.com/s4mpp/element/issues",
                 "source": "https://github.com/s4mpp/element/tree/v2"
             },
-            "time": "2024-03-05T13:19:51+00:00"
+            "time": "2024-03-07T03:03:21+00:00"
         },
         {
             "name": "s4mpp/laraguard",
@@ -6633,16 +6633,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.59",
+            "version": "1.10.60",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "e607609388d3a6d418a50a49f7940e8086798281"
+                "reference": "95dcea7d6c628a3f2f56d091d8a0219485a86bbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e607609388d3a6d418a50a49f7940e8086798281",
-                "reference": "e607609388d3a6d418a50a49f7940e8086798281",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/95dcea7d6c628a3f2f56d091d8a0219485a86bbe",
+                "reference": "95dcea7d6c628a3f2f56d091d8a0219485a86bbe",
                 "shasum": ""
             },
             "require": {
@@ -6691,7 +6691,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-20T13:59:13+00:00"
+            "time": "2024-03-07T13:30:19+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

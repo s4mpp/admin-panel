@@ -7,17 +7,19 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx tailwindcss -i ./assets/css/input.css -o ./vendor/orchestra/testbench-core/laravel/public/vendor/admin-panel/style.min.css --watch",
-    "build": "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/style.min.css --minify && npx webpack"
+    "dev": "npx tailwindcss -i ./assets/css/input.css -o ./vendor/orchestra/testbench-core/laravel/public/css/style.css --watch",
+    "build": "npx tailwindcss -i ./assets/css/input.css -o ./vendor/orchestra/testbench-core/laravel/public/css/style.css --minify && npx webpack"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "tailwindcss": "^3.4.1",
+    "vite": "^5.1.5",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.5.7",
     "alpinejs": "^3.13.5"
   }
 }
