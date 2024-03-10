@@ -277,6 +277,8 @@ final class PermissionController extends Controller
 
         foreach($resources as $resource)
         {
+            $permissions_to_create[] = $resource->getName().':module';
+
             foreach($resource->getActions() as $action)
             {
                 $permissions_to_create[] = $resource->getName().':'.$action;

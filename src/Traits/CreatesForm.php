@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Http\RedirectResponse;
+use Livewire\Redirector;
 
 /**
  * @codeCoverageIgnore
@@ -98,7 +99,7 @@ trait CreatesForm
         return $value;
     }
 
-    public function save(): ?RedirectResponse
+    public function save(): ?Redirector
     {
         $this->resetValidation();
 

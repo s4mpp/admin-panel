@@ -1,0 +1,1 @@
+{!! Str::of($label->getContent($register))->markdown() !!}

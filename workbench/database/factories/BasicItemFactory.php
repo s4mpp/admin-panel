@@ -31,8 +31,6 @@ class BasicItemFactory extends Factory
             'title_uppercase' => fake()->word(),
             'title_with_default_text' => fake()->word(),
             'basic_text' => fake()->text(),
-            'basic_date' => fake()->date(),
-            'date_no_cast' => fake()->date(),
             'basic_email' => fake()->email(),
             'basic_textarea' => fake()->text(),
             'long_textarea' => fake()->text(),

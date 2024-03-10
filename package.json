@@ -7,8 +7,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx tailwindcss -i ./assets/css/input.css -o ./vendor/orchestra/testbench-core/laravel/public/css/style.css --watch",
-    "build": "npx tailwindcss -i ./assets/css/input.css -o ./vendor/orchestra/testbench-core/laravel/public/css/style.css --minify && npx webpack"
+    "dev": "npx tailwindcss -i ./workbench/assets/css/input.css -o ./vendor/orchestra/testbench-core/laravel/public/css/style.css --watch",
+    "build": "npx tailwindcss -i ./workbench/assets/css/input.css -o ./vendor/orchestra/testbench-core/laravel/public/css/style.css --minify && npx webpack"
   },
   "author": "",
   "license": "ISC",

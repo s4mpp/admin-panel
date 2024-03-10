@@ -16,6 +16,12 @@ return new class extends Migration
 
             $table->string('title');
 
+            $table->date('basic_date')->nullable();
+            $table->string('date_no_cast')->nullable();
+
+            $table->datetime('basic_datetime')->nullable();
+            $table->string('datetime_no_cast')->nullable();
+
             $table->timestamps();
         });
     }

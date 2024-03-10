@@ -1,5 +1,5 @@
 <div class="space-y-4">	
-	<x-element::message.error all :provider=$errors />
+	<x-element::message.error :provider=$errors />
 
 
 	{{-- <div 

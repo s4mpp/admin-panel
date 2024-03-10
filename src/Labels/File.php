@@ -6,6 +6,8 @@ use Illuminate\Contracts\View\View;
 
 final class File extends Label
 {
+    protected string $component = 'admin::labels.file';
+
     // public function renderView($value)
     // {
     // 	$item = $this;
@@ -13,8 +15,8 @@ final class File extends Label
     // 	return view('admin::label.file', compact('value', 'item'));
     // }
 
-    public function showContent(mixed $content = null): mixed
-    {
-        return view('admin::labels.file', compact('content'));
-    }
+    // public function showContent(mixed $content = null): mixed
+    // {
+    //     return view('admin::labels.file', compact('content'));
+    // }
 }

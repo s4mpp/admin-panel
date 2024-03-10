@@ -9,13 +9,15 @@ final class MarkDown extends Label
 {
     use Strongable;
 
+    protected string $component = 'admin::label.markdown';
+
     // public function render($value, $sequence)
     // {
     // 	return view('admin::label.markdown', compact('value'));
     // }
 
-    public function showContent(mixed $content = null): mixed
-    {
-        return view('admin::labels.markdown', compact('content'));
-    }
+    // public function showContent(mixed $content = null): mixed
+    // {
+    //     return view('admin::labels.markdown', compact('content'));
+    // }
 }

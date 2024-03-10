@@ -22,7 +22,18 @@ final class UserResource extends Resource
      */
     public array $actions = ['create', 'read', 'update'];
 
-    public $search = ['name' => 'Nome', 'email' => 'E-mail'];
+    protected $search = ['name' => 'Nome', 'email' => 'E-mail'];
+
+    protected string $ordenation_field = 'name';
+    
+    protected string $ordenation_direction = 'ASC';
+    
+    public function filters(): array
+    {
+        return [
+            Filter::period('Cadastrado em', 'created_at')
+        ];
+    }
 
     public function customActions(): array
     {
@@ -39,7 +50,21 @@ final class UserResource extends Resource
         return [
             Label::text('Nome', 'name')->strong(),
 
-            Label::text('E-mail', 'email')->align('left'),
+            Label::text('E-mail', 'email'),
+
+            Label::dateTime('Cadastrado em', 'created_at'),
+        ];
+    }
+
+    /**
+     * @return array<LabelElement|Card>
+     */
+    public function read(): array
+    {
+        return [
+            Label::text('Nome', 'name')->strong(),
+
+            Label::text('E-mail', 'email'),
 
             Label::dateTime('Cadastrado em', 'created_at'),
         ];

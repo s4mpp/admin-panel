@@ -17,9 +17,7 @@ return new class extends Migration
             $table->string('title');
 
             $table->string('basic_text');
-            
-            $table->date('basic_date');
-            $table->string('date_no_cast');
+        
             
             $table->string('basic_email');
             

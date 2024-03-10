@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
+use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Column\Actions;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -18,26 +19,50 @@ final class TableResource extends Component
 {
     use WithAdminResource, WithPagination;
 
+    /**
+     * @var array<string>
+     */
+    public array $route_actions = [];
+
     // private $collection;
 
     // private array $columns = [];
 
-    // private ?string $search_term = null;
+    private ?string $search_term = null;
 
-    // public ?array $filter_term = null;
+    public ?array $filters = [];
+
+    /**
+     * @var array<string>
+     */
+    protected $listeners = ['search', 'filter'];
 
     // protected $listeners = ['searchTable', 'filterTable'];
 
     // public $filter_descriptions = [];
 
+    
+    /**
+     * @var array<string>
+     */
+    public array $ordenation = [];
+
     public function mount(string $resource_slug): void
     {
         $this->resource_slug = $resource_slug;
-    }
 
+        $this->loadResource();
+
+        $this->route_actions = $this->resource->getRouteActions();
+
+        $this->ordenation = $this->resource->getOrdenation();
+    }
+    
     public function booted(): void
     {
         $this->loadResource();
+        
+        
 
         //     $this->columns = $this->resource->getTable();
 
@@ -51,25 +76,23 @@ final class TableResource extends Component
         //     array_push($this->columns, ((new Actions($actions))->align('right')));
     }
 
-    // public function searchTable(array $params)
-    // {
-    //     $this->search_term = $params['q'] ?? null;
+    public function search(array $params)
+    {
+        $this->search_term = $params['q'] ?? null;
 
-    //     $this->dispatchBrowserEvent('search-complete');
+        $this->resetPage();
+        
+        $this->dispatchBrowserEvent('search-complete');
+    }
 
-    //     $this->resetPage();
-    // }
+    public function filter(array $params)
+    {
+        $this->filters = $params['filters'] ?? null;
 
-    // public function filterTable(array $params)
-    // {
-    //     $this->reset('filter_descriptions');
-
-    //     $this->filter_term = $params['filters'] ?? null;
-
-    //     $this->dispatchBrowserEvent('filter-complete');
-
-    //     $this->resetPage();
-    // }
+        $this->resetPage();
+        
+        $this->dispatchBrowserEvent('filter-complete');
+    }
 
     // public function filterRemove()
     // {
@@ -85,63 +108,65 @@ final class TableResource extends Component
         return view('admin::livewire.table-resource', [
             // 'collection' => $this->_getRegisters(),
             // 'default_route' => $this->resource->getDefaultRoute(),
-            'actions' => $this->resource->getRouteActions(),
             'columns' => Finder::onlyOf($this->resource->table(), Label::class),
-            'registers' => $this->resource->getRegisters(),
+            'registers' => $this->_getRegisters(),
         ]);
     }
 
-    // private function _getRegisters()
-    // {
-    //     $model = $this->resource->getModel();
+    private function _getRegisters()
+    {
+        $model = $this->resource->getModel();
 
-    //     $query = $model->orderBy($this->resource->getOrdenationField(), $this->resource->getOrdenationDirection());
+        foreach($this->ordenation as $field => $direction)
+        {
+            $builder = $model->orderBy($field, $direction);
+        }
 
-    //     $this->_select($query);
+        $builder->select($this->_getSelectFields());
 
-    //     $this->_search($query);
+        $builder->where($this->_search());
+        
+        $this->_filter($builder);
 
-    //     $this->_filter($query);
+        // $this->_search($builder);
 
-    //     return $query->paginate();
-    // }
+        // $this->_filter($builder);
+
+        return $builder->paginate();
+    }
 
     // private function _select($query)
     // {
     //     $select_fields = $this->_getSelectFields();
 
-    //     $with_eager_loading = $this->_getWithEagerLoading($select_fields);
-
     //     $query->select(array_unique($select_fields));
+        
+    //     // $with_eager_loading = $this->_getWithEagerLoading($select_fields);
 
-    //     if(!empty($with_eager_loading))
-    //     {
-    //         $query->with(array_map(function($key, $array)
-    //         {
-    //             return $key.':id,'.join(',', $array);
-    //         },
-    //         array_keys($with_eager_loading), $with_eager_loading));
-    //     }
+
+    //     // if(!empty($with_eager_loading))
+    //     // {
+    //     //     $query->with(array_map(function($key, $array)
+    //     //     {
+    //     //         return $key.':id,'.join(',', $array);
+    //     //     },
+    //     //     array_keys($with_eager_loading), $with_eager_loading));
+    //     // }
     // }
 
-    // private function _getSelectFields()
-    // {
-    //     $select_fields = ['id'];
+    private function _getSelectFields()
+    {
+        $columns = Finder::onlyOf($this->resource->table(), Label::class);
 
-    //     foreach(array_filter($this->columns, function($c) { return !$c->isRelation();}) as $column)
-    // 	{
-    //         $field = $column->getField();
+        $select_fields = ['id'];
 
-    //         if(!$field)
-    //         {
-    //             continue;
-    //         }
+        foreach($columns as $column)
+    	{
+            $select_fields[] = $column->getField();
+        }
 
-    //         $select_fields[] = $field;
-    //     }
-
-    //     return $select_fields;
-    // }
+        return array_unique($select_fields);
+    }
 
     // private function _getWithEagerLoading(&$select_fields)
     // {
@@ -177,62 +202,74 @@ final class TableResource extends Component
     //     return $with_eager_loading ?? [];
     // }
 
-    // private function _search($query)
-    // {
-    //     if(!trim($this->search_term))
-    //     {
-    //         return;
-    //     }
+    private function _search()
+    {
+        if(!trim($this->search_term))
+        {
+            return;
+        }
+        
+        return function($builder)
+        {
+            $search_fields = $this->resource->getSearchFields();
+            
+            foreach($search_fields as $key => $value)
+            {
+                $field_to_search = (is_string($key)) ? $key : $value;
 
-    //     $search_fields = $this->resource->getSearchFields();
+                $builder->orWhere($field_to_search, 'like', '%'.trim($this->search_term).'%');
+            }
+        };
+    }
 
-    //     $query->where(function($builder) use ($search_fields)
-    //     {
-    //         foreach($search_fields as $key => $value)
-    //         {
-    //             $field_to_search = (is_string($key)) ? $key : $value;
+    private function _filter($builder)
+    {
+        if(empty($this->filters))
+        {
+            return;
+        }
 
-    //             $builder->orWhere($field_to_search, 'like', '%'.trim($this->search_term).'%');
-    //         }
-    //     });
-    // }
+        $resource_filters = Finder::onlyOf($this->resource->filters(), Filter::class);
 
-    // private function _filter($query)
-    // {
-    //     if(!$this->filter_term)
-    //     {
-    //         return;
-    //     }
+        foreach($resource_filters as $filter)
+        {
+            $term = $this->filters[$filter->getField()] ?? null;
 
-    //     $filters = $this->resource->getFilters();
+            if(is_null($term) || empty($term))
+            {
+                continue;
+            }
 
-    //     foreach($this->filter_term as $f => $term)
-    //     {
-    //         $filter = $filters[$f] ?? null;
+            $filter->query($builder, $term);
+        }
 
-    //         if(!$filter || !$term || empty($term))
-    //         {
-    //             continue;
-    //         }
+        // foreach($this->filter_term as $filter => $term)
+        // {
+        //     $filter = $filters[$f] ?? null;
 
-    //         $filter->filter($term, $query);
+        //     if(!$filter || !$term || empty($term))
+        //     {
+        //         continue;
+        //     }
 
-    //         /**
-    // 		 * DUPLICATED
-    // 		 */
-    //         if(!$term || empty($term))
-    // 		{
-    // 			continue;
-    // 		}
+        //     $filter->query($term, $query);
 
-    //         $description_result = $filter->getDescriptionResult($term);
+        //     // /**
+    	// 	//  * DUPLICATED
+    	// 	//  */
+        //     // if(!$term || empty($term))
+    	// 	// {
+    	// 	// 	continue;
+    	// 	// }
 
-    //         if(!$description_result)
-    //         {
-    //             continue;
-    //         }
+        //     // $description_result = $filter->getDescriptionResult($term);
 
-    //         $this->filter_descriptions[] = $filter->getTitle().': '.$description_result;
-    //     }
-    // }
+        //     // if(!$description_result)
+        //     // {
+        //     //     continue;
+        //     // }
+
+        //     // $this->filter_descriptions[] = $filter->getTitle().': '.$description_result;
+        // }
+    }
 }

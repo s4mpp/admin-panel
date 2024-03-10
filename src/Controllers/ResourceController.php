@@ -21,6 +21,7 @@ use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use S4mpp\AdminPanel\Filter\Filter;
 
 /**
  * @codeCoverageIgnore
@@ -37,13 +38,19 @@ final class ResourceController extends Controller
 
         //----------------------------------------------------------------
 
-        $filters = $resource->filters();
+        $filters = Finder::onlyOf($resource->filters(), Filter::class);
+
+        $alpine_expression_filters = [];
+
+        foreach($filters as $filter) {
+            $alpine_expression_filters[] = join(':', [$filter->getField(), $filter->getAlpineExpression()]);
+        }
 
         $reports = Finder::onlyOf($resource->reports(), Report::class);
 
         $placeholder_search = $resource->getMessagePlaceholderSearch();
 
-        return Laraguard::layout('admin::resources.index', compact('resource', 'filters', 'reports', 'placeholder_search'));
+        return Laraguard::layout('admin::resources.index', compact('resource', 'filters', 'reports', 'placeholder_search', 'alpine_expression_filters'));
     }
 
     public function create(): ViewFactory|ViewContract|null
@@ -92,25 +99,38 @@ final class ResourceController extends Controller
 
         //----------------------------------------------------------------
 
+        $read = Finder::fillInCard(Finder::onlyOf($resource->read(), Label::class, Card::class));
+
         $register = $resource->getModel()->findOrFail($id);
 
         $custom_actions = $resource->customActions();
 
-        foreach (Finder::findElementsRecursive($custom_actions, CustomAction::class) as $custom_action) {
-            // if(!Utils::checkRoles($custom_action->getRolesForAccess()))
-            // {
-            // 	continue;
-            // }
+        $custom_action_elements = Finder::findElementsRecursive($custom_actions, CustomAction::class);
 
+        $custom_action_slides = $custom_actions_modals = [];
         
+        foreach ($custom_action_elements as $custom_action) {
+
             $custom_action->setResource($resource);
             
             $custom_action->setRegister($register);
+
+            if(method_exists($custom_action, 'getNameSlide'))
+            {
+                $custom_action_slides[] = $custom_action->getNameSlide().': false';
+            }
+            elseif(method_exists($custom_action, 'getNameModal'))
+            {
+                $custom_actions_modals[] = $custom_action->getNameModal().': false';
+            }
+
+            if($custom_action->hasConfirmation())
+            {
+                $custom_actions_modals[] = $custom_action->getNameModalConfirmation().': false';
+            }
         }
 
-        $read = Finder::fillInCard(Finder::onlyOf($resource->read(), Label::class, Card::class));
-
-        return Laraguard::layout('admin::resources.read', compact('resource', 'read', 'register', 'custom_actions'));
+        return Laraguard::layout('admin::resources.read', compact('resource', 'read', 'register', 'custom_actions', 'custom_action_elements', 'custom_action_slides', 'custom_actions_modals'));
     }
 
     public function delete(): void

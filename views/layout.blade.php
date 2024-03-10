@@ -76,7 +76,7 @@
 
 			<!-- Profile dropdown -->
 			<div class="relative" x-data="{ dropdownUserMenu: false }">
-				<button  x-on:click="dropdownUserMenu = !dropdownUserMenu" type="button" class="-mx-1.5 py-4 bg-red-500 flex items-center px-1.5" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+				<button  x-on:click="dropdownUserMenu = !dropdownUserMenu" type="button" class="-mx-1.5 py-4 flex items-center px-1.5" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
 				  <span class="sr-only">Open user menu</span>
 
 				  <span class="inline-block h-6 w-6 overflow-hidden rounded-full bg-gray-100">

@@ -12,6 +12,15 @@ final class Slide extends CustomAction
 {
     use CanBeDisabled, CanBeDangerous;
 
+    /**
+     * @var array<string>
+     */
+    protected array $component = [
+        'button' => 'admin::custom-action.button.slide',
+        'content' => 'admin::custom-action.content.slide',
+        'confirmation' => 'admin::custom-action.confirmation.slide'
+    ];
+
     public function __construct(string $title, private string $view)
     {
         parent::__construct($title);
@@ -27,18 +36,18 @@ final class Slide extends CustomAction
         return 'slide'.Str::ucfirst(Str::camel($this->getSlug()));
     }
 
-    public function renderButton(): View|ViewFactory
-    {
-        return view('admin::custom-actions.buttons.slide', ['action' => $this]);
-    }
+    // public function renderButton(): View|ViewFactory
+    // {
+    //     return view('admin::custom-actions.buttons.slide', ['action' => $this]);
+    // }
 
-    public function renderContent(): View|ViewFactory
-    {
-    	return view('admin::custom-actions.content.slide', ['action' => $this]);
-    }
+    // public function renderContent(): View|ViewFactory
+    // {
+    // 	return view('admin::custom-actions.content.slide', ['action' => $this]);
+    // }
 
-    public function renderContentModalConfirmation(): View|ViewFactory
-    {
-    	return view('admin::custom-actions.modal-confirmation.slide', ['action' => $this]);
-    }
+    // public function renderContentModalConfirmation(): View|ViewFactory
+    // {
+    // 	return view('admin::custom-actions.modal-confirmation.slide', ['action' => $this]);
+    // }
 }

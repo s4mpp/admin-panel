@@ -8,7 +8,7 @@
 		<div class="mt-3 divide-y divide-gray-300">
 			@foreach($fields as $field)
 				<div class=" py-3">
-					{{ $field->render() }}
+					{{-- {{ $field->render() }} --}}
 				</div>
 			@endforeach
 		</div>

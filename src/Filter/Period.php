@@ -2,15 +2,19 @@
 
 namespace S4mpp\AdminPanel\Filter;
 
-use Illuminate\Contracts\View\View;
-use Illuminate\Contracts\View\Factory as ViewFactory;
-
 final class Period extends Filter
 {
-    public function render(): View|ViewFactory
+    protected string $component = 'admin::filter.period';
+
+    public function getAlpineExpression(): string
     {
-        return view('admin::filter.period', ['filter' => $this]);
+        return '{start: null, end: null}';
     }
+
+    // public function render(): View|ViewFactory
+    // {
+    //     return view('admin::filter.period', ['filter' => $this]);
+    // }
 
     // public function getInitialValue(): array
     // {
@@ -25,18 +29,20 @@ final class Period extends Filter
     // 	self::query($query, $this->getField(), $term['start'], $term['end']);
     // }
 
-    // public static function query($query, string $field, string $start = null, string $end = null)
-    // {
-    // 	if(isset($start) && $start)
-    // 	{
-    // 		$query->where($field, '>=', $start.' 00:00:00');
-    // 	}
+    public function query($builder, array $term)
+    {
+        extract($term);
 
-    // 	if(isset($end) && $end)
-    // 	{
-    // 		$query->where($field, '<=', $end.' 23:59:59');
-    // 	}
-    // }
+    	if(isset($start) && $start)
+    	{
+    		$builder->where($this->getField(), '>=', $start.' 00:00:00');
+    	}
+
+    	if(isset($end) && $end)
+    	{
+    		$builder->where($this->getField(), '<=', $end.' 23:59:59');
+    	}
+    }
 
     // public function getDescriptionResult($term)
     // {

@@ -4,10 +4,14 @@ namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
+use Illuminate\Database\Eloquent\Model;
+use S4mpp\AdminPanel\Traits\HasCallback;
+use S4mpp\AdminPanel\Traits\HasCallbacks;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 abstract class Label
 {
-    use Titleable;
+    use Titleable, HasComponent, HasCallbacks;
 
     private ?string $alignment = 'left';
 
@@ -32,13 +36,25 @@ abstract class Label
         return $this->alignment;
     }
 
+    public function getContent(Model $register): mixed
+    {
+        $content =  $register[$this->getField()] ?? null;
+
+        if($this->hasCallbacks())
+        {
+            $content = $this->runCallbacks($content, $register);
+        }
+
+        return $content;
+    }
+
     // public function renderItemView($content = null)
     // {
     // 	return view('admin::labels.read-label', ['item' => $this, 'content' => $content]);
     // }
 
-    public function showContent(mixed $content = null): mixed
-    {
-        return $content;
-    }
+    // public function showContent(mixed $content = null, $register): mixed
+    // {
+    //     return $content;
+    // }
 }

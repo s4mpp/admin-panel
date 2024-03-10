@@ -8,10 +8,10 @@ use S4mpp\AdminPanel\Tests\TestCase;
 
 final class FileTest extends TestCase
 {
-    public function test_show_content(): void
-    {
-        $file = new File('Title', 'field');
+    // public function test_show_content(): void
+    // {
+    //     $file = new File('Title', 'field');
 
-        $this->assertInstanceOf(View::class, $file->showContent('x'));
-    }
+    //     $this->assertInstanceOf(View::class, $file->showContent('x'));
+    // }
 }

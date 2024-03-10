@@ -4,13 +4,14 @@ namespace S4mpp\AdminPanel\Input;
 
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
+use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\HasDefaultText;
 use S4mpp\AdminPanel\Traits\HasValidationRules;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 abstract class Input
 {
-    use HasDefaultText, Titleable;
+    use HasDefaultText, Titleable, HasComponent;
 
     private ?string $prefix = 'data';
 
@@ -52,11 +53,6 @@ abstract class Input
 
     //     return $this;
     // }
-
-    public function getComponentName(): ?string
-    {
-        return $this->component ?? null;
-    }
 
     public function render(): View|ViewFactory
     {

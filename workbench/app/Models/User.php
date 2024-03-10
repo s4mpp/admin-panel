@@ -12,4 +12,8 @@ final class User extends AuthUser
     use HasFactory, Notifiable, HasRoles;
 
     protected $guard_name = 'web';
+
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
 }

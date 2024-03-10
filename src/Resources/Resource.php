@@ -27,6 +27,12 @@ abstract class Resource
 
     // protected $actions = [];
 
+    protected $search = [];
+    
+    protected string $ordenation_field = 'id';
+    
+    protected string $ordenation_direction = 'DESC';
+
     final public function __construct()
     {
         $this->createSlug($this->getTitle() ?? 'Untitled');
@@ -44,7 +50,7 @@ abstract class Resource
     }
 
     /**
-     * @return array<Filter|Card>
+     * @return array<Filter>
      */
     public function filters(): array
     {
@@ -99,12 +105,12 @@ abstract class Resource
         return [];
     }
 
-    public function getRegisters(): LengthAwarePaginator
-    {
-        $model = $this->getModel();
+    // public function getRegisters(): LengthAwarePaginator
+    // {
+    //     $model = $this->getModel();
 
-        return $model::paginate();
-    }
+    //     return $model::paginate();
+    // }
 
     // public function getRegister(int $id): ?Model
     // {
@@ -140,20 +146,21 @@ abstract class Resource
     // 	return $roles;
     // }
 
-    // final public function getSearchFields(): ?array
-    // {
-    // 	return $this->search ?? null;
-    // }
+    /**
+     * @return array<string>
+     */
+    final public function getSearchFields(): ?array
+    {
+    	return $this->search ?? null;
+    }
 
-    // final public function getOrdenationField(): string
-    // {
-    // 	return $this->ordenation[0] ?? 'id';
-    // }
-
-    // final public function getOrdenationDirection(): string
-    // {
-    // 	return $this->ordenation[1] ?? 'DESC';
-    // }
+    /**
+     * @return array<string>
+     */
+    final public function getOrdenation(): array
+    {
+        return [$this->ordenation_field => $this->ordenation_direction];
+    }
 
     final public function getMessagePlaceholderSearch(): ?string
     {

@@ -8,10 +8,10 @@ use S4mpp\AdminPanel\Tests\TestCase;
 
 final class BooleanTest extends TestCase
 {
-    public function test_show_content(): void
-    {
-        $boolean = new Boolean('Title', 'field');
+    // public function test_show_content(): void
+    // {
+    //     $boolean = new Boolean('Title', 'field');
 
-        $this->assertInstanceOf(View::class, $boolean->showContent('x'));
-    }
+    //     $this->assertInstanceOf(View::class, $boolean->showContent('x'));
+    // }
 }

@@ -8,11 +8,6 @@ module.exports = {
     "./vendor/s4mpp/laraguard/views/**/*.blade.php",
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-      },
-    },
   },
   plugins: [
     require('@tailwindcss/forms'),

@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components
+{
+    .--element-input-container
+    {
+        @apply focus-within:outline-violet-600 !important
+    }
+
+    .--element-button-default
+    {
+        @apply bg-violet-600 hover:bg-violet-700 ring-violet-600  outline-violet-600 text-white !important
+    }
+}

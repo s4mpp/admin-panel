@@ -1,1 +1,0 @@
-LONGTEXT: {!! nl2br($content) !!}

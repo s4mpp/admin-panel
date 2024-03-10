@@ -29,6 +29,7 @@ use S4mpp\AdminPanel\CustomActions\Update;
 use S4mpp\AdminPanel\CustomActions\View;
 use S4mpp\AdminPanel\Livewire\UserPermissions;
 use S4mpp\AdminPanel\Middleware\CustomAction as CustomActionMiddleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 
 /**
  * @codeCoverageIgnore
@@ -37,7 +38,9 @@ final class AdminPanelServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $LaraguardPanel = Laraguard::panel('Admin panel', config('admin.prefix', 'painel'), config('admin.guard', 'web'));
+        $guard_admin = config('admin.guard', 'web');
+
+        $LaraguardPanel = Laraguard::panel('Admin panel', config('admin.prefix', 'painel'), $guard_admin);
 
         if($subdomain = config('admin.subdomain')){
 
@@ -49,10 +52,10 @@ final class AdminPanelServiceProvider extends ServiceProvider
             ->setAuthFile('admin::auth')
             ->setLayoutFile('admin::layout');
 
-        $LaraguardPanel->addModule('Dashboard')->starter()->addIndex();
-        $LaraguardPanel->addModule('Configurações', 'configuracoes')->hideInMenu()->addIndex('admin::settings');
+        $LaraguardPanel->addModule('Dashboard')->starter()->addIndex('admin::dashboard');
+        $LaraguardPanel->addModule('Configurações', 'configuracoes')->middleware('can:Admin:settings,'.$guard_admin)->hideInMenu()->addIndex('admin::settings');
         
-        $permissions = $LaraguardPanel->addModule('Permissões')->controller(PermissionController::class)->addIndex();
+        $permissions = $LaraguardPanel->addModule('Permissões')->middleware('can:Admin:permissions,'.$guard_admin)->controller(PermissionController::class)->addIndex();
         $permissions->addPage('', 'generate-permissions', 'generate')->method('put')->action('generatePermissionsAdmin');
         $permissions->addPage('', 'create-permission', 'create-permission')->method('post')->action('createPermission');
         $permissions->addPage('', 'update-permission/{id}', 'update-permission')->method('put')->action('updatePermission');
@@ -64,15 +67,19 @@ final class AdminPanelServiceProvider extends ServiceProvider
         foreach (AdminPanel::loadResources() as $resource) {
             
             $LaraguardModule = $LaraguardPanel->addModule($resource->getTitle() ?? 'No title', $resource->getSlug() ?? 'no-title')
-                ->controller(ResourceController::class)
-                ->addIndex('admin::resources.index');
+                // ->middleware('can:'.$resource->getName().':module,'.$guard_admin)
+                ->controller(ResourceController::class);
+                // ->addIndex('admin::resources.index');
 
-            $LaraguardModule->addPage('Cadastrar', 'cadastrar', 'create')->action('create')->middleware('can:'.$resource->getName().':create');
-            $LaraguardModule->addPage('Editar', 'editar/{id}', 'update')->action('update')->middleware('can:'.$resource->getName().':update');
-            $LaraguardModule->addPage('Visualizar', 'visualizar/{id}', 'read')->action('read')->middleware('can:'.$resource->getName().':read');
-            $LaraguardModule->addPage('Excluir', 'excluir/{id}', 'delete')->action('delete')->method('DELETE')->middleware('can:'.$resource->getName().':delete');
+            $LaraguardModule->addPage('Index', '', 'index')->isIndex()->action('index')->view('admin::resources.index')->middleware('can:'.$resource->getName().':index,'.$guard_admin);
+            
+            $LaraguardModule->addPage('Cadastrar', 'cadastrar', 'create')->action('create')->middleware('can:'.$resource->getName().':create,'.$guard_admin);
+            $LaraguardModule->addPage('Editar', 'editar/{id}', 'update')->action('update')->middleware('can:'.$resource->getName().':update,'.$guard_admin);
+            $LaraguardModule->addPage('Visualizar', 'visualizar/{id}', 'read')->action('read')->middleware('can:'.$resource->getName().':read,'.$guard_admin);
+            $LaraguardModule->addPage('Excluir', 'excluir/{id}', 'delete')->action('delete')->method('DELETE')->middleware('can:'.$resource->getName().':delete,'.$guard_admin);
 
             $LaraguardModule->addPage('Relatório', 'relatorio/{slug}')->action('report');
+            // ->middleware('can:'.$resource->getName().':report,'.$guard_admin);
 
             $custom_actions_with_route = Finder::onlyOf(Finder::findElementsRecursive($resource->customActions(), CustomAction::class), 
                 Callback::class,
@@ -106,8 +113,6 @@ final class AdminPanelServiceProvider extends ServiceProvider
         Livewire::component('user-permissions', UserPermissions::class);
         
         Blade::componentNamespace('S4mpp\\AdminPanel\\Components', 'admin-panel');
-
-        // Paginator::defaultView('admin::pagination');
 
         if ($this->app->runningInConsole()) {
             AboutCommand::add('Admin Panel', fn () => [

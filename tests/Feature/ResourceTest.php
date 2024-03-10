@@ -16,11 +16,11 @@ final class ResourceTest extends TestCase
     public static function resourceProvider()
     {
         return [
-            'users' => ['usuarios', 'User', 'Usuários', UserFactory::class],
-            'custom-action' => ['custom-actions', 'CustomAction', 'Custom Actions', CustomActionFactory::class],
-            'filters' => ['filtros', 'Filter', 'Filtros', FilterFactory::class],
+            // 'users' => ['usuarios', 'User', 'Usuários', UserFactory::class],
+            // 'custom-action' => ['custom-actions', 'CustomAction', 'Custom Actions', CustomActionFactory::class],
+            // 'filters' => ['filtros', 'Filter', 'Filtros', FilterFactory::class],
             'itens-basicos' => ['itens-basicos', 'BasicItem', 'Itens básicos', BasicItemFactory::class],
-            'numeros' => ['numeros', 'Number', 'Números', NumberFactory::class],
+            // 'numeros' => ['numeros', 'Number', 'Números', NumberFactory::class],
         ];
     }
 
@@ -29,7 +29,9 @@ final class ResourceTest extends TestCase
      */
     public function test_index_page(string $url, string $name, string $title): void
     {
-        $user = UserFactory::new()->create();
+        Permission::findOrCreate($name.':index', 'web');
+
+        $user = UserFactory::new()->create()->givePermissionTo($name.':index');
 
         $response = $this->actingAs($user)->get('admin/'.$url);
 

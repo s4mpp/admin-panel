@@ -18,10 +18,7 @@ final class BasicItemResource extends Resource
             Label::text('Título', 'title'),
 
             Label::text('Texto básico', 'basic_text'),
-            
-            Label::date('Data', 'basic_date'),
-            Label::date('Data (no cast)', 'date_no_cast'),
-            
+
             Label::text('E-mail', 'basic_email'),
             
             Label::longText('Textarea', 'basic_textarea'),
@@ -38,8 +35,7 @@ final class BasicItemResource extends Resource
 
             Label::text('Texto básico', 'basic_text'),
             
-            Label::date('Data', 'basic_date'),
-            Label::date('Data (no cast)', 'date_no_cast'),
+            
             
             Label::text('E-mail', 'basic_email'),
             
@@ -60,8 +56,7 @@ final class BasicItemResource extends Resource
 
             Input::text('Texto básico', 'basic_text'),
             
-            Input::date('Data', 'basic_date'),
-            Input::date('Data (no cast)', 'date_no_cast'),
+            
             
             Input::email('E-mail', 'basic_email'),
             

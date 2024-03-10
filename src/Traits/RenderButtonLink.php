@@ -7,10 +7,17 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 
 trait RenderButtonLink
 {
-    public function renderButton(): View|ViewFactory
-    {
-        return view('admin::custom-actions.buttons.link', ['action' => $this]);
-    }
+    /**
+     * @var array<string>
+     */
+    protected array $component = [
+        'button' => 'admin::custom-action.button.link',
+    ];
+
+    // public function renderButton(): View|ViewFactory
+    // {
+    //     return view('admin::custom-actions.buttons.link', ['action' => $this]);
+    // }
 
     // public function renderContentModalConfirmation()
     // {

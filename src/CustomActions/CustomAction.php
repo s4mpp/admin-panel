@@ -10,10 +10,11 @@ use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Resources\Resource;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 abstract class CustomAction
 {
-    use Slugable, Titleable;
+    use Slugable, Titleable, HasComponent;
 
     
 

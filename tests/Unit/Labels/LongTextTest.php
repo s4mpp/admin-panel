@@ -8,10 +8,10 @@ use S4mpp\AdminPanel\Labels\LongText;
 
 final class LongTextTest extends TestCase
 {
-    public function test_show_content(): void
-    {
-        $long_Text = new LongText('Title', 'field');
+    // public function test_show_content(): void
+    // {
+    //     $long_Text = new LongText('Title', 'field');
 
-        $this->assertInstanceOf(View::class, $long_Text->showContent('x'));
-    }
+    //     $this->assertInstanceOf(View::class, $long_Text->showContent('x'));
+    // }
 }

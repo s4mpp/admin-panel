@@ -70,8 +70,6 @@
             "@php vendor/bin/testbench vendor:publish --provider=\"Spatie\\Permission\\PermissionServiceProvider\""
         ],
         "post-update-cmd": [
-            "@php vendor/bin/testbench vendor:publish --tag=element-assets --force",
-            "@php vendor/bin/testbench vendor:publish --tag=laraguard-assets --force",
             "@php vendor/bin/testbench optimize:clear"
         ]
     }

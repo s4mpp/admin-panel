@@ -8,10 +8,10 @@ use S4mpp\AdminPanel\Labels\Datetime;
 
 final class DatetimeTest extends TestCase
 {
-    public function test_show_content(): void
-    {
-        $datetime = new Datetime('Title', 'field', 'Y-m-d H:i:s');
+    // public function test_show_content(): void
+    // {
+    //     $datetime = new Datetime('Title', 'field', 'Y-m-d H:i:s');
 
-        $this->assertInstanceOf(View::class, $datetime->showContent('x'));
-    }
+    //     $this->assertInstanceOf(View::class, $datetime->showContent('x'));
+    // }
 }

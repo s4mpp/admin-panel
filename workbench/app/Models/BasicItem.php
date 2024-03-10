@@ -9,7 +9,5 @@ class BasicItem extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'basic_date' => 'date'
-    ];
+    
 }

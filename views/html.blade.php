@@ -21,22 +21,23 @@
 	@endforeach
 
 	@if($vite_css = config('admin.vite.css'))
-		@vite([$vite_css])
+		@vite($vite_css)
 	@endif
 
 	@livewireStyles
 </head>
 <body class="h-full bg-gray-100">
 	@yield('body')
+	
+	@livewireScripts
 
 	@foreach($scripts = config('admin.assets.js', []) as $script)
 		<script src="{{ asset($script) }}"></script> 
 	@endforeach
 
 	@if($vite_js = config('admin.vite.js'))
-		@vite([$vite_js])
+		@vite($vite_js)
 	@endif
 	
-	@livewireScripts
 </body>
 </html>
