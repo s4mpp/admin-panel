@@ -1299,16 +1299,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.24.0",
+            "version": "3.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "b25a361508c407563b34fac6f64a8a17a8819675"
+                "reference": "4c44347133618cccd9b3df1729647a1577b4ad99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/b25a361508c407563b34fac6f64a8a17a8819675",
-                "reference": "b25a361508c407563b34fac6f64a8a17a8819675",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4c44347133618cccd9b3df1729647a1577b4ad99",
+                "reference": "4c44347133618cccd9b3df1729647a1577b4ad99",
                 "shasum": ""
             },
             "require": {
@@ -1336,7 +1336,7 @@
                 "friendsofphp/php-cs-fixer": "^3.5",
                 "google/cloud-storage": "^1.23",
                 "microsoft/azure-storage-blob": "^1.1",
-                "phpseclib/phpseclib": "^3.0.34",
+                "phpseclib/phpseclib": "^3.0.36",
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^9.5.11|^10.0",
                 "sabre/dav": "^4.6.0"
@@ -1373,7 +1373,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.24.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.25.0"
             },
             "funding": [
                 {
@@ -1385,7 +1385,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-04T12:10:17+00:00"
+            "time": "2024-03-09T17:06:45+00:00"
         },
         {
             "name": "league/flysystem-local",
@@ -2532,12 +2532,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/s4mpp/element.git",
-                "reference": "560039af539d60db969401ca61f5bc255b2c2db6"
+                "reference": "61073ffb6399065e75cc33b880846397e52b6dfe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/s4mpp/element/zipball/560039af539d60db969401ca61f5bc255b2c2db6",
-                "reference": "560039af539d60db969401ca61f5bc255b2c2db6",
+                "url": "https://api.github.com/repos/s4mpp/element/zipball/61073ffb6399065e75cc33b880846397e52b6dfe",
+                "reference": "61073ffb6399065e75cc33b880846397e52b6dfe",
                 "shasum": ""
             },
             "require": {
@@ -2575,7 +2575,7 @@
                 "issues": "https://github.com/s4mpp/element/issues",
                 "source": "https://github.com/s4mpp/element/tree/v2"
             },
-            "time": "2024-03-09T16:53:36+00:00"
+            "time": "2024-03-10T17:31:08+00:00"
         },
         {
             "name": "s4mpp/laraguard",
@@ -2583,12 +2583,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/s4mpp/laraguard.git",
-                "reference": "a5e6c9feacfec0acc1458150c287e1581ecd2b34"
+                "reference": "735cfe033de8faae4b12240a0a2af18f70c0223c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/s4mpp/laraguard/zipball/a5e6c9feacfec0acc1458150c287e1581ecd2b34",
-                "reference": "a5e6c9feacfec0acc1458150c287e1581ecd2b34",
+                "url": "https://api.github.com/repos/s4mpp/laraguard/zipball/735cfe033de8faae4b12240a0a2af18f70c0223c",
+                "reference": "735cfe033de8faae4b12240a0a2af18f70c0223c",
                 "shasum": ""
             },
             "require": {
@@ -2630,7 +2630,7 @@
                 "issues": "https://github.com/s4mpp/laraguard/issues",
                 "source": "https://github.com/s4mpp/laraguard/tree/v2"
             },
-            "time": "2024-03-06T19:14:44+00:00"
+            "time": "2024-03-10T17:54:29+00:00"
         },
         {
             "name": "spatie/laravel-permission",
@@ -6695,16 +6695,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "10.1.12",
+            "version": "10.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "842f72662d6b9edda84c4b6f13885fd9cd53dc63"
+                "reference": "d51c3aec14896d5e80b354fad58e998d1980f8f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/842f72662d6b9edda84c4b6f13885fd9cd53dc63",
-                "reference": "842f72662d6b9edda84c4b6f13885fd9cd53dc63",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/d51c3aec14896d5e80b354fad58e998d1980f8f8",
+                "reference": "d51c3aec14896d5e80b354fad58e998d1980f8f8",
                 "shasum": ""
             },
             "require": {
@@ -6761,7 +6761,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.1.12"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.1.13"
             },
             "funding": [
                 {
@@ -6769,7 +6769,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-02T07:22:05+00:00"
+            "time": "2024-03-09T16:54:15+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",

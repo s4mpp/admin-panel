@@ -12,7 +12,7 @@ final class ReportTest extends TestCase
     public static function reportProvider()
     {
         return [
-            'users' => ['usuarios', 'usuarios-cadastrados', 'Report'],
+            'users' => ['usuarios', 'usuarios-cadastrados', 'Usuários cadastrados'],
         ];
     }
 

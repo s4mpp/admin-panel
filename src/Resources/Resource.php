@@ -10,7 +10,7 @@ use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Filter\Filter;
-use S4mpp\AdminPanel\Reports\Report;
+use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;

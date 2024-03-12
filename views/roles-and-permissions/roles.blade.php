@@ -57,23 +57,23 @@
 					@foreach($roles as $role)
 						<x-admin::roles-and-permissions.indicator title="{{ $role->name }}" totalUsers="{{ $role->users()->count() }}">
 							<x-slot:actions>
-								<x-admin::dropdown.button x-on:click="
+								<x-element::dropdown.button x-on:click="
 									modalEditRole=true,
 									roleEditAction = '{{ route($panel->getRouteName('permissoes', 'update-role'), ['id' => $role->id]) }}',
 									roleData.name = '{{ $role->name }}',
 									roleData.permissions = [{{ $role->permissions()->pluck('name')->map(fn($name) => '\''.$name.'\'')->join(',') }}],
-									dropdown=false">Editar</x-admin::dropdown.button>
-								<x-admin::dropdown.button x-on:click="
+									dropdown=false">Editar</x-element::dropdown.button>
+								<x-element::dropdown.button x-on:click="
 									modalDeleteRole=true,
 									roleDeleteAction = '{{ route($panel->getRouteName('permissoes', 'delete-role'), ['id' => $role->id]) }}',
-									dropdown=false " :danger=true>Excluir</x-admin::dropdown.button>
+									dropdown=false " :danger=true>Excluir</x-element::dropdown.button>
 							</x-slot:actions>
 						</x-admin::roles-and-permissions.indicator>
 					@endforeach
 				</div>
 			</div>
 		@else
-			<x-admin::roles-and-permissions.empty>Não há grupos cadastrados ainda</x-admin::roles-and-permissions.empty>
+			<x-element::empty-state message="Não há grupos cadastrados ainda"/>
 		@endif
 	</x-element::card>
 </div>

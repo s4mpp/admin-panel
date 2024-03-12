@@ -58,22 +58,22 @@
 
 						<x-admin::roles-and-permissions.indicator title="{{ $permission->name }}" totalUsers="0">
 							<x-slot:actions>
-								<x-admin::dropdown.button x-on:click="
+								<x-element::dropdown.button x-on:click="
 									modalEditPermission=true,
 									permissionData.name = '{{ $permission->name }}'
 									permissionEditAction = '{{ route($panel->getRouteName('permissoes', 'update-permission'), ['id' => $permission->id]) }}',
-									dropdown=false">Editar</x-admin::dropdown.button>
-								<x-admin::dropdown.button x-on:click="
+									dropdown=false">Editar</x-element::dropdown.button>
+								<x-element::dropdown.button x-on:click="
 									modalDeletePermission=true,
 									permissionDeleteAction = '{{ route($panel->getRouteName('permissoes', 'delete-permission'), ['id' => $permission->id]) }}',
-									dropdown=false " :danger=true>Excluir</x-admin::dropdown.button>
+									dropdown=false " :danger=true>Excluir</x-element::dropdown.button>
 							</x-slot:actions>
 						</x-admin::roles-and-permissions.indicator>
 					@endforeach
 				</div>
 			</div>
 		@else
-			<x-admin::roles-and-permissions.empty>Não há permissões cadastradas</x-admin::roles-and-permissions.empty>
+			<x-element::empty-state message="Não há permissões cadastradas" />
 		@endif
 	</x-element::card>
 </div>

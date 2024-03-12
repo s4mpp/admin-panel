@@ -5,7 +5,7 @@ namespace S4mpp\AdminPanel\Resources;
 use Workbench\App\Models\User;
 use Illuminate\Validation\Rule;
 use S4mpp\AdminPanel\Elements\Card;
-use S4mpp\AdminPanel\Reports\Report;
+use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Factories\Input;
 use S4mpp\AdminPanel\Factories\Label;
 use S4mpp\AdminPanel\Factories\Filter;
@@ -88,10 +88,11 @@ final class UserResource extends Resource
     public function reports(): array
     {
         return [
-            (new Report('Usuários cadastrados', [
-                Filter::period('Data de cadastro', 'created_at'),
+            (new Report('Usuários cadastrados', fn($model, $filter) => $model::where($filter)->select('name', 'email', 'created_at')->paginate(), [
+                Label::text('Nome', 'name'),
+                Label::text('E-mail', 'email'),
+                Label::dateTime('Cadastrado em', 'created_at'),
             ]))
-            ->result('Usuários cadastrados', User::class, 'getUsers'),
         ];
     }
 }

@@ -10,29 +10,8 @@
 		</div>
 	@endif
 
-	@if($filters)
-		<div x-data="{
-			openSlideFilter: false, 
-			total_filters: 0,
-			filters: { {{ join(',', $alpine_expression_filters) }} },
-			countFilters() {
-				this.total_filters = 0;
-				
-				for(filter in this.filters)
-				{
-					this.total_filters++;
-				}
-			},
-			reset() {
-				for(filter in this.filters)
-				{
-					for(field in this.filters[filter])
-					{
-						this.filters[filter][field] = null;
-					}
-				}
-			}
-			}">
+@if($filters)
+		<div x-data="{openSlideFilter: false, total_filters: 0}" x-on:filter-complete.window="openSlideFilter = false">
 			
 			<x-element::button context="light"  type="button" x-on:click="openSlideFilter = true">
 				<x-element::icon name="funnel" class="w-5 h-5"/>  
@@ -43,26 +22,9 @@
 			</x-element::button>
 			
 			<x-element::slide-over idSlide="openSlideFilter" title="Filtros">
-				<form @submit.prevent="$dispatch('filter', {filters: filters}), loading = true, countFilters()" 
-					x-data="{ loading: false}"
-					x-on:reset-filter.window="openSlideFilter = false"
-					x-on:filter-complete.window="loading = false, openSlideFilter = false">
-					<div class="">
-						@foreach($filters as $filter)
-							@php $i=0; @endphp
-							<div class="py-4">
-								<x-dynamic-component component="{{ $filter->getComponentName() }}" :filter=$filter />
-							</div>
-						@endforeach
-					</div>
+				
+				@include('admin::resources.form-filter')
 
-					<button type="button" x-on:click="console.log(filters)">show</button>
-		
-					<div class="mt-3 flex justify-between items-center border-t pt-3">
-						<x-element::button loading type="submit">Aplicar</x-element::button>
-						<button type="button" context="muted" x-on:click="reset(), $dispatch('filter', {filters: filters}), total_filters = 0">Limpar</button>
-					</div>
-				</form> 
 			</x-element::slide-over>
 		</div>
 	@endif

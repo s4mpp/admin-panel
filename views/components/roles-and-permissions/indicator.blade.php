@@ -8,7 +8,7 @@
 	</div>
 
 	@isset($actions)
-		<x-admin::dropdown>
+		<x-element::dropdown>
 			<x-slot:button class="flex items-center pr-2">
 				<button x-on:click="dropdown = !dropdown" class="h-4 w-4 bg-gray-300 hover:bg-gray-400/70 focus:bg-gray-400 focus:text-white hover:text-white transition-colors flex items-center justify-center rounded-full"><x-element::icon class="h-4 w-4" name="chevron-down" solid mini /></button>
 			</x-slot:button>
@@ -16,7 +16,7 @@
 			<x-slot:body>
 				{{ $actions }}
 			</x-slot:body>
-		</x-admin::dropdown>
+		</x-element::dropdown>
 	@endisset
 
 </div>

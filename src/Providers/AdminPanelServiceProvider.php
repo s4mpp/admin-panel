@@ -8,28 +8,29 @@ use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use S4mpp\AdminPanel\Livewire\Report;
 use S4mpp\AdminPanel\Components\Table;
 use S4mpp\AdminPanel\Livewire\Counter;
 use Illuminate\Support\ServiceProvider;
+use S4mpp\AdminPanel\CustomActions\View;
 use S4mpp\AdminPanel\Livewire\FormFilter;
 use S4mpp\AdminPanel\Livewire\ReportForm;
+use S4mpp\AdminPanel\CustomActions\Update;
 use S4mpp\AdminPanel\Livewire\InputSearch;
 use S4mpp\AdminPanel\Livewire\FormResource;
 use S4mpp\AdminPanel\Livewire\FormSettings;
 use S4mpp\AdminPanel\Livewire\ReportResult;
 use S4mpp\AdminPanel\Livewire\SelectSearch;
+use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\Livewire\TableRepeater;
 use S4mpp\AdminPanel\Livewire\TableResource;
+use S4mpp\AdminPanel\Livewire\UserPermissions;
 use Illuminate\Foundation\Console\AboutCommand;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 use S4mpp\AdminPanel\Controllers\ResourceController;
 use S4mpp\AdminPanel\Controllers\PermissionController;
-use S4mpp\AdminPanel\CustomActions\Callback;
-use S4mpp\AdminPanel\CustomActions\Update;
-use S4mpp\AdminPanel\CustomActions\View;
-use S4mpp\AdminPanel\Livewire\UserPermissions;
-use S4mpp\AdminPanel\Middleware\CustomAction as CustomActionMiddleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
+use S4mpp\AdminPanel\Middleware\CustomAction as CustomActionMiddleware;
 
 /**
  * @codeCoverageIgnore
@@ -71,7 +72,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
                 ->controller(ResourceController::class);
                 // ->addIndex('admin::resources.index');
 
-            $LaraguardModule->addPage('Index', '', 'index')->isIndex()->action('index')->view('admin::resources.index')->middleware('can:'.$resource->getName().':index,'.$guard_admin);
+            $LaraguardModule->addPage($resource->getTitle(), '', 'index')->isIndex()->action('index')->view('admin::resources.index')->middleware('can:'.$resource->getName().':index,'.$guard_admin);
             
             $LaraguardModule->addPage('Cadastrar', 'cadastrar', 'create')->action('create')->middleware('can:'.$resource->getName().':create,'.$guard_admin);
             $LaraguardModule->addPage('Editar', 'editar/{id}', 'update')->action('update')->middleware('can:'.$resource->getName().':update,'.$guard_admin);
@@ -106,10 +107,10 @@ final class AdminPanelServiceProvider extends ServiceProvider
         Livewire::component('form-resource', FormResource::class);
         Livewire::component('form-settings', FormSettings::class);
         // Livewire::component('select-search', SelectSearch::class);
-        Livewire::component('result-report', ReportForm::class);
+        // Livewire::component('result-report', ReportForm::class);
         // Livewire::component('input-search', InputSearch::class);
         // Livewire::component('form-filter', FormFilter::class);
-        Livewire::component('form-report', ReportResult::class);
+        Livewire::component('report-result', ReportResult::class);
         Livewire::component('user-permissions', UserPermissions::class);
         
         Blade::componentNamespace('S4mpp\\AdminPanel\\Components', 'admin-panel');

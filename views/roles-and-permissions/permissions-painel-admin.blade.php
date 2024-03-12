@@ -23,6 +23,6 @@
 			@endforeach
 		</div>
 	@else
-		<x-admin::roles-and-permissions.empty>Não há permissões geradas ainda</x-admin::roles-and-permissions.empty>
+		<x-element::empty-state message="Não há permissões geradas ainda" />
 	@endif
 </x-element::card>

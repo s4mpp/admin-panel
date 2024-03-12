@@ -26,7 +26,7 @@
 				@endif
 			@endforeach
 			
-			<x-admin::dropdown>
+			<x-element::dropdown position="right">
 				<x-slot:button>
 					<x-element::button x-on:click="dropdown = !dropdown"> <span>Ações</span>
 						<x-element::icon class=" w-5 h-5 mt-0.5" name="chevron-down" solid mini />
@@ -44,13 +44,13 @@
 		
 							@foreach($group as $action)
 								@if($action->isDisabled())
-									<x-admin::dropdown.button disabled data-tippy-content="{{ $action->getDisabledMessage() }}"><span class="py-1 block">{{ $action->getTitle() }}</span></x-admin::dropdown.button>
+									<x-element::dropdown.button disabled data-tippy-content="{{ $action->getDisabledMessage() }}"><span class="py-1 block">{{ $action->getTitle() }}</span></x-element::dropdown.button>
 									
 									@continue
 								@endif
 		
 								@if($action->hasConfirmation())
-									<x-admin::dropdown.button x-on:click="dropdown = false, {{ $action->getNameModalConfirmation() }} = true"><span class="py-1 block">{{ $action->getTitle() }}</span></x-admin::dropdown.button>
+									<x-element::dropdown.button x-on:click="dropdown = false, {{ $action->getNameModalConfirmation() }} = true"><span class="py-1 block">{{ $action->getTitle() }}</span></x-element::dropdown.button>
 								@else
 									<x-dynamic-component :component="$action->getComponentName('button')" :action=$action />
 								@endif

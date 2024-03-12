@@ -15,7 +15,7 @@
 
 		<x-element::card :padding=false title="Permissões diretas" x-data="{cardDirectPermissionsOpen: false}">
 		    <x-slot:header class="flex justify-end">
-				<x-element::button type="button" x-on:click="cardDirectPermissionsOpen = !cardDirectPermissionsOpen">
+				<x-element::button type="button" size="sm" context="muted" x-on:click="cardDirectPermissionsOpen = !cardDirectPermissionsOpen">
 					<x-element::icon class="h-4 w-4" mini name="chevron-down" x-show="!cardDirectPermissionsOpen" />
 					<x-element::icon class="h-4 w-4" mini name="chevron-up" x-show="cardDirectPermissionsOpen" />
 				</x-element::button>
