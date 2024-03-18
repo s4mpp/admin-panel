@@ -3,13 +3,18 @@
 namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Contracts\View\View;
+use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\Strongable;
 
 final class LongText extends Label
 {
-    use Strongable;
+    use Strongable, HasComponent;
 
-    protected string $component = 'admin::label.longtext';
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::label.longtext';
 
     // public function render($value, $sequence)
     // {

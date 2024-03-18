@@ -10,7 +10,11 @@ final class Select extends Input
 {
     use CanChangeCase, HasMultipleOptions, HasValidationRules;
 
-    protected string $component = 'admin::input.select';
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::input.select';
 
     // public function renderInput(array $data)
     // {

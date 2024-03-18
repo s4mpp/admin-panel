@@ -114,16 +114,15 @@
 		@endforeach
 	</div>
 
-	{{--<div class="space-y-4 mb-4">
-		@foreach($resource->getRepeaters() ?? [] as $repeater)
-			<x-card className="card border bg-white" title="{{ $repeater->getTitle() }} ({{ $repeater->getTotalRegisters($resource, $register) }})" :padding=false>
+	<div class="space-y-4 mb-4">
+		@foreach($repeaters ?? [] as $repeater)
+			<x-element::card class="bg-white" title="{{ $repeater->getTitle() }}" :padding=false>
 				@livewire('table-repeater', [
 					'register_id' => $register->id,
-					'resource_name' => $resource->getName(),
-					'repeater_name' => $repeater->getRelation()
+					'resource_slug' => $resource->getSlug(),
+					'repeater_slug' => $repeater->getSlug()
 				])
-			</x-card>
+			</x-element::card>
 		@endforeach
-	</div>	  --}}
-
+	</div>
 @endsection

@@ -4,13 +4,15 @@ namespace S4mpp\AdminPanel\Traits;
 
 trait HasComponent
 {
-	public function getComponentName(string $key = null): ?string
+    /**
+     * @return string|array<string>|null
+     */
+    public function getComponentName(?string $key = null): string|array|null
     {
-        if($key)
-        {
+        if (is_array($this->component)) {
             return $this->component[$key] ?? null;
         }
 
-        return $this->component ?? null;
+        return $this->component;
     }
 }

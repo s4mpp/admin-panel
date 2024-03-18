@@ -56,11 +56,10 @@ trait CallRouteAction
     {
         $message = $this->success_message;
 
-        if(is_callable($this->success_message))
-        {
+        if (is_callable($this->success_message)) {
             $message = call_user_func($message, $result);
         }
-        
+
         return Str::of($message ?? 'Ação concluída com sucesso.')->inlineMarkdown();
     }
 }

@@ -1,11 +1,15 @@
+
 <div class="space-y-4">	
 	<x-element::message.error :provider=$errors />
 
+	{{-- @dump($this->data)
+	@dump($this->childs)
+	@dump($this->repeater_tables) --}}
 
 	{{-- <div 
-		x-data="{ {{ join(', ', array_merge($data_slides ?? [], $data_modals ?? [])) }} }"
-		x-on:close-slide.window="{{ join(', ', $close_slides ?? []) }}"
-		x-on:close-modal.window="{{ join(', ', $close_modals ?? []) }}">  --}}
+		x-data="{ {{ join(', ', array_merge($data_slides ?? [])) }} }"
+		x-on:close-slide.window="{{ join(', ', $close_slides ?? []) }}"> --}}
+		{{-- x-on:close-modal.window="{{ join(', ', $close_modals ?? []) }}"> --}}
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-loading.window="loading = false">
  			<div class="space-y-4 mb-4">
 				@foreach($this->form ?? [] as $element)
@@ -13,91 +17,88 @@
 				@endforeach
 			</div>
 
-			@foreach($repeaters ?? [] as $repeater)
-				{{-- <x-card title="{{ $repeater->getTitle() }}" className="bg-white border mb-6" :padding=false> --}}
+			@isset($repeaters)
+				<div class="space-y-4 mb-4">
+					@foreach($repeaters ?? [] as $key => $repeater)
+						<x-element::card title="{{ $repeater->getTitle() }}" class="bg-white" :padding=false>
 
-					{{-- @if($repeater->canAdd())
-						<x-slot:header class=" flex justify-end">
-							<x-button :loading=false x-on:click="slide{{ $repeater->getRelation() }} = true; $wire.emit('setChildEmpty', '{{ $repeater->getRelation() }}')" type="button">Adicionar</x-button>
-						</x-slot:header>
-					@endif --}}
+							{{-- @if($repeater->canAdd()) --}}
+								<x-slot:header class=" flex justify-end">
+									<x-element::button type="button"
+										x-on:click="$wire.emit('setRegister:{{ $repeater->getRelation() }}', null, null, {}), slide{{ $repeater->getRelation() }} = true"
+										:loading=false>Adicionar</x-element::button>
+								</x-slot:header>
+							{{-- @endif --}}
 
-					@php
-						$columns = $repeater->getColumnsWithActions();
+							@php
+								$columns = $repeater->getColumns();
 
-						$registers = $this->childs[$repeater->getRelation()];
-					@endphp
+								$registers = $this->repeater_tables[$repeater->getRelation()] ?? null;
+							@endphp
 
-					<x-element::table :columns=$columns :collection=$registers></x-element::table>
-				{{-- </x-card> --}}
-			@endforeach
+							<x-element::table>
+								<x-slot:header>
+									@foreach($columns as $column)
+										<x-element::table.th @class([
+											'text-left' => ($column->getAlignment() == 'left'),
+											'text-center' => ($column->getAlignment() == 'center'),
+											'text-right' => ($column->getAlignment() == 'right'),
+										])>{{ $column->getTitle() }}</x-element::table.th>
+									@endforeach
+								</x-slot:header>
+
+								<x-slot:body>
+									@foreach($registers ?? [] as $key => $register)
+										<tr>
+											@foreach ($columns as $column)
+												<x-element::table.td
+													@class([
+														'text-left' => ($column->getAlignment() == 'left'),
+														'text-center' => ($column->getAlignment() == 'center'),
+														'text-right' => ($column->getAlignment() == 'right'),
+														'font-semibold text-gray-900' => $column->getIsStrong()
+													])>
+
+													@if($component_name = $column->getComponentName())
+														<x-dynamic-component :component="$component_name" :label=$column :register=$register />
+													@else
+														{{ $column->getContent($register) }}
+													@endif
+												</x-element::table.td>
+											@endforeach
+
+											<x-element::table.td class="flex justify-end">
+												<div class="inline-flex gap-3 font-medium text-right ">
+													<button
+														type="button"
+														x-on:click="$wire.emit(
+															'setRegister:{{ $repeater->getRelation() }}',
+															{{ $register['id_temp'] }}, 
+															{{ $register['id'] ?? 'null' }},
+															@js($register)
+														), 
+														slide{{ $repeater->getRelation() }} = true"
+														class="text-gray-500 hover:text-gray-600 inline-flex gap-1">
+														<span>Editar</span>
+													</button>
+												</div>
+											</x-element::table.td>
+										</tr>
+									@endforeach
+								</x-slot:body>
+
+							</x-element::table>
+						</x-element::card>
+					@endforeach
+				</div>
+			@endisset
 
 			<div class="sm:px-0">
-				<x-element::button type="submit">
-					Salvar
-				</x-element::button>
+				<x-element::button type="submit">Salvar</x-element::button>
 			</div>
 		</form>
 
-		@foreach($repeaters ?? [] as $repeater)
 		
-			@continue(!$repeater->canAdd() && !$repeater->canEdit())
-			
-			{{-- <x-slide-over id="slide{{ $repeater->getRelation() }}" title="{{ $repeater->getTitle() }}">
-				<form wire:submit.prevent="saveChild('{{ $repeater->getRelation() }}')" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-form-child.window="loading = false">
-					
-					@if($this->error_child)
-						<div class="text-red-500 text-strong mb-5 flex justify-start gap-3">
-							<x-icon name="exclamation-triangle" class="h-6 w-6"></x-icon>
-							<p> {{ $this->error_child }}</p>
-						</div>
-					@endif
-
-					@dump($this->current_child_data)
-
-					<div class="space-y-4">
-						@foreach($repeater->getFields() as $element)
-							<div>
-								<div class="text-sm mb-2 font-medium text-slate-900">
-									<p class="">
-										{{ $element->getTitle() }}
-							
-										@if($element->isRequired())
-											<span class="text-red-300 text-xs truncate">*</span>
-										@endif
-									</p>
-								</div>
-
-								@php
-									$current_data = $this->current_child_data[$repeater->getRelation()] ?? [];
-
-									if($current_data && !is_array($current_data))
-									{
-										$current_data = $current_data->toArray();
-									}
-
-									$current_id = $this->current_child_id[$repeater->getRelation()] ?? null;
-
-									$current_register = ($current_id) ? $this->childs[$repeater->getRelation()][$current_id] ?? null : null;
-								@endphp
-
-								{{ $element->prefix('current_child_data.'.$repeater->getRelation())->renderInput($current_data, $current_register) }}
-							</div>
-						@endforeach
-					</div>
-		
-					<div class="px-4 border-t mt-4 pt-4 sm:px-0">
-						<x-button type="submit" className="btn-primary">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-								<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-							</svg>
-							
-							<span>Concluir</span>
-						</x-button>
-					</div>
-				</form>
-			</x-slide-over> --}}
-		@endforeach
 		
 		{{-- @foreach($search_fields ?? [] as $search)
 			<x-modal title="Selecionar {{ Str::lower($search->getTitle()) }}" idModal="modal{{ $search->getName() }}">

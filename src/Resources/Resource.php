@@ -12,6 +12,7 @@ use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Traits\Slugable;
+use S4mpp\AdminPanel\Traits\Ordenable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Elements\Repeater;
@@ -21,17 +22,16 @@ use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 
 abstract class Resource
 {
-    use Slugable, Titleable;
+    use Ordenable, Slugable, Titleable;
 
     private string $name;
 
     // protected $actions = [];
 
+    /**
+     * @var array<string>
+     */
     protected $search = [];
-    
-    protected string $ordenation_field = 'id';
-    
-    protected string $ordenation_direction = 'DESC';
 
     final public function __construct()
     {
@@ -151,34 +151,32 @@ abstract class Resource
      */
     final public function getSearchFields(): ?array
     {
-    	return $this->search ?? null;
+        return $this->search ?? null;
     }
 
-    /**
-     * @return array<string>
-     */
-    final public function getOrdenation(): array
-    {
-        return [$this->ordenation_field => $this->ordenation_direction];
-    }
+    // /**
+    //  * @return array<string>
+    //  */
+    // final public function getOrdenation(): array
+    // {
+    //     return [$this->ordenation_field => $this->ordenation_direction];
+    // }
 
     final public function getMessagePlaceholderSearch(): ?string
     {
-        if(!isset($this->search) || empty($this->search))
-        {
+        if (! isset($this->search) || empty($this->search)) {
             return null;
         }
 
-    	$fields = array_values($this->search);
+        $fields = array_values($this->search);
 
-        if(count($fields) == 1)
-        {
+        if (count($fields) == 1) {
             return $fields[0];
         }
 
-    	$last_item = array_pop($fields);
+        $last_item = array_pop($fields);
 
-    	return 'Pesquisar por '.join(', ', $fields).' ou '.$last_item;
+        return 'Pesquisar por '.implode(', ', $fields).' ou '.$last_item;
     }
 
     final public function getRouteName(string $crud_action): ?string
@@ -198,8 +196,7 @@ abstract class Resource
         foreach ($this->getActions() as $action) {
             $route_name = $this->getRouteName($action);
 
-            if(!$route_name)
-            {
+            if (! $route_name) {
                 continue;
             }
 

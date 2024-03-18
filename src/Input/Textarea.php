@@ -9,7 +9,11 @@ final class Textarea extends Input
 {
     use CanChangeCase, HasValidationRules;
 
-    protected string $component = 'admin::input.textarea';
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::input.textarea';
 
     public function __construct(string $title, string $name, private int $rows = 4)
     {
@@ -27,7 +31,7 @@ final class Textarea extends Input
     public function getAttributes(): array
     {
         return [
-            'rows' => $this->getRows()
+            'rows' => $this->getRows(),
         ];
     }
 

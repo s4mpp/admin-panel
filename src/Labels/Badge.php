@@ -3,10 +3,17 @@
 namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Contracts\View\View;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 final class Badge extends Label
 {
-    protected string $component = 'admin::labels.badge';
+    use HasComponent;
+
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::labels.badge';
 
     // public function render($value, $sequence)
     // {

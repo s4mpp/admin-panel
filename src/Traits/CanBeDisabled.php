@@ -3,7 +3,6 @@
 namespace S4mpp\AdminPanel\Traits;
 
 use Closure;
-use Illuminate\Support\Str;
 
 trait CanBeDisabled
 {
@@ -13,7 +12,7 @@ trait CanBeDisabled
 
     private ?string $disabled_message = null;
 
-	public function disabled(bool|Closure $disabled_callback = true, ?string $disabled_message = null): self
+    public function disabled(bool|Closure $disabled_callback = true, ?string $disabled_message = null): self
     {
         if (is_bool($disabled_callback)) {
             $this->is_disabled = $disabled_callback;

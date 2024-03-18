@@ -2,12 +2,18 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
+use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\Strongable;
-use S4mpp\AdminPanel\Traits\HasCallbacks;
 
 final class Text extends Label
 {
-    use Strongable;
+    use Strongable, HasComponent;
+
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = [];
 
     // public function showContent(mixed $content = null, $register): mixed
     // {

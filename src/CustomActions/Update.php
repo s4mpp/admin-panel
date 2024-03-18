@@ -2,18 +2,15 @@
 
 namespace S4mpp\AdminPanel\CustomActions;
 
-use S4mpp\AdminPanel\Traits\SendForm;
 use S4mpp\AdminPanel\Traits\CanBeDisabled;
 use S4mpp\AdminPanel\Traits\CanBeDangerous;
 use S4mpp\AdminPanel\Traits\CallRouteAction;
-use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\RenderButtonForm;
-use S4mpp\AdminPanel\Traits\HasSuccessMessage;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class Update extends CustomAction
 {
-    use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab, CanBeDisabled, CanBeDangerous;
+    use CallRouteAction, CanBeDangerous, CanBeDisabled, RenderButtonForm, ShoudOpenInNewTab;
 
     /**
      * @param  array<mixed>  $data

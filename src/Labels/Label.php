@@ -2,16 +2,16 @@
 
 namespace S4mpp\AdminPanel\Labels;
 
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
-use S4mpp\AdminPanel\Traits\HasCallback;
 use S4mpp\AdminPanel\Traits\HasCallbacks;
 use S4mpp\AdminPanel\Traits\HasComponent;
 
 abstract class Label
 {
-    use Titleable, HasComponent, HasCallbacks;
+    use HasCallbacks, Titleable;
 
     private ?string $alignment = 'left';
 
@@ -36,12 +36,14 @@ abstract class Label
         return $this->alignment;
     }
 
-    public function getContent(Model $register): mixed
+    /**
+     * @param  Model|Collection<Tkey,Tvalue>array<mixed>  $register
+     */
+    public function getContent(Model|Collection|array $register): mixed
     {
-        $content =  $register[$this->getField()] ?? null;
+        $content = $register[$this->getField()] ?? null;
 
-        if($this->hasCallbacks())
-        {
+        if ($this->hasCallbacks()) {
             $content = $this->runCallbacks($content, $register);
         }
 

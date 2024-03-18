@@ -26,8 +26,6 @@ abstract class Input
     public static function date(string $title, string $field): Date
     {
         return (new Date($title, $field))->prepareForForm(function ($value): ?string {
-
-
             return $value; //$value?->format('Y-m-d');
         });
     }

@@ -2,17 +2,17 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
-use S4mpp\AdminPanel\Resource;
 use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Traits\Slugable;
+use S4mpp\AdminPanel\Traits\Ordenable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Column\RepeaterActions;
 
 final class Repeater
 {
-    use Slugable, Titleable;
+    use Ordenable, Slugable, Titleable;
 
     // private $model = null;
 
@@ -24,14 +24,15 @@ final class Repeater
 
     private bool $can_add = false;
 
+    // private int $total_registers = 0;
+
     // , private array $fields = [],
 
     /**
-     * @var array<Label>
+     * @param  array<Label>  $columns
+     * @param  array<Input>  $fields
      */
-    private array $columns = [];
-
-    public function __construct(private string $title, private string $relation)
+    public function __construct(private string $title, private string $relation, private array $columns = [], private array $fields = [])
     {
         $this->createSlug($title);
     }
@@ -69,6 +70,13 @@ final class Repeater
         return $this->can_add;
     }
 
+    public function orderBy(string $field = 'id', string $direction = 'DESC'): self
+    {
+        $this->setOrdenation($field, $direction);
+
+        return $this;
+    }
+
     // public function getFieldOrderBy()
     // {
     // 	return $this->order_field;
@@ -101,17 +109,20 @@ final class Repeater
     // 	return get_class($this->model->getRelated());
     // }
 
-    // public function getFields(): array
+    public function getForm(): array
+    {
+        return $this->fields;
+    }
+
+    // public function getTotalRegisters(): int
     // {
-    // 	return $this->fields;
+    //     return $this->total_registers;
     // }
 
-    // public function getTotalRegisters(Resource $resource, Model $register): int
-    // {
-    // 	return $resource->getModel()->select('id')
-    // 		->find($register->id)
-    // 		->{$this->getRelation()}()
-    // 		->count();
+    // return $resource->getModel()->select('id')
+    // 	->find($register->id)
+    // 	->{$this->getRelation()}()
+    // 	->count();
     // }
 
     /**

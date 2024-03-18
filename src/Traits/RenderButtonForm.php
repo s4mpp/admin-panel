@@ -12,23 +12,18 @@ trait RenderButtonForm
      */
     protected array $component = [
         'button' => 'admin::custom-action.button.form',
-        'confirmation' => 'admin::custom-action.confirmation.form'
+        'confirmation' => 'admin::custom-action.confirmation.form',
     ];
 
     // public function renderButton(): View|ViewFactory
     // {
     //     return view('admin::custom-actions.buttons.form', ['action' => $this]);
     // }
-    
+
     // public function renderContentModalConfirmation(): View|ViewFactory
     // {
     // 	return view('admin::custom-actions.modal-confirmation.form', ['action' => $this]);
     // }
-
-
-
-
-
 
     // public function renderContentModalConfirmation()
     // {

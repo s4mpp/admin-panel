@@ -2,12 +2,12 @@
 
 namespace S4mpp\AdminPanel\Filter;
 
-use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\Titleable;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 abstract class Filter
 {
-    use Titleable, HasComponent;
+    use Titleable;
 
     public function __construct(private string $title, private string $field)
     {

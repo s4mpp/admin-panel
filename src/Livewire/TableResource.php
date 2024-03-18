@@ -41,7 +41,6 @@ final class TableResource extends Component
 
     // public $filter_descriptions = [];
 
-    
     /**
      * @var array<string>
      */
@@ -55,14 +54,12 @@ final class TableResource extends Component
 
         $this->route_actions = $this->resource->getRouteActions();
 
-        $this->ordenation = $this->resource->getOrdenation();
+        $this->ordenation = [$this->resource->getOrdenationField() => $this->resource->getOrdenationDirection()];
     }
-    
+
     public function booted(): void
     {
         $this->loadResource();
-        
-        
 
         //     $this->columns = $this->resource->getTable();
 
@@ -76,21 +73,21 @@ final class TableResource extends Component
         //     array_push($this->columns, ((new Actions($actions))->align('right')));
     }
 
-    public function search(array $params)
+    public function search(array $params): void
     {
         $this->search_term = $params['q'] ?? null;
 
         $this->resetPage();
-        
+
         $this->dispatchBrowserEvent('search-complete');
     }
 
-    public function filter(array $params)
+    public function filter(array $params): void
     {
         $this->filters = $params['filters'] ?? null;
 
         $this->resetPage();
-        
+
         $this->dispatchBrowserEvent('filter-complete');
     }
 
@@ -117,15 +114,14 @@ final class TableResource extends Component
     {
         $model = $this->resource->getModel();
 
-        foreach($this->ordenation as $field => $direction)
-        {
+        foreach ($this->ordenation as $field => $direction) {
             $builder = $model->orderBy($field, $direction);
         }
 
         $builder->select($this->_getSelectFields());
 
         $builder->where($this->_search());
-        
+
         $this->_filter($builder);
 
         // $this->_search($builder);
@@ -140,9 +136,8 @@ final class TableResource extends Component
     //     $select_fields = $this->_getSelectFields();
 
     //     $query->select(array_unique($select_fields));
-        
-    //     // $with_eager_loading = $this->_getWithEagerLoading($select_fields);
 
+    //     // $with_eager_loading = $this->_getWithEagerLoading($select_fields);
 
     //     // if(!empty($with_eager_loading))
     //     // {
@@ -160,8 +155,7 @@ final class TableResource extends Component
 
         $select_fields = ['id'];
 
-        foreach($columns as $column)
-    	{
+        foreach ($columns as $column) {
             $select_fields[] = $column->getField();
         }
 
@@ -204,17 +198,14 @@ final class TableResource extends Component
 
     private function _search()
     {
-        if(!trim($this->search_term))
-        {
+        if (! trim($this->search_term)) {
             return;
         }
-        
-        return function($builder)
-        {
+
+        return function ($builder): void {
             $search_fields = $this->resource->getSearchFields();
-            
-            foreach($search_fields as $key => $value)
-            {
+
+            foreach ($search_fields as $key => $value) {
                 $field_to_search = (is_string($key)) ? $key : $value;
 
                 $builder->orWhere($field_to_search, 'like', '%'.trim($this->search_term).'%');
@@ -222,21 +213,18 @@ final class TableResource extends Component
         };
     }
 
-    private function _filter($builder)
+    private function _filter($builder): void
     {
-        if(empty($this->filters))
-        {
+        if (empty($this->filters)) {
             return;
         }
 
         $resource_filters = Finder::onlyOf($this->resource->filters(), Filter::class);
 
-        foreach($resource_filters as $filter)
-        {
+        foreach ($resource_filters as $filter) {
             $term = $this->filters[$filter->getField()] ?? null;
 
-            if(is_null($term) || empty($term))
-            {
+            if (is_null($term) || empty($term)) {
                 continue;
             }
 
@@ -255,12 +243,12 @@ final class TableResource extends Component
         //     $filter->query($term, $query);
 
         //     // /**
-    	// 	//  * DUPLICATED
-    	// 	//  */
+        // 	//  * DUPLICATED
+        // 	//  */
         //     // if(!$term || empty($term))
-    	// 	// {
-    	// 	// 	continue;
-    	// 	// }
+        // 	// {
+        // 	// 	continue;
+        // 	// }
 
         //     // $description_result = $filter->getDescriptionResult($term);
 

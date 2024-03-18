@@ -3,20 +3,13 @@
 namespace S4mpp\AdminPanel\Controllers;
 
 use ReflectionClass;
-use Illuminate\View\View;
 use Illuminate\Support\Str;
-use S4mpp\AdminPanel\Utils;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
-use S4mpp\AdminPanel\Resource;
 use S4mpp\Laraguard\Laraguard;
-use Workbench\App\Models\User;
 use Illuminate\Validation\Rule;
 use S4mpp\AdminPanel\AdminPanel;
-use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
-use S4mpp\AdminPanel\Utils\Finder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -33,8 +26,6 @@ final class PermissionController extends Controller
 {
     public function __invoke(): ViewFactory|ViewContract|null
     {
-
-
         $roles = Role::get();
 
         $permissions = Permission::get();
@@ -44,9 +35,7 @@ final class PermissionController extends Controller
         /**
          * @duplicated_code 5
          */
-        $permissions_admin = $permissions->filter(function ($permission) {
-            return Str::contains($permission->name, 'Admin');
-        });
+        $permissions_admin = $permissions->filter(fn ($permission) => Str::contains($permission->name, 'Admin'));
 
         $resources_with_permissions = [
             [
@@ -55,17 +44,15 @@ final class PermissionController extends Controller
                  */
                 'name' => 'Admin',
                 'permissions' => $permissions_admin->map(function ($permission) {
-
                     /**
                      * @duplicated_code 1
                      */
-
                     $trait = HasRoles::class;
 
                     $reflection = new ReflectionClass(Auth::guard($permission->guard)->getProvider()->getModel());
 
                     if (isset($reflection->getTraits()[$trait])) {
-                        $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission) {
+                        $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission): void {
                             $query->where('permissions.id', $permission->id);
                         })->count();
                     }
@@ -76,20 +63,16 @@ final class PermissionController extends Controller
 
                     return $permission;
                 }),
-            ]
+            ],
         ];
 
         foreach (AdminPanel::getResources() as $key => $resource) {
-
             /**
              * @duplicated_code 5
              */
-            $permissions_resource = $permissions->filter(function ($permission) use ($resource) {
-                return Str::contains($permission->name, $resource->getName());
-            });
+            $permissions_resource = $permissions->filter(fn ($permission) => Str::contains($permission->name, $resource->getName()));
 
-            if($permissions_resource->isEmpty())
-            {
+            if ($permissions_resource->isEmpty()) {
                 continue;
             }
 
@@ -99,7 +82,6 @@ final class PermissionController extends Controller
                  */
                 'name' => $resource->getTitle(),
                 'permissions' => $permissions_resource->map(function ($permission) {
-
                     /**
                      * @duplicated_code 1
                      */
@@ -108,7 +90,7 @@ final class PermissionController extends Controller
                     $reflection = new ReflectionClass(Auth::guard($permission->guard)->getProvider()->getModel());
 
                     if (isset($reflection->getTraits()[$trait])) {
-                        $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission) {
+                        $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission): void {
                             $query->where('permissions.id', $permission->id);
                         })->count();
                     }
@@ -130,8 +112,7 @@ final class PermissionController extends Controller
          * @duplicated_code 1
          */
         $other_permissions = $other_permissions->map(function ($permission) {
-
-            $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission) {
+            $total_permission_via_roles = Auth::guard($permission->guard)->getProvider()->getModel()::whereHas('roles.permissions', function ($query) use ($permission): void {
                 $query->where('permissions.id', $permission->id);
             })->count();
 
@@ -217,8 +198,7 @@ final class PermissionController extends Controller
 
         $role->saveOrFail();
 
-        foreach($request->get('permissions') as $permission_name)
-        {
+        foreach ($request->get('permissions') as $permission_name) {
             $permission = Permission::findByName($permission_name, config('admin.guard', 'web'));
 
             $permission->assignRole($role);
@@ -227,7 +207,7 @@ final class PermissionController extends Controller
         return back()->withMessage('Grupo criado com sucesso!');
     }
 
-	public function updateRole(int $id, Request $request): RedirectResponse
+    public function updateRole(int $id, Request $request): RedirectResponse
     {
         /**
          * @duplicated_code 3
@@ -245,8 +225,7 @@ final class PermissionController extends Controller
 
         $permissions_to_sync = [];
 
-        foreach($request->get('permissions') as $permission_name)
-        {
+        foreach ($request->get('permissions') as $permission_name) {
             $permission = Permission::findByName($permission_name, config('admin.guard', 'web'));
 
             $permissions_to_sync[] = $permission;
@@ -257,7 +236,7 @@ final class PermissionController extends Controller
         return back()->withMessage('Grupo atualizado com sucesso!');
     }
 
-	public function deleteRole(int $id): RedirectResponse
+    public function deleteRole(int $id): RedirectResponse
     {
         $role = Role::findById($id, config('admin.guard', 'web'));
 
@@ -275,33 +254,29 @@ final class PermissionController extends Controller
 
         $permissions_to_create = [];
 
-        foreach($resources as $resource)
-        {
+        foreach ($resources as $resource) {
             $permissions_to_create[] = $resource->getName().':module';
 
-            foreach($resource->getActions() as $action)
-            {
+            foreach ($resource->getActions() as $action) {
                 $permissions_to_create[] = $resource->getName().':'.$action;
             }
         }
 
         return array_merge($permissions_to_create, [
-            'Admin:settings', 'Admin:permissions'
+            'Admin:settings', 'Admin:permissions',
         ]);
     }
 
     /**
-     * @param array<string> $permissions_to_create
+     * @param  array<string>  $permissions_to_create
      * @return array<string>
      */
     private function createPermissions(array $permissions_to_create): array
     {
-        foreach($permissions_to_create as $name_permission)
-        {
+        foreach ($permissions_to_create as $name_permission) {
             $permission = Permission::findOrCreate($name_permission, config('admin.guard', 'web'));
 
-            if(!$permission->exists)
-            {
+            if (! $permission->exists) {
                 $permissions_created[] = $name_permission;
             }
         }
@@ -310,17 +285,15 @@ final class PermissionController extends Controller
     }
 
     /**
-     * @param array<string> $permissions_to_create
+     * @param  array<string>  $permissions_to_create
      * @return array<string>
      */
     private function removePermissionsNotUsed(array $permissions_to_create): array
     {
         $all_permissions = Permission::where('guard_name', config('admin.guard', 'web'))->get();
 
-        foreach($all_permissions as $permission)
-        {
-            if(!in_array($permission->name, $permissions_to_create))
-            {
+        foreach ($all_permissions as $permission) {
+            if (! in_array($permission->name, $permissions_to_create)) {
                 $name = $permission->name;
 
                 $permission->delete();

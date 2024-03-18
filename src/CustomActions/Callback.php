@@ -4,21 +4,19 @@ namespace S4mpp\AdminPanel\CustomActions;
 
 use Closure;
 use S4mpp\AdminPanel\Traits\SendForm;
+use S4mpp\AdminPanel\Traits\CanBeDisabled;
+use S4mpp\AdminPanel\Traits\CanBeDangerous;
 use S4mpp\AdminPanel\Traits\CallRouteAction;
 use S4mpp\AdminPanel\Traits\CallRouteMethod;
 use S4mpp\AdminPanel\Traits\RenderButtonForm;
 use S4mpp\AdminPanel\Traits\HasSuccessMessage;
 use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
-use Illuminate\Contracts\View\View;
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use S4mpp\AdminPanel\Traits\CanBeDangerous;
-use S4mpp\AdminPanel\Traits\CanBeDisabled;
 
 final class Callback extends CustomAction
 {
     //use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
 
-    use CallRouteAction, RenderButtonForm, ShoudOpenInNewTab, CanBeDisabled, CanBeDangerous;
+    use CallRouteAction, CanBeDangerous, CanBeDisabled, RenderButtonForm, ShoudOpenInNewTab;
 
     public function __construct(string $title, private ?Closure $callback)
     {
@@ -33,10 +31,6 @@ final class Callback extends CustomAction
     {
         return $this->callback;
     }
-
-
-
-    
 
     // public function getCallbackRoute($resource)
     // {

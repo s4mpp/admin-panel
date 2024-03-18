@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Validation\Rule;
 use S4mpp\AdminPanel\Input\Input;
 
-
 trait HasValidationRules
 {
     /**
@@ -14,24 +13,21 @@ trait HasValidationRules
      */
     private array $rules = ['required'];
 
-    
     /**
      * @return array<string|Rule>
      */
-    public function getValidationRules(Input $input, string $table, int $id = null): array
+    public function getValidationRules(Input $input, string $table, ?int $id = null): array
     {
-    	foreach($this->rules as $rule)
-    	{
+        foreach ($this->rules as $rule) {
             /** @var object $rule */
-    		if(is_a($rule, Closure::class))
-            {
+            if (is_a($rule, Closure::class)) {
                 $rule = call_user_func($rule, $input, $table, $id);
             }
 
             $rules[] = $rule;
-    	}
+        }
 
-    	return $rules ?? [];
+        return $rules ?? [];
     }
 
     public function addRule(string|Closure ...$rules): self
@@ -45,12 +41,11 @@ trait HasValidationRules
 
     public function removeRule(string $rule): void
     {
-    	$key = array_search($rule, $this->rules);
+        $key = array_search($rule, $this->rules);
 
-    	if($key !== false)
-    	{
-    		unset($this->rules[$key]);
-    	}
+        if ($key !== false) {
+            unset($this->rules[$key]);
+        }
     }
 
     public function isRequired(): bool
@@ -60,19 +55,17 @@ trait HasValidationRules
 
     public function notRequired(): self
     {
-    	$this->removeRule('required');
+        $this->removeRule('required');
 
-    	$this->addRule('nullable');
+        $this->addRule('nullable');
 
-    	return $this;
+        return $this;
     }
 
     public function unique(): self
     {
-    	$this->addRule(function(Input $input, string $table, int $id = null) {
-            return Rule::unique($table, $input->getName())->ignore($id);
-        });
+        $this->addRule(fn (Input $input, string $table, ?int $id = null) => Rule::unique($table, $input->getName())->ignore($id));
 
-    	return $this;
+        return $this;
     }
 }

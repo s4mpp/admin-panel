@@ -24,14 +24,14 @@ final class Text extends Input
         return $this->mask;
     }
 
-     /**
+    /**
      * @return array<string|null>
      */
     public function getAttributes(): array
     {
         return [
             'x-mask' => $this->getMask(),
-            'type' => 'text'
+            'type' => 'text',
         ];
     }
 

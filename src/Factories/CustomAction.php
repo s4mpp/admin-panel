@@ -10,7 +10,6 @@ use S4mpp\AdminPanel\CustomActions\Method;
 use S4mpp\AdminPanel\CustomActions\Prompt;
 use S4mpp\AdminPanel\CustomActions\Update;
 use S4mpp\AdminPanel\CustomActions\Callback;
-use S4mpp\AdminPanel\CustomActions\Livewire;
 
 abstract class CustomAction
 {

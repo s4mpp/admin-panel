@@ -2,9 +2,13 @@
 
 namespace S4mpp\AdminPanel\Filter;
 
+use S4mpp\AdminPanel\Traits\HasComponent;
+
 final class Period extends Filter
 {
-    protected string $component = 'admin::filter.period';
+    use HasComponent;
+
+    protected string|array $component = 'admin::filter.period';
 
     public function getAlpineExpression(): string
     {
@@ -29,19 +33,17 @@ final class Period extends Filter
     // 	self::query($query, $this->getField(), $term['start'], $term['end']);
     // }
 
-    public function query($builder, array $term)
+    public function query($builder, array $term): void
     {
         extract($term);
 
-    	if(isset($start) && $start)
-    	{
-    		$builder->where($this->getField(), '>=', $start.' 00:00:00');
-    	}
+        if (isset($start) && $start) {
+            $builder->where($this->getField(), '>=', $start.' 00:00:00');
+        }
 
-    	if(isset($end) && $end)
-    	{
-    		$builder->where($this->getField(), '<=', $end.' 23:59:59');
-    	}
+        if (isset($end) && $end) {
+            $builder->where($this->getField(), '<=', $end.' 23:59:59');
+        }
     }
 
     // public function getDescriptionResult($term)

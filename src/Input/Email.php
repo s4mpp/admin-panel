@@ -9,13 +9,13 @@ final class Email extends Input
 {
     use CanChangeCase, HasValidationRules;
 
-     /**
+    /**
      * @return array<string>
      */
     public function getAttributes(): array
     {
         return [
-            'type' => 'email'
+            'type' => 'email',
         ];
     }
 

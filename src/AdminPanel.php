@@ -31,19 +31,16 @@ abstract class AdminPanel
         $filesystem = new Filesystem();
 
         if ($filesystem->exists($path)) {
-
             /**
              * @var array<SplFileInfo> $files
              */
             $files = new \FileSystemIterator($path);
 
             foreach ($files as $file) {
-
                 $class_name = $namespace.'\\'.str_replace('.php', '', $file->getFilename());
 
                 self::addResource(new $class_name());
             }
-
         }
 
         self::addResource(new UserResource());
@@ -68,7 +65,7 @@ abstract class AdminPanel
     }
 
     /**
-     * @return array<Resource>
+     * @return array<resource>
      */
     public static function getResources(): array
     {
@@ -76,7 +73,7 @@ abstract class AdminPanel
     }
 
     /**
-     * @param  array<Input> $fields_settings
+     * @param  array<Input>  $fields_settings
      */
     public static function settings(array $fields_settings = []): void
     {

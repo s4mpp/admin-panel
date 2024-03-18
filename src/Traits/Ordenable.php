@@ -4,6 +4,29 @@ namespace S4mpp\AdminPanel\Traits;
 
 trait Ordenable
 {
+    protected string $ordenation_field = 'id';
+
+    protected string $ordenation_direction = 'DESC';
+
+    private function setOrdenation(string $field, ?string $direction = null): self
+    {
+        $this->ordenation_field = $field;
+
+        $this->ordenation_direction = $direction;
+
+        return $this;
+    }
+
+    final public function getOrdenationField(): string
+    {
+        return $this->ordenation_field;
+    }
+
+    final public function getOrdenationDirection(): string
+    {
+        return $this->ordenation_direction;
+    }
+
     // private ?int $order = null;
 
     // public function setOrder(int $order = null)

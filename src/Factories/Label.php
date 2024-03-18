@@ -15,7 +15,7 @@ abstract class Label
 {
     public static function text(string $title, string $field): Text
     {
-        return (new Text($title, $field));
+        return new Text($title, $field);
     }
 
     public static function longText(string $title, string $field): LongText

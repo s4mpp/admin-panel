@@ -9,6 +9,8 @@ use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Settings\Settings;
 use S4mpp\AdminPanel\Traits\CreatesForm;
+use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
  * @codeCoverageIgnore
@@ -25,20 +27,24 @@ final class FormSettings extends Component
 
         $this->form = Finder::fillInCard($form);
 
-        /** @var array<Input> $fields  */
-        $fields = Finder::findElementsRecursive($form, Input::class); dump($fields);
+        /** @var array<Input> $fields */
+        $fields = Finder::findElementsRecursive($form, Input::class);
+        dump($fields);
 
         $name_fields = [];
 
-        $name_fields = array_map(function(Input $field)  {
-            return Settings::get($field->getName());
-        }, $fields);
+        $name_fields = array_map(fn (Input $field) => Settings::get($field->getName()), $fields);
 
         dump($name_fields);
-        
+
         // dump($fields);
-        
+
         // $this->setInitialData($this->resource->getForm(), $register);
+    }
+
+    public function render(): View|ViewFactory
+    {
+        return view('admin::livewire.form');
     }
 
     // private function _getModel()

@@ -9,13 +9,13 @@ final class Date extends Input
 {
     use CanModifyFormInput, HasValidationRules;
 
-     /**
+    /**
      * @return array<string>
      */
     public function getAttributes(): array
     {
         return [
-            'type' => 'date'
+            'type' => 'date',
         ];
     }
 

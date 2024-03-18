@@ -2,32 +2,26 @@
 
 namespace S4mpp\AdminPanel\CustomActions;
 
-use Closure;
-use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Resources\Resource;
-use Illuminate\Contracts\View\Factory as ViewFactory;
 use S4mpp\AdminPanel\Traits\HasComponent;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 abstract class CustomAction
 {
-    use Slugable, Titleable, HasComponent;
-
-    
+    use Slugable, Titleable;
 
     // protected $register;
 
     // DANGEROUS
     //----------------------------------------------------------------
-    
 
     //----------------------------------------------------------------
 
     // DISABLED
-    
 
     //----------------------------------------------------------------
 
@@ -40,24 +34,13 @@ abstract class CustomAction
     // private array $roles = [];
 
     private Model $register;
-    
+
     private Resource $resource;
 
     public function __construct(private string $title)
     {
         $this->createSlug($title);
     }
-
-    
-    
-    
-    
-
-    
-
-    
-
-    
 
     public function renderButtonDisabled(): View|ViewFactory
     {
@@ -81,22 +64,18 @@ abstract class CustomAction
 
     public function getResource(): Resource
     {
-    	return $this->resource;
+        return $this->resource;
     }
 
     public function setRegister(Model $register): void
     {
-    	$this->register = $register;
+        $this->register = $register;
     }
 
     public function getRegister(): Model
     {
-    	return $this->register;
+        return $this->register;
     }
-
-    
-
-    
 
     // public function roles(...$roles)
     // {

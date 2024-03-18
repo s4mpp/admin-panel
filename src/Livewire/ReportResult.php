@@ -4,15 +4,13 @@ namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Elements\Report;
+use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Traits\Filterable;
 use S4mpp\AdminPanel\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
@@ -20,12 +18,11 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
  */
 final class ReportResult extends Component
 {
-    use WithAdminResource, Filterable, WithPagination;
+    use Filterable, WithAdminResource, WithPagination;
 
     private Report $report;
 
     public string $report_slug;
-
 
     public int|string|null $filter_term = null;
 
@@ -64,13 +61,12 @@ final class ReportResult extends Component
 
     public function render(): View|ViewFactory
     {
-        return view('admin::livewire.report-result', [
+        return view('admin::livewire.table-report', [
             'report' => $this->report,
-            'registers' => $this->_getRegisters()
+            'registers' => $this->_getRegisters(),
         ]);
     }
 
-    
     // /**
     //  * @param  array<string|int|null>  $params
     //  */
@@ -99,64 +95,58 @@ final class ReportResult extends Component
     //     $this->dispatchBrowserEvent('filter-complete');
     // }
 
-    
-
-    private function _getRegisters()
+    /**
+     * @return Collection<int,Model>|null
+     */
+    private function _getRegisters(): ?Collection
     {
-    	if(empty($this->filters))
-    	{
-    		return null;
-    	}
+        if (empty($this->filters)) {
+            return null;
+        }
 
-    	// $results = [];
+        // $results = [];
 
-    	// $results = $this->report->getPossibleResults();
+        // $results = $this->report->getPossibleResults();
 
         // foreach($results as $result)
         // {
-            // $model = $result->getModel();
+        // $model = $result->getModel();
 
-            // $method = $result->getMethod();
+        // $method = $result->getMethod();
 
+        $registers = call_user_func($this->report->getCallbackFilter(), $this->resource->getModel(), function ($query): void {
+            foreach ($this->resource->filters() as $field) {
+                $this->executeQuery($field, $query);
+            }
+        });
 
-            $registers = call_user_func($this->report->getCallbackFilter(), $this->resource->getModel(), function($query) {
-                
-                foreach($this->resource->filters() as $field)
-                {
-                    $this->executeQuery($field, $query);
-                }
-            });
+        return $registers;
 
-
-            return $registers;
-
-            // $this->report_result->setData($data);
+        // $this->report_result->setData($data);
 
         // }
 
         // return $results;
 
-    	// foreach($possible_results as $result)
-    	// {
-    	// 	$model = $result->getModel() ?? $this->resource->getModel();
+        // foreach($possible_results as $result)
+        // {
+        // 	$model = $result->getModel() ?? $this->resource->getModel();
 
-    	// 	$registers = $model::{$result->getMethod()}(collect($this->filter_term));
+        // 	$registers = $model::{$result->getMethod()}(collect($this->filter_term));
 
-    	// 	$columns = $result->getColumns();
+        // 	$columns = $result->getColumns();
 
-    	// 	$values = $this->_response($registers, $columns);
+        // 	$values = $this->_response($registers, $columns);
 
-    	// 	$results[] = [
-    	// 		'title' => $result->getTitle(),
-    	// 		'columns' => $columns,
-    	// 		'values' => collect($values)
-    	// 	];
-    	// }
+        // 	$results[] = [
+        // 		'title' => $result->getTitle(),
+        // 		'columns' => $columns,
+        // 		'values' => collect($values)
+        // 	];
+        // }
 
-    	// return $results;
+        // return $results;
     }
-
-
 
     // private function _response(Collection $registers, array $columns)
     // {

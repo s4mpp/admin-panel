@@ -2,21 +2,17 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
+use Livewire\Redirector;
 use S4mpp\AdminPanel\Utils;
 use Livewire\WithFileUploads;
 use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Utils\Finder;
-use Illuminate\Contracts\View\View;
-use Livewire\TemporaryUploadedFile;
 use S4mpp\AdminPanel\Elements\Card;
 use Illuminate\Support\ValidatedInput;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Http\RedirectResponse;
-use Livewire\Redirector;
 
 /**
  * @codeCoverageIgnore
@@ -35,7 +31,7 @@ trait CreatesForm
     /**
      * @var array<Input|Card>
      */
-    private array $form;
+    private array $form = [];
 
     // public function setField(string $repeater = null, string $field, $value = null)
     // {
@@ -54,32 +50,41 @@ trait CreatesForm
     // 	$this->emitSelf('$refresh');
     // }
 
+    private function setInitialData(): void
+    {
+        /** @var array<Input> $inputs */
+        $inputs = Finder::findElementsRecursive($this->form, Input::class);
+
+        foreach ($inputs as $input) {
+            $this->data[$input->getName()] = null;
+        }
+    }
+
     /**
-     * @param  array<Input|Card>  $form
      * @param  array<mixed>|null  $register
      */
-    private function setInitialData(array $form, ?array $register = null): void
+    private function setData(?array $register = null): void
     {
-        /** @var array<Input> $inputs  */
-        $inputs = Finder::findElementsRecursive($form, Input::class);
+        /** @var array<Input> $inputs */
+        $inputs = Finder::findElementsRecursive($this->form, Input::class);
 
         foreach ($inputs as $input) {
             $this->data[$input->getName()] = $this->_getValueField($input, $register);
         }
     }
 
-    public function render(): View|ViewFactory
-    {
-        return view('admin::livewire.form', [
-            // 'model' => $this->_getModel(),
-            // 'search_fields' => $this->search_fields ?? [],
-            'repeaters' => $this->repeaters ?? [],
-            // 'data_slides' => method_exists($this, '_getDataSlidesAttribute') ? $this->_getDataSlidesAttribute() : null,
-            // 'close_slides' => method_exists($this, '_getCloseSlidesAttribute') ? $this->_getCloseSlidesAttribute() : null,
-            // 'data_modals' => $this->_getDataModalsAttribute(),
-            // 'close_modals' => $this->_getCloseModalsAttribute()
-        ]);
-    }
+    // public function render(): View|ViewFactory
+    // {
+    //     return view('admin::livewire.form', [
+    //         // 'model' => $this->_getModel(),
+    //         // 'search_fields' => $this->search_fields ?? [],
+    //         'repeaters' => $this->repeaters ?? [],
+    //         // 'data_slides' => method_exists($this, '_getDataSlidesAttribute') ? $this->_getDataSlidesAttribute() : null,
+    //         // 'close_slides' => method_exists($this, '_getCloseSlidesAttribute') ? $this->_getCloseSlidesAttribute() : null,
+    //         // 'data_modals' => $this->_getDataModalsAttribute(),
+    //         // 'close_modals' => $this->_getCloseModalsAttribute()
+    //     ]);
+    // }
 
     /**
      * @param  array<mixed>|null  $register
@@ -99,28 +104,27 @@ trait CreatesForm
         return $value;
     }
 
-    public function save(): ?Redirector
-    {
-        $this->resetValidation();
+    // public function save(): ?Redirector
+    // {
+    //     $this->resetValidation();
 
-        $fields = Finder::findElementsRecursive($this->form, Input::class);
-        
-        $fields_validated = $this->_validate($fields);
-        
-        try {
+    //     $fields = Finder::findElementsRecursive($this->form, Input::class);
 
-            $register = $this->_prepareData($fields, $fields_validated);
+    //     $fields_validated = $this->_validate($fields);
 
-            return $this->_saveData($register, $fields_validated);
-        } catch (\Exception $e) {
-            $this->addError('exception', $e->getMessage());
+    //     try {
 
-            $this->dispatchBrowserEvent('reset-loading');
-            
-            return null;
-        }
-    }
+    //         $register = $this->_prepareData($fields, $fields_validated);
 
+    //         return $this->_saveData($register, $fields_validated);
+    //     } catch (\Exception $e) {
+    //         $this->addError('exception', $e->getMessage());
+
+    //         $this->dispatchBrowserEvent('reset-loading');
+
+    //         return null;
+    //     }
+    // }
 
     // private function _uploadFile(File $input, $data)
     // {
@@ -133,37 +137,36 @@ trait CreatesForm
     // }
 
     /**
-     * @param array<Input> $fields
+     * @param  array<Input>  $fields
      * @return array<string>
      */
     private function _validate(array $fields): ValidatedInput|array
     {
-    	$validation_rules = $attributes = [];
+        $validation_rules = $attributes = [];
 
-    	foreach($fields as $field)
-    	{
-    	// 	if($field->getPrepareForSave())
-    	// 	{
-    	// 		$data[$field->getName()] = call_user_func($field->getPrepareForSave(), $data[$field->getName()]);
-    	// 	}
+        foreach ($fields as $field) {
+            // 	if($field->getPrepareForSave())
+            // 	{
+            // 		$data[$field->getName()] = call_user_func($field->getPrepareForSave(), $data[$field->getName()]);
+            // 	}
 
-    	// 	if(is_a($field, File::class) && is_string($data[$field->getName()] ?? null))
-    	// 	{
-    	// 		continue;
-    	// 	}
+            // 	if(is_a($field, File::class) && is_string($data[$field->getName()] ?? null))
+            // 	{
+            // 		continue;
+            // 	}
 
-    		$validation_rules[$field->getName()] = $field->getValidationRules($field, $this->_getTable(), $this->id_register ?? null);
+            $validation_rules[$field->getName()] = $field->getValidationRules($field, $this->_getTable(), $this->id_register ?? null);
 
             //  $field->getRules($this->_getModel()->getTable(), $register_id);
 
-    		$attributes[$field->getName()] = $field->getTitle();
-    	}
+            $attributes[$field->getName()] = $field->getTitle();
+        }
 
         $validator = Validator::make($this->data, $validation_rules, [], $attributes);
 
-    	$validator->validate();
+        $validator->validate();
 
-    	return $validator->safe();
+        return $validator->safe();
     }
 
     // private function _getSearchFieldsForm(): array

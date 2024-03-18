@@ -2,7 +2,6 @@
 
 namespace S4mpp\AdminPanel\Controllers;
 
-use Illuminate\View\View;
 use S4mpp\AdminPanel\Utils;
 use Illuminate\Http\Request;
 use S4mpp\AdminPanel\Resource;
@@ -17,6 +16,7 @@ use S4mpp\AdminPanel\Filter\Filter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use S4mpp\AdminPanel\Elements\Report;
+use S4mpp\AdminPanel\Elements\Repeater;
 use S4mpp\AdminPanel\CustomActions\Update;
 use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
@@ -42,8 +42,8 @@ final class ResourceController extends Controller
 
         $alpine_expression_filters = [];
 
-        foreach($filters as $filter) {
-            $alpine_expression_filters[] = join(':', [$filter->getField(), $filter->getAlpineExpression()]);
+        foreach ($filters as $filter) {
+            $alpine_expression_filters[] = implode(':', [$filter->getField(), $filter->getAlpineExpression()]);
         }
 
         $reports = Finder::onlyOf($resource->reports(), Report::class);
@@ -63,7 +63,15 @@ final class ResourceController extends Controller
 
         //----------------------------------------------------------------
 
-        return Laraguard::layout('admin::resources.create', compact('resource'));
+        $repeaters = Finder::onlyOf($resource->repeaters(), Repeater::class);
+
+        $data_slides = [];
+
+        foreach ($repeaters ?? [] as $repeater) {
+            $data_slides[] = 'slide'.$repeater->getRelation().': false';
+        }
+
+        return Laraguard::layout('admin::resources.create', compact('resource', 'repeaters', 'data_slides'));
     }
 
     public function update(int $id): ViewFactory|ViewContract|null
@@ -76,6 +84,14 @@ final class ResourceController extends Controller
 
         //----------------------------------------------------------------
 
+        $repeaters = Finder::onlyOf($resource->repeaters(), Repeater::class);
+
+        $data_slides = [];
+
+        foreach ($repeaters ?? [] as $repeater) {
+            $data_slides[] = 'slide'.$repeater->getRelation().': false';
+        }
+
         $inputs = Finder::findElementsRecursive($resource->form(), Input::class);
 
         $fields = array_map(fn ($input) => $input->getName(), $inputs);
@@ -86,7 +102,7 @@ final class ResourceController extends Controller
 
         $register = $register->getAttributes();
 
-        return Laraguard::layout('admin::resources.update', compact('resource', 'register'));
+        return Laraguard::layout('admin::resources.update', compact('resource', 'register', 'repeaters', 'data_slides'));
     }
 
     public function read(int $id): ViewFactory|ViewContract|null
@@ -103,34 +119,31 @@ final class ResourceController extends Controller
 
         $register = $resource->getModel()->findOrFail($id);
 
+        $repeaters = Finder::onlyOf($resource->repeaters(), Repeater::class);
+
         $custom_actions = $resource->customActions();
 
         $custom_action_elements = Finder::findElementsRecursive($custom_actions, CustomAction::class);
 
         $custom_action_slides = $custom_actions_modals = [];
-        
-        foreach ($custom_action_elements as $custom_action) {
 
+        foreach ($custom_action_elements as $custom_action) {
             $custom_action->setResource($resource);
-            
+
             $custom_action->setRegister($register);
 
-            if(method_exists($custom_action, 'getNameSlide'))
-            {
+            if (method_exists($custom_action, 'getNameSlide')) {
                 $custom_action_slides[] = $custom_action->getNameSlide().': false';
-            }
-            elseif(method_exists($custom_action, 'getNameModal'))
-            {
+            } elseif (method_exists($custom_action, 'getNameModal')) {
                 $custom_actions_modals[] = $custom_action->getNameModal().': false';
             }
 
-            if($custom_action->hasConfirmation())
-            {
+            if ($custom_action->hasConfirmation()) {
                 $custom_actions_modals[] = $custom_action->getNameModalConfirmation().': false';
             }
         }
 
-        return Laraguard::layout('admin::resources.read', compact('resource', 'read', 'register', 'custom_actions', 'custom_action_elements', 'custom_action_slides', 'custom_actions_modals'));
+        return Laraguard::layout('admin::resources.read', compact('resource', 'read', 'register', 'custom_actions', 'custom_action_elements', 'custom_action_slides', 'custom_actions_modals', 'repeaters'));
     }
 
     public function delete(): void
@@ -162,12 +175,12 @@ final class ResourceController extends Controller
             abort(404);
         }
 
-        $filters = Finder::onlyOf($resource->filters(), Filter::class); 
+        $filters = Finder::onlyOf($resource->filters(), Filter::class);
 
         $alpine_expression_filters = [];
 
-        foreach($filters as $filter) {
-            $alpine_expression_filters[] = join(':', [$filter->getField(), $filter->getAlpineExpression()]);
+        foreach ($filters as $filter) {
+            $alpine_expression_filters[] = implode(':', [$filter->getField(), $filter->getAlpineExpression()]);
         }
 
         return Laraguard::layout('admin::resources.report', compact('resource', 'report', 'filters', 'alpine_expression_filters'));
@@ -187,17 +200,13 @@ final class ResourceController extends Controller
 
         $path_steps = explode('.', $path);
 
-        
-        try
-        {
+        try {
             $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), Callback::class), $path_steps[3]);
-    
+
             $result = call_user_func($custom_action->getCallback(), $register);
-                
+
             return back()->withMessage($custom_action->getSuccessMessage($result));
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             return back()->withErrors($e->getMessage());
         }
     }
@@ -216,21 +225,17 @@ final class ResourceController extends Controller
 
         $path_steps = explode('.', $path);
 
-        try
-        {
+        try {
             $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), Update::class), $path_steps[3]);
-    
-            foreach($custom_action->getDataToChange() as $key => $new_value)
-            {
+
+            foreach ($custom_action->getDataToChange() as $key => $new_value) {
                 $register->{$key} = $new_value;
             }
 
-            $register->save();            
-                
+            $register->save();
+
             return back()->withMessage($custom_action->getSuccessMessage($register));
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             return back()->withErrors($e->getMessage());
         }
     }

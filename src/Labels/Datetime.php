@@ -4,14 +4,18 @@ namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
+use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\Strongable;
 
 final class Datetime extends Label
 {
-    use Strongable;
+    use Strongable, HasComponent;
 
-    protected string $component = 'admin::label.datetime';
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::label.datetime';
 
     public function __construct(string $title, string $field, private string $format)
     {
@@ -19,9 +23,8 @@ final class Datetime extends Label
     }
 
     public function getDateTimeFormatted(Carbon|string|null $datetime = null): mixed
-    {        
-        if(is_a($datetime, Carbon::class))
-        {
+    {
+        if (is_a($datetime, Carbon::class)) {
             return $datetime->format($this->format);
         }
 
@@ -30,8 +33,7 @@ final class Datetime extends Label
 
     public function getDiffForHumans(Carbon|string|null $datetime = null)
     {
-        if(is_a($datetime, Carbon::class))
-        {
+        if (is_a($datetime, Carbon::class)) {
             return $datetime->diffForHumans();
         }
 

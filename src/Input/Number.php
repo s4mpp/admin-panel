@@ -57,7 +57,7 @@ final class Number extends Input
         return $this->max;
     }
 
-     /**
+    /**
      * @return array<string|int|float>
      */
     public function getAttributes(): array
@@ -66,7 +66,7 @@ final class Number extends Input
             'type' => 'number',
             'min' => $this->getMin(),
             'max' => $this->getMax(),
-            'step' => $this->getStep()
+            'step' => $this->getStep(),
         ];
     }
 }

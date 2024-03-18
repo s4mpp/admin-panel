@@ -9,7 +9,11 @@ final class Checkbox extends Input
 {
     use HasMultipleOptions, HasValidationRules;
 
-    protected string $component = 'admin::input.checkbox';
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::input.checkbox';
 
     // public function renderInput(array $data)
     // {

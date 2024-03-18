@@ -6,12 +6,11 @@ use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\HasDefaultText;
-use S4mpp\AdminPanel\Traits\HasValidationRules;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 abstract class Input
 {
-    use HasDefaultText, Titleable, HasComponent;
+    use HasComponent, HasDefaultText, Titleable;
 
     private ?string $prefix = 'data';
 
@@ -19,7 +18,11 @@ abstract class Input
 
     private ?string $description = null;
 
-    protected string $component = 'admin::input.default';
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::input.default';
 
     public function __construct(private string $title, private string $name)
     {
@@ -54,16 +57,21 @@ abstract class Input
     //     return $this;
     // }
 
+    /**
+     * @deprecated
+     *
+     * @todo change to component
+     */
     public function render(): View|ViewFactory
     {
         // $input_attributes = [
         //     'wire:model' => $this->getNameWithPrefix(),
-        //     'wire:loading.attr' => 'disabled' 
+        //     'wire:loading.attr' => 'disabled'
         // ];
 
         // dump($this->getAttributes());
         // $input_attributes =  array_merge($input_attributes, $this->getAttributes());
-        
+
         return view('admin::input.field', [
             'input' => $this,
             // 'register' => $register,

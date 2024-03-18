@@ -7,18 +7,19 @@ use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\CanBeDisabled;
 use S4mpp\AdminPanel\Traits\CanBeDangerous;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 final class Slide extends CustomAction
 {
-    use CanBeDisabled, CanBeDangerous;
+    use CanBeDangerous, CanBeDisabled, HasComponent;
 
     /**
      * @var array<string>
      */
-    protected array $component = [
+    protected string|array $component = [
         'button' => 'admin::custom-action.button.slide',
         'content' => 'admin::custom-action.content.slide',
-        'confirmation' => 'admin::custom-action.confirmation.slide'
+        'confirmation' => 'admin::custom-action.confirmation.slide',
     ];
 
     public function __construct(string $title, private string $view)

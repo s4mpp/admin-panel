@@ -20,11 +20,8 @@ final class Report
     //  */
     // private array $possible_results = [];
 
-
-    
     /**
-     * @param  array<Filter>  $fields
-     * @param array<Label> $columns
+     * @param  array<Label>  $columns
      */
     public function __construct(private string $title, private Closure $callback_filter, private array $columns)
     {

@@ -3,10 +3,17 @@
 namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Contracts\View\View;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 final class File extends Label
 {
-    protected string $component = 'admin::labels.file';
+    use HasComponent;
+
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::labels.file';
 
     // public function renderView($value)
     // {
