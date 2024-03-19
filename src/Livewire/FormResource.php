@@ -63,7 +63,7 @@ final class FormResource extends Component
 
         $this->form = Finder::fillInCard($this->resource->form());
 
-        $this->setData($register);
+        $this->setInitialData($register);
 
         $this->repeaters = Finder::onlyOf($this->resource->repeaters(), Repeater::class);
 
@@ -90,13 +90,15 @@ final class FormResource extends Component
         ]);
     }
 
-    public function save(): ?Redirector
+    public function save()
     {
         $this->resetValidation();
 
+        $this->dispatchBrowserEvent('reset-loading');
+
         $fields = Finder::findElementsRecursive($this->form, Input::class);
 
-        $fields_validated = $this->_validate($fields);
+        $fields_validated = $this->_validate($fields, $this->resource->getModel()->getTable());
 
         try {
             $register = $this->_prepareData($fields, $fields_validated);
@@ -107,12 +109,9 @@ final class FormResource extends Component
 
             return redirect()->route($this->route_index);
         } catch (\Exception $e) {
+            
             $this->addError('exception', $e->getMessage());
-
-            $this->dispatchBrowserEvent('reset-loading');
-
-            return null;
-        }
+        } 
     }
 
     public function setChild(string $relation, ?int $id_temp, ?int $register_id, array $data_to_save): void
@@ -171,11 +170,6 @@ final class FormResource extends Component
         }
     }
 
-    private function _getTable(): string
-    {
-        return $this->resource->getModel()->getTable();
-    }
-
     /**
      * @param  array<Input>  $fields
      * @param  ValidatedInput|array<string>  $fields_validated
@@ -200,7 +194,7 @@ final class FormResource extends Component
             // }
             // else
             // {
-            $value = $data ?? null;
+            $value = $field->processInputData($data);
             // }
 
             $register->{$field->getName()} = $value;

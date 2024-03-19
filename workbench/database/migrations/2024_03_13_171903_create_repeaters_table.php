@@ -37,8 +37,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('repeaters');
-        Schema::dropIfExists('child_repeaters');
         Schema::dropIfExists('other_child_repeaters');
+        Schema::dropIfExists('child_repeaters');
+        Schema::dropIfExists('repeaters');
     }
 };

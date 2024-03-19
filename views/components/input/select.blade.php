@@ -1,7 +1,5 @@
-<x-element::form.select>
-	{{-- @foreach($input->getOptions() as $id => $value)
-		<x-option value="{{ $id }}">{{ $value }}</x-option>
-	@endforeach --}}
+<x-element::form.select  wire:model.defer="{{ $input->getNameWithPrefix() }}">
+	@foreach($input->getOptions() as $key => $value)
+		<option value="{{ $key }}">{{ $key }}: {{ $value }}</option>
+	@endforeach
 </x-element::form.select>
-
-{{-- :required=$required  --}}

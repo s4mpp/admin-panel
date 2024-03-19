@@ -2,13 +2,14 @@
 <div class="space-y-4">	
 	<x-element::message.error :provider=$errors />
 	
+	@dump($this->data)
 
 	{{-- <div 
 		x-data="{ {{ join(', ', array_merge($data_slides ?? [])) }} }"
 		x-on:close-slide.window="{{ join(', ', $close_slides ?? []) }}"> --}}
 		{{-- x-on:close-modal.window="{{ join(', ', $close_modals ?? []) }}"> --}}
 		<form wire:submit.prevent="save" class="mb-0" x-data="{loading: false}" x-on:submit="loading = true" x-on:reset-loading.window="loading = false">
- 			<div class="space-y-4 mb-4">
+			<div class="space-y-4 mb-4">
 				@foreach($this->form ?? [] as $element)
 					{{ $element->render() }}
 				@endforeach
@@ -91,7 +92,7 @@
 			@endisset
 
 			<div class="sm:px-0">
-				<x-element::button type="submit">Salvar</x-element::button>
+				<x-element::button loading type="submit">Salvar</x-element::button>
 			</div>
 		</form>
 

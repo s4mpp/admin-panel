@@ -102,39 +102,15 @@ abstract class Input
     // 	return (new Search($title, $field, $relationship, $model_field));
     // }
 
-    public static function select(
-        string $title,
-        string $field,
-        // array | Collection | EloquentCollection $options,
-        // string $value_collection = null,
-        // string $key_collection = null
-    ): Select {
-        return new Select($title, $field
-            // , $options, $value_collection, $key_collection
-        );
+    public static function select(string $title, string $field): Select {
+        return new Select($title, $field);
     }
 
-    public static function checkbox(
-        string $title,
-        string $field,
-        // array | Collection | EloquentCollection $options,
-        // string $value_collection = null,
-        // string $key_collection = null
-    ): Checkbox {
-        return (new Checkbox($title, $field
-            // , $options, $value_collection, $key_collection
-        ))->addRule('array');
+    public static function checkbox(string $title, string $field): Checkbox {
+        return (new Checkbox($title, $field))->addRule('array');
     }
 
-    public static function radio(
-        string $title,
-        string $field,
-        // array | Collection | EloquentCollection $options,
-        // string $value_collection = null,
-        // string $key_collection = null
-    ): Radio {
-        return new Radio($title, $field
-            // , $options, $value_collection, $key_collection
-        );
+    public static function radio(string $title, string $field): Radio {
+        return new Radio($title, $field);
     }
 }

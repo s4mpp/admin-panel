@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Select extends Model
 {
     use HasFactory;
+
+    protected $table = 'multiples';
 }

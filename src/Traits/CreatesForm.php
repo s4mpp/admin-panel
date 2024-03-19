@@ -56,7 +56,7 @@ trait CreatesForm
         $inputs = Finder::findElementsRecursive($this->form, Input::class);
 
         foreach ($inputs as $input) {
-            $this->data[$input->getName()] = null;
+            $this->data[$input->getName()] = $input->getInitialValue();
         }
     }
 

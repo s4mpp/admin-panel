@@ -13,5 +13,7 @@
 	</div>
 </x-input> --}}
 <x-element::form.checkbox>
-	
+	@foreach($input->getOptions() as $id => $value)
+		<x-element::form.checkbox.item name="{{ $input->getNameWithPrefix() }}" wire:model.defer="{{ $input->getNameWithPrefix() }}" value="{{ $id }}">{{ $value }}</x-check>
+	@endforeach
 </x-element::form.checkbox>

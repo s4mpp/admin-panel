@@ -73,6 +73,8 @@ final class FormRepeater extends Component
     {
         $this->resetValidation();
 
+        $this->dispatchBrowserEvent('reset-loading');
+
         try {
             $this->emitTo('form-resource', 'setChild', $this->repeater->getRelation(), $this->id_temp, $this->register_id, $this->data);
 
@@ -81,8 +83,6 @@ final class FormRepeater extends Component
             $this->dispatchBrowserEvent('close-slide');
         } catch (\Exception $e) {
             $this->addError('exception', $e->getMessage());
-        } finally {
-            $this->dispatchBrowserEvent('reset-loading');
         }
     }
 }

@@ -11,15 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('selects', function (Blueprint $table): void {
+        Schema::create('multiples', function (Blueprint $table): void {
             $table->id();
 
             $table->string('title');
 
-            $table->string('array_select');
-            $table->string('enum_select');
-            $table->string('collection_select');
-            $table->string('eloquent_collection_select');
+            $table->string('array');
+            $table->string('array_multidimensional');
+            $table->string('array_multidimensional_with_key');
+            $table->string('array_multidimensional_with_value_as_key');
+            $table->string('array_with_callback');
+            $table->string('enum');
+            $table->string('enum_with_callback');
+            $table->string('collection');
+            $table->string('collection_multidimensional');
+            $table->string('collection_multidimensional_with_key');
+            $table->string('collection_multidimensional_with_value_as_key');
+            $table->string('eloquent_collection');
+            $table->string('eloquent_collection_with_key');
+            $table->string('eloquent_collection_with_value_as_key');
 
             $table->timestamps();
         });
@@ -30,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('selects');
+        Schema::dropIfExists('multiples');
     }
 };

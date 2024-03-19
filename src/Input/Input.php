@@ -18,6 +18,8 @@ abstract class Input
 
     private ?string $description = null;
 
+    protected $initial_value = null;
+
     /**
      *
      * @var string|array<string>
@@ -48,6 +50,16 @@ abstract class Input
         $this->description = $description;
 
         return $this;
+    }
+
+    public function getInitialValue()
+    {
+        return $this->initial_value;
+    }
+
+    public function processInputData($data): null|int|string
+    {
+        return $data;
     }
 
     // public function prefix(string $prefix): self

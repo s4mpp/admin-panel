@@ -42,7 +42,6 @@ final class ReportResource extends Resource
     {
         return [
             Input::text('Título', 'title'),
-            Input::dateTime('Cadastrado em', 'created_at'),
         ];
     }
 
