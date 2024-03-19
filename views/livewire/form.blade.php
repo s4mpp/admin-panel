@@ -1,10 +1,7 @@
 
 <div class="space-y-4">	
 	<x-element::message.error :provider=$errors />
-
-	{{-- @dump($this->data)
-	@dump($this->childs)
-	@dump($this->repeater_tables) --}}
+	
 
 	{{-- <div 
 		x-data="{ {{ join(', ', array_merge($data_slides ?? [])) }} }"

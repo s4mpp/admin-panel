@@ -3,10 +3,12 @@
 namespace S4mpp\AdminPanel;
 
 use SplFileInfo;
+use S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\Input\Input;
+use S4mpp\AdminPanel\Utils\Finder;
+use S4mpp\AdminPanel\Elements\Card;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Config;
-use S4mpp\AdminPanel\Settings\Settings;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Resources\UserResource;
 
@@ -17,7 +19,10 @@ abstract class AdminPanel
      */
     private static $resources = [];
 
-    private static ?Settings $settings = null;
+    /**
+     * @var array<Input>
+     */
+    private static array $settings = [];
 
     /**
      * @return array<resource>
@@ -73,14 +78,17 @@ abstract class AdminPanel
     }
 
     /**
-     * @param  array<Input>  $fields_settings
+     * @param  array<Input>  $fields
      */
-    public static function settings(array $fields_settings = []): void
+    public static function createSettings(array $fields = []): void
     {
-        self::$settings = new Settings($fields_settings);
+        self::$settings = Finder::onlyOf($fields, Input::class, Card::class);
     }
 
-    public static function getSettings(): ?Settings
+    /**
+     * @return array<Input>
+     */
+    public static function getSettings(): array
     {
         return self::$settings;
     }

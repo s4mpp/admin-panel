@@ -16,7 +16,7 @@ trait HasValidationRules
     /**
      * @return array<string|Rule>
      */
-    public function getValidationRules(Input $input, string $table, ?int $id = null): array
+    public function getValidationRules(Input $input, string $table = null, ?int $id = null): array
     {
         foreach ($this->rules as $rule) {
             /** @var object $rule */

@@ -1,32 +1,22 @@
 <?php
 
-namespace S4mpp\AdminPanel\Settings;
+namespace S4mpp\AdminPanel;
 
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Models\Setting;
 
-final class Settings
+abstract class Settings
 {
-    /**
-     * @param  array<Input>  $fields
-     */
-    public function __construct(private array $fields = [])
+    public static function getRegister(string $key): ?Setting
     {
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function getForm(): array
-    {
-        return Finder::onlyOf($this->fields, Input::class, Card::class);
+        return Setting::where('key', $key)->first();
     }
 
     public static function get(?string $key = null): ?string
     {
-        $field = Setting::query()->where('key', $key)->first();
+        $field = self::getRegister($key);
 
         return $field?->value ?? null;
     }

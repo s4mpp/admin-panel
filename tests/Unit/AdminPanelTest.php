@@ -2,12 +2,13 @@
 
 namespace S4mpp\AdminPanel\Tests\Unit;
 
+use S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\AdminPanel;
+use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Tests\TestCase;
-use S4mpp\AdminPanel\Settings\Settings;
 use S4mpp\AdminPanel\Resources\Resource;
-use S4mpp\AdminPanel\Resources\UserResource;
 use Workbench\App\AdminPanel\EmptyResource;
+use S4mpp\AdminPanel\Resources\UserResource;
 
 final class AdminPanelTest extends TestCase
 {
@@ -63,6 +64,6 @@ final class AdminPanelTest extends TestCase
     {
         $settings = AdminPanel::getSettings();
 
-        $this->assertInstanceOf(Settings::class, $settings);
+        $this->assertIsArray($settings);
     }
 }
