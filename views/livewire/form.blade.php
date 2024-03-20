@@ -2,7 +2,6 @@
 <div class="space-y-4">	
 	<x-element::message.error :provider=$errors />
 	
-	@dump($this->data)
 
 	{{-- <div 
 		x-data="{ {{ join(', ', array_merge($data_slides ?? [])) }} }"

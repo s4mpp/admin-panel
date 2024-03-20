@@ -118,7 +118,18 @@ final class TableResource extends Component
             $builder = $model->orderBy($field, $direction);
         }
 
-        $builder->select($this->_getSelectFields());
+        $columns = Finder::onlyOf($this->resource->table(), Label::class);
+
+        $select_fields = $this->_getSelectFields(array_filter($columns, fn($c) => !$c->isRelationShip())); 
+
+        $eager_loading_fields = $this->_getEagerLoadingFields($select_fields, array_filter($columns, fn($c) => $c->isRelationShip())); 
+        
+        // dump($select_fields);
+        // dd($eager_loading_fields);
+
+        $builder->select(array_unique($select_fields));
+
+        // $builder->with([]);
 
         $builder->where($this->_search());
 
@@ -149,18 +160,54 @@ final class TableResource extends Component
     //     // }
     // }
 
-    private function _getSelectFields()
+    private function _getSelectFields(array $columns): array
     {
-        $columns = Finder::onlyOf($this->resource->table(), Label::class);
-
         $select_fields = ['id'];
 
         foreach ($columns as $column) {
             $select_fields[] = $column->getField();
         }
 
-        return array_unique($select_fields);
+        return $select_fields;
     }
+
+    private function _getEagerLoadingFields(&$select_fields, array $columns)
+    {
+        foreach($columns as $column)
+        {
+            $path = explode('.', $column->getField());
+
+            $select_fields[] = $path[0].'_id';
+
+            $field = array_pop($path);
+
+            $relation_path = join('.', $path);
+
+            if(empty($relation_path))
+            {
+                continue;
+            }
+
+            $with_eager_loading[$relation_path][] = $field;
+
+            $field_relation = array_pop($path).'_id';
+
+            if(!empty($previous_relation = join('.', $path)))
+            {
+                $with_eager_loading[$previous_relation][] = $field_relation;
+            }
+            else
+            {
+                $select_fields[] = $field_relation;
+            }
+        }
+
+        return $with_eager_loading ?? [];
+    }
+
+    
+
+
 
     // private function _getWithEagerLoading(&$select_fields)
     // {

@@ -63,7 +63,9 @@ final class FormResource extends Component
 
         $this->form = Finder::fillInCard($this->resource->form());
 
-        $this->setInitialData($register);
+        $this->setInitialData();
+
+        $this->setData($register);
 
         $this->repeaters = Finder::onlyOf($this->resource->repeaters(), Repeater::class);
 

@@ -15,8 +15,26 @@ abstract class Label
 
     private ?string $alignment = 'left';
 
+    private bool $is_relationship = false;
+
     public function __construct(private string $title, private string $field)
     {
+        if(strpos($field, '.') !== false)
+        {
+            $this->relationShip();
+        }
+    }
+
+    public function isRelationShip(): bool
+    {
+        return $this->is_relationship;
+    }
+
+    public function relationShip(bool $value = true): self
+    {
+        $this->is_relationship = $value;
+
+        return $this;
     }
 
     public function getField(): ?string
@@ -41,6 +59,20 @@ abstract class Label
      */
     public function getContent(Model|Collection|array $register): mixed
     {
+        if($this->is_relationship)
+        {
+            $path = explode('.', $this->getField());
+
+            $content = $register[$path[0]] ?? null;
+
+            array_shift($path);
+
+            foreach($path as $node)
+            {
+                $content = $content[$node];
+            }
+        }
+
         $content = $register[$this->getField()] ?? null;
 
         if ($this->hasCallbacks()) {

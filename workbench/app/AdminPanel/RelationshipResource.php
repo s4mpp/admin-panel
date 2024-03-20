@@ -2,6 +2,7 @@
 
 namespace Workbench\App\AdminPanel;
 
+use Workbench\App\Models\User;
 use S4mpp\AdminPanel\Factories\Input;
 use S4mpp\AdminPanel\Factories\Label;
 use S4mpp\AdminPanel\Resources\Resource;
@@ -17,6 +18,7 @@ final class RelationshipResource extends Resource
         return [
             Label::text('Título', 'title'),
             
+            Label::text('User', 'user.name'),
         ];
     }
     
@@ -31,6 +33,8 @@ final class RelationshipResource extends Resource
     {
         return [
             Input::text('Título', 'title'),
+
+            Input::select('Usuário', 'user_id')->options(User::get(), 'name')
         ];
     }
 }
