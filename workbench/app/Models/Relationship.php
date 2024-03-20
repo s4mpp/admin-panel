@@ -14,4 +14,9 @@ class Relationship extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function user2()
+    {
+        return $this->belongsTo(User::class, 'user_id_2');
+    }
 }

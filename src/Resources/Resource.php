@@ -149,9 +149,9 @@ abstract class Resource
     /**
      * @return array<string>
      */
-    final public function getSearchFields(): ?array
+    final public function getSearchFields(): array
     {
-        return $this->search ?? null;
+        return $this->search;
     }
 
     // /**
@@ -164,7 +164,7 @@ abstract class Resource
 
     final public function getMessagePlaceholderSearch(): ?string
     {
-        if (! isset($this->search) || empty($this->search)) {
+        if (empty($this->search)) {
             return null;
         }
 

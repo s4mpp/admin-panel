@@ -55,7 +55,7 @@ abstract class Label
     }
 
     /**
-     * @param  Model|Collection<Tkey,Tvalue>array<mixed>  $register
+     * @param  Model|Collection|array<mixed>  $register
      */
     public function getContent(Model|Collection|array $register): mixed
     {
@@ -72,8 +72,11 @@ abstract class Label
                 $content = $content[$node];
             }
         }
+        else
+        {
+            $content = $register[$this->getField()] ?? null;
+        }
 
-        $content = $register[$this->getField()] ?? null;
 
         if ($this->hasCallbacks()) {
             $content = $this->runCallbacks($content, $register);

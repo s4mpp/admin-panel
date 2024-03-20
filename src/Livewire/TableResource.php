@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Livewire;
 
+use Closure;
 use Livewire\Component;
 use Livewire\WithPagination;
 use S4mpp\AdminPanel\Labels\Label;
@@ -9,7 +10,9 @@ use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Column\Actions;
+use Illuminate\Database\Eloquent\Builder;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
@@ -30,7 +33,10 @@ final class TableResource extends Component
 
     private ?string $search_term = null;
 
-    public ?array $filters = [];
+    /**
+     * @var array<string>
+     */
+    public array $filters = [];
 
     /**
      * @var array<string>
@@ -73,6 +79,10 @@ final class TableResource extends Component
         //     array_push($this->columns, ((new Actions($actions))->align('right')));
     }
 
+    /**
+    * @todo Duplicated With ModalSearch
+    * @param array<string> $params
+    */
     public function search(array $params): void
     {
         $this->search_term = $params['q'] ?? null;
@@ -82,9 +92,12 @@ final class TableResource extends Component
         $this->dispatchBrowserEvent('search-complete');
     }
 
+    /**
+    * @param array<string> $params
+    */
     public function filter(array $params): void
     {
-        $this->filters = $params['filters'] ?? null;
+        $this->filters = $params['filters'] ?? [];
 
         $this->resetPage();
 
@@ -110,9 +123,11 @@ final class TableResource extends Component
         ]);
     }
 
-    private function _getRegisters()
+    private function _getRegisters(): LengthAwarePaginator
     {
         $model = $this->resource->getModel();
+
+        $builder = $model::query();
 
         foreach ($this->ordenation as $field => $direction) {
             $builder = $model->orderBy($field, $direction);
@@ -160,6 +175,10 @@ final class TableResource extends Component
     //     // }
     // }
 
+    /**
+     * @param array<Label> $columns
+     * @return array<string>
+     */
     private function _getSelectFields(array $columns): array
     {
         $select_fields = ['id'];
@@ -171,7 +190,12 @@ final class TableResource extends Component
         return $select_fields;
     }
 
-    private function _getEagerLoadingFields(&$select_fields, array $columns)
+    /**
+     * @param array<string> $select_fields
+     * @param array<Label> $columns
+     * @return array<array<string>>
+     */
+    private function _getEagerLoadingFields(&$select_fields, array $columns): array
     {
         foreach($columns as $column)
         {
@@ -243,11 +267,9 @@ final class TableResource extends Component
     //     return $with_eager_loading ?? [];
     // }
 
-    private function _search()
+    private function _search(): Closure
     {
-        if (! trim($this->search_term)) {
-            return;
-        }
+     
 
         return function ($builder): void {
             $search_fields = $this->resource->getSearchFields();
@@ -260,7 +282,7 @@ final class TableResource extends Component
         };
     }
 
-    private function _filter($builder): void
+    private function _filter(Builder $builder): void
     {
         if (empty($this->filters)) {
             return;
@@ -271,7 +293,7 @@ final class TableResource extends Component
         foreach ($resource_filters as $filter) {
             $term = $this->filters[$filter->getField()] ?? null;
 
-            if (is_null($term) || empty($term)) {
+            if (is_null($term)) {
                 continue;
             }
 

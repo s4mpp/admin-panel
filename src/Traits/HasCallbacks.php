@@ -22,7 +22,7 @@ trait HasCallbacks
 
     public function hasCallbacks(): bool
     {
-        return ! is_null($this->callbacks);
+        return ! empty($this->callbacks);
     }
 
     /**
@@ -30,7 +30,7 @@ trait HasCallbacks
      */
     public function getCallbacks(): array
     {
-        return $this->callback;
+        return $this->callbacks;
     }
 
     /**

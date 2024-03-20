@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Elements;
 
+use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Traits\Slugable;
@@ -109,6 +110,9 @@ final class Repeater
     // 	return get_class($this->model->getRelated());
     // }
 
+    /**
+     * @return array<Input>
+     */
     public function getForm(): array
     {
         return $this->fields;

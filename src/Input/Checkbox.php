@@ -15,9 +15,12 @@ final class Checkbox extends Input
      */
     protected string|array $component = 'admin::input.checkbox';
 
-    protected $initial_value = [];
+    /**
+     * @var int|array<int>|null
+     */
+    protected int|array|null $initial_value = [];
 
-    public function processInputData($data): null|int|string
+    public function processInputData(mixed $data): null|int|string
     {
         return json_encode($data);
     }

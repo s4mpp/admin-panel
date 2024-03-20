@@ -3,10 +3,10 @@
 namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
-use Livewire\Redirector;
 use S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Input\Input;
+use Illuminate\Routing\Redirector;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\URL;
@@ -25,11 +25,11 @@ final class FormSettings extends Component
 
     public string $url;
 
-    public function mount(string $url)
+    public function mount(string $url): void
     {
         $this->url = $url;
 
-        $form = AdminPanel::getSettings()?? [];
+        $form = AdminPanel::getSettings();
 
         $this->form = Finder::fillInCard($form);
 
@@ -48,7 +48,7 @@ final class FormSettings extends Component
 
     public function booted(): void
     {
-        $form = AdminPanel::getSettings() ?? [];
+        $form = AdminPanel::getSettings();
 
         $this->form = Finder::fillInCard($form);
     }
@@ -58,7 +58,7 @@ final class FormSettings extends Component
         return view('admin::livewire.form');
     }
 
-    public function save(): ?Redirector
+    public function save(): RedirectResponse|Redirector|null
     {
         $this->resetValidation();
 
@@ -96,5 +96,7 @@ final class FormSettings extends Component
         } catch (\Exception $e) {
             $this->addError('exception', $e->getMessage());
         }
+
+        return null;
     }
 }

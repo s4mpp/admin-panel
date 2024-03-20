@@ -2,8 +2,25 @@
 
 namespace S4mpp\AdminPanel\Input;
 
+use S4mpp\AdminPanel\Traits\HasValidationRules;
+
 final class Search extends Input
 {
+    use HasValidationRules;
+
+    /**
+     *
+     * @var string|array<string>
+     */
+    protected string|array $component = 'admin::input.search';
+
+    public function __construct(string $title, string $name, private string $model, private string $model_field)
+    {
+        parent::__construct($title, $name);
+    }
+
+    
+    
     // private ?string $model = null;
 
     // private ?string $repeater = null;
@@ -22,15 +39,15 @@ final class Search extends Input
     // 	return $this->relationship;
     // }
 
-    // public function getModelName(): ?string
-    // {
-    // 	return $this->model;
-    // }
+    public function getModelName(): ?string
+    {
+    	return $this->model;
+    }
 
-    // public function getField(): string
-    // {
-    // 	return $this->name;
-    // }
+    public function getModelField(): string
+    {
+    	return $this->model_field;
+    }
 
     // public function setRepeater(string $repeater)
     // {

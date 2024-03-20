@@ -1,7 +1,7 @@
 <div x-data="{searching: false}">
 	<x-element::form.input {{ $attributes }} 
+		x-on:keydown.enter.prevent.stop=""
 		x-on:search-complete.window="searching = false"
-		x-on:keyup.debounce="$dispatch('search', {q: $event.target.value}), searching = true"
 		type="search">
 		<x-slot:start class="w-[25px] text-gray-500">
 			<div x-show="searching" x-cloak>

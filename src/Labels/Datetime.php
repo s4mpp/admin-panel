@@ -31,7 +31,7 @@ final class Datetime extends Label
         return $datetime;
     }
 
-    public function getDiffForHumans(Carbon|string|null $datetime = null)
+    public function getDiffForHumans(Carbon|string|null $datetime = null): ?string
     {
         if (is_a($datetime, Carbon::class)) {
             return $datetime->diffForHumans();

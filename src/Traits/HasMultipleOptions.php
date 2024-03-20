@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 trait HasMultipleOptions
 {
-    private array | Collection | EloquentCollection $options = [];
+    /**
+     * @var array<mixed>|Collection
+     */
+    private array|Collection $options = [];
 
     private ?string $value_collection = null;
 
@@ -17,7 +20,10 @@ trait HasMultipleOptions
 
     private ?Closure $callback_option = null;
 
-    public function options(array|Collection|EloquentCollection $options = [], string $value_collection = null, string $key_collection = null, Closure $callback = null)
+    /**
+     * @param array<mixed>|Collection $options
+     */
+    public function options(array|Collection $options = [], string $value_collection = null, string $key_collection = null, Closure $callback = null): self
     {
     	$this->options = $options;
     	
@@ -29,19 +35,22 @@ trait HasMultipleOptions
         return $this;
     }
 
-    public function getOptions()
+    /**
+     * @return array<string|null>
+     */
+    public function getOptions(): array
     {
     	foreach($this->options as $key => $value)
     	{
-            $key = $this->_getKey($key, $value);
+            $key = $this->getKey($key, $value);
 
-            $options[$key] = ($this->callback_option) ? call_user_func($this->callback_option, $value, $key) : $this->_getValue($value);
+            $options[$key] = ($this->callback_option) ? call_user_func($this->callback_option, $value, $key) : $this->getValue($value);
     	}
 
     	return $options ?? [];
     }
 
-    private function _getKey(int | string $key, mixed $value = null): ?string
+    private function getKey(int | string $key, mixed $value = null): null|int|string
     {
         if(is_string($value))
     	{
@@ -66,7 +75,7 @@ trait HasMultipleOptions
         return null;
     }
 
-    private function _getValue(mixed $value): ?string
+    private function getValue(mixed $value): ?string
     {
         if(is_string($value))
     	{

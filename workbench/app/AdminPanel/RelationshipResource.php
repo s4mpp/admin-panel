@@ -19,6 +19,7 @@ final class RelationshipResource extends Resource
             Label::text('Título', 'title'),
             
             Label::text('User', 'user.name'),
+            // Label::text('User 2', 'user2.name'),
         ];
     }
     
@@ -26,6 +27,9 @@ final class RelationshipResource extends Resource
     {
         return [
             Label::text('Título', 'title'),
+
+            Label::text('User', 'user.name'),
+            // Label::text('User 2', 'user2.name'),
         ];
     }
 
@@ -34,7 +38,9 @@ final class RelationshipResource extends Resource
         return [
             Input::text('Título', 'title'),
 
-            Input::select('Usuário', 'user_id')->options(User::get(), 'name')
+            Input::search('Usuário', 'user_id', User::class, 'name'),
+            
+            Input::search('Usuário 2', 'user_id_2', User::class, 'name'),
         ];
     }
 }

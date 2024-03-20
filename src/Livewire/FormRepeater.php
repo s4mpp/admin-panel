@@ -26,7 +26,10 @@ final class FormRepeater extends Component
 
     private Repeater $repeater;
 
-    protected function getListeners()
+    /**
+     * @return array<string>
+     */
+    protected function getListeners(): array
     {
         return ['setRegister:'.$this->repeater->getRelation() => 'setRegister'];
     }
@@ -60,6 +63,9 @@ final class FormRepeater extends Component
         ]);
     }
 
+    /**
+     * @param array<string> $data
+     */
     public function setRegister(?int $id_temp = null, ?int $register_id = null, array $data = []): void
     {
         $this->id_temp = $id_temp;

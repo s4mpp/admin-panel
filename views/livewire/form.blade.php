@@ -94,19 +94,6 @@
 				<x-element::button loading type="submit">Salvar</x-element::button>
 			</div>
 		</form>
-
-		
-		
-		{{-- @foreach($search_fields ?? [] as $search)
-			<x-modal title="Selecionar {{ Str::lower($search->getTitle()) }}" idModal="modal{{ $search->getName() }}">
-				@livewire('select-search', [
-					'model' => $search->getModelName(),
-					'field_to_search' => $search->getModelField(),
-					'field_to_update' => $search->getName(),
-					'repeater' => $search->getRepeater(),
-				], key($search->getName()))
-			</x-modal>
-		@endforeach --}}
 	{{-- </div> --}}
 </div>
 

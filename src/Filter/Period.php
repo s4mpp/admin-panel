@@ -2,12 +2,17 @@
 
 namespace S4mpp\AdminPanel\Filter;
 
+use Illuminate\Database\Eloquent\Builder;
 use S4mpp\AdminPanel\Traits\HasComponent;
 
 final class Period extends Filter
 {
     use HasComponent;
 
+    /**
+     *
+     * @var string|array<string>
+     */
     protected string|array $component = 'admin::filter.period';
 
     public function getAlpineExpression(): string
@@ -33,7 +38,10 @@ final class Period extends Filter
     // 	self::query($query, $this->getField(), $term['start'], $term['end']);
     // }
 
-    public function query($builder, array $term): void
+    /**
+     * @param array<string> $term
+     */
+    public function query(Builder $builder, array $term): void
     {
         extract($term);
 

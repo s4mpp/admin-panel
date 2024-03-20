@@ -93,14 +93,10 @@ abstract class Input
     // 	]));
     // }
 
-    // public static function search(
-    // 	string $title,
-    // 	string $field,
-    // 	string $relationship,
-    // 	string $model_field = null)
-    // {
-    // 	return (new Search($title, $field, $relationship, $model_field));
-    // }
+    public static function search(string $title, string $field, string $model, string $model_field): Search
+    {
+    	return new Search($title, $field, $model, $model_field);
+    }
 
     public static function select(string $title, string $field): Select {
         return new Select($title, $field);

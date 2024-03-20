@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Redirector;
 use S4mpp\AdminPanel\Utils;
 use S4mpp\AdminPanel\Input\Input;
+use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
@@ -19,6 +20,7 @@ use S4mpp\AdminPanel\Traits\CreatesForm;
 use S4mpp\AdminPanel\Traits\CanHaveSubForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * @codeCoverageIgnore
@@ -36,14 +38,20 @@ final class FormResource extends Component
     public string $route_index;
 
     /**
-     * @var array<int,string,null>
+     * @var array<array<array<array<int,string>|null>>>
      */
     public array $childs = [];
 
+    /**
+     * @var array<Collection>
+     */
     private array $repeater_tables = [];
 
     public ?int $id_register = null;
 
+    /**
+     * @var array<string>
+     */
     protected $listeners = ['setChild'];
 
     /**
@@ -69,7 +77,7 @@ final class FormResource extends Component
 
         $this->repeaters = Finder::onlyOf($this->resource->repeaters(), Repeater::class);
 
-        foreach ($this->repeaters ?? [] as $repeater) {
+        foreach ($this->repeaters as $repeater) {
             $this->childs[$repeater->getRelation()] = [];
         }
     }
@@ -92,7 +100,7 @@ final class FormResource extends Component
         ]);
     }
 
-    public function save()
+    public function save(): ?RedirectResponse
     {
         $this->resetValidation();
 
@@ -114,8 +122,13 @@ final class FormResource extends Component
             
             $this->addError('exception', $e->getMessage());
         } 
+
+        return null;
     }
 
+    /**
+     * @param array<string> $data_to_save
+     */
     public function setChild(string $relation, ?int $id_temp, ?int $register_id, array $data_to_save): void
     {
         if (isset($this->childs[$relation][$id_temp])) {
@@ -138,7 +151,7 @@ final class FormResource extends Component
                 $data = $register->{$relation};
 
                 $data = $data->each(function ($item) use ($child) {
-                    $childs_changed = array_filter($child ?? [], fn ($c) => ($c['id'] ?? null) == $item['id']);
+                    $childs_changed = array_filter($child, fn ($c) => ($c['id'] ?? null) == $item['id']);
 
                     $child_changed = current($childs_changed);
 
@@ -158,10 +171,10 @@ final class FormResource extends Component
                 $data = collect([]);
             }
 
-            $childs_added = array_filter($child ?? [], fn ($data) => is_null($data['id'] ?? null));
+            $childs_added = array_filter($child, fn ($data) => is_null($data['id'] ?? null));
 
             foreach ($childs_added as $id_temp => $item) {
-                $new_item = collect($item['data']);
+                $new_item = $item['data'];
 
                 $new_item['id_temp'] = $id_temp;
 

@@ -18,7 +18,10 @@ abstract class Input
 
     private ?string $description = null;
 
-    protected $initial_value = null;
+    /**
+     * @var int|array<int>|null
+     */
+    protected int|array|null $initial_value = null;
 
     /**
      *
@@ -52,12 +55,15 @@ abstract class Input
         return $this;
     }
 
-    public function getInitialValue()
+    /**
+     * @return integer|array<int>|null
+     */
+    public function getInitialValue(): int|array|null
     {
         return $this->initial_value;
     }
 
-    public function processInputData($data): null|int|string
+    public function processInputData(mixed $data): null|int|string
     {
         return $data;
     }

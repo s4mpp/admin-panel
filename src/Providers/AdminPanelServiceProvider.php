@@ -14,6 +14,7 @@ use S4mpp\AdminPanel\Livewire\FormFilter;
 use S4mpp\AdminPanel\Livewire\ReportForm;
 use S4mpp\AdminPanel\CustomActions\Update;
 use S4mpp\AdminPanel\Livewire\InputSearch;
+use S4mpp\AdminPanel\Livewire\ModalSearch;
 use S4mpp\AdminPanel\Livewire\FormRepeater;
 use S4mpp\AdminPanel\Livewire\FormResource;
 use S4mpp\AdminPanel\Livewire\FormSettings;
@@ -96,12 +97,11 @@ final class AdminPanelServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__.'/../../views', 'admin');
 
-        Livewire::component('table-repeater', TableRepeater::class);
         Livewire::component('table-resource', TableResource::class);
         Livewire::component('form-resource', FormResource::class);
         Livewire::component('form-repeater', FormRepeater::class);
         Livewire::component('form-settings', FormSettings::class);
-        // Livewire::component('select-search', SelectSearch::class);
+        Livewire::component('modal-search', ModalSearch::class);
         // Livewire::component('result-report', ReportForm::class);
         // Livewire::component('input-search', InputSearch::class);
         // Livewire::component('form-filter', FormFilter::class);

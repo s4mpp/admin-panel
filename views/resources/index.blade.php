@@ -6,11 +6,13 @@
 
 	@if($placeholder_search)
 		<div class="hidden sm:block sm:w-[220px] md:w-[300px]">
-			<x-admin::table-search placeholder="{{ $placeholder_search }}" />
+			<x-admin::input-search 
+			x-on:keyup.debounce="$dispatch('search', {q: $event.target.value}), searching = true"
+			placeholder="{{ $placeholder_search }}" />
 		</div>
 	@endif
 
-@if($filters)
+	@if($filters)
 		<div x-data="{openSlideFilter: false, total_filters: 0}" x-on:filter-complete.window="openSlideFilter = false">
 			
 			<x-element::button context="light"  type="button" x-on:click="openSlideFilter = true">
@@ -64,7 +66,9 @@
 
 	@if($placeholder_search)
 		<div class="mb-4 sm:hidden">
-			<x-admin::table-search placeholder="{{ $placeholder_search }}" />
+			<x-admin::input-search 
+			x-on:keyup.debounce="$dispatch('search', {q: $event.target.value}), searching = true"
+			placeholder="{{ $placeholder_search }}" />
 		</div>
 	@endif
 
