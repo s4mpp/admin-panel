@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\ValidatedInput;
 use S4mpp\AdminPanel\Hooks\CreateHook;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
@@ -20,7 +21,6 @@ use S4mpp\AdminPanel\Traits\CreatesForm;
 use S4mpp\AdminPanel\Traits\CanHaveSubForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Http\RedirectResponse;
 
 /**
  * @codeCoverageIgnore
@@ -35,7 +35,7 @@ final class FormResource extends Component
      */
     private array $repeaters = [];
 
-    public string $route_index;
+    public string $url_to_redirect_after_save;
 
     /**
      * @var array<array<array<array<int,string>|null>>>
@@ -57,17 +57,15 @@ final class FormResource extends Component
     /**
      * @param  array<mixed>|null  $register
      */
-    public function mount(Resource $resource, ?array $register = null): void
+    public function mount(string $resource_slug, string $url_to_redirect_after_save, ?array $register = null): void
     {
-        $this->resource_slug = $resource->getSlug();
-
-        $this->resource = $resource;
-
-        $this->route_index = $resource->getRouteName('index');
-
-        $this->id_register = $register ? $register['id'] : null;
+        $this->resource_slug = $resource_slug;
 
         $this->loadResource();
+
+        $this->url_to_redirect_after_save = $url_to_redirect_after_save;
+
+        $this->id_register = $register ? $register['id'] : null;
 
         $this->form = Finder::fillInCard($this->resource->form());
 
@@ -100,7 +98,7 @@ final class FormResource extends Component
         ]);
     }
 
-    public function save(): ?RedirectResponse
+    public function save(): RedirectResponse|Redirector
     {
         $this->resetValidation();
 
@@ -108,26 +106,19 @@ final class FormResource extends Component
 
         $fields = Finder::findElementsRecursive($this->form, Input::class);
 
-        $fields_validated = $this->_validate($fields, $this->resource->getModel()->getTable());
+        $fields_validated = $this->_validate($fields, $this->resource->getModel()->getTable(), $this->id_register);
 
-        try {
-            $register = $this->_prepareData($fields, $fields_validated);
+        $register = $this->_prepareData($fields, $fields_validated);
 
-            $register->save();
+        $register->save();
 
-            session()->flash('message', 'Registro salvo com sucesso!');
+        session()->flash('message', 'Registro salvo com sucesso!');
 
-            return redirect()->route($this->route_index);
-        } catch (\Exception $e) {
-            
-            $this->addError('exception', $e->getMessage());
-        } 
-
-        return null;
+        return redirect($this->url_to_redirect_after_save);
     }
 
     /**
-     * @param array<string> $data_to_save
+     * @param  array<string>  $data_to_save
      */
     public function setChild(string $relation, ?int $id_temp, ?int $register_id, array $data_to_save): void
     {
@@ -279,6 +270,6 @@ final class FormResource extends Component
 
     // 	session()->flash('message', 'Registro salvo com sucesso!');
 
-    // 	return redirect()->route($this->route_index);
+    // 	return redirect()->route($this->url_to_redirect_after_save);
     // }
 }

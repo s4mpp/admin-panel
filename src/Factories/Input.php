@@ -8,13 +8,11 @@ use S4mpp\AdminPanel\Input\File;
 use S4mpp\AdminPanel\Input\Text;
 use S4mpp\AdminPanel\Input\Email;
 use S4mpp\AdminPanel\Input\Radio;
-use Illuminate\Support\Collection;
 use S4mpp\AdminPanel\Input\Number;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Input\Select;
 use S4mpp\AdminPanel\Input\Checkbox;
 use S4mpp\AdminPanel\Input\Textarea;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 abstract class Input
 {
@@ -95,18 +93,21 @@ abstract class Input
 
     public static function search(string $title, string $field, string $model, string $model_field): Search
     {
-    	return new Search($title, $field, $model, $model_field);
+        return new Search($title, $field, $model, $model_field);
     }
 
-    public static function select(string $title, string $field): Select {
+    public static function select(string $title, string $field): Select
+    {
         return new Select($title, $field);
     }
 
-    public static function checkbox(string $title, string $field): Checkbox {
+    public static function checkbox(string $title, string $field): Checkbox
+    {
         return (new Checkbox($title, $field))->addRule('array');
     }
 
-    public static function radio(string $title, string $field): Radio {
+    public static function radio(string $title, string $field): Radio
+    {
         return new Radio($title, $field);
     }
 }

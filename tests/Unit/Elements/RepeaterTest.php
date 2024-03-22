@@ -20,6 +20,9 @@ final class RepeaterTest extends TestCase
 
         $this->assertIsArray($repeater->getColumns());
         $this->assertEmpty($repeater->getColumns());
+
+        $this->assertIsArray($repeater->getForm());
+        $this->assertEmpty($repeater->getForm());
     }
 
     public function test_allow_edit(): void
@@ -40,5 +43,15 @@ final class RepeaterTest extends TestCase
 
         $this->assertTrue($repeater->canAdd());
         $this->assertFalse($repeater->canEdit());
+    }
+
+    public function test_ordenation(): void
+    {
+        $repeater = new Repeater('Repeater title', 'relation');
+
+        $repeater->orderBy('name', 'asc');
+
+        $this->assertEquals('name', $repeater->getOrdenationField());
+        $this->assertEquals('asc', $repeater->getOrdenationDirection());
     }
 }

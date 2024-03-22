@@ -5,8 +5,8 @@ namespace S4mpp\AdminPanel\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Contracts\View\View;
-use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
  * @codeCoverageIgnore
@@ -44,11 +44,11 @@ final class ModalSearch extends Component
         $this->fill(compact('field_name', 'model', 'field_to_search'));
     }
 
-
     /**
-    * @todo Duplicated With TableResource
-    * @param array<string> $params
-    */
+     * @todo Duplicated With TableResource
+     *
+     * @param  array<string>  $params
+     */
     public function search(array $params = []): void
     {
         $this->search_term = $params['q'] ?? null;
@@ -60,24 +60,23 @@ final class ModalSearch extends Component
 
     public function render(): View|ViewFactory
     {
-    	return view('admin::livewire.modal-search', [
+        return view('admin::livewire.modal-search', [
             'registers' => $this->_getRegisters(),
         ]);
     }
 
     private function _getRegisters(): ?LengthAwarePaginator
     {
-    	if(!$this->search_term)
-    	{
-    		return null;
-    	}
+        if (! $this->search_term) {
+            return null;
+        }
 
-    	$collection = $this->model::orderBy($this->field_to_search, 'ASC')
-        ->where($this->field_to_search, 'like', '%'.$this->search_term.'%')
-        ->paginate(10);
+        $collection = $this->model::orderBy($this->field_to_search, 'ASC')
+            ->where($this->field_to_search, 'like', '%'.$this->search_term.'%')
+            ->paginate(10);
 
-    	$this->total_registers = $collection->total();
+        $this->total_registers = $collection->total();
 
-    	return $collection;
+        return $collection;
     }
 }

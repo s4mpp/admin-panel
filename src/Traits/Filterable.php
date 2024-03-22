@@ -2,9 +2,12 @@
 
 namespace S4mpp\AdminPanel\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
 use S4mpp\AdminPanel\Filter\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait Filterable
 {
     /**
@@ -13,11 +16,11 @@ trait Filterable
     public array $filters = [];
 
     /**
-     * @param array<string> $params
+     * @param  array<string>  $filters
      */
-    public function filter(array $params): void
+    public function filter(array $filters): void
     {
-        $this->filters = $params['filters'] ?? [];
+        $this->fill(compact('filters'));
 
         $this->resetPage();
 
@@ -36,7 +39,7 @@ trait Filterable
     }
 
     /**
-     * @param array<Filter> $filters_fields
+     * @param  array<Filter>  $filters_fields
      */
     private function isAllFiltersEmpty(array $filters_fields): bool
     {

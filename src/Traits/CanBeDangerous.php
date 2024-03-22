@@ -54,8 +54,8 @@ trait CanBeDangerous
         return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug()));
     }
 
-    public function renderButtonWithConfirmation(): View|ViewFactory
-    {
-        return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
-    }
+    // public function renderButtonWithConfirmation(): View|ViewFactory
+    // {
+    //     return view('admin::custom-actions.buttons.with-confirmation', ['action' => $this]);
+    // }
 }

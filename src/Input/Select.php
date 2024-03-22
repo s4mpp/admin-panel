@@ -11,7 +11,6 @@ final class Select extends Input
     use CanChangeCase, HasMultipleOptions, HasValidationRules;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::input.select';

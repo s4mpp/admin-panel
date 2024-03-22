@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\CustomActions;
 
+use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\CanBeDisabled;
 use S4mpp\AdminPanel\Traits\CanBeDangerous;
 use S4mpp\AdminPanel\Traits\RenderButtonLink;
@@ -9,7 +10,7 @@ use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class Link extends CustomAction
 {
-    use CanBeDangerous, CanBeDisabled, RenderButtonLink, ShoudOpenInNewTab;
+    use CanBeDangerous, CanBeDisabled, HasComponent, RenderButtonLink, ShoudOpenInNewTab;
 
     public function __construct(string $title, private string $url)
     {

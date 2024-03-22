@@ -7,7 +7,6 @@ use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Resources\Resource;
-use S4mpp\AdminPanel\Traits\HasComponent;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 abstract class CustomAction
@@ -42,10 +41,10 @@ abstract class CustomAction
         $this->createSlug($title);
     }
 
-    public function renderButtonDisabled(): View|ViewFactory
-    {
-        return view('admin::custom-actions.buttons.disabled', ['action' => $this]);
-    }
+    // public function renderButtonDisabled(): View|ViewFactory
+    // {
+    //     return view('admin::custom-actions.buttons.disabled', ['action' => $this]);
+    // }
 
     // public function getTargetWindow(): ?string
     // {

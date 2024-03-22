@@ -10,6 +10,7 @@ use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Column\Actions;
+use S4mpp\AdminPanel\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -20,7 +21,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
  */
 final class TableResource extends Component
 {
-    use WithAdminResource, WithPagination;
+    use Filterable, WithAdminResource, WithPagination;
 
     /**
      * @var array<string>
@@ -31,12 +32,7 @@ final class TableResource extends Component
 
     // private array $columns = [];
 
-    private ?string $search_term = null;
-
-    /**
-     * @var array<string>
-     */
-    public array $filters = [];
+    public ?string $search_term = null;
 
     /**
      * @var array<string>
@@ -80,9 +76,10 @@ final class TableResource extends Component
     }
 
     /**
-    * @todo Duplicated With ModalSearch
-    * @param array<string> $params
-    */
+     * @todo Duplicated With ModalSearch
+     *
+     * @param  array<string>  $params
+     */
     public function search(array $params): void
     {
         $this->search_term = $params['q'] ?? null;
@@ -90,18 +87,6 @@ final class TableResource extends Component
         $this->resetPage();
 
         $this->dispatchBrowserEvent('search-complete');
-    }
-
-    /**
-    * @param array<string> $params
-    */
-    public function filter(array $params): void
-    {
-        $this->filters = $params['filters'] ?? [];
-
-        $this->resetPage();
-
-        $this->dispatchBrowserEvent('filter-complete');
     }
 
     // public function filterRemove()
@@ -135,10 +120,10 @@ final class TableResource extends Component
 
         $columns = Finder::onlyOf($this->resource->table(), Label::class);
 
-        $select_fields = $this->_getSelectFields(array_filter($columns, fn($c) => !$c->isRelationShip())); 
+        $select_fields = $this->_getSelectFields(array_filter($columns, fn ($c) => ! $c->isRelationShip()));
 
-        $eager_loading_fields = $this->_getEagerLoadingFields($select_fields, array_filter($columns, fn($c) => $c->isRelationShip())); 
-        
+        $eager_loading_fields = $this->_getEagerLoadingFields($select_fields, array_filter($columns, fn ($c) => $c->isRelationShip()));
+
         // dump($select_fields);
         // dd($eager_loading_fields);
 
@@ -176,7 +161,7 @@ final class TableResource extends Component
     // }
 
     /**
-     * @param array<Label> $columns
+     * @param  array<Label>  $columns
      * @return array<string>
      */
     private function _getSelectFields(array $columns): array
@@ -191,24 +176,22 @@ final class TableResource extends Component
     }
 
     /**
-     * @param array<string> $select_fields
-     * @param array<Label> $columns
+     * @param  array<string>  $select_fields
+     * @param  array<Label>  $columns
      * @return array<array<string>>
      */
     private function _getEagerLoadingFields(&$select_fields, array $columns): array
     {
-        foreach($columns as $column)
-        {
+        foreach ($columns as $column) {
             $path = explode('.', $column->getField());
 
             $select_fields[] = $path[0].'_id';
 
             $field = array_pop($path);
 
-            $relation_path = join('.', $path);
+            $relation_path = implode('.', $path);
 
-            if(empty($relation_path))
-            {
+            if (empty($relation_path)) {
                 continue;
             }
 
@@ -216,22 +199,15 @@ final class TableResource extends Component
 
             $field_relation = array_pop($path).'_id';
 
-            if(!empty($previous_relation = join('.', $path)))
-            {
+            if (! empty($previous_relation = implode('.', $path))) {
                 $with_eager_loading[$previous_relation][] = $field_relation;
-            }
-            else
-            {
+            } else {
                 $select_fields[] = $field_relation;
             }
         }
 
         return $with_eager_loading ?? [];
     }
-
-    
-
-
 
     // private function _getWithEagerLoading(&$select_fields)
     // {
@@ -269,8 +245,6 @@ final class TableResource extends Component
 
     private function _search(): Closure
     {
-     
-
         return function ($builder): void {
             $search_fields = $this->resource->getSearchFields();
 

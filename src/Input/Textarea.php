@@ -10,7 +10,6 @@ final class Textarea extends Input
     use CanChangeCase, HasValidationRules;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::input.textarea';

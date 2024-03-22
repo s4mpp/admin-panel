@@ -14,12 +14,19 @@ trait WithAdminResource
 
     private ?Resource $resource = null;
 
-    private function loadResource(): void
+    private function loadResource(): ?Resource
     {
         if ($this->resource) {
-            return;
+            return null;
         }
 
-        $this->resource = AdminPanel::getResource($this->resource_slug);
+        return $this->setResource(AdminPanel::getResource($this->resource_slug));
+    }
+
+    private function setResource(Resource $resource): Resource
+    {
+        $this->resource = $resource;
+
+        return $resource;
     }
 }

@@ -9,10 +9,8 @@ use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Routing\Redirector;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\URL;
 use S4mpp\AdminPanel\Models\Setting;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Traits\CreatesForm;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
@@ -38,8 +36,7 @@ final class FormSettings extends Component
 
         $this->setInitialData();
 
-        foreach($fields as $field)
-        {
+        foreach ($fields as $field) {
             $data[$field->getName()] = Settings::get($field->getName());
         }
 
@@ -58,7 +55,7 @@ final class FormSettings extends Component
         return view('admin::livewire.form');
     }
 
-    public function save(): RedirectResponse|Redirector|null
+    public function save(): RedirectResponse|Redirector
     {
         $this->resetValidation();
 
@@ -66,37 +63,27 @@ final class FormSettings extends Component
 
         $fields = Finder::findElementsRecursive($this->form, Input::class);
 
-        $fields_validated = $this->_validate($fields);
+        $fields_validated = $this->_validate($fields, 'settings');
 
-        try {
+        foreach ($fields as $field) {
+            $register = Settings::getRegister($field->getName());
 
-            foreach($fields as $field)
-            {
-                $register = Settings::getRegister($field->getName());
+            $value = $fields_validated[$field->getName()];
 
-                $value = $fields_validated[$field->getName()];
-
-                if(!$register && !is_null($value))
-                {
-                    $register = new Setting();
-                    $register->key = $field->getName();
-                }
-
-                if($register)
-                {
-                    $register->value = $value;
-    
-                    $register->save();
-                }
+            if (! $register && ! is_null($value)) {
+                $register = new Setting();
+                $register->key = $field->getName();
             }
 
-            session()->flash('message', 'Configurações salvas com sucesso!');
+            if ($register) {
+                $register->value = $value;
 
-            return redirect($this->url);
-        } catch (\Exception $e) {
-            $this->addError('exception', $e->getMessage());
+                $register->save();
+            }
         }
 
-        return null;
+        session()->flash('message', 'Configurações salvas com sucesso!');
+
+        return redirect($this->url);
     }
 }

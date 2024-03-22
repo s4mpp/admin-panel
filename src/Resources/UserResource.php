@@ -80,6 +80,8 @@ final class UserResource extends Resource
             Input::text('Nome', 'name')->uppercase(),
 
             Input::email('E-mail', 'email')->unique(),
+
+            Input::text('Senha', 'password'),
         ];
     }
 

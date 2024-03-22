@@ -19,7 +19,6 @@ use S4mpp\AdminPanel\Livewire\FormRepeater;
 use S4mpp\AdminPanel\Livewire\FormResource;
 use S4mpp\AdminPanel\Livewire\FormSettings;
 use S4mpp\AdminPanel\Livewire\ReportResult;
-use S4mpp\AdminPanel\Livewire\SelectSearch;
 use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\Livewire\TableRepeater;
 use S4mpp\AdminPanel\Livewire\TableResource;
@@ -97,6 +96,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__.'/../../views', 'admin');
 
+        Livewire::component('table-repeater', TableRepeater::class);
         Livewire::component('table-resource', TableResource::class);
         Livewire::component('form-resource', FormResource::class);
         Livewire::component('form-repeater', FormRepeater::class);

@@ -4,15 +4,14 @@ namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Contracts\View\View;
-use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\Strongable;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 final class Datetime extends Label
 {
-    use Strongable, HasComponent;
+    use HasComponent, Strongable;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::label.datetime';

@@ -3,7 +3,6 @@
 namespace S4mpp\AdminPanel\Filter;
 
 use S4mpp\AdminPanel\Traits\Titleable;
-use S4mpp\AdminPanel\Traits\HasComponent;
 
 abstract class Filter
 {
@@ -16,10 +15,5 @@ abstract class Filter
     public function getField(): string
     {
         return $this->field;
-    }
-
-    public function getDescriptionResult(string $term): string
-    {
-        return $term;
     }
 }

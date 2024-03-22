@@ -6,7 +6,8 @@
 
 	<div x-data="{ {{ join(', ', array_merge($data_slides ?? [])) }} }">
 		@livewire('form-resource', [
-			'resource' => $resource
+			'resource_slug' => $resource->getSlug(),
+			'url_to_redirect_after_save' => route($resource->getRouteName('index'))
 		])
 
 		@foreach($repeaters ?? [] as $repeater)

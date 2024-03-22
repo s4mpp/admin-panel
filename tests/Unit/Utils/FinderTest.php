@@ -12,6 +12,7 @@ use S4mpp\AdminPanel\Filter\Filter;
 use S4mpp\AdminPanel\Filter\Period;
 use S4mpp\AdminPanel\Input\Textarea;
 use S4mpp\AdminPanel\Tests\TestCase;
+use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Elements\Repeater;
 use S4mpp\AdminPanel\CustomActions\Link;
 use S4mpp\AdminPanel\Resources\Resource;
@@ -20,7 +21,6 @@ use S4mpp\AdminPanel\Factories\Input as InputFactory;
 use S4mpp\AdminPanel\Factories\Label as LabelFactory;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 use S4mpp\AdminPanel\Factories\CustomAction as CustomActionFactory;
-use S4mpp\AdminPanel\Reports\Report;
 
 final class FinderTest extends TestCase
 {
@@ -59,8 +59,8 @@ final class FinderTest extends TestCase
     public static function slugElementProvider()
     {
         return [
-            'normal' => [[new Repeater('Test slug name', 'xxx'), new Report('Other slug name', [])], 'test-slug-name',  Repeater::class, 'test-slug-name'],
-            'not found' => [[new Repeater('Test slug name', 'xxx'), new Report('Other slug name', [])], 'xxxxxxxx', null, null],
+            'normal' => [[new Repeater('Test slug name', 'xxx'), new Report('Other slug name', fn() => null, [])], 'test-slug-name',  Repeater::class, 'test-slug-name'],
+            'not found' => [[new Repeater('Test slug name', 'xxx'), new Report('Other slug name', fn() => null, [])], 'xxxxxxxx', null, null],
         ];
     }
 

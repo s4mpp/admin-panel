@@ -77,7 +77,7 @@
 
 		<x-element::card :padding=false class="bg-white">
 			@livewire('table-resource', [
-				'resource_slug' => $resource->getSlug()
+				'resource_slug' => $resource->getSlug(),
 			])
 		</x-element::card>
 	</div>

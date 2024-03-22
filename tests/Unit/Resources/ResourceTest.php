@@ -31,5 +31,8 @@ final class ResourceTest extends TestCase
         $this->assertInstanceOf(Model::class, $resource->getModel());
         
         $this->assertIsBool($resource->hasAction('create'));
+
+        $this->assertSame('name', $resource->getOrdenationField());
+        $this->assertSame('ASC', $resource->getOrdenationDirection());
     }
 }

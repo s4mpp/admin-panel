@@ -10,7 +10,6 @@ final class Radio extends Input
     use HasMultipleOptions, HasValidationRules;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::input.radio';

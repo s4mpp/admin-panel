@@ -5,8 +5,11 @@ namespace S4mpp\AdminPanel\Traits;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
+/**
+ * @todo callback get key
+ * @todo callback get value
+ */
 trait HasMultipleOptions
 {
     /**
@@ -21,14 +24,14 @@ trait HasMultipleOptions
     private ?Closure $callback_option = null;
 
     /**
-     * @param array<mixed>|Collection $options
+     * @param  array<mixed>|Collection  $options
      */
-    public function options(array|Collection $options = [], string $value_collection = null, string $key_collection = null, Closure $callback = null): self
+    public function options(array|Collection $options = [], ?string $value_collection = null, ?string $key_collection = null, ?Closure $callback = null): self
     {
-    	$this->options = $options;
-    	
+        $this->options = $options;
+
         $this->value_collection = $value_collection;
-    	$this->key_collection = $key_collection;
+        $this->key_collection = $key_collection;
 
         $this->callback_option = $callback;
 
@@ -40,62 +43,55 @@ trait HasMultipleOptions
      */
     public function getOptions(): array
     {
-    	foreach($this->options as $key => $value)
-    	{
+        foreach ($this->options as $key => $value) {
             $key = $this->getKey($key, $value);
 
             $options[$key] = ($this->callback_option) ? call_user_func($this->callback_option, $value, $key) : $this->getValue($value);
-    	}
+        }
 
-    	return $options ?? [];
+        return $options ?? [];
     }
 
-    private function getKey(int | string $key, mixed $value = null): null|int|string
+    private function getKey(int|string $key, mixed $value = null): null|int|string
     {
-        if(is_string($value))
-    	{
-    		return $key;
-    	}
+        if (is_string($value)) {
+            return $key;
+        }
 
-        if(is_array($value))
-    	{
-    		return $this->key_collection ? $value[$this->key_collection] : $key;
-    	}
+        if (is_array($value)) {
+            return $this->key_collection ? $value[$this->key_collection] : $key;
+        }
 
-        if(is_a($value, Model::class))
-    	{
-    		return $this->key_collection ? $value->{$this->key_collection} : $value->id;
-    	}
+        /** @var object $value */
+        if (is_a($value, Model::class)) {
+            return $this->key_collection ? $value->{$this->key_collection} : $value->id;
+        }
 
-        if((new \ReflectionClass($value::class))->isEnum())
-    	{
-    		return $value->value;
-    	}
+        if ((new \ReflectionClass($value::class))->isEnum()) {
+            return $value->value;
+        }
 
         return null;
     }
 
     private function getValue(mixed $value): ?string
     {
-        if(is_string($value))
-    	{
-    		return $value;
-    	}
+        if (is_string($value)) {
+            return $value;
+        }
 
-        if(is_array($value))
-    	{
-    		return $value[$this->value_collection] ?? json_encode($value);
-    	}
+        if (is_array($value)) {
+            return $value[$this->value_collection] ?? json_encode($value);
+        }
 
-        if(is_a($value, Model::class))
-    	{
-    		return $value->{$this->value_collection} ?? $value;
-    	}
+        /** @var object $value */
+        if (is_a($value, Model::class)) {
+            return $value[$this->value_collection] ?? $value;
+        }
 
-        if((new \ReflectionClass($value::class))->isEnum())
-    	{
-    		return $value->name;
-    	}
+        if ((new \ReflectionClass($value::class))->isEnum()) {
+            return $value->name;
+        }
 
         return null;
     }

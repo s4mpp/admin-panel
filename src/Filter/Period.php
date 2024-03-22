@@ -10,7 +10,6 @@ final class Period extends Filter
     use HasComponent;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::filter.period';
@@ -39,7 +38,7 @@ final class Period extends Filter
     // }
 
     /**
-     * @param array<string> $term
+     * @param  array<string>  $term
      */
     public function query(Builder $builder, array $term): void
     {
@@ -54,24 +53,22 @@ final class Period extends Filter
         }
     }
 
-    // public function getDescriptionResult($term)
-    // {
-    // 	$start = $term['start'] ?? null;
-    // 	$end = $term['end'] ?? null;
+    /**
+     * @param  array<string>  $term
+     */
+    public function getDescriptionResult(array $term): ?string
+    {
+        $start = $term['start'] ?? null;
+        $end = $term['end'] ?? null;
 
-    // 	if($start && !$end)
-    // 	{
-    // 		$description = 'a partir de '.date('d/m/Y', strtotime($start));
-    // 	}
-    // 	else if(!$start && $end)
-    // 	{
-    // 		$description = 'até '.date('d/m/Y', strtotime($end));
-    // 	}
-    // 	else if($start && $end)
-    // 	{
-    // 		$description = date('d/m/Y', strtotime($start)).' a '.date('d/m/Y', strtotime($end));
-    // 	}
+        if ($start && ! $end) {
+            $description = 'a partir de '.date('d/m/Y', strtotime($start));
+        } elseif (! $start && $end) {
+            $description = 'até '.date('d/m/Y', strtotime($end));
+        } elseif ($start && $end) {
+            $description = date('d/m/Y', strtotime($start)).' a '.date('d/m/Y', strtotime($end));
+        }
 
-    // 	return $description ?? null;
-    // }
+        return $description ?? null;
+    }
 }

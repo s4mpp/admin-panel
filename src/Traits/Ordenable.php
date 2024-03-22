@@ -8,7 +8,7 @@ trait Ordenable
 
     protected string $ordenation_direction = 'DESC';
 
-    private function setOrdenation(string $field, ?string $direction = null): self
+    private function setOrdenation(string $field, string $direction): self
     {
         $this->ordenation_field = $field;
 

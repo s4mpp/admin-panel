@@ -12,7 +12,6 @@ final class TextareaTest extends TestCase
     {
         $textarea = new Textarea('Title', 'field');
 
-		
         $textarea->description('Description of input');
 		
         $this->assertSame('Title', $textarea->getTitle());

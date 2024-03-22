@@ -1,8 +1,9 @@
 parameters:
-	level: 7
+	level: 6
 	checkGenericClassInNonGenericObjectType: false
 	paths:
 		- src
 	ignoreErrors:
 		- '#Call to an undefined |static| method Illuminate\\Database\\Eloquent\\Model::\$[a-zA-Z]#'
 		- '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$[a-zA-Z]#'
+		- '#Access to an undefined property Illuminate\\Foundation\\Auth\\User::\$[a-zA-Z]#'

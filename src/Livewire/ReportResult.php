@@ -6,11 +6,11 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Elements\Report;
-use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Traits\Filterable;
 use S4mpp\AdminPanel\Resources\Resource;
 use Illuminate\Database\Eloquent\Collection;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
@@ -95,10 +95,7 @@ final class ReportResult extends Component
     //     $this->dispatchBrowserEvent('filter-complete');
     // }
 
-    /**
-     * @return Collection<int,Model>|null
-     */
-    private function _getRegisters(): ?Collection
+    private function _getRegisters(): ?LengthAwarePaginator
     {
         if (empty($this->filters)) {
             return null;

@@ -12,31 +12,30 @@ final class ReportTest extends TestCase
     public static function reportProvider()
     {
         return [
-            'users' => ['usuarios', 'usuarios-cadastrados', 'Usuários cadastrados'],
+            ['listagem-de-registros', 'Listagem de registros'],
+            ['cadastros-por-data', 'Cadastros por data'],
         ];
     }
 
     /**
      * @dataProvider reportProvider
      */
-    public function test_report_page(string $uri_resource, string $uri, string $title): void
+    public function test_report_page(string $uri, string $title): void
     {
         $user = UserFactory::new()->create();
 
-        $response = $this->actingAs($user)->get('admin/'.$uri_resource.'/relatorio/'.$uri);
+        $response = $this->actingAs($user)->get('admin/relatorios/relatorio/'.$uri);
 
         $response->assertOk();
         $response->assertSee($title);
     }
 
-	/**
-     * @dataProvider reportProvider
-     */
-    public function test_report_invalid_page(string $uri_resource, string $uri): void
+
+    public function test_report_invalid_page(): void
     {
         $user = UserFactory::new()->create();
 
-        $response = $this->actingAs($user)->get('admin/usuarios/relatorio/xxxx');
+        $response = $this->actingAs($user)->get('admin/relatorios/relatorio/xxxx');
 
         $response->assertNotFound();
     }

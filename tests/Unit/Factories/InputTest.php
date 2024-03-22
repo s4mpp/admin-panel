@@ -11,6 +11,8 @@ use S4mpp\AdminPanel\Input\Checkbox;
 use S4mpp\AdminPanel\Input\Textarea;
 use S4mpp\AdminPanel\Tests\TestCase;
 use S4mpp\AdminPanel\Factories\Input;
+use S4mpp\AdminPanel\Input\Search;
+use Workbench\App\Models\User;
 
 final class InputTest extends TestCase
 {
@@ -61,5 +63,14 @@ final class InputTest extends TestCase
         $input = Input::select('title', 'field');
 
         $this->assertInstanceOf(Select::class, $input);
+    }
+
+    public function test_factory_search(): void
+    {
+        $input = Input::search('title', 'field', User::class, 'name');
+
+        $this->assertInstanceOf(Search::class, $input);
+        $this->assertSame(User::class, $input->getModelName());
+        $this->assertSame('name', $input->getModelField());
     }
 }

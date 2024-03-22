@@ -8,7 +8,7 @@ use S4mpp\AdminPanel\AdminPanel;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
@@ -37,11 +37,11 @@ final class UserPermissions extends Component
      */
     public array $permissions_selected = [];
 
-    public Model $user;
+    public User $user;
 
     public int $total_permissions_selected = 0;
 
-    public function mount(Model $user): void
+    public function mount(User $user): void
     {
         $this->user = $user;
 
@@ -105,6 +105,8 @@ final class UserPermissions extends Component
             $roles[] = $role;
         }
 
+        $this->user->syncRoles($roles);
+
         foreach ($this->permissions_selected as $permission_id) {
             $permission = Permission::findById($permission_id, config('admin.guard', 'web'));
 
@@ -115,7 +117,6 @@ final class UserPermissions extends Component
             $permissions[] = $permission;
         }
 
-        $this->user->syncRoles($roles);
         $this->user->syncPermissions($permissions);
 
         $this->user->refresh();
@@ -127,8 +128,8 @@ final class UserPermissions extends Component
 
     private function setRolesAndPermissionsSelected(): void
     {
-        $this->roles_selected = $this->user->roles->pluck('id')->toArray();
-        $this->permissions_selected = $this->user->permissions->pluck('id')->toArray();
+        $this->roles_selected = $this->user->roles?->pluck('id')->toArray() ?? [];
+        $this->permissions_selected = $this->user->permissions?->pluck('id')->toArray() ?? [];
 
         $this->total_permissions_selected = count($this->permissions_selected);
     }

@@ -3,15 +3,14 @@
 namespace S4mpp\AdminPanel\Labels;
 
 use Illuminate\Contracts\View\View;
-use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\Strongable;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 final class MarkDown extends Label
 {
-    use Strongable, HasComponent;
+    use HasComponent, Strongable;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::label.markdown';

@@ -7,7 +7,6 @@ use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Traits\HasCallbacks;
-use S4mpp\AdminPanel\Traits\HasComponent;
 
 abstract class Label
 {
@@ -19,8 +18,7 @@ abstract class Label
 
     public function __construct(private string $title, private string $field)
     {
-        if(strpos($field, '.') !== false)
-        {
+        if (mb_strpos($field, '.') !== false) {
             $this->relationShip();
         }
     }
@@ -59,24 +57,19 @@ abstract class Label
      */
     public function getContent(Model|Collection|array $register): mixed
     {
-        if($this->is_relationship)
-        {
-            $path = explode('.', $this->getField());
+        if ($this->is_relationship) {
+            $path = explode('.', $this->getField() ?? '');
 
             $content = $register[$path[0]] ?? null;
 
             array_shift($path);
 
-            foreach($path as $node)
-            {
+            foreach ($path as $node) {
                 $content = $content[$node];
             }
-        }
-        else
-        {
+        } else {
             $content = $register[$this->getField()] ?? null;
         }
-
 
         if ($this->hasCallbacks()) {
             $content = $this->runCallbacks($content, $register);

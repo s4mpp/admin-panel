@@ -10,7 +10,6 @@ final class Boolean extends Label
     use HasComponent;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::labels.boolean';

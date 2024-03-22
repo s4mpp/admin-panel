@@ -4,10 +4,10 @@ namespace S4mpp\AdminPanel\CustomActions;
 
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
+use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\CanBeDisabled;
 use S4mpp\AdminPanel\Traits\CanBeDangerous;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use S4mpp\AdminPanel\Traits\HasComponent;
 
 final class Slide extends CustomAction
 {

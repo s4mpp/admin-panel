@@ -22,7 +22,6 @@ use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use S4mpp\AdminPanel\Input\Search;
 
 /**
  * @codeCoverageIgnore
@@ -94,7 +93,6 @@ final class ResourceController extends Controller
         }
 
         $inputs = Finder::findElementsRecursive($resource->form(), Input::class);
-
 
         $fields = array_map(fn ($input) => $input->getName(), $inputs);
 

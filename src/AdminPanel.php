@@ -3,7 +3,6 @@
 namespace S4mpp\AdminPanel;
 
 use SplFileInfo;
-use S4mpp\AdminPanel\Settings;
 use S4mpp\AdminPanel\Input\Input;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;

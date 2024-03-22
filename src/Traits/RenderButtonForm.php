@@ -7,6 +7,8 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 
 trait RenderButtonForm
 {
+    use HasComponent;
+
     /**
      * @var array<string>
      */

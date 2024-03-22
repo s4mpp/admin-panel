@@ -170,13 +170,15 @@ abstract class Resource
 
         $fields = array_values($this->search);
 
+        $message = 'Pesquisar por ';
+
         if (count($fields) == 1) {
-            return $fields[0];
+            return $message.$fields[0];
         }
 
         $last_item = array_pop($fields);
 
-        return 'Pesquisar por '.implode(', ', $fields).' ou '.$last_item;
+        return $message.implode(', ', $fields).' ou '.$last_item;
     }
 
     final public function getRouteName(string $crud_action): ?string

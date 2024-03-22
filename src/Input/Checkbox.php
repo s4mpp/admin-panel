@@ -10,7 +10,6 @@ final class Checkbox extends Input
     use HasMultipleOptions, HasValidationRules;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::input.checkbox';
@@ -20,7 +19,7 @@ final class Checkbox extends Input
      */
     protected int|array|null $initial_value = [];
 
-    public function processInputData(mixed $data): null|int|string
+    public function processInputData(mixed $data): mixed
     {
         return json_encode($data);
     }

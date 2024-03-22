@@ -12,10 +12,19 @@ final class BasicItemResource extends Resource
 
     public $actions = ['create', 'update', 'read', 'delete'];
 
+    public $search = ['title' => 'Título'];
+
     public function table(): array
     {
         return [
             Label::text('Título', 'title'),
+            Label::text('Título (bold)', 'title')->strong(),
+
+            Label::text('Título (align left)', 'title')->align('left'),
+            Label::text('Título (align center)', 'title')->align('center'),
+            Label::text('Título (align right)', 'title')->align('right'),
+
+            Label::text('Título (callback)', 'title')->callback(fn($title) => $title.'-xxx'),
 
             Label::text('Texto básico', 'basic_text'),
 
@@ -32,10 +41,15 @@ final class BasicItemResource extends Resource
     {
         return [
             Label::text('Título', 'title'),
+            Label::text('Título (bold)', 'title')->strong(),
+
+            Label::text('Título (align left)', 'title')->align('left'),
+            Label::text('Título (align center)', 'title')->align('center'),
+            Label::text('Título (align right)', 'title')->align('right'),
+            
+            Label::text('Título (callback)', 'title')->callback(fn($title) => $title.'-xxx'),
 
             Label::text('Texto básico', 'basic_text'),
-            
-            
             
             Label::text('E-mail', 'basic_email'),
             

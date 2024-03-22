@@ -9,7 +9,6 @@ final class Search extends Input
     use HasValidationRules;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::input.search';
@@ -19,8 +18,6 @@ final class Search extends Input
         parent::__construct($title, $name);
     }
 
-    
-    
     // private ?string $model = null;
 
     // private ?string $repeater = null;
@@ -41,12 +38,12 @@ final class Search extends Input
 
     public function getModelName(): ?string
     {
-    	return $this->model;
+        return $this->model;
     }
 
     public function getModelField(): string
     {
-    	return $this->model_field;
+        return $this->model_field;
     }
 
     // public function setRepeater(string $repeater)

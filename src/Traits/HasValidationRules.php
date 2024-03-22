@@ -4,7 +4,6 @@ namespace S4mpp\AdminPanel\Traits;
 
 use Closure;
 use Illuminate\Validation\Rule;
-use S4mpp\AdminPanel\Input\Input;
 
 trait HasValidationRules
 {
@@ -15,13 +14,14 @@ trait HasValidationRules
 
     /**
      * @return array<string|Rule>
+     *
+     * @todo change name and context to "EXECUTE RULE". this function do not return rules
      */
-    public function getValidationRules(Input $input, string $table = null, ?int $id = null): array
+    public function getRules(string $table = '', ?int $id = null): array
     {
         foreach ($this->rules as $rule) {
-            /** @var object $rule */
-            if (is_a($rule, Closure::class)) {
-                $rule = call_user_func($rule, $input, $table, $id);
+            if (is_callable($rule)) {
+                $rule = call_user_func($rule, $table, $id);
             }
 
             $rules[] = $rule;
@@ -64,7 +64,7 @@ trait HasValidationRules
 
     public function unique(): self
     {
-        $this->addRule(fn (Input $input, string $table, ?int $id = null) => Rule::unique($table, $input->getName())->ignore($id));
+        $this->addRule(fn (string $table, ?int $id = null) => Rule::unique($table, $this->getName())->ignore($id));
 
         return $this;
     }

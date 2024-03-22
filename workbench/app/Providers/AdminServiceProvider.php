@@ -16,24 +16,7 @@ final class AdminServiceProvider extends ServiceProvider
     public function register(): void
     {
         AdminPanel::createSettings([
-            Input::text('Text', 'text')->mask('99999')->description('Description of input'),
-            Input::textarea('Textarea', 'textarea'),
-            Input::decimal('Decimal', 'decimal'),
-            Input::integer('integer', 'integer')->min(0)->max(100)->step(10),
-
-            new Card('Card', [
-                Input::date('Date', 'date'),
-
-                Input::email('E-mail', 'e_mail'),
-            ]),
-
-            new Card('Inputs multiples', [
-                Input::select('Select', 'select'),
-
-                Input::checkbox('Check', 'check'),
-
-                Input::radio('Radio', 'radio'),
-            ]),
+            Input::text('Text', 'text')->description('Description of input'),
         ]);
     }
 

@@ -9,6 +9,9 @@ use S4mpp\AdminPanel\Tests\TestCase;
 use S4mpp\AdminPanel\Resources\Resource;
 use Workbench\App\AdminPanel\EmptyResource;
 use S4mpp\AdminPanel\Resources\UserResource;
+use Workbench\App\AdminPanel\EmptyClassResource;
+use Workbench\App\AdminPanel\EmptyWithTitleResource;
+use Workbench\App\AdminPanel\EmptyWithoutTitleResource;
 
 final class AdminPanelTest extends TestCase
 {
@@ -32,7 +35,7 @@ final class AdminPanelTest extends TestCase
 
     public function test_add_nullable_resource()
     {
-        $instance = new EmptyResource();
+        $instance = new EmptyWithoutTitleResource();
 
         AdminPanel::addResource($instance);
 

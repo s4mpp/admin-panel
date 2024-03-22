@@ -3,9 +3,10 @@
 namespace S4mpp\AdminPanel\Tests\Feature;
 
 use S4mpp\AdminPanel\Tests\TestCase;
+use Spatie\Permission\Models\Permission;
 use PHPUnit\Framework\Attributes\Depends;
-use Workbench\Database\Factories\CustomActionFactory;
 use Workbench\Database\Factories\UserFactory;
+use Workbench\Database\Factories\CustomActionFactory;
 
 final class CustomActionTest extends TestCase
 {
@@ -29,6 +30,18 @@ final class CustomActionTest extends TestCase
         return [
             'open link' => ['/admin/custom-actions/acao/view-example', 'GET'],
         ];
+    }
+
+    public function test_page_read_with_custom_actions_buttons(): void
+    {
+        Permission::findOrCreate('CustomAction:read', 'web');
+        $admin = UserFactory::new()->create()->givePermissionTo('CustomAction:read');
+
+        $register = CustomActionFactory::new()->create();
+
+        $response = $this->actingAs($admin)->get('admin/custom-actions/visualizar/'.$register->id);
+
+        $response->assertOk();
     }
 
     /**

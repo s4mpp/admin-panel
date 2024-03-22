@@ -15,6 +15,8 @@ final class ReportTest extends TestCase
 
         $this->assertSame('report-example', $report->getSlug());
         $this->assertSame('Report example', $report->getTitle());
+        $this->assertIsArray($report->getColumns());
+        $this->assertIsCallable($report->getCallbackFilter());
 
     }
 }

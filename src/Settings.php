@@ -2,9 +2,6 @@
 
 namespace S4mpp\AdminPanel;
 
-use S4mpp\AdminPanel\Input\Input;
-use S4mpp\AdminPanel\Utils\Finder;
-use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Models\Setting;
 
 abstract class Settings

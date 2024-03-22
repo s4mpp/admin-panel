@@ -2,12 +2,17 @@
 
 namespace S4mpp\AdminPanel\Tests\Feature;
 
+use Exception;
 use Workbench\App\Models\BasicItem;
 use S4mpp\AdminPanel\Tests\TestCase;
 use Spatie\Permission\Models\Permission;
+use Workbench\Database\Factories\DateFactory;
 use Workbench\Database\Factories\UserFactory;
 use Workbench\Database\Factories\FilterFactory;
 use Workbench\Database\Factories\NumberFactory;
+use Workbench\Database\Factories\ReportFactory;
+use Workbench\Database\Factories\SelectFactory;
+use Workbench\Database\Factories\RepeaterFactory;
 use Workbench\Database\Factories\BasicItemFactory;
 use Workbench\Database\Factories\CustomActionFactory;
 
@@ -16,11 +21,16 @@ final class ResourceTest extends TestCase
     public static function resourceProvider()
     {
         return [
-            // 'users' => ['usuarios', 'User', 'Usuários', UserFactory::class],
-            // 'custom-action' => ['custom-actions', 'CustomAction', 'Custom Actions', CustomActionFactory::class],
-            // 'filters' => ['filtros', 'Filter', 'Filtros', FilterFactory::class],
-            'itens-basicos' => ['itens-basicos', 'BasicItem', 'Itens básicos', BasicItemFactory::class],
             // 'numeros' => ['numeros', 'Number', 'Números', NumberFactory::class],
+            
+            'users' => ['usuarios', 'User', 'Usuários', UserFactory::class],
+            'filters' => ['filtros', 'Filter', 'Filtros', FilterFactory::class],
+            'itens-basicos' => ['itens-basicos', 'BasicItem', 'Itens básicos', BasicItemFactory::class],
+            'repeaters' => ['repeaters', 'Repeater', 'Repeaters', RepeaterFactory::class],
+            'reports' => ['relatorios', 'Report', 'Relatórios', ReportFactory::class],
+            'selects' => ['selects', 'Select', 'Selects', SelectFactory::class],
+            'custom-action' => ['custom-actions', 'CustomAction', 'Custom Actions', CustomActionFactory::class],
+            'dates' => ['datas', 'Date', 'Datas', DateFactory::class],
         ];
     }
 
@@ -37,6 +47,7 @@ final class ResourceTest extends TestCase
 
         $response->assertOk();
         $response->assertSee($title);
+        $response->assertSeeLivewire('table-resource');
     }
 
     /**
@@ -52,6 +63,7 @@ final class ResourceTest extends TestCase
 
         $response->assertOk();
         $response->assertSee($title);
+        $response->assertSeeLivewire('form-resource');
     }
 
     /**
@@ -69,6 +81,7 @@ final class ResourceTest extends TestCase
 
         $response->assertOk();
         $response->assertSee($title);
+        $response->assertSeeLivewire('form-resource');
     }
 
     /**
@@ -88,19 +101,39 @@ final class ResourceTest extends TestCase
         $response->assertSee($title);
     }
 
-    /**
-     * @dataProvider resourceProvider
-     */
-    public function test_delete_page(string $url, string $name, string $title, string $factory): void
+    
+    public function test_delete_register(): void
     {
-        Permission::findOrCreate($name.':delete', 'web');
+        Permission::findOrCreate('User:delete', 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo($name.':delete');
+        $user = UserFactory::new()->create()->givePermissionTo('User:delete');
         
-        $register = $factory::new()->create();
+        $register = UserFactory::new()->create();
 
-        $response = $this->actingAs($user)->delete('admin/'.$url.'/excluir/'.$register->id);
+        $response = $this->actingAs($user)->delete('admin/usuarios/excluir/'.$register->id);
 
         $response->assertOk();
+    }
+
+    public function test_resource_without_model()
+    {
+        Permission::findOrCreate('EmptyWithTitle:index', 'web');
+
+        $user = UserFactory::new()->create()->givePermissionTo('EmptyWithTitle:index');
+
+        $response = $this->actingAs($user)->get('admin/empty-with-error');
+
+        $response->assertStatus(500);
+    }
+
+    public function test_resource_empty()
+    {
+        Permission::findOrCreate('EmptyClass:index', 'web');
+
+        $user = UserFactory::new()->create()->givePermissionTo('EmptyClass:index');
+
+        $response = $this->actingAs($user)->get('admin/empty');
+
+        $response->assertStatus(200);
     }
 }

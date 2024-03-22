@@ -64,7 +64,7 @@ final class FormRepeater extends Component
     }
 
     /**
-     * @param array<string> $data
+     * @param  array<string>  $data
      */
     public function setRegister(?int $id_temp = null, ?int $register_id = null, array $data = []): void
     {
@@ -81,14 +81,10 @@ final class FormRepeater extends Component
 
         $this->dispatchBrowserEvent('reset-loading');
 
-        try {
-            $this->emitTo('form-resource', 'setChild', $this->repeater->getRelation(), $this->id_temp, $this->register_id, $this->data);
+        $this->emitTo('form-resource', 'setChild', $this->repeater->getRelation(), $this->id_temp, $this->register_id, $this->data);
 
-            $this->reset('data', 'id_temp', 'register_id');
+        $this->reset('data', 'id_temp', 'register_id');
 
-            $this->dispatchBrowserEvent('close-slide');
-        } catch (\Exception $e) {
-            $this->addError('exception', $e->getMessage());
-        }
+        $this->dispatchBrowserEvent('close-slide');
     }
 }

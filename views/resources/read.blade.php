@@ -118,7 +118,7 @@
 		@foreach($repeaters ?? [] as $repeater)
 			<x-element::card class="bg-white" title="{{ $repeater->getTitle() }}" :padding=false>
 				@livewire('table-repeater', [
-					'register_id' => $register->id,
+					'main_register_id' => $register->id,
 					'resource_slug' => $resource->getSlug(),
 					'repeater_slug' => $repeater->getSlug()
 				])

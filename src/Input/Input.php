@@ -24,7 +24,6 @@ abstract class Input
     protected int|array|null $initial_value = null;
 
     /**
-     *
      * @var string|array<string>
      */
     protected string|array $component = 'admin::input.default';
@@ -56,14 +55,14 @@ abstract class Input
     }
 
     /**
-     * @return integer|array<int>|null
+     * @return int|array<int>|null
      */
     public function getInitialValue(): int|array|null
     {
         return $this->initial_value;
     }
 
-    public function processInputData(mixed $data): null|int|string
+    public function processInputData(mixed $data): mixed
     {
         return $data;
     }
