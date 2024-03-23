@@ -20,6 +20,6 @@ final class UserPermissionsTest extends TestCase
 		])
 		->call('save');
 
-		$component->assertDispatchedBrowserEvent('close-slide');
+		$component->assertDispatched('close-slide');
 	}
 }

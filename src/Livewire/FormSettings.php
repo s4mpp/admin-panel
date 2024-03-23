@@ -59,7 +59,7 @@ final class FormSettings extends Component
     {
         $this->resetValidation();
 
-        $this->dispatchBrowserEvent('reset-loading');
+        $this->dispatch('reset-loading');
 
         $fields = Finder::findElementsRecursive($this->form, Input::class);
 

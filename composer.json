@@ -14,8 +14,8 @@
     },
     "require": {
         "php": "^8.1",
-        "illuminate/support": "^10.47|^11.0",
-        "livewire/livewire": "^2.0",
+        "illuminate/support": "^10.0|^11.0",
+        "livewire/livewire": "^3.0",
         "s4mpp/laraguard": "v2.x-dev",
         "s4mpp/element": "v2.x-dev",
         "laravel/pint": "^1.14",
@@ -53,6 +53,9 @@
             "@create-config",
             "@php vendor/bin/testbench serve"
         ],
+        "publish-permissions": [
+            "@php vendor/bin/testbench vendor:publish --provider=\"Spatie\\Permission\\PermissionServiceProvider\""
+        ],
         "lint": [
             "@php vendor/bin/phpstan analyse"
         ],
@@ -67,9 +70,10 @@
             "cp workbench/config/admin.php vendor/orchestra/testbench-core/laravel/config"
         ],
         "post-install-cmd": [
-            "@php vendor/bin/testbench vendor:publish --provider=\"Spatie\\Permission\\PermissionServiceProvider\""
+            "@publish-permissions"
         ],
         "post-update-cmd": [
+            "@publish-permissions",
             "@php vendor/bin/testbench optimize:clear"
         ]
     }

@@ -19,15 +19,15 @@ trait IsFilterForm
     // {
     // 	$this->_resetFilter();
 
-    // 	$this->dispatchBrowserEvent('reset-filter');
+    // 	$this->dispatch('reset-filter');
     // }
 
     // public function setField(string $relation = null, string $field, $value = null)
     // {
     // 	$this->filters[$field] = $value;
 
-    // 	$this->dispatchBrowserEvent('close-modal');
-    // 	$this->dispatchBrowserEvent('reset-loading');
+    // 	$this->dispatch('close-modal');
+    // 	$this->dispatch('reset-loading');
 
     // 	$this->emitSelf('$refresh');
     // }

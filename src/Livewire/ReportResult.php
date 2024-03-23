@@ -92,7 +92,7 @@ final class ReportResult extends Component
     //         $this->filter_descriptions[] = $field->getTitle().': '.$description_result;
     //     }
 
-    //     $this->dispatchBrowserEvent('filter-complete');
+    //     $this->dispatch('filter-complete');
     // }
 
     private function _getRegisters(): ?LengthAwarePaginator

@@ -79,12 +79,17 @@ final class FormRepeater extends Component
     {
         $this->resetValidation();
 
-        $this->dispatchBrowserEvent('reset-loading');
+        $this->dispatch('reset-loading');
 
-        $this->emitTo('form-resource', 'setChild', $this->repeater->getRelation(), $this->id_temp, $this->register_id, $this->data);
+        $this->dispatch('setChild', 
+            relation: $this->repeater->getRelation(),
+            id_temp: $this->id_temp,
+            register_id: $this->register_id,
+            data_to_save: $this->data
+        )->to('form-resource');
 
         $this->reset('data', 'id_temp', 'register_id');
 
-        $this->dispatchBrowserEvent('close-slide');
+        $this->dispatch('close-slide');
     }
 }

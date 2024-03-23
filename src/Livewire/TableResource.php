@@ -86,14 +86,14 @@ final class TableResource extends Component
 
         $this->resetPage();
 
-        $this->dispatchBrowserEvent('search-complete');
+        $this->dispatch('search-complete');
     }
 
     // public function filterRemove()
     // {
     //     $this->reset('filter_descriptions', 'filter_term');
 
-    //     $this->dispatchBrowserEvent('reset-filter');
+    //     $this->dispatch('reset-filter');
 
     //     $this->resetPage();
     // }

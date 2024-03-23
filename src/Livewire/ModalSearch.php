@@ -55,7 +55,7 @@ final class ModalSearch extends Component
 
         $this->resetPage();
 
-        $this->dispatchBrowserEvent('search-complete');
+        $this->dispatch('search-complete');
     }
 
     public function render(): View|ViewFactory

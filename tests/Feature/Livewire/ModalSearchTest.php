@@ -20,6 +20,6 @@ final class ModalSearchTest extends TestCase
 		->call('search', ['q' => 'search term']);
 
 		$component->assertSet('search_term', 'search term');
-		$component->assertDispatchedBrowserEvent('search-complete');
+		$component->assertDispatched('search-complete');
 	}
 }

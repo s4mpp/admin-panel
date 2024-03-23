@@ -24,7 +24,7 @@ trait Filterable
 
         $this->resetPage();
 
-        $this->dispatchBrowserEvent('filter-complete');
+        $this->dispatch('filter-complete');
     }
 
     private function executeQuery(Filter $filter, Builder $query): void

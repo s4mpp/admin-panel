@@ -57,7 +57,7 @@ final class TableResourceTest extends TestCase
 		->call('search', ['q' => 'search term']);
 
 		$component->assertSet('search_term', 'search term');
-		$component->assertDispatchedBrowserEvent('search-complete');
+		$component->assertDispatched('search-complete');
 	}
 
 	/**
@@ -71,6 +71,6 @@ final class TableResourceTest extends TestCase
 		->call('filter', ['created_at' => ['start' => '2024-01-01', 'end' => '2024-01-02']]);
 
 		$component->assertSet('filters', ['created_at' => ['start' => '2024-01-01', 'end' => '2024-01-02']]);
-		$component->assertDispatchedBrowserEvent('filter-complete');
+		$component->assertDispatched('filter-complete');
 	}
 }

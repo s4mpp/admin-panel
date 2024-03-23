@@ -3,7 +3,6 @@
 namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
-use Livewire\Redirector;
 use S4mpp\AdminPanel\Utils;
 use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Support\Collection;
@@ -20,6 +19,7 @@ use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Traits\CreatesForm;
 use S4mpp\AdminPanel\Traits\CanHaveSubForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
+use Livewire\Features\SupportRedirects\Redirector;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
@@ -102,7 +102,7 @@ final class FormResource extends Component
     {
         $this->resetValidation();
 
-        $this->dispatchBrowserEvent('reset-loading');
+        $this->dispatch('reset-loading');
 
         $fields = Finder::findElementsRecursive($this->form, Input::class);
 

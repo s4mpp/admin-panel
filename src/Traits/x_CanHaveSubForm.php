@@ -85,7 +85,7 @@ trait CanHaveSubForm
     // 		}
 
     // 		$this->reset('current_child_data', 'current_child_id');
-    // 		$this->dispatchBrowserEvent('close-slide');
+    // 		$this->dispatch('close-slide');
     // 	}
     // 	catch (\Exception $e)
     // 	{
@@ -93,7 +93,7 @@ trait CanHaveSubForm
     // 	}
     // 	finally
     // 	{
-    // 		$this->dispatchBrowserEvent('reset-form-child');
+    // 		$this->dispatch('reset-form-child');
     // 	}
     // }
 

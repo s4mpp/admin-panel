@@ -30,9 +30,9 @@ final class FormRepeaterTest extends TestCase
 		])
 		->call('save');
 
-		$component->assertDispatchedBrowserEvent('close-slide');
+		$component->assertDispatched('close-slide');
 
-		$component->assertEmittedTo('form-resource', 'setChild');
+		$component->assertDispatched('setChild');
 
 		$component->assertSet('id_temp', null);
 		$component->assertSet('register_id', null);

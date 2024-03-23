@@ -123,7 +123,7 @@ final class UserPermissions extends Component
 
         $this->setRolesAndPermissionsSelected();
 
-        $this->dispatchBrowserEvent('close-slide');
+        $this->dispatch('close-slide');
     }
 
     private function setRolesAndPermissionsSelected(): void

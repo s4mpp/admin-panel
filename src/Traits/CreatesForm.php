@@ -44,8 +44,8 @@ trait CreatesForm
     // 		$this->data[$field] = $value;
     // 	}
 
-    // 	$this->dispatchBrowserEvent('close-modal');
-    // 	$this->dispatchBrowserEvent('reset-loading');
+    // 	$this->dispatch('close-modal');
+    // 	$this->dispatch('reset-loading');
 
     // 	$this->emitSelf('$refresh');
     // }
@@ -120,7 +120,7 @@ trait CreatesForm
     //     } catch (\Exception $e) {
     //         $this->addError('exception', $e->getMessage());
 
-    //         $this->dispatchBrowserEvent('reset-loading');
+    //         $this->dispatch('reset-loading');
 
     //         return null;
     //     }

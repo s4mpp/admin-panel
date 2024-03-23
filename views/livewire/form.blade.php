@@ -22,7 +22,7 @@
 							{{-- @if($repeater->canAdd()) --}}
 								<x-slot:header class=" flex justify-end">
 									<x-element::button type="button"
-										x-on:click="$wire.emit('setRegister:{{ $repeater->getRelation() }}', null, null, {}), slide{{ $repeater->getRelation() }} = true"
+										x-on:click="$wire.dispatch('setRegister:{{ $repeater->getRelation() }}', null, null, {}), slide{{ $repeater->getRelation() }} = true"
 										:loading=false>Adicionar</x-element::button>
 								</x-slot:header>
 							{{-- @endif --}}

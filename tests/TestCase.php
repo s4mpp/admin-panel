@@ -4,6 +4,8 @@ namespace S4mpp\AdminPanel\Tests;
 
 use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\Concerns\WithWorkbench;
+use Spatie\Permission\PermissionServiceProvider;
+use Orchestra\Testbench\Attributes\WithMigration;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
