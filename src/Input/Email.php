@@ -7,7 +7,7 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Email extends Input
 {
-    use CanChangeCase, HasValidationRules;
+    use CanChangeCase;
 
     /**
      * @return array<string>

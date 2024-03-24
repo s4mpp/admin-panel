@@ -12,15 +12,23 @@ trait WithAdminResource
 {
     public string $resource_slug;
 
-    private ?Resource $resource = null;
+    private Resource $resource;
 
     private function loadResource(): ?Resource
     {
-        if ($this->resource) {
+        if (isset($this->resource)) {
             return null;
         }
 
-        return $this->setResource(AdminPanel::getResource($this->resource_slug));
+        $resource = AdminPanel::getResource($this->resource_slug);
+    
+        if(!$resource) {
+            throw new \Exception('Resource not found');
+        }
+
+        $this->setResource($resource);
+
+        return $resource;
     }
 
     private function setResource(Resource $resource): Resource

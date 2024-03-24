@@ -103,7 +103,7 @@ final class TableResource extends Component
         return view('admin::livewire.table-resource', [
             // 'collection' => $this->_getRegisters(),
             // 'default_route' => $this->resource->getDefaultRoute(),
-            'columns' => Finder::onlyOf($this->resource->table(), Label::class),
+            'columns' => $this->resource->getTable(),
             'registers' => $this->_getRegisters(),
         ]);
     }
@@ -118,7 +118,7 @@ final class TableResource extends Component
             $builder = $model->orderBy($field, $direction);
         }
 
-        $columns = Finder::onlyOf($this->resource->table(), Label::class);
+        $columns = $this->resource->getTable();
 
         $select_fields = $this->_getSelectFields(array_filter($columns, fn ($c) => ! $c->isRelationShip()));
 
@@ -251,7 +251,7 @@ final class TableResource extends Component
             foreach ($search_fields as $key => $value) {
                 $field_to_search = (is_string($key)) ? $key : $value;
 
-                $builder->orWhere($field_to_search, 'like', '%'.trim($this->search_term).'%');
+                $builder->orWhere($field_to_search, 'like', '%'.trim($this->search_term ?? '').'%');
             }
         };
     }
@@ -262,7 +262,7 @@ final class TableResource extends Component
             return;
         }
 
-        $resource_filters = Finder::onlyOf($this->resource->filters(), Filter::class);
+        $resource_filters = $this->resource->getFilters();
 
         foreach ($resource_filters as $filter) {
             $term = $this->filters[$filter->getField()] ?? null;

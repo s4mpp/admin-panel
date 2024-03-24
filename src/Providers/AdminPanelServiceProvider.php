@@ -6,6 +6,7 @@ use Livewire\Livewire;
 use S4mpp\Laraguard\Laraguard;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Utils\Finder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use S4mpp\AdminPanel\Livewire\Report;
 use Illuminate\Support\ServiceProvider;
@@ -38,9 +39,11 @@ final class AdminPanelServiceProvider extends ServiceProvider
     {
         $guard_admin = config('admin.guard', 'web');
 
-        $LaraguardPanel = Laraguard::panel('Admin panel', config('admin.prefix', 'painel'), $guard_admin);
+        $LaraguardPanel = Laraguard::panel('Admin panel', 'admin', AdminPanel::getGuardName());
 
-        if ($subdomain = config('admin.subdomain')) {
+        if ($subdomain = config('admin.subdomain', false)) {
+            
+            /** @var string $subdomain */
             $LaraguardPanel->subdomain($subdomain);
         }
 
@@ -52,7 +55,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
         $LaraguardPanel->addModule('Dashboard')->starter()->addIndex('admin::dashboard');
         $LaraguardPanel->addModule('Configurações', 'configuracoes')->middleware('can:Admin:settings,'.$guard_admin)->hideInMenu()->addIndex('admin::settings');
 
-        $permissions = $LaraguardPanel->addModule('Permissões')->middleware('can:Admin:permissions,'.$guard_admin)->controller(PermissionController::class)->addIndex();
+        $permissions = $LaraguardPanel->addModule('Permissões')->middleware('can:Admin:permissions,'.$guard_admin)->hideInMenu()->controller(PermissionController::class)->addIndex();
         $permissions->addPage('', 'generate-permissions', 'generate')->method('put')->action('generatePermissionsAdmin');
         $permissions->addPage('', 'create-permission', 'create-permission')->method('post')->action('createPermission');
         $permissions->addPage('', 'update-permission/{id}', 'update-permission')->method('put')->action('updatePermission');
@@ -67,7 +70,9 @@ final class AdminPanelServiceProvider extends ServiceProvider
                 ->controller(ResourceController::class);
             // ->addIndex('admin::resources.index');
 
-            $LaraguardModule->addPage($resource->getTitle(), '', 'index')->isIndex()->action('index')->view('admin::resources.index')->middleware('can:'.$resource->getName().':index,'.$guard_admin);
+            $LaraguardModule->hideInMenu(fn() => Auth::guard($guard_admin)->user()?->can('Admin:'.$resource->getName().':index,'.$guard_admin));
+
+            $LaraguardModule->addPage($resource->getTitle() ?? 'No title', '', 'index')->isIndex()->action('index')->view('admin::resources.index')->middleware('can:'.$resource->getName().':index,'.$guard_admin);
 
             $LaraguardModule->addPage('Cadastrar', 'cadastrar', 'create')->action('create')->middleware('can:'.$resource->getName().':create,'.$guard_admin);
             $LaraguardModule->addPage('Editar', 'editar/{id}', 'update')->action('update')->middleware('can:'.$resource->getName().':update,'.$guard_admin);
@@ -77,7 +82,8 @@ final class AdminPanelServiceProvider extends ServiceProvider
             $LaraguardModule->addPage('Relatório', 'relatorio/{slug}')->action('report');
             // ->middleware('can:'.$resource->getName().':report,'.$guard_admin);
 
-            $custom_actions_with_route = Finder::onlyOf(Finder::findElementsRecursive($resource->customActions(), CustomAction::class),
+            /** @var array<CustomAction> $custom_actions_with_route */
+            $custom_actions_with_route = Finder::onlyOf($resource->getCustomActions(),
                 Callback::class,
                 Update::class,
                 View::class

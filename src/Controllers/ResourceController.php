@@ -9,6 +9,7 @@ use S4mpp\Laraguard\Laraguard;
 use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\AdminPanel\Input\Input;
 use Illuminate\Routing\Controller;
+use S4mpp\AdminPanel\Enums\Action;
 use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;
@@ -17,7 +18,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Elements\Repeater;
+use S4mpp\AdminPanel\CustomActions\View;
 use S4mpp\AdminPanel\CustomActions\Update;
+use Spatie\Permission\PermissionRegistrar;
 use S4mpp\AdminPanel\CustomActions\Callback;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
 use Illuminate\Contracts\View\View as ViewContract;
@@ -30,15 +33,21 @@ final class ResourceController extends Controller
 {
     public function __invoke(): ViewFactory|ViewContract|null
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
 
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
+
         //----------------------------------------------------------------
 
-        $filters = Finder::onlyOf($resource->filters(), Filter::class);
+        $filters = $resource->getFilters();
 
         $alpine_expression_filters = [];
 
@@ -46,7 +55,7 @@ final class ResourceController extends Controller
             $alpine_expression_filters[] = implode(':', [$filter->getField(), $filter->getAlpineExpression()]);
         }
 
-        $reports = Finder::onlyOf($resource->reports(), Report::class);
+        $reports = $resource->getReports();
 
         $placeholder_search = $resource->getMessagePlaceholderSearch();
 
@@ -55,15 +64,21 @@ final class ResourceController extends Controller
 
     public function create(): ViewFactory|ViewContract|null
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
 
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
+
         //----------------------------------------------------------------
 
-        $repeaters = Finder::onlyOf($resource->repeaters(), Repeater::class);
+        $repeaters = $resource->getRepeaters();
 
         $data_slides = [];
 
@@ -76,15 +91,21 @@ final class ResourceController extends Controller
 
     public function update(int $id): ViewFactory|ViewContract|null
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
 
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
+
         //----------------------------------------------------------------
 
-        $repeaters = Finder::onlyOf($resource->repeaters(), Repeater::class);
+        $repeaters = $resource->getRepeaters();
 
         $data_slides = [];
 
@@ -92,9 +113,10 @@ final class ResourceController extends Controller
             $data_slides[] = 'slide'.$repeater->getRelation().': false';
         }
 
-        $inputs = Finder::findElementsRecursive($resource->form(), Input::class);
+        /** @var array<Input> */
+        $inputs = Finder::findElementsRecursive($resource->setCurrentAction(Action::Update)->getForm(), Input::class);
 
-        $fields = array_map(fn ($input) => $input->getName(), $inputs);
+        $fields = array_map(fn (Input $input) => $input->getName(), $inputs);
 
         array_unshift($fields, 'id');
 
@@ -107,22 +129,29 @@ final class ResourceController extends Controller
 
     public function read(int $id): ViewFactory|ViewContract|null
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
 
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
+
         //----------------------------------------------------------------
 
-        $read = Finder::fillInCard(Finder::onlyOf($resource->read(), Label::class, Card::class));
+        $read = Finder::fillInCard($resource->getRead());
 
         $register = $resource->getModel()->findOrFail($id);
 
-        $repeaters = Finder::onlyOf($resource->repeaters(), Repeater::class);
+        $repeaters = $resource->getRepeaters();
 
-        $custom_actions = $resource->customActions();
+        $custom_actions = $resource->getCustomActions();
 
+        /** @var array<CustomAction> $custom_action_elements */
         $custom_action_elements = Finder::findElementsRecursive($custom_actions, CustomAction::class);
 
         $custom_action_slides = $custom_actions_modals = [];
@@ -148,11 +177,17 @@ final class ResourceController extends Controller
 
     public function delete(): void
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
+
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
 
         //----------------------------------------------------------------
 
@@ -161,21 +196,27 @@ final class ResourceController extends Controller
 
     public function report(string $slug): ViewFactory|ViewContract|null
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
 
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
+
         //----------------------------------------------------------------
 
-        $report = $resource->getReport($slug);
+        $report = Finder::findBySlug($resource->getReports(), $slug);
 
         if (! $report) {
             abort(404);
         }
 
-        $filters = Finder::onlyOf($resource->filters(), Filter::class);
+        $filters = $resource->getFilters();
 
         $alpine_expression_filters = [];
 
@@ -188,11 +229,17 @@ final class ResourceController extends Controller
 
     public function customActionCallback(int $id): RedirectResponse
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
+
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
 
         //----------------------------------------------------------------
 
@@ -201,7 +248,8 @@ final class ResourceController extends Controller
         $path_steps = explode('.', $path);
 
         try {
-            $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), Callback::class), $path_steps[3]);
+            /** @var Callback */
+            $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->getCustomActions(), Callback::class), $path_steps[3]);
 
             $result = call_user_func($custom_action->getCallback(), $register);
 
@@ -213,11 +261,17 @@ final class ResourceController extends Controller
 
     public function customActionUpdate(int $id): RedirectResponse
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
+
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
 
         //----------------------------------------------------------------
 
@@ -226,7 +280,8 @@ final class ResourceController extends Controller
         $path_steps = explode('.', $path);
 
         try {
-            $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), Update::class), $path_steps[3]);
+            /** @var Update */
+            $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->getCustomActions(), Update::class), $path_steps[3]);
 
             foreach ($custom_action->getDataToChange() as $key => $new_value) {
                 $register->{$key} = $new_value;
@@ -242,11 +297,17 @@ final class ResourceController extends Controller
 
     public function customActionView(int $id): ViewFactory|ViewContract|null
     {
-        $path = request()->route()->action['as'];
+        /** @var string */
+        $path = Route::current()?->getAction('as');
 
         $path_steps = explode('.', $path);
 
         $resource = AdminPanel::getResource($path_steps[2]);
+
+        if(!$resource)
+        {
+            throw new \Exception('Resource not found');
+        }
 
         //----------------------------------------------------------------
 
@@ -254,7 +315,8 @@ final class ResourceController extends Controller
 
         $path_steps = explode('.', $path);
 
-        $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->customActions(), CustomAction::class), $path_steps[3]);
+        /** @var View */
+        $custom_action = Finder::findBySlug(Finder::findElementsRecursive($resource->getCustomActions(), View::class), $path_steps[3]);
 
         $view = $custom_action->getView();
 
@@ -340,7 +402,8 @@ final class ResourceController extends Controller
 
     // private function _getResource(): Resource
     // {
-    // 	$path = request()->route()->action['as'];
+    // 	/** @var string */
+        // $path = Route::current()?->getAction('as');
 
     // 	$path_steps = explode('.', $path);
 

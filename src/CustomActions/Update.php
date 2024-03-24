@@ -10,7 +10,7 @@ use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class Update extends CustomAction
 {
-    use CallRouteAction, CanBeDangerous, CanBeDisabled, RenderButtonForm, ShoudOpenInNewTab;
+    use CallRouteAction, CanBeDisabled, RenderButtonForm, ShoudOpenInNewTab;
 
     /**
      * @param  array<mixed>  $data

@@ -11,7 +11,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 
 final class Slide extends CustomAction
 {
-    use CanBeDangerous, CanBeDisabled, HasComponent;
+    use CanBeDisabled, HasComponent;
 
     /**
      * @var array<string>
@@ -34,7 +34,7 @@ final class Slide extends CustomAction
 
     public function getNameSlide(): string
     {
-        return 'slide'.Str::ucfirst(Str::camel($this->getSlug()));
+        return 'slide'.Str::ucfirst(Str::camel($this->getSlug() ?? ''));
     }
 
     // public function renderButton(): View|ViewFactory

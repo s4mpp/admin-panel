@@ -148,7 +148,7 @@ final class PermissionController extends Controller
             'permission_name' => ['required', 'string', 'max:255', Rule::unique('permissions', 'name')],
         ]);
 
-        $permission = Permission::make(['name' => $request->get('permission_name'), 'guard' => config('admin.guard', 'web')]);
+        $permission = Permission::make(['name' => $request->get('permission_name'), 'guard' => AdminPanel::getGuardName()]);
 
         $permission->name = $request->get('permission_name');
 
@@ -166,7 +166,7 @@ final class PermissionController extends Controller
             'permission_name' => ['required', 'string', 'max:255', Rule::unique('permissions', 'name')->ignore($id)],
         ]);
 
-        $permission = Permission::findById($id, config('admin.guard', 'web'));
+        $permission = Permission::findById($id, AdminPanel::getGuardName());
 
         $permission->name = $request->get('permission_name');
 
@@ -177,7 +177,7 @@ final class PermissionController extends Controller
 
     public function deletePermission(int $id): RedirectResponse
     {
-        $permission = Permission::findById($id, config('admin.guard', 'web'));
+        $permission = Permission::findById($id, AdminPanel::getGuardName());
 
         $permission->delete();
 
@@ -194,12 +194,15 @@ final class PermissionController extends Controller
             'permissions' => ['required', 'array', 'min:1'],
         ]);
 
-        $role = Role::make(['name' => $request->get('role_name'), 'guard_name' => config('admin.guard', 'web')]);
+        $role = Role::make(['name' => $request->get('role_name'), 'guard_name' => AdminPanel::getGuardName()]);
 
         $role->saveOrFail();
 
-        foreach ($request->get('permissions') as $permission_name) {
-            $permission = Permission::findByName($permission_name, config('admin.guard', 'web'));
+        /** @var array<string> $permissions */
+        $permissions = $request->get('permissions');
+
+        foreach ($permissions as $permission_name) {
+            $permission = Permission::findByName($permission_name, AdminPanel::getGuardName());
 
             $permission->assignRole($role);
         }
@@ -217,7 +220,7 @@ final class PermissionController extends Controller
             'permissions' => ['required', 'array', 'min:1'],
         ]);
 
-        $role = Role::findById($id, config('admin.guard', 'web'));
+        $role = Role::findById($id, AdminPanel::getGuardName());
 
         $role->name = $request->get('role_name');
 
@@ -225,8 +228,11 @@ final class PermissionController extends Controller
 
         $permissions_to_sync = [];
 
-        foreach ($request->get('permissions') as $permission_name) {
-            $permission = Permission::findByName($permission_name, config('admin.guard', 'web'));
+        /** @var array<string> $permissions */
+        $permissions = $request->get('permissions');
+
+        foreach ($permissions as $permission_name) {
+            $permission = Permission::findByName($permission_name, AdminPanel::getGuardName());
 
             $permissions_to_sync[] = $permission;
         }
@@ -238,7 +244,7 @@ final class PermissionController extends Controller
 
     public function deleteRole(int $id): RedirectResponse
     {
-        $role = Role::findById($id, config('admin.guard', 'web'));
+        $role = Role::findById($id, AdminPanel::getGuardName());
 
         $role->delete();
 
@@ -274,7 +280,7 @@ final class PermissionController extends Controller
     private function createPermissions(array $permissions_to_create): array
     {
         foreach ($permissions_to_create as $name_permission) {
-            $permission = Permission::findOrCreate($name_permission, config('admin.guard', 'web'));
+            $permission = Permission::findOrCreate($name_permission, AdminPanel::getGuardName());
 
             if (! $permission->exists) {
                 $permissions_created[] = $name_permission;
@@ -290,7 +296,7 @@ final class PermissionController extends Controller
      */
     private function removePermissionsNotUsed(array $permissions_to_create): array
     {
-        $all_permissions = Permission::where('guard_name', config('admin.guard', 'web'))->get();
+        $all_permissions = Permission::where('guard_name', AdminPanel::getGuardName())->get();
 
         foreach ($all_permissions as $permission) {
             if (! in_array($permission->name, $permissions_to_create)) {

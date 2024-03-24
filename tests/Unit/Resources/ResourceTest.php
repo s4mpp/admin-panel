@@ -18,13 +18,13 @@ final class ResourceTest extends TestCase
         $this->assertEquals('usuarios', $resource->getSlug());
         $this->assertEquals('Usuários', $resource->getTitle());
 
-        $this->assertIsArray($resource->reports());
-        $this->assertIsArray($resource->customActions());
-        $this->assertIsArray($resource->repeaters());
-        $this->assertIsArray($resource->read());
-        $this->assertIsArray($resource->form());
-        $this->assertIsArray($resource->table());
-        $this->assertIsArray($resource->filters());
+        $this->assertIsArray($resource->getReports());
+        $this->assertIsArray($resource->getCustomActions());
+        $this->assertIsArray($resource->getRepeaters());
+        $this->assertIsArray($resource->getRead());
+        $this->assertIsArray($resource->getForm());
+        $this->assertIsArray($resource->getTable());
+        $this->assertIsArray($resource->getFilters());
         $this->assertIsArray($resource->getActions());
         
         $this->assertIsString($resource->getNameModel());

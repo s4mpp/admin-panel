@@ -10,7 +10,7 @@ use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class Link extends CustomAction
 {
-    use CanBeDangerous, CanBeDisabled, HasComponent, RenderButtonLink, ShoudOpenInNewTab;
+    use CanBeDisabled, HasComponent, RenderButtonLink, ShoudOpenInNewTab;
 
     public function __construct(string $title, private string $url)
     {

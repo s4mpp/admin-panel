@@ -10,7 +10,7 @@ use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class View extends CustomAction
 {
-    use CallRouteAction, CanBeDangerous, CanBeDisabled, RenderButtonLink, ShoudOpenInNewTab;
+    use CallRouteAction, CanBeDisabled, RenderButtonLink, ShoudOpenInNewTab;
 
     public function __construct(string $title, private ?string $view = null)
     {

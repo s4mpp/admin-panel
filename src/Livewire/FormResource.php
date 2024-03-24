@@ -5,7 +5,9 @@ namespace S4mpp\AdminPanel\Livewire;
 use Livewire\Component;
 use S4mpp\AdminPanel\Utils;
 use S4mpp\AdminPanel\Input\Input;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Collection;
+use S4mpp\AdminPanel\Enums\Action;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
@@ -14,12 +16,12 @@ use Illuminate\Support\ValidatedInput;
 use S4mpp\AdminPanel\Hooks\CreateHook;
 use S4mpp\AdminPanel\Hooks\UpdateHook;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use S4mpp\AdminPanel\Elements\Repeater;
 use S4mpp\AdminPanel\Resources\Resource;
 use S4mpp\AdminPanel\Traits\CreatesForm;
 use S4mpp\AdminPanel\Traits\CanHaveSubForm;
 use S4mpp\AdminPanel\Traits\WithAdminResource;
-use Livewire\Features\SupportRedirects\Redirector;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
@@ -38,7 +40,7 @@ final class FormResource extends Component
     public string $url_to_redirect_after_save;
 
     /**
-     * @var array<array<array<array<int,string>|null>>>
+     * @var array<array<array<array<int,string>|int|null>>>
      */
     public array $childs = [];
 
@@ -65,15 +67,17 @@ final class FormResource extends Component
 
         $this->url_to_redirect_after_save = $url_to_redirect_after_save;
 
-        $this->id_register = $register ? $register['id'] : null;
+        $this->id_register = $register ? ($register['id'] ?? null) : null;
 
-        $this->form = Finder::fillInCard($this->resource->form());
+        $form = $this->resource->setCurrentAction($this->id_register ? Action::Update : Action::Create)->getForm();
+
+        $this->form = Finder::fillInCard($form);
 
         $this->setInitialData();
 
         $this->setData($register);
 
-        $this->repeaters = Finder::onlyOf($this->resource->repeaters(), Repeater::class);
+        $this->repeaters = $this->resource->getRepeaters();
 
         foreach ($this->repeaters as $repeater) {
             $this->childs[$repeater->getRelation()] = [];
@@ -84,9 +88,11 @@ final class FormResource extends Component
     {
         $this->loadResource();
 
-        $this->form = Finder::fillInCard($this->resource->form());
+        $form = $this->resource->setCurrentAction($this->id_register ? Action::Update : Action::Create)->getForm();
 
-        $this->repeaters = Finder::onlyOf($this->resource->repeaters(), Repeater::class);
+        $this->form = Finder::fillInCard($form);
+
+        $this->repeaters = $this->resource->getRepeaters();
 
         $this->loadRepeaterValues();
     }
@@ -104,6 +110,7 @@ final class FormResource extends Component
 
         $this->dispatch('reset-loading');
 
+        /** @var array<Input> $fields */
         $fields = Finder::findElementsRecursive($this->form, Input::class);
 
         $fields_validated = $this->_validate($fields, $this->resource->getModel()->getTable(), $this->id_register);
@@ -112,13 +119,13 @@ final class FormResource extends Component
 
         $register->save();
 
-        session()->flash('message', 'Registro salvo com sucesso!');
+        Session::flash('success', 'Registro salvo com sucesso!');
 
         return redirect($this->url_to_redirect_after_save);
     }
 
     /**
-     * @param  array<string>  $data_to_save
+     * @param  array<int,string>  $data_to_save
      */
     public function setChild(string $relation, ?int $id_temp, ?int $register_id, array $data_to_save): void
     {
@@ -200,10 +207,14 @@ final class FormResource extends Component
             // }
             // else
             // {
-            $value = $field->processInputData($data);
             // }
 
-            $register->{$field->getName()} = $value;
+            if(method_exists($field, 'processInputData'))
+            {
+                $data = $field->processInputData($data);
+            }
+
+            $register->{$field->getName()} = $data;
         }
 
         return $register;

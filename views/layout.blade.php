@@ -117,9 +117,17 @@
 					@endif --}}
 
 
-					<a href="{{ route($panel->getRouteName('configuracoes', 'index')) }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
-						Configurações
-					</a>
+					@can('Admin:settings')
+						<a href="{{ route($panel->getRouteName('configuracoes', 'index')) }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+							Configurações
+						</a>
+					@endcan
+
+					@can('Admin:permissions')
+						<a href="{{ route($panel->getRouteName('permissoes', 'index')) }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+							Permissões
+						</a>
+					@endcan
 
 
 					<a href="{{ $my_account_url }}" class="text-gray-700 w-full flex justify-between items-center    transition-colors px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">

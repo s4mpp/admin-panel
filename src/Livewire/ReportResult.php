@@ -4,6 +4,7 @@ namespace S4mpp\AdminPanel\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Traits\Filterable;
@@ -56,7 +57,10 @@ final class ReportResult extends Component
     {
         $this->loadResource();
 
-        $this->report = $this->resource->getReport($this->report_slug);
+        /** @var Report */
+        $report = Finder::findBySlug($this->resource->getReports(), $this->report_slug);
+        
+        $this->report = $report;
     }
 
     public function render(): View|ViewFactory
@@ -112,7 +116,8 @@ final class ReportResult extends Component
         // $method = $result->getMethod();
 
         $registers = call_user_func($this->report->getCallbackFilter(), $this->resource->getModel(), function ($query): void {
-            foreach ($this->resource->filters() as $field) {
+            foreach ($this->resource->getFilters() as $field) {
+                
                 $this->executeQuery($field, $query);
             }
         });

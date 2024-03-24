@@ -11,6 +11,7 @@ use S4mpp\AdminPanel\Utils\Finder;
 use Illuminate\Contracts\View\View;
 use S4mpp\AdminPanel\Models\Setting;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Session;
 use S4mpp\AdminPanel\Traits\CreatesForm;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
@@ -61,6 +62,7 @@ final class FormSettings extends Component
 
         $this->dispatch('reset-loading');
 
+        /** @var array<Input> */
         $fields = Finder::findElementsRecursive($this->form, Input::class);
 
         $fields_validated = $this->_validate($fields, 'settings');
@@ -82,7 +84,7 @@ final class FormSettings extends Component
             }
         }
 
-        session()->flash('message', 'Configurações salvas com sucesso!');
+        Session::flash('message', 'Configurações salvas com sucesso!');
 
         return redirect($this->url);
     }

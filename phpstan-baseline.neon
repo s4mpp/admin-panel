@@ -1,0 +1,101 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Auth\\\\Guard\\:\\:getProvider\\(\\)\\.$#"
+			count: 5
+			path: src/Controllers/PermissionController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Http\\\\RedirectResponse\\:\\:withMessage\\(\\)\\.$#"
+			count: 7
+			path: src/Controllers/PermissionController.php
+
+		-
+			message: "#^Call to an undefined static method Spatie\\\\Permission\\\\Models\\\\Permission\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: src/Controllers/PermissionController.php
+
+		-
+			message: "#^Call to an undefined static method Spatie\\\\Permission\\\\Models\\\\Permission\\:\\:make\\(\\)\\.$#"
+			count: 1
+			path: src/Controllers/PermissionController.php
+
+		-
+			message: "#^Call to an undefined static method Spatie\\\\Permission\\\\Models\\\\Permission\\:\\:where\\(\\)\\.$#"
+			count: 1
+			path: src/Controllers/PermissionController.php
+
+		-
+			message: "#^Call to an undefined static method Spatie\\\\Permission\\\\Models\\\\Permission\\:\\:whereNotIn\\(\\)\\.$#"
+			count: 1
+			path: src/Controllers/PermissionController.php
+
+		-
+			message: "#^Call to an undefined static method Spatie\\\\Permission\\\\Models\\\\Role\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: src/Controllers/PermissionController.php
+
+		-
+			message: "#^Call to an undefined static method Spatie\\\\Permission\\\\Models\\\\Role\\:\\:make\\(\\)\\.$#"
+			count: 1
+			path: src/Controllers/PermissionController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:findOrFail\\(\\)\\.$#"
+			count: 4
+			path: src/Controllers/ResourceController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:select\\(\\)\\.$#"
+			count: 1
+			path: src/Controllers/ResourceController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Http\\\\RedirectResponse\\:\\:withMessage\\(\\)\\.$#"
+			count: 2
+			path: src/Controllers/ResourceController.php
+
+		-
+			message: "#^Call to an undefined static method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:find\\(\\)\\.$#"
+			count: 2
+			path: src/Livewire/FormResource.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:find\\(\\)\\.$#"
+			count: 1
+			path: src/Livewire/TableRepeater.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:orderBy\\(\\)\\.$#"
+			count: 1
+			path: src/Livewire/TableResource.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:syncPermissions\\(\\)\\.$#"
+			count: 1
+			path: src/Livewire/UserPermissions.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:syncRoles\\(\\)\\.$#"
+			count: 1
+			path: src/Livewire/UserPermissions.php
+
+		-
+			message: "#^Call to an undefined static method Spatie\\\\Permission\\\\Models\\\\Permission\\:\\:where\\(\\)\\.$#"
+			count: 1
+			path: src/Livewire/UserPermissions.php
+
+		-
+			message: "#^Call to an undefined static method Spatie\\\\Permission\\\\Models\\\\Role\\:\\:where\\(\\)\\.$#"
+			count: 1
+			path: src/Livewire/UserPermissions.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable\\:\\:can\\(\\)\\.$#"
+			count: 1
+			path: src/Providers/AdminPanelServiceProvider.php
+
+		-
+			message: "#^Call to an undefined static method S4mpp\\\\AdminPanel\\\\Models\\\\Setting\\:\\:where\\(\\)\\.$#"
+			count: 1
+			path: src/Settings.php

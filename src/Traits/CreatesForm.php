@@ -140,7 +140,7 @@ trait CreatesForm
      * @param  array<Input>  $fields
      * @return array<string>
      */
-    private function _validate(array $fields, ?string $table = null, ?int $id_register = null): ValidatedInput|array
+    private function _validate(array $fields, string $table, ?int $id_register = null): ValidatedInput|array
     {
         $validation_rules = $attributes = [];
 

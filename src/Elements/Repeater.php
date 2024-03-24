@@ -71,7 +71,7 @@ final class Repeater
         return $this->can_add;
     }
 
-    public function orderBy(?string $field = null, ?string $direction = null): self
+    public function orderBy(string $field, string $direction): self
     {
         $this->setOrdenation($field, $direction);
 

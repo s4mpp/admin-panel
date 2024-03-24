@@ -7,10 +7,11 @@ use S4mpp\AdminPanel\Traits\Titleable;
 use S4mpp\AdminPanel\Traits\HasComponent;
 use S4mpp\AdminPanel\Traits\HasDefaultText;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 abstract class Input
 {
-    use HasComponent, HasDefaultText, Titleable;
+    use HasComponent, HasDefaultText, Titleable, HasValidationRules;
 
     private ?string $prefix = 'data';
 
@@ -62,10 +63,6 @@ abstract class Input
         return $this->initial_value;
     }
 
-    public function processInputData(mixed $data): mixed
-    {
-        return $data;
-    }
 
     // public function prefix(string $prefix): self
     // {

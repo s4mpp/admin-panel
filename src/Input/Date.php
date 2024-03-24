@@ -7,7 +7,7 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Date extends Input
 {
-    use CanModifyFormInput, HasValidationRules;
+    use CanModifyFormInput;
 
     /**
      * @return array<string>

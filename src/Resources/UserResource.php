@@ -2,6 +2,7 @@
 
 namespace S4mpp\AdminPanel\Resources;
 
+use S4mpp\AdminPanel\Enums\Action;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Factories\Input;
@@ -76,13 +77,19 @@ final class UserResource extends Resource
      */
     public function form(): array
     {
-        return [
-            Input::text('Nome', 'name')->uppercase(),
+        $form = [
+            Input::text('Nome', 'name'),
 
             Input::email('E-mail', 'email')->unique(),
-
-            Input::text('Senha', 'password'),
         ];
+
+ 
+        if($this->getCurrentAction() == Action::Create)
+        {
+            $form[] = Input::password('Senha', 'password');
+        }
+
+        return $form;
     }
 
     /**

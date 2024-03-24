@@ -8,7 +8,7 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Select extends Input
 {
-    use CanChangeCase, HasMultipleOptions, HasValidationRules;
+    use CanChangeCase, HasMultipleOptions;
 
     /**
      * @var string|array<string>

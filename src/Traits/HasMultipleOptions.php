@@ -62,13 +62,13 @@ trait HasMultipleOptions
             return $this->key_collection ? $value[$this->key_collection] : $key;
         }
 
+        if ((new \ReflectionClass($value::class))->isEnum()) {
+            return $value->value;
+        }
+        
         /** @var object $value */
         if (is_a($value, Model::class)) {
             return $this->key_collection ? $value->{$this->key_collection} : $value->id;
-        }
-
-        if ((new \ReflectionClass($value::class))->isEnum()) {
-            return $value->value;
         }
 
         return null;
@@ -84,14 +84,15 @@ trait HasMultipleOptions
             return $value[$this->value_collection] ?? json_encode($value);
         }
 
+        if ((new \ReflectionClass($value::class))->isEnum()) {
+            return $value->name;
+        }
+        
         /** @var object $value */
         if (is_a($value, Model::class)) {
             return $value[$this->value_collection] ?? $value;
         }
 
-        if ((new \ReflectionClass($value::class))->isEnum()) {
-            return $value->name;
-        }
 
         return null;
     }

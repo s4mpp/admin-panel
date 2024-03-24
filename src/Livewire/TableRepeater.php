@@ -34,7 +34,10 @@ final class TableRepeater extends Component
     {
         $this->loadResource();
 
-        $this->repeater = Finder::findBySlug($this->resource->repeaters(), $this->repeater_slug);
+        /** @var Repeater */
+        $repeater = Finder::findBySlug($this->resource->getRepeaters(), $this->repeater_slug);
+        
+        $this->repeater = $repeater;
     }
 
     public function render() : View|ViewFactory

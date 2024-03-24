@@ -62,7 +62,7 @@ final class ResourceTest extends TestCase
         $response = $this->actingAs($user)->get('admin/'.$url.'/cadastrar');
 
         $response->assertOk();
-        $response->assertSee($title);
+        $response->assertSee('Cadastrar');
         $response->assertSeeLivewire('form-resource');
     }
 
@@ -80,7 +80,7 @@ final class ResourceTest extends TestCase
         $response = $this->actingAs($user)->get('admin/'.$url.'/editar/'.$register->id);
 
         $response->assertOk();
-        $response->assertSee($title);
+        $response->assertSee('Editar');
         $response->assertSeeLivewire('form-resource');
     }
 
@@ -98,7 +98,7 @@ final class ResourceTest extends TestCase
         $response = $this->actingAs($user)->get('admin/'.$url.'/visualizar/'.$register->id);
 
         $response->assertOk();
-        $response->assertSee($title);
+        $response->assertSee('Visualizar');
     }
 
     

@@ -6,8 +6,6 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Search extends Input
 {
-    use HasValidationRules;
-
     /**
      * @var string|array<string>
      */

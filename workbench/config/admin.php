@@ -9,12 +9,10 @@ return [
 
 	'route_redirect_after_login' => 'dashboard',
 
-	'path' => workbench_path('app/AdminPanel'),
+	'resources_path' => workbench_path('app/AdminPanel'),
 	
-	'models_namespace' => '\Workbench\App\Models',
-
-	'namespace' => 'Workbench\\App\\AdminPanel',
-
+	'namespace' => 'Workbench\\App',
+	
 	'assets' => [
 		'css' => ['css/style.css'],
 		'js' => ['js/script.js']

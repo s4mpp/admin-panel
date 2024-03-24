@@ -16,9 +16,9 @@ final class Callback extends CustomAction
 {
     //use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
 
-    use CallRouteAction, CanBeDangerous, CanBeDisabled, RenderButtonForm, ShoudOpenInNewTab;
+    use CallRouteAction, CanBeDisabled, RenderButtonForm, ShoudOpenInNewTab;
 
-    public function __construct(string $title, private ?Closure $callback)
+    public function __construct(string $title, private Closure $callback)
     {
         parent::__construct($title);
 
@@ -27,7 +27,7 @@ final class Callback extends CustomAction
         $this->setAction('customActionCallback');
     }
 
-    public function getCallback(): ?Closure
+    public function getCallback(): Closure
     {
         return $this->callback;
     }

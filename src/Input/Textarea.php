@@ -7,7 +7,7 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Textarea extends Input
 {
-    use CanChangeCase, HasValidationRules;
+    use CanChangeCase;
 
     /**
      * @var string|array<string>

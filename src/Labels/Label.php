@@ -35,7 +35,7 @@ abstract class Label
         return $this;
     }
 
-    public function getField(): ?string
+    public function getField(): string
     {
         return $this->field;
     }
@@ -58,7 +58,7 @@ abstract class Label
     public function getContent(Model|Collection|array $register): mixed
     {
         if ($this->is_relationship) {
-            $path = explode('.', $this->getField() ?? '');
+            $path = explode('.', $this->getField());
 
             $content = $register[$path[0]] ?? null;
 

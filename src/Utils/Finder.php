@@ -2,6 +2,8 @@
 
 namespace S4mpp\AdminPanel\Utils;
 
+use S4mpp\AdminPanel\Input\Input;
+use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Elements\Card;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +33,7 @@ abstract class Finder
     // }
 
     /**
-     * @param  array<mixed>  $arr_input
+     * @param  array<Input|Label|Card>  $arr_input
      * @return array<Card>
      */
     public static function fillInCard(array $arr_input): array
@@ -39,6 +41,7 @@ abstract class Finder
         $items_filled_in_card = [];
 
         foreach ($arr_input as $item) {
+            /** @var object $item */
             if (is_a($item, Card::class)) {
                 $items_filled_in_card[] = $item;
 
@@ -70,6 +73,7 @@ abstract class Finder
             $class_found = false;
 
             foreach ($classes as $class) {
+                /** @var object $item */
                 if (is_subclass_of($item, $class) || is_a($item, $class)) {
                     $class_found = true;
 
@@ -91,7 +95,9 @@ abstract class Finder
     public static function findBySlug(?array $items, string $slug_to_find): mixed
     {
         foreach ($items ?? [] as $item) {
-            if ($item->getSlug() == $slug_to_find) {
+
+            /** @var object $item */
+            if (method_exists($item, 'getSlug') && $item->getSlug() == $slug_to_find) {
                 return $item;
             }
         }
@@ -133,6 +139,7 @@ abstract class Finder
     public static function findElementsRecursive(array $elements, string $element_to_search, array $fields_found = []): array
     {
         foreach ($elements as $element) {
+        
             if (is_subclass_of($element, $element_to_search) || is_a($element, $element_to_search)) {
                 $fields_found[] = $element;
             } elseif (is_array($element)) {

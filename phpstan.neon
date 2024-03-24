@@ -1,9 +1,14 @@
+includes:
+	- phpstan-baseline.neon
+
 parameters:
-	level: 6
+	level: 9
 	checkGenericClassInNonGenericObjectType: false
+	universalObjectCratesClasses:
+		- Spatie\Permission\Contracts\Role
+		- Spatie\Permission\Contracts\Permission
+		- Illuminate\Foundation\Auth\User
+		- Illuminate\Database\Eloquent\Model
 	paths:
 		- src
 	ignoreErrors:
-		- '#Call to an undefined |static| method Illuminate\\Database\\Eloquent\\Model::\$[a-zA-Z]#'
-		- '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$[a-zA-Z]#'
-		- '#Access to an undefined property Illuminate\\Foundation\\Auth\\User::\$[a-zA-Z]#'

@@ -11,7 +11,7 @@ trait CallRouteAction
 
     private string $method = 'GET';
 
-    private mixed $success_message = null;
+    private string|Closure|null $success_message = null;
 
     public function getMethod(): string
     {
@@ -37,9 +37,16 @@ trait CallRouteAction
         return $this;
     }
 
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
-        return route($this->getResource()->getRouteName($this->getSlug()), ['id' => $this->getRegister()->id]);
+        $route_name = $this->getResource()->getRouteName($this->getSlug() ?? '');
+
+        if(!$route_name)
+        {
+            return null;
+        }
+
+        return route($route_name, ['id' => $this->getRegister()->id]);
     }
 
     public function setSuccessMessage(string|Closure $success_message): self
@@ -60,6 +67,7 @@ trait CallRouteAction
             $message = call_user_func($message, $result);
         }
 
+        /** @var string|null $message */
         return Str::of($message ?? 'Ação concluída com sucesso.')->inlineMarkdown();
     }
 }

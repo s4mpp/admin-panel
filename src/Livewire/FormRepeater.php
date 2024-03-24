@@ -40,7 +40,7 @@ final class FormRepeater extends Component
 
         $this->loadResource();
 
-        $this->repeater = Finder::findBySlug($this->resource->repeaters(), $this->repeater_slug);
+        $this->repeater = Finder::findBySlug($this->resource->getRepeaters(), $this->repeater_slug);
 
         $this->form = Finder::onlyOf($this->repeater->getForm(), Input::class);
 
@@ -51,7 +51,7 @@ final class FormRepeater extends Component
     {
         $this->loadResource();
 
-        $this->repeater = Finder::findBySlug($this->resource->repeaters(), $this->repeater_slug);
+        $this->repeater = Finder::findBySlug($this->resource->getRepeaters(), $this->repeater_slug);
 
         $this->form = Finder::onlyOf($this->repeater->getForm(), Input::class);
     }

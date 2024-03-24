@@ -32,7 +32,7 @@
         "orchestra/testbench": "^8.15",
         "phpunit/phpunit": "^10.5",
         "nunomaduro/collision": "^7.8",
-        "larastan/larastan": "^2.0"
+        "phpstan/phpstan": "^1.10"
     },
     "autoload-dev": {
         "psr-4": {

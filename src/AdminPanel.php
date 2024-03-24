@@ -28,9 +28,9 @@ abstract class AdminPanel
      */
     public static function loadResources(): array
     {
-        $path = Config::get('admin.path', app_path('AdminPanel'));
+        $path = Config::get('admin.resources_path', app_path('AdminPanel'));
 
-        $namespace = Config::get('admin.namespace', 'App\\AdminPanel');
+        $namespace = Config::get('admin.namespace', 'App\\');
 
         $filesystem = new Filesystem();
 
@@ -41,9 +41,12 @@ abstract class AdminPanel
             $files = new \FileSystemIterator($path);
 
             foreach ($files as $file) {
-                $class_name = $namespace.'\\'.str_replace('.php', '', $file->getFilename());
+                $resource_name = $namespace.'\\AdminPanel\\'.str_replace('.php', '', $file->getFilename());
+                
+                /** @var Resource $resource */
+                $resource = new $resource_name();
 
-                self::addResource(new $class_name());
+                self::addResource($resource);
             }
         }
 
@@ -90,5 +93,10 @@ abstract class AdminPanel
     public static function getSettings(): array
     {
         return self::$settings;
+    }
+
+    public static function getGuardName(): string
+    {
+        return config('admin.guard', 'web');
     }
 }

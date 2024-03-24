@@ -51,7 +51,7 @@ trait CanBeDangerous
 
     public function getNameModalConfirmation(): string
     {
-        return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug()));
+        return 'modalConfirmation'.Str::ucfirst(Str::camel($this->getSlug() ?? ''));
     }
 
     // public function renderButtonWithConfirmation(): View|ViewFactory

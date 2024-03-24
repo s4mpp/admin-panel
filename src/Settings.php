@@ -11,7 +11,7 @@ abstract class Settings
         return Setting::where('key', $key)->first();
     }
 
-    public static function get(?string $key = null): ?string
+    public static function get(string $key): ?string
     {
         $field = self::getRegister($key);
 

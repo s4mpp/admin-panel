@@ -4,6 +4,7 @@ namespace S4mpp\AdminPanel\Traits;
 
 use S4mpp\AdminPanel\Filter\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use S4mpp\AdminPanel\Filter\FilterInterface;
 
 /**
  * @codeCoverageIgnore

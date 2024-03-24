@@ -1,6 +1,6 @@
 @extends('laraguard::layout')
 
-@section('title', 'Create')
+@section('title', 'Cadastrar')
 
 @section('content')
 

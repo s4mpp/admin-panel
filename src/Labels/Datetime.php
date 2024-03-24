@@ -23,15 +23,17 @@ final class Datetime extends Label
 
     public function getDateTimeFormatted(Carbon|string|null $datetime = null): mixed
     {
+        /** @var object $datetime */
         if (is_a($datetime, Carbon::class)) {
             return $datetime->format($this->format);
         }
-
+        
         return $datetime;
     }
-
+    
     public function getDiffForHumans(Carbon|string|null $datetime = null): ?string
     {
+        /** @var object $datetime */
         if (is_a($datetime, Carbon::class)) {
             return $datetime->diffForHumans();
         }

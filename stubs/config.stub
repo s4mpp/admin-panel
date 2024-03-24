@@ -3,7 +3,7 @@
 return [
 	'guard' => 'web',
 	
-	'prefix' => 'admin-panel',
+	'prefix' => 'painel',
 
 	'route_redirect_after_login' => 'dashboard',
 

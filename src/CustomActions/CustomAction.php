@@ -8,10 +8,11 @@ use S4mpp\AdminPanel\Traits\Titleable;
 use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Resources\Resource;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use S4mpp\AdminPanel\Traits\CanBeDangerous;
 
 abstract class CustomAction
 {
-    use Slugable, Titleable;
+    use Slugable, Titleable, CanBeDangerous;
 
     // protected $register;
 
@@ -32,7 +33,7 @@ abstract class CustomAction
 
     // private array $roles = [];
 
-    private Model $register;
+    protected Model $register;
 
     private Resource $resource;
 

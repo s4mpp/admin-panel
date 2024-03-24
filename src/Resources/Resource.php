@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Elements\Repeater;
 use Illuminate\Pagination\LengthAwarePaginator;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
+use S4mpp\AdminPanel\Enums\Action;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 
 abstract class Resource
@@ -25,6 +26,8 @@ abstract class Resource
     use Ordenable, Slugable, Titleable;
 
     private string $name;
+
+    private ?Action $current_action = null;
 
     // protected $actions = [];
 
@@ -44,65 +47,21 @@ abstract class Resource
         $this->name = str_replace('Resource', '', end($path));
     }
 
+    final public function setCurrentAction(Action $action): self
+    {
+        $this->current_action = $action;
+
+        return $this;
+    }
+
+    final public function getCurrentAction(): ?Action
+    {
+        return $this->current_action;
+    }
+
     final public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @return array<Filter>
-     */
-    public function filters(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<Label|Card>
-     */
-    public function table(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<Input|Card>
-     */
-    public function form(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<Label|Card>
-     */
-    public function read(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<Repeater>
-     */
-    public function repeaters(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<CustomAction>
-     */
-    public function customActions(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<Report>
-     */
-    public function reports(): array
-    {
-        return [];
     }
 
     // public function getRegisters(): LengthAwarePaginator
@@ -187,7 +146,7 @@ abstract class Resource
 
         $current_panel = Panel::current();
 
-        return ($current_module) ? Laraguard::getPanel($current_panel)->getRouteName($current_module, $crud_action) : null;
+        return ($current_module) ? Laraguard::getPanel($current_panel)?->getRouteName($current_module, $crud_action) : null;
     }
 
     /**
@@ -249,7 +208,7 @@ abstract class Resource
 
     final public function getNameModel(): string
     {
-        return config('admin.models_namespace', '\App\\Models').'\\'.$this->name;
+        return config('admin.namespace', '\App').'\\Models\\'.$this->name;
     }
 
     final public function getModel(): Model
@@ -260,6 +219,7 @@ abstract class Resource
             throw new \Exception('Model "'.$model.'" not found');
         }
 
+        /** @var Model */
         return app($model);
     }
 
@@ -279,13 +239,70 @@ abstract class Resource
     //     return $columns;
     // }
 
-    // /**
-    //  * @return array<Input|Card>
-    //  */
-    // final public function getForm(): array
-    // {
-    //     return Finder::onlyOf($this->form(), Input::class, Card::class);
-    // }
+    /**
+     * @return array<Input|Card>
+     */
+    final public function getForm(): array
+    {
+        /** @var array<Input|Card> */
+        return Finder::onlyOf($this->form(), Input::class, Card::class);
+    }
+
+    /**
+     * @return array<Label|Card>
+     */
+    final public function getRead(): array
+    {
+        /** @var array<Label|Card> */
+        return Finder::onlyOf($this->read(), Label::class, Card::class);
+    }
+
+    /**
+     * @return array<CustomAction>
+     */
+    final public function getCustomActions(): array
+    {
+        /** @var array<CustomAction> */
+        return Finder::onlyOf($this->customActions(), CustomAction::class);
+    }
+
+    /**
+     * @return array<Filter>
+     */
+    final public function getFilters(): array
+    {
+        /** @var array<Filter> */
+        return Finder::onlyOf($this->filters(), Filter::class);
+    }
+
+    /**
+     * @return array<Report>
+     */
+    final public function getReports(): array
+    {
+        /** @var  array<Report> */
+        return Finder::onlyOf($this->reports(), Report::class);
+    }
+
+    /**
+     * @return array<Label>
+     */
+    final public function getTable(): array
+    {
+        /** @var array<Label> */
+        return Finder::onlyOf($this->table(), Label::class);
+    }
+
+    /**
+     * @return array<Repeater>
+     */
+    final public function getRepeaters(): array
+    {
+        /** @var array<Repeater> */
+        return Finder::onlyOf($this->repeaters(), Repeater::class);
+    }
+
+    
 
     // /**
     //  * @return array<Label|Card>
@@ -351,10 +368,12 @@ abstract class Resource
     //     return Finder::onlyOf($this->reports(), Report::class);
     // }
 
-    final public function getReport(string $slug_report): ?Report
-    {
-        return Finder::findBySlug(Finder::findElementsRecursive($this->reports(), Report::class), $slug_report);
-    }
+    // final public function getReport(string $slug_report): ?Report
+    // {
+    //     return Finder::findBySlug(Finder::findElementsRecursive($this->reports(), Report::class), $slug_report);
+    // }
+
+    
 
     // final public function getCustomAction(string $slug_custom_action): ?Report
     // {
@@ -366,4 +385,60 @@ abstract class Resource
 
     //     return null;
     // }
+
+    /**
+     * @return array<Filter>
+     */
+    protected function filters(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<Label|Card>
+     */
+    protected function table(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<Input|Card>
+     */
+    protected function form(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<Label|Card>
+     */
+    protected function read(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<Repeater>
+     */
+    protected function repeaters(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<CustomAction>
+     */
+    protected function customActions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<Report>
+     */
+    protected function reports(): array
+    {
+        return [];
+    }
 }

@@ -12,13 +12,17 @@ use S4mpp\AdminPanel\Input\Number;
 use S4mpp\AdminPanel\Input\Search;
 use S4mpp\AdminPanel\Input\Select;
 use S4mpp\AdminPanel\Input\Checkbox;
+use S4mpp\AdminPanel\Input\Password;
 use S4mpp\AdminPanel\Input\Textarea;
 
 abstract class Input
 {
     public static function text(string $title, string $field): Text
     {
-        return (new Text($title, $field))->addRule('string');
+        $text = new Text($title, $field);
+        $text->addRule('string');
+
+        return $text;
     }
 
     public static function date(string $title, string $field): Date
@@ -30,12 +34,23 @@ abstract class Input
 
     public static function email(string $title, string $field): Email
     {
-        return (new Email($title, $field))->addRule('email');
+        $email =  new Email($title, $field);
+        $email->addRule('email');
+
+        return $email;
+    }
+
+    public static function password(string $title, string $field): Password
+    {
+        return (new Password($title, $field));
     }
 
     public static function textarea(string $title, string $field, int $rows = 4): Textarea
     {
-        return (new Textarea($title, $field, $rows))->addRule('string');
+        $textarea = new Textarea($title, $field, $rows);
+        $textarea->addRule('string');
+
+        return $textarea;
     }
 
     // public static function file(string $title, string $field, string $folder)
@@ -103,7 +118,10 @@ abstract class Input
 
     public static function checkbox(string $title, string $field): Checkbox
     {
-        return (new Checkbox($title, $field))->addRule('array');
+        $checkbox = new Checkbox($title, $field);
+        $checkbox->addRule('array');
+
+        return $checkbox;
     }
 
     public static function radio(string $title, string $field): Radio

@@ -7,7 +7,7 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Checkbox extends Input
 {
-    use HasMultipleOptions, HasValidationRules;
+    use HasMultipleOptions;
 
     /**
      * @var string|array<string>

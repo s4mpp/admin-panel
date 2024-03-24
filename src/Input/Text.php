@@ -8,7 +8,7 @@ use S4mpp\AdminPanel\Traits\HasValidationRules;
 
 final class Text extends Input
 {
-    use CanChangeCase, CanModifyFormInput, HasValidationRules;
+    use CanChangeCase, CanModifyFormInput;
 
     private ?string $mask = null;
 

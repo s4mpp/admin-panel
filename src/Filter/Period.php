@@ -38,10 +38,11 @@ final class Period extends Filter
     // }
 
     /**
-     * @param  array<string>  $term
+     * @param  array<string>|int|string  $term
      */
-    public function query(Builder $builder, array $term): void
+    public function query(Builder $builder, array|int|string $term): void
     {
+        /** @var array<string> $term */
         extract($term);
 
         if (isset($start) && $start) {
@@ -58,15 +59,18 @@ final class Period extends Filter
      */
     public function getDescriptionResult(array $term): ?string
     {
-        $start = $term['start'] ?? null;
-        $end = $term['end'] ?? null;
+        /** @var int|null $start */
+        $start = isset($term['start']) ? strtotime($term['start']) : null;
+        
+        /** @var int|null $end */
+        $end = isset($term['end']) ? strtotime($term['end']) : null;
 
         if ($start && ! $end) {
-            $description = 'a partir de '.date('d/m/Y', strtotime($start));
+            $description = 'a partir de '.date('d/m/Y', $start);
         } elseif (! $start && $end) {
-            $description = 'até '.date('d/m/Y', strtotime($end));
+            $description = 'até '.date('d/m/Y', $end);
         } elseif ($start && $end) {
-            $description = date('d/m/Y', strtotime($start)).' a '.date('d/m/Y', strtotime($end));
+            $description = date('d/m/Y', $start).' a '.date('d/m/Y', $end);
         }
 
         return $description ?? null;
