@@ -82,7 +82,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
             $LaraguardModule->addPage('Relatório', 'relatorio/{slug}')->action('report');
             // ->middleware('can:'.$resource->getName().':report,'.$guard_admin);
 
-            /** @var array<CustomAction> $custom_actions_with_route */
+            /** @var array<Callback|Update|View> $custom_actions_with_route */
             $custom_actions_with_route = Finder::onlyOf($resource->getCustomActions(),
                 Callback::class,
                 Update::class,

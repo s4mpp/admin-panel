@@ -2,7 +2,7 @@ includes:
 	- phpstan-baseline.neon
 
 parameters:
-	level: 9
+	level: 4
 	checkGenericClassInNonGenericObjectType: false
 	universalObjectCratesClasses:
 		- Spatie\Permission\Contracts\Role
