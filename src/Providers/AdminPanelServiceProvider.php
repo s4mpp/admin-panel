@@ -39,7 +39,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
     {
         $guard_admin = config('admin.guard', 'web');
 
-        $LaraguardPanel = Laraguard::panel('Admin panel', 'admin', AdminPanel::getGuardName());
+        $LaraguardPanel = Laraguard::panel('Admin panel', config('admin.prefix', 'painel'), AdminPanel::getGuardName());
 
         if ($subdomain = config('admin.subdomain', false)) {
             
@@ -70,7 +70,7 @@ final class AdminPanelServiceProvider extends ServiceProvider
                 ->controller(ResourceController::class);
             // ->addIndex('admin::resources.index');
 
-            $LaraguardModule->hideInMenu(fn() => Auth::guard($guard_admin)->user()?->can('Admin:'.$resource->getName().':index,'.$guard_admin));
+            $LaraguardModule->hideInMenu(fn() => !Auth::guard($guard_admin)->user()?->can('Admin:'.$resource->getName().':index,'.$guard_admin));
 
             $LaraguardModule->addPage($resource->getTitle() ?? 'No title', '', 'index')->isIndex()->action('index')->view('admin::resources.index')->middleware('can:'.$resource->getName().':index,'.$guard_admin);
 

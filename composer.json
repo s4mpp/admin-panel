@@ -50,7 +50,6 @@
         "serve": [
             "Composer\\Config::disableProcessTimeout",
             "@build",
-            "@create-config",
             "@php vendor/bin/testbench serve"
         ],
         "publish-permissions": [

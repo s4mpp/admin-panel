@@ -2585,12 +2585,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/s4mpp/laraguard.git",
-                "reference": "aca6abd61cb7755433bd766cb1b5645445d5a5b5"
+                "reference": "a58ffb76cc60cc38c40762210bf738f50c92d60d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/s4mpp/laraguard/zipball/aca6abd61cb7755433bd766cb1b5645445d5a5b5",
-                "reference": "aca6abd61cb7755433bd766cb1b5645445d5a5b5",
+                "url": "https://api.github.com/repos/s4mpp/laraguard/zipball/a58ffb76cc60cc38c40762210bf738f50c92d60d",
+                "reference": "a58ffb76cc60cc38c40762210bf738f50c92d60d",
                 "shasum": ""
             },
             "require": {
@@ -2599,11 +2599,11 @@
                 "s4mpp/element": "v2.x-dev"
             },
             "require-dev": {
-                "larastan/larastan": "^2.0",
                 "laravel/pint": "^1.13",
                 "nunomaduro/collision": "^7.8",
                 "orchestra/testbench": "^8.20",
                 "orchestra/testbench-dusk": "^8.22",
+                "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10.1"
             },
             "default-branch": true,
@@ -2632,7 +2632,7 @@
                 "issues": "https://github.com/s4mpp/laraguard/issues",
                 "source": "https://github.com/s4mpp/laraguard/tree/v2"
             },
-            "time": "2024-03-23T03:45:40+00:00"
+            "time": "2024-03-25T03:42:44+00:00"
         },
         {
             "name": "spatie/laravel-permission",

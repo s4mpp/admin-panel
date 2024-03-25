@@ -82,8 +82,8 @@ final class UserResource extends Resource
 
             Input::email('E-mail', 'email')->unique(),
         ];
-
  
+        
         if($this->getCurrentAction() == Action::Create)
         {
             $form[] = Input::password('Senha', 'password');
