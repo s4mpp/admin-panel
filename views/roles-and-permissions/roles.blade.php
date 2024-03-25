@@ -53,7 +53,7 @@
 
 		@if(!$roles->isEmpty())
 			<div class="space-y-4">
-				<div class="flex justify-start gap-3">
+				<div class="flex justify-start flex-wrap gap-3">
 					@foreach($roles as $role)
 						<x-admin::roles-and-permissions.indicator title="{{ $role->name }}" totalUsers="{{ $role->users()->count() }}">
 							<x-slot:actions>

@@ -12,7 +12,7 @@ use S4mpp\AdminPanel\Factories\CustomAction;
 use S4mpp\AdminPanel\Input\Input as InputElement;
 use S4mpp\AdminPanel\Labels\Label as LabelElement;
 
-final class UserResource extends Resource
+class UserResource extends Resource
 {
     public string $title = 'Usuários';
 

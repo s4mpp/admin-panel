@@ -25,6 +25,15 @@ final class LabelTest extends TestCase
         $this->assertSame('left', $label->getAlignment());
     }
 
+    public function test_strong(): void
+    {
+        $label = new Text('Title', 'field');
+
+        $label->strong();
+
+        $this->assertTrue($label->getIsStrong());
+    }
+
     public function test_relationship(): void
     {
         $label = new Text('Title', 'field');

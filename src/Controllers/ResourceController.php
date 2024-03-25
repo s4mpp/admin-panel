@@ -14,6 +14,7 @@ use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Filter\Filter;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use S4mpp\AdminPanel\Elements\Report;
@@ -55,11 +56,16 @@ final class ResourceController extends Controller
             $alpine_expression_filters[] = implode(':', [$filter->getField(), $filter->getAlpineExpression()]);
         }
 
-        $reports = $resource->getReports();
+        $reports = array_filter($resource->getReports(), function(Report $report) use ($resource)
+        {
+            return Auth::guard(AdminPanel::getGuardName())->user()->can($resource->getName().'.report.'.$report->getSlug());
+        }); 
 
         $placeholder_search = $resource->getMessagePlaceholderSearch();
 
-        return Laraguard::layout('admin::resources.index', compact('resource', 'filters', 'reports', 'placeholder_search', 'alpine_expression_filters'));
+        $can_create = Auth::guard(AdminPanel::getGuardName())->user()->can($resource->getName().'.create');
+
+        return Laraguard::layout('admin::resources.index', compact('resource', 'filters', 'reports', 'placeholder_search', 'alpine_expression_filters', 'can_create'));
     }
 
     public function create(): ViewFactory|ViewContract|null
@@ -148,15 +154,19 @@ final class ResourceController extends Controller
         $register = $resource->getModel()->findOrFail($id);
 
         $repeaters = $resource->getRepeaters();
-
-        $custom_actions = $resource->getCustomActions();
-
+        
+        $custom_actions = array_filter($resource->getCustomActions(), function(CustomAction $custom_action) use ($resource)
+        {
+            return Auth::guard(AdminPanel::getGuardName())->user()->can($resource->getName().'.custom-action.'.$custom_action->getSlug());
+        }); 
+        
         /** @var array<CustomAction> $custom_action_elements */
         $custom_action_elements = Finder::findElementsRecursive($custom_actions, CustomAction::class);
 
         $custom_action_slides = $custom_actions_modals = [];
 
         foreach ($custom_action_elements as $custom_action) {
+
             $custom_action->setResource($resource);
 
             $custom_action->setRegister($register);
@@ -194,7 +204,7 @@ final class ResourceController extends Controller
         // delete
     }
 
-    public function report(string $slug): ViewFactory|ViewContract|null
+    public function report(): ViewFactory|ViewContract|null
     {
         /** @var string */
         $path = Route::current()?->getAction('as');
@@ -210,7 +220,9 @@ final class ResourceController extends Controller
 
         //----------------------------------------------------------------
 
-        $report = Finder::findBySlug($resource->getReports(), $slug);
+        $path_steps = explode('.', $path);
+
+        $report = Finder::findBySlug($resource->getReports(), $path_steps[3]);
 
         if (! $report) {
             abort(404);

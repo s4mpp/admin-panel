@@ -21,11 +21,6 @@ final class Password extends Input
 
     public function processInputData(string $data = null): ?string
     {
-        if(!$data)
-        {
-            return null;
-        }
-
-        return Hash::make($data);
+        return ($data) ? Hash::make($data) : null;
     }
 }

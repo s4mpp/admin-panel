@@ -8,13 +8,14 @@
 		</form>
 	</x-slot:header>
 
-	@if(!empty($resources_with_permissions))
-		<div class="divide-y  -my-4">
+	@if(!empty($resources_with_permissions)) 						
+
+		<div class="divide-y -my-4">
 			@foreach($resources_with_permissions as $resource)
 				<div class="py-4 ">
 					<p class="font-semibold text-sm mb-2">{{ $resource['name'] }}</p>
 					
-					<div class="flex justify-start gap-3">
+					<div class="flex justify-start  flex-wrap gap-3">
 						@foreach($resource['permissions'] as $permission)
 							<x-admin::roles-and-permissions.indicator title="{{ $permission->name }}" totalUsers="{{ $permission->total_users }}" />
 						@endforeach

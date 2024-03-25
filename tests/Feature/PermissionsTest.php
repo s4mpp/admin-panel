@@ -17,14 +17,14 @@ final class PermissionsTest extends TestCase
     {
         parent::setUp();
 
-        Permission::findOrCreate('Admin:permissions', 'web');
+        Permission::findOrCreate('Admin.permissions', 'web');
 
-        $this->user = UserFactory::new()->create()->givePermissionTo('Admin:permissions');
+        $this->user = UserFactory::new()->create()->givePermissionTo('Admin.permissions');
     }
 
     public function test_index_page(): void
     {
-        $response = $this->actingAs($this->user)->get('admin/permissoes');
+        $response = $this->actingAs($this->user)->get('painel/permissoes');
 
         $response->assertOk();
         $response->assertSee('Permissões');
@@ -32,46 +32,46 @@ final class PermissionsTest extends TestCase
 
     public function test_generate_permissions(): void
     {
-		$this->get('admin/permissoes');
-        $response = $this->actingAs($this->user)->put('admin/permissoes/generate-permissions');
+		$this->get('painel/permissoes');
+        $response = $this->actingAs($this->user)->put('painel/permissoes/generate-permissions');
 
         $response->assertRedirect();
-        $response->assertRedirectContains('admin/permissoes');
+        $response->assertRedirectContains('painel/permissoes');
 	}
 
     public function test_create_permissions(): void
     {
-		$this->get('admin/permissoes');
-        $response = $this->actingAs($this->user)->post('admin/permissoes/create-permission', [
+		$this->get('painel/permissoes');
+        $response = $this->actingAs($this->user)->post('painel/permissoes/create-permission', [
             'permission_name' => fake()->word(),
         ]);
 
         $response->assertRedirect();
-        $response->assertRedirectContains('admin/permissoes');
+        $response->assertRedirectContains('painel/permissoes');
 	}
     
     public function test_update_permissions(): void
     {
         $permission = Permission::findOrCreate(fake()->word(), 'web');
 
-		$this->get('admin/permissoes');
-        $response = $this->actingAs($this->user)->put('admin/permissoes/update-permission/'.$permission->id, [
+		$this->get('painel/permissoes');
+        $response = $this->actingAs($this->user)->put('painel/permissoes/update-permission/'.$permission->id, [
             'permission_name' => fake()->word(),
         ]);
 
         $response->assertRedirect();
-        $response->assertRedirectContains('admin/permissoes');
+        $response->assertRedirectContains('painel/permissoes');
 	}
 
     public function test_delete_permissions(): void
     {
         $permission = Permission::findOrCreate(fake()->word(), 'web');
 
-		$this->get('admin/permissoes');
-        $response = $this->actingAs($this->user)->delete('admin/permissoes/delete-permission/'.$permission->id);
+		$this->get('painel/permissoes');
+        $response = $this->actingAs($this->user)->delete('painel/permissoes/delete-permission/'.$permission->id);
 
         $response->assertRedirect();
-        $response->assertRedirectContains('admin/permissoes');
+        $response->assertRedirectContains('painel/permissoes');
 	}
 
     public function test_create_role(): void
@@ -79,14 +79,14 @@ final class PermissionsTest extends TestCase
         $permission_1 = Permission::findOrCreate('permission-1', 'web');
         $permission_2 = Permission::findOrCreate('permission-2', 'web');
 
-		$this->get('admin/permissoes');
-        $response = $this->actingAs($this->user)->post('admin/permissoes/create-role', [
+		$this->get('painel/permissoes');
+        $response = $this->actingAs($this->user)->post('painel/permissoes/create-role', [
             'role_name' => 'new-role-name',
             'permissions' => [$permission_1->name, $permission_2->name]
         ]);
 
         $response->assertRedirect();
-        $response->assertRedirectContains('admin/permissoes');
+        $response->assertRedirectContains('painel/permissoes');
 	}
     
     public function test_update_roles(): void
@@ -96,24 +96,24 @@ final class PermissionsTest extends TestCase
         $permission_1 = Permission::findOrCreate('permission-1', 'web');
         $permission_2 = Permission::findOrCreate('permission-2', 'web');
 
-		$this->get('admin/permissoes');
-        $response = $this->actingAs($this->user)->put('admin/permissoes/update-role/'.$role->id, [
+		$this->get('painel/permissoes');
+        $response = $this->actingAs($this->user)->put('painel/permissoes/update-role/'.$role->id, [
             'role_name' => 'new-role-name',
             'permissions' => [$permission_1->name, $permission_2->name]
         ]);
 
         $response->assertRedirect();
-        $response->assertRedirectContains('admin/permissoes');
+        $response->assertRedirectContains('painel/permissoes');
 	}
 
     public function test_delete_roles(): void
     {
         $role = Role::findOrCreate(fake()->word(), 'web');
 
-		$this->get('admin/permissoes');
-        $response = $this->actingAs($this->user)->delete('admin/permissoes/delete-role/'.$role->id);
+		$this->get('painel/permissoes');
+        $response = $this->actingAs($this->user)->delete('painel/permissoes/delete-role/'.$role->id);
 
         $response->assertRedirect();
-        $response->assertRedirectContains('admin/permissoes');
+        $response->assertRedirectContains('painel/permissoes');
 	}
 }

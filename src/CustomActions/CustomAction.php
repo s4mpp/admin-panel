@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Resources\Resource;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use S4mpp\AdminPanel\Traits\CanBeDangerous;
+use S4mpp\AdminPanel\Traits\HasComponent;
 
 abstract class CustomAction
 {
-    use Slugable, Titleable, CanBeDangerous;
+    use Slugable, Titleable, CanBeDangerous, HasComponent;
 
     // protected $register;
 
@@ -41,6 +42,8 @@ abstract class CustomAction
     {
         $this->createSlug($title);
     }
+
+    
 
     // public function renderButtonDisabled(): View|ViewFactory
     // {

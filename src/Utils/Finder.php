@@ -41,7 +41,6 @@ abstract class Finder
         $items_filled_in_card = [];
 
         foreach ($arr_input as $item) {
-            /** @var object $item */
             if (is_a($item, Card::class)) {
                 $items_filled_in_card[] = $item;
 
@@ -73,7 +72,6 @@ abstract class Finder
             $class_found = false;
 
             foreach ($classes as $class) {
-                /** @var object $item */
                 if (is_subclass_of($item, $class) || is_a($item, $class)) {
                     $class_found = true;
 

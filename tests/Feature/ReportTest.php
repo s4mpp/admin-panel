@@ -20,11 +20,13 @@ final class ReportTest extends TestCase
     /**
      * @dataProvider reportProvider
      */
-    public function test_report_page(string $uri, string $title): void
+    public function test_report_page(string $slug, string $title): void
     {
-        $user = UserFactory::new()->create();
+        Permission::findOrCreate('Report.report.'.$slug, 'web');
 
-        $response = $this->actingAs($user)->get('admin/relatorios/relatorio/'.$uri);
+        $user = UserFactory::new()->create()->givePermissionTo('Report.report.'.$slug);
+
+        $response = $this->actingAs($user)->get('painel/relatorios/relatorio/'.$slug);
 
         $response->assertOk();
         $response->assertSee($title);
@@ -35,7 +37,7 @@ final class ReportTest extends TestCase
     {
         $user = UserFactory::new()->create();
 
-        $response = $this->actingAs($user)->get('admin/relatorios/relatorio/xxxx');
+        $response = $this->actingAs($user)->get('painel/relatorios/relatorio/xxxx');
 
         $response->assertNotFound();
     }

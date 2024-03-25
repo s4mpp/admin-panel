@@ -56,7 +56,7 @@ final class NumberResource extends Resource
             Input::decimal('Basic decimal min', 'basic_decimal_min'),
             Input::decimal('Basic decimal max', 'basic_decimal_max'),
 
-            Input::integer('Basic integer', 'basic_integer'),
+            Input::integer('Basic integer', 'basic_integer')->min(10)->max(20),
             Input::integer('Basic integer 2', 'basic_integer_2'),
             Input::integer('Basic integer min', 'basic_integer_min'),
             Input::integer('Basic integer max', 'basic_integer_max'),

@@ -42,7 +42,8 @@
 			<x-element::modal idModal="modalReport" title="Relatórios disponíveis:">
 				<div class="space-y-2">
 					@foreach($reports as $report)
-						<a class="bg-gray-100 group transition-colors font-semibold text-gray-700 hover:bg-gray-200 rounded-lg flex justify-between items-center p-4" href="{{ route($resource->getRouteName('relatorio'), ['slug' => $report->getSlug()]) }}">
+						<a class="bg-gray-100 group transition-colors font-semibold text-gray-700 hover:bg-gray-200 rounded-lg flex justify-between items-center p-4"
+							href="{{ route($resource->getRouteName($report->getSlug())) }}">
 							{{ $report->getTitle() }}
 							<x-element::icon name="arrow-right" class="text-gray-400 h-5 opacity-90 group-hover:opacity-100 transition-opacity"></x-element::icon>
 						</a>
@@ -52,7 +53,7 @@
 		</div>
 	@endif
 	
-	@if($resource->hasAction('create'))
+	@if($resource->hasAction('create') && $can_create)
 		<x-element::link context="success" class="m-0" href="{{ route($resource->getRouteName('create')) }}">
 			<x-element::icon name="plus" class="h-5 w-5" />
 			

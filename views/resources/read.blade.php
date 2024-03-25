@@ -7,6 +7,7 @@
 		<div x-data="{ {{ join(',', array_merge($custom_action_slides ?? [], $custom_actions_modals ?? [])) }} }">
 			@foreach ($custom_action_elements as $action)
 				@continue($action->isDisabled())
+				
 		
 				@if($action->hasConfirmation())
 					@php

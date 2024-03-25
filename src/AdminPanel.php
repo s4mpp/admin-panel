@@ -49,9 +49,9 @@ abstract class AdminPanel
                 self::addResource($resource);
             }
         }
-
+        
         self::addResource(new UserResource());
-
+        
         return self::$resources;
     }
 
@@ -63,7 +63,14 @@ abstract class AdminPanel
             return;
         }
 
-        self::$resources[$resource->getSlug()] = $resource;
+        $slug = $resource->getSlug();
+
+        if(array_key_exists($slug, self::$resources))
+        {
+            return;
+        }
+
+        self::$resources[$slug] = $resource;
     }
 
     public static function getResource(string $slug): ?Resource

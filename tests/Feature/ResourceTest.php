@@ -21,13 +21,12 @@ final class ResourceTest extends TestCase
     public static function resourceProvider()
     {
         return [
-            // 'numeros' => ['numeros', 'Number', 'Números', NumberFactory::class],
-            
             'users' => ['usuarios', 'User', 'Usuários', UserFactory::class],
             'filters' => ['filtros', 'Filter', 'Filtros', FilterFactory::class],
             'itens-basicos' => ['itens-basicos', 'BasicItem', 'Itens básicos', BasicItemFactory::class],
             'repeaters' => ['repeaters', 'Repeater', 'Repeaters', RepeaterFactory::class],
             'reports' => ['relatorios', 'Report', 'Relatórios', ReportFactory::class],
+            'numeros' => ['numeros', 'Number', 'Números', NumberFactory::class],
             'selects' => ['selects', 'Select', 'Selects', SelectFactory::class],
             'custom-action' => ['custom-actions', 'CustomAction', 'Custom Actions', CustomActionFactory::class],
             'dates' => ['datas', 'Date', 'Datas', DateFactory::class],
@@ -39,11 +38,11 @@ final class ResourceTest extends TestCase
      */
     public function test_index_page(string $url, string $name, string $title): void
     {
-        Permission::findOrCreate($name.':index', 'web');
+        Permission::findOrCreate($name, 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo($name.':index');
+        $user = UserFactory::new()->create()->givePermissionTo($name);
 
-        $response = $this->actingAs($user)->get('admin/'.$url);
+        $response = $this->actingAs($user)->get('painel/'.$url);
 
         $response->assertOk();
         $response->assertSee($title);
@@ -55,11 +54,11 @@ final class ResourceTest extends TestCase
      */
     public function test_create_page(string $url, string $name, string $title, string $factory): void
     {
-        Permission::findOrCreate($name.':create', 'web');
+        Permission::findOrCreate($name.'.action.create', 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo($name.':create');
+        $user = UserFactory::new()->create()->givePermissionTo($name.'.action.create');
         
-        $response = $this->actingAs($user)->get('admin/'.$url.'/cadastrar');
+        $response = $this->actingAs($user)->get('painel/'.$url.'/cadastrar');
 
         $response->assertOk();
         $response->assertSee('Cadastrar');
@@ -71,13 +70,13 @@ final class ResourceTest extends TestCase
      */
     public function test_update_page(string $url, string $name, string $title, string $factory): void
     {
-        Permission::findOrCreate($name.':update', 'web');
+        Permission::findOrCreate($name.'.action.update', 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo($name.':update');
+        $user = UserFactory::new()->create()->givePermissionTo($name.'.action.update');
         
         $register = $factory::new()->create();
 
-        $response = $this->actingAs($user)->get('admin/'.$url.'/editar/'.$register->id);
+        $response = $this->actingAs($user)->get('painel/'.$url.'/editar/'.$register->id);
 
         $response->assertOk();
         $response->assertSee('Editar');
@@ -89,13 +88,13 @@ final class ResourceTest extends TestCase
      */
     public function test_read_page(string $url, string $name, string $title, string $factory): void
     {
-        Permission::findOrCreate($name.':read', 'web');
+        Permission::findOrCreate($name.'.action.read', 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo($name.':read');
+        $user = UserFactory::new()->create()->givePermissionTo($name.'.action.read');
         
         $register = $factory::new()->create();
 
-        $response = $this->actingAs($user)->get('admin/'.$url.'/visualizar/'.$register->id);
+        $response = $this->actingAs($user)->get('painel/'.$url.'/visualizar/'.$register->id);
 
         $response->assertOk();
         $response->assertSee('Visualizar');
@@ -104,35 +103,35 @@ final class ResourceTest extends TestCase
     
     public function test_delete_register(): void
     {
-        Permission::findOrCreate('User:delete', 'web');
+        Permission::findOrCreate('User.action.delete', 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo('User:delete');
+        $user = UserFactory::new()->create()->givePermissionTo('User.action.delete');
         
         $register = UserFactory::new()->create();
 
-        $response = $this->actingAs($user)->delete('admin/usuarios/excluir/'.$register->id);
+        $response = $this->actingAs($user)->delete('painel/usuarios/excluir/'.$register->id);
 
         $response->assertOk();
     }
 
     public function test_resource_without_model()
     {
-        Permission::findOrCreate('EmptyWithTitle:index', 'web');
+        Permission::findOrCreate('EmptyWithTitle', 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo('EmptyWithTitle:index');
+        $user = UserFactory::new()->create()->givePermissionTo('EmptyWithTitle');
 
-        $response = $this->actingAs($user)->get('admin/empty-with-error');
+        $response = $this->actingAs($user)->get('painel/empty-with-error');
 
         $response->assertStatus(500);
     }
 
     public function test_resource_empty()
     {
-        Permission::findOrCreate('EmptyClass:index', 'web');
+        Permission::findOrCreate('EmptyClass', 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo('EmptyClass:index');
+        $user = UserFactory::new()->create()->givePermissionTo('EmptyClass');
 
-        $response = $this->actingAs($user)->get('admin/empty');
+        $response = $this->actingAs($user)->get('painel/empty');
 
         $response->assertStatus(200);
     }

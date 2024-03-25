@@ -10,11 +10,11 @@ final class SettingsTest extends TestCase
 {
     public function test_can_access_settings_page(): void
     {
-        Permission::findOrCreate('Admin:settings', 'web');
+        Permission::findOrCreate('Admin.settings', 'web');
 
-        $user = UserFactory::new()->create()->givePermissionTo('Admin:settings');
+        $user = UserFactory::new()->create()->givePermissionTo('Admin.settings');
 
-        $response = $this->actingAs($user)->get('admin/configuracoes');
+        $response = $this->actingAs($user)->get('painel/configuracoes');
 
         $response->assertOk();
         $response->assertSee('Configurações');

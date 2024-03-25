@@ -261,15 +261,23 @@ final class PermissionController extends Controller
         $permissions_to_create = [];
 
         foreach ($resources as $resource) {
-            $permissions_to_create[] = $resource->getName().':module';
+
+            $permissions_to_create[] = $resource->getName();
 
             foreach ($resource->getActions() as $action) {
-                $permissions_to_create[] = $resource->getName().':'.$action;
+                $permissions_to_create[] = $resource->getName().'.action.'.$action;
+            }
+
+            foreach ($resource->getCustomActions() as $custom_action) {
+                $permissions_to_create[] = $resource->getName().'.custom-action.'.$custom_action->getSlug();
+            }
+            foreach ($resource->getReports() as $report) {
+                $permissions_to_create[] = $resource->getName().'.report.'.$report->getSlug();
             }
         }
 
         return array_merge($permissions_to_create, [
-            'Admin:settings', 'Admin:permissions',
+            'Admin.settings', 'Admin.permissions',
         ]);
     }
 

@@ -4,12 +4,15 @@ namespace S4mpp\AdminPanel\Resources;
 
 use S4mpp\Laraguard\Laraguard;
 use S4mpp\Laraguard\Base\Panel;
+use S4mpp\AdminPanel\AdminPanel;
 use S4mpp\Laraguard\Base\Module;
 use S4mpp\AdminPanel\Input\Input;
+use S4mpp\AdminPanel\Enums\Action;
 use S4mpp\AdminPanel\Labels\Label;
 use S4mpp\AdminPanel\Utils\Finder;
 use S4mpp\AdminPanel\Elements\Card;
 use S4mpp\AdminPanel\Filter\Filter;
+use Illuminate\Support\Facades\Auth;
 use S4mpp\AdminPanel\Elements\Report;
 use S4mpp\AdminPanel\Traits\Slugable;
 use S4mpp\AdminPanel\Traits\Ordenable;
@@ -18,7 +21,6 @@ use Illuminate\Database\Eloquent\Model;
 use S4mpp\AdminPanel\Elements\Repeater;
 use Illuminate\Pagination\LengthAwarePaginator;
 use S4mpp\AdminPanel\CustomActions\CustomAction;
-use S4mpp\AdminPanel\Enums\Action;
 use S4mpp\AdminPanel\Factories\Filter as FilterFactory;
 
 abstract class Resource
@@ -161,10 +163,36 @@ abstract class Resource
                 continue;
             }
 
+            if(!Auth::guard(AdminPanel::getGuardName())->user()->can($this->getName().'.'.$action))
+            {
+                continue;
+            }
+
             $actions[$action] = $route_name;
         }
 
         return $actions ?? [];
+    }
+
+    /** 
+     * @return array<string>
+     */
+    final public function getAvailablePermissions(): array
+    {
+        $permissions[] = $this->getName();
+
+        foreach ($this->getActions() as $action) {
+            $permissions[] = $this->getName().'.action.'.$action;
+        }
+
+        foreach ($this->getCustomActions() as $custom_action) {
+            $permissions[] = $this->getName().'.custom-action.'.$custom_action->getSlug();
+        }
+        foreach ($this->getReports() as $report) {
+            $permissions[] = $this->getName().'.report.'.$report->getSlug();
+        }
+
+        return $permissions;
     }
 
     // final public function getView(string $view, array $data = [])

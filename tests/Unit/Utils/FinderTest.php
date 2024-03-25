@@ -45,7 +45,7 @@ final class FinderTest extends TestCase
     public static function finderElementProvider()
     {
         return [
-            [CustomAction::class, 1],
+            [CustomAction::class, 2],
             [Filter::class, 1],
             [Label::class, 3],
             [Link::class, 1],
@@ -112,7 +112,10 @@ final class FinderTest extends TestCase
             4 => new Card('', [
                 InputFactory::textarea('Title', 'title'),
                 LabelFactory::text('Title', 'title'),
-            ])
+            ]),
+            5 => [
+                CustomActionFactory::view('Test', 'https://test.com'),
+            ]
         ];
 
         $array_filtered = Finder::findElementsRecursive($array, $to_find);

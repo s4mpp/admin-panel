@@ -53,10 +53,9 @@
 
 		@if(!$other_permissions->isEmpty())
 			<div class="divide-y space-y-4">
-				<div class="flex justify-start gap-3">
+				<div class="flex justify-start flex-wrap gap-3">
 					@foreach($other_permissions as $permission)
-
-						<x-admin::roles-and-permissions.indicator title="{{ $permission->name }}" totalUsers="0">
+						<x-admin::roles-and-permissions.indicator title="{{ $permission->name }}" totalUsers="{{ $permission->total_users }}">
 							<x-slot:actions>
 								<x-element::dropdown.button x-on:click="
 									modalEditPermission=true,

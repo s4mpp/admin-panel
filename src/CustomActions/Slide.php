@@ -11,7 +11,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 
 final class Slide extends CustomAction
 {
-    use CanBeDisabled, HasComponent;
+    use CanBeDisabled;
 
     /**
      * @var array<string>

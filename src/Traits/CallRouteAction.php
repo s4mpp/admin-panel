@@ -63,7 +63,8 @@ trait CallRouteAction
     {
         $message = $this->success_message;
 
-        if (is_callable($this->success_message)) {
+        if (is_callable($message)) {
+            
             $message = call_user_func($message, $result);
         }
 

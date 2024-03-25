@@ -14,8 +14,6 @@ use S4mpp\AdminPanel\Traits\ShoudOpenInNewTab;
 
 final class Callback extends CustomAction
 {
-    //use ShoudOpenInNewTab, SendForm, CallRouteMethod, HasSuccessMessage;
-
     use CallRouteAction, CanBeDisabled, RenderButtonForm, ShoudOpenInNewTab;
 
     public function __construct(string $title, private Closure $callback)
